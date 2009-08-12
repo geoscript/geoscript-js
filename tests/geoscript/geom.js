@@ -32,8 +32,23 @@ exports.test_LineString = function() {
     assert.isTrue(l instanceof geom.Geometry, "line is a geometry");
     assert.isTrue(l instanceof geom.LineString, "line is a line");
     assert.isEqual(3, l.coordinates.length, "line has three coordinates");
-    assert.isEqual(402.49223594996215, l.length, "line has correct length");
+    assert.isEqual(402.49223594996215, l.getLength(), "line has correct length");
     assert.isEqual("LINESTRING (-180 -90, 0 0, 180 90)", l.toWKT(), "correct wkt");
+    
+};
+
+exports.test_Polygon = function() {
+
+    var p = new geom.Polygon([
+        [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],
+        [ [-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45] ]
+    ]);
+    
+    assert.isTrue(p instanceof geom.Geometry, "polygon is a geometry");
+    assert.isTrue(p instanceof geom.Polygon, "polygon is a polygon");
+    assert.isEqual(2, p.coordinates.length, "polygon has two items in coordinates");
+    assert.isEqual(48600, p.getArea(), "polygon has correct area");
+    assert.isEqual("POLYGON ((-180 -90, -180 90, 180 90, 180 -90, -180 -90), (-90 -45, -90 45, 90 45, 90 -45, -90 -45))", p.toWKT(), "correct wkt");
     
 };
 
