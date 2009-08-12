@@ -9,3 +9,7 @@ exports.test_Point = function() {
     assert.isEqual(p.y, 2);
     
 };
+
+if (require.main === module.id) {
+    require("test/runner").run(exports);
+}
