@@ -1,7 +1,7 @@
 var assert = require("test/assert"),
     geom = require("geoscript/geom");
 
-exports.testPoint = function() {
+exports.test_Point = function() {
     
     var p = new geom.Point([1, 2]);
     
