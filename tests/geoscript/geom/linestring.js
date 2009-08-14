@@ -10,8 +10,6 @@ exports.test_LineString = function() {
     assert.isEqual(3, l.coordinates.length, "line has three coordinates");
     assert.isEqual(402.49223594996215, l.getLength(), "line has correct length");
 
-    var l2 = new geom.LineString([[-180, -90, 10], [0, 0], [180, 90]]);
-
     
 };
 
