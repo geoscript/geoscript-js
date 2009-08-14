@@ -60,6 +60,20 @@ exports.test_wkt = function() {
 
 };
 
+
+exports.test_buffer = function() {
+
+    var p = new geom.Point([0, 0]);
+    var b = p.buffer(1);
+    
+    assert.isTrue(b instanceof geom.Polygon, "buffered point creates a polygon");
+    assert.isEqual("3.12", b.getArea().toFixed(2), "almost PI");
+    
+    b = p.buffer(1, 24);
+    assert.isEqual("3.14", b.getArea().toFixed(2), "more arc segments, higher accuracy");
+
+};
+
 if (require.main === module.id) {
     require("test/runner").run(exports);
 }
