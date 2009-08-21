@@ -1,5 +1,5 @@
-The `proj` Module
-=================
+The [proj]<@proj> Module
+========================
 
 The `proj` module contains methods for transforming geometries from one
 coordinate reference system to another.
@@ -7,10 +7,10 @@ coordinate reference system to another.
     js> var proj = require('geoscript/proj');
 
 
-The `transform` Method
-----------------------
+The [transform]<@geom.transform> Method
+---------------------------------------
 
-Coordinate reference systems are idnetified by their SRID.  To transform a
+Coordinate reference systems are identified by their SRID.  To transform a
 geometry from one system to another, use the `transform` method.
 
     js> var geom = require('geoscript/geom');

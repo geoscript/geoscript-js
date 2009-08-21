@@ -1,7 +1,7 @@
-`Point` Examples
-================
+[Point]<@geom.Point> Examples
+=============================
 
-The `Point` constructor is exported to the `geom` module.
+The `Point` constructor is exported to the [geom](@geom) module.
 
     js> var geom = require('geoscript/geom');
     

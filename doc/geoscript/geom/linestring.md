@@ -1,7 +1,7 @@
-`LineString` Examples
-=====================
+[LineString]<@geom.LineString> Examples
+=======================================
 
-The `LineString` constructor is exported to the `geom` module.
+The `LineString` constructor is exported to the [geom](@geom) module.
 
     js> var geom = require('geoscript/geom');
 

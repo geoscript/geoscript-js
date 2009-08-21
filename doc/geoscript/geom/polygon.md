@@ -1,7 +1,7 @@
-`Polygon` Examples
-==================
+[Polygon]<@geom.Polygon> Examples
+=================================
 
-The `Polygon` constructor is exported to the `geom` module.
+The `Polygon` constructor is exported to the [geom](@geom) module.
 
     js> var geom = require('geoscript/geom');
 
