@@ -25,14 +25,15 @@ Access the geometry with the `geom` method.
     js> f.geom()
     POINT (1 2)
     
-Access feature schema with the `ftype` property.
+Access feature schema with the `schema` property.
 
-    js> f.ftype instanceof feature.FeatureType
+    js> var schema = f.schema;
+    js> schema instanceof feature.Schema
     true
-    js> f.ftype.atts.length
+    js> schema.atts.length
     2
-    js> f.ftype.atts[0]
+    js> schema.atts[0]
     foo,String
-    js> f.ftype.atts[1]
+    js> schema.atts[1]
     g,Point
     
