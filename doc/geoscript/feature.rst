@@ -1,7 +1,12 @@
-The [feature]<@feature> Module
-==============================
+.. module:: geoscript.feature
+    :synopsis: Feature related functionality.
+
+:mod:`geoscript.feature`
+========================
 
 Create a feature with attributes and a geometry.
+
+.. code-block:: javascript
 
     js> var feature = require('geoscript/feature');
     js> var geom = require('geoscript/geom');
@@ -14,6 +19,8 @@ Create a feature with attributes and a geometry.
 
 Set attributes with `set` and get them with `get`.
 
+.. code-block:: javascript
+
     js> f.get('foo')
     bar
     js> f.set('foo', 'baz');
@@ -22,10 +29,14 @@ Set attributes with `set` and get them with `get`.
 
 Access the geometry with the `geom` method.
     
+.. code-block:: javascript
+
     js> f.geom()
     POINT (1 2)
     
 Access feature schema with the `schema` property.
+
+.. code-block:: javascript
 
     js> var schema = f.schema;
     js> schema instanceof feature.Schema
