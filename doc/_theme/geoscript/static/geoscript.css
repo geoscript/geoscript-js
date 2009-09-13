@@ -1,0 +1,99 @@
+@import url("sphinxdoc.css");
+
+body {
+    margin: 0 2em;
+    padding: 0;
+    background: #122981;
+    color: white;
+    font: 90% "Trebuchet MS", sans-serif;
+    border: 0;
+}
+
+h1, h2, h3, h4, h5 {
+    background: transparent !important;
+    border: 0 !important;
+    padding-left: 0 !important;
+    color: white;
+}
+
+a {
+    color: #ffeeaa;
+    text-decoration: none !important;
+}
+
+a.headerlink {
+    font-size: 0.1em;
+}
+
+div.header {
+    text-align: left;
+    margin: 1em 1.5em 0.5em;
+    position: relative;
+}
+
+div.header h1 {
+    font-size: 2.5em;
+}
+
+#top-nav {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#top-nav li {
+    font-weight: bold;
+    display: inline;
+    margin: 0;
+    padding: 0 1em 0 0;
+}
+
+#searchbox {
+    display: none;
+    position: absolute;
+    right: 15px;
+    top: 30px;
+}
+
+div.bodywrapper {
+    border: 0;
+    margin-right: 270px;
+}
+
+div.document {
+    background: transparent;
+}
+
+div.sphinxsidebar {
+    width: 240px;
+}
+
+div.sphinxsidebar li {
+    padding-bottom: 0.5em;
+}
+
+div.related ul {
+    background: transparent;
+    border: 0;
+    display: none;
+}
+
+pre {
+    background: black;
+    font-size: 0.9em;
+    border: 0;
+    padding: 1em;
+}
+
+tt {
+    color: inherit;
+}
+
+div.footer {
+    background: transparent;
+    text-align: center;
+}
+
+#gitcommits {
+    display: none;
+}
