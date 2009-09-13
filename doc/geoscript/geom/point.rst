@@ -1,7 +1,7 @@
-:class:`geoscript.geom.Point`
-=============================
+:class:`geom.Point`
+===================
 
-The `Point` constructor is exported to the :mod:`geoscript.geom` module.
+The `Point` constructor is exported to the :mod:`geom` module.
 
 .. code-block:: javascript
 

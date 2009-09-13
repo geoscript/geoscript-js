@@ -1,7 +1,7 @@
-:class:`geoscript.geom.LineString`
-==================================
+:class:`geom.LineString`
+========================
 
-The `LineString` constructor is exported to the :mod:`geoscript.geom` module.
+The `LineString` constructor is exported to the :mod:`geom` module.
 
 .. code-block:: javascript
 

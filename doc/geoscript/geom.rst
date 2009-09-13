@@ -1,10 +1,10 @@
-.. module:: geoscript.geom
+.. module:: geom
     :synopsis: Geometry related functionality.
 
-:mod:`geoscript.geom`
-=====================
+The :mod:`geom` module
+======================
 
-The :mod:`geoscript.geom` module provides constructors for point, line, and polygon geometries.
+The :mod:`geom` module provides constructors for point, line, and polygon geometries.
 
 .. code-block:: javascript
 

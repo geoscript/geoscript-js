@@ -1,8 +1,8 @@
-.. module:: geoscript.feature
+.. module:: feature
     :synopsis: Feature related functionality.
 
-:mod:`geoscript.feature`
-========================
+The :mod:`feature` module
+=========================
 
 Create a feature with attributes and a geometry.
 

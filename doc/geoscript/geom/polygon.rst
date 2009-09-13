@@ -1,7 +1,7 @@
-:class:`geoscript.geom.Polygon`
-===============================
+:class:`geom.Polygon`
+=====================
 
-The `Polygon` constructor is exported to the :mod:`geoscript.geom` module.
+The `Polygon` constructor is exported to the :mod:`geom` module.
 
 .. code-block:: javascript
 

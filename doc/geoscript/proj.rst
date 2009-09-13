@@ -1,10 +1,10 @@
-.. module:: geoscript.proj
+.. module:: proj
     :synopsis: Projection related functionality.
 
-:mod:`geoscript.proj`
-=====================
+The :mod:`proj` module
+======================
 
-The `proj` module contains methods for transforming geometries from one
+The :mod:`proj` module contains methods for transforming geometries from one
 coordinate reference system to another.
 
 .. code-block:: javascript
