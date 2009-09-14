@@ -1,4 +1,4 @@
-Quick-Start
+Quick Start
 ===========
 
 GeoScript JS is packaged for the Narwhal_ platform.
