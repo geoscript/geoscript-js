@@ -9,13 +9,11 @@ Getting Narwhal
 You can get Narwhal by downloading and extracting a zip archive, or cloning the
 repository from http://github.com.
 
-* Download the `zip archive
-  <http://github.com/tlrobinson/narwhal/zipball/master>`_ and extract it
-  somewhere on your system (I'll assume your home directory here).
+Download the `zip archive <http://github.com/tlrobinson/narwhal/zipball/master>`_ and extract it somewhere on your system (I'll assume your home directory here).
 
 *or*
 
-* Clone the repository::
+Clone the repository::
 
     ~$ git clone git://github.com/tlrobinson/narwhal.git
 
@@ -39,14 +37,11 @@ Getting GeoScript JS
 The GeoScript JS source is also hosted on http://github.com. As above, you can
 get the source by downloading the zip archive or cloning the repository.
 
-* Download the `zip archive
-  <http://github.com/tschaub/geoscript/zipball/master>`_ and extract it
-  somewhere on your system (I'll assume you extract it to your home
-  directory).
+Download the `zip archive <http://github.com/tschaub/geoscript/zipball/master>`_ and extract it somewhere on your system (I'll assume you extract it to your home directory).
 
 *or*
 
-* Clone the repository::
+Clone the repository::
 
     ~$ git clone git://github.com/tschaub/geoscript.git
 
@@ -79,4 +74,3 @@ Now open a JavaScript console and experiment with GeoScript:
     js> poly.contains(p1)
     true
 
-    
