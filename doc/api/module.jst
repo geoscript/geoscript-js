@@ -1,0 +1,51 @@
+{#
+
+    This template is of general use for documenting GeoScript modules. It
+    produces a doc with the following sections:
+    
+        * Header (full class name)
+        * Constructor (class def)
+        * Examples (optional)
+        * Config Options (optional)
+        * Public Properties (optional)
+        * Public Methods (optional)
+        * Events (optional)
+        * Class Methods (optional)
+
+#}
+
+.. currentmodule:: {{ module }}
+
+:class:`{{ module }}.{{ class }}`
+================================================================================
+
+{{ constructor }}
+
+{% if example is defined %}
+Example Use
+-----------
+
+{{ example }}
+{% endif %}    
+
+{% if property is defined %}
+Properties
+----------
+
+{% for (name, desc) in property|dictsort %}
+.. attribute:: {{ class }}.{{ name }}
+
+    {{ desc|indent(4) }}
+{% endfor %}
+{% endif %}
+
+{% if method is defined %}
+Methods
+-------
+
+{% for (name, desc) in method|dictsort %}
+.. method:: {{ class }}.{{ name }}
+
+    {{ desc|indent(4) }}
+{% endfor %}
+{% endif %}
