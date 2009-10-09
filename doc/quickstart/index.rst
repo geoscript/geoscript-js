@@ -74,3 +74,11 @@ Now open a JavaScript console and experiment with GeoScript:
     js> poly.contains(p1)
     true
 
+Running Tests
+-------------
+
+After activating your environment (``bin/sea``), you can run all tests with the
+following::
+
+    ~/geoscript$ js tests/all.js
+
