@@ -1,4 +1,4 @@
-exports.test_geoscript = require("./geoscript");
+exports["test: geoscript"] = require("./geoscript");
 
 print(module.id);
 

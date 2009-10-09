@@ -1,7 +1,7 @@
 var assert = require("test/assert"),
     geom = require("geoscript/geom");
 
-exports.test_Point = function() {
+exports["test: Point"] = function() {
     
     var p = new geom.Point([1, 2]);
     
@@ -17,7 +17,7 @@ exports.test_Point = function() {
     
 };
 
-exports.test_equals = function() {
+exports["test: Point.equals"] = function() {
 
     var p1, p2;
     
@@ -48,7 +48,7 @@ exports.test_equals = function() {
 
 };
 
-exports.test_wkt = function() {
+exports["test: Point.toWKT"] = function() {
 
     var p = new geom.Point([1, 2]);
     assert.isEqual("POINT (1 2)", p.toWKT(), "correct wkt");
@@ -61,7 +61,7 @@ exports.test_wkt = function() {
 };
 
 
-exports.test_buffer = function() {
+exports["test: Point.buffer"] = function() {
 
     var p = new geom.Point([0, 0]);
     var b = p.buffer(1);

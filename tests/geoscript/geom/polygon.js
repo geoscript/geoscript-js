@@ -1,7 +1,7 @@
 var assert = require("test/assert"),
     geom = require("geoscript/geom");
     
-exports.test_Polygon = function() {
+exports["test: Polygon"] = function() {
 
     var p = new geom.Polygon([
         [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],
@@ -15,7 +15,7 @@ exports.test_Polygon = function() {
     
 };
 
-exports.test_wkt = function() {
+exports["test: Polygon.toWKT"] = function() {
 
     var p = new geom.Polygon([
         [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],

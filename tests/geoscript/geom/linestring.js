@@ -1,7 +1,7 @@
 var assert = require("test/assert"),
     geom = require("geoscript/geom");
 
-exports.test_LineString = function() {
+exports["test: LineString"] = function() {
     
     var l = new geom.LineString([[-180, -90], [0, 0], [180, 90]]);
     
@@ -13,7 +13,7 @@ exports.test_LineString = function() {
     
 };
 
-exports.test_wkt = function() {
+exports["test: LineString.toWKT"] = function() {
 
     var l = new geom.LineString([[-180, -90], [0, 0], [180, 90]]);
     assert.isEqual("LINESTRING (-180 -90, 0 0, 180 90)", l.toWKT(), "correct wkt");

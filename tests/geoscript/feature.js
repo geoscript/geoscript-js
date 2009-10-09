@@ -3,7 +3,7 @@ var assert = require("test/assert"),
     proj = require("geoscript/proj"),
     feature = require("geoscript/feature");
 
-exports.test_Schema = function() {
+exports["test: Schema"] = function() {
 
     var schema = new feature.Schema({
         name: "building",
@@ -30,7 +30,7 @@ exports.test_Schema = function() {
 
 };
 
-exports.test_Schema_geom = function() {
+exports["test: Schema.geom"] = function() {
 
     var schema = new feature.Schema({
         name: "Cities", 

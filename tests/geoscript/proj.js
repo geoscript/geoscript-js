@@ -2,7 +2,7 @@ var assert = require("test/assert"),
     geom = require("geoscript/geom"),
     proj = require("geoscript/proj");
 
-exports.test_transform = function() {
+exports["test: transform"] = function() {
 
     var p = new geom.Point([-125, 50]);
     var rp = proj.transform(p, "epsg:4326", "epsg:3005");
@@ -11,7 +11,7 @@ exports.test_transform = function() {
 
 };
 
-exports.test_Projection = function() {
+exports["test: Projection"] = function() {
     var p = new proj.Projection("EPSG:4326");
     assert.isEqual("EPSG:WGS 84", p.name, "[srid] correct name");
     assert.isEqual("EPSG:4326", p.code, "[srid] correct code");
