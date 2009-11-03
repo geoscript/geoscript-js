@@ -53,6 +53,11 @@ exports["test: Point.toWKT"] = function() {
     var p = new geom.Point([1, 2]);
     assert.isEqual("POINT (1 2)", p.toWKT(), "correct wkt");
 
+};
+
+exports["test: Point.fromWKT"] = function() {
+
+    var p = new geom.Point([1, 2]);
     var p2 = geom.Geometry.fromWKT("POINT (1 2)");
     assert.isTrue(p2 instanceof geom.Geometry, "point from wkt is a geometry");
     assert.isTrue(p2 instanceof geom.Point, "point from wkt is a point");
