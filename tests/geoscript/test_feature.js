@@ -55,28 +55,6 @@ exports["test: Schema.geom"] = function() {
 
 };
 
-exports["test: Schema.feature"] = function() {
-
-    var schema = new feature.Schema({
-        name: "test",
-        fields: [
-            ["geom", "Geometry"]
-        ]
-    });
-    
-    var values = {
-        geom: new geom.Point([1, 2])        
-    };
-    
-    var f = schema.feature(values);
-    
-    assert.isTrue(f instanceof feature.Feature, "creates feature");
-    assert.isTrue(f.schema === schema, "feature has correct schema");
-    
-    assert.isSame(values.geom.coordinates, f.get("geom").coordinates, "feature has correct geom");
-
-};
-
 exports["test: Schema._schema"] = function() {
     
     var schema = new feature.Schema({
