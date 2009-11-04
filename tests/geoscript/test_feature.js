@@ -51,7 +51,7 @@ exports["test: Schema.geom"] = function() {
     assert.isEqual("location", schema.geom[0]);
     assert.isEqual("Point", schema.geom[1]);
     assert.isTrue(schema.geom[2] instanceof proj.Projection);
-    assert.isEqual("EPSG:4326", schema.geom[2].code);
+    assert.isEqual("EPSG:4326", schema.geom[2].id);
 
 };
 
@@ -107,7 +107,7 @@ exports["test: Schema.from_"] = function() {
     assert.isEqual("location", schema.geom[0], "correct name for geom");
     assert.isEqual("Point", schema.geom[1], "correct type for geom");
     assert.isTrue(schema.geom[2] instanceof proj.Projection, "correct type for geom crs");
-    assert.isEqual("EPSG:4326", schema.geom[2].code, "correct code for geom crs");    
+    assert.isEqual("EPSG:4326", schema.geom[2].id, "correct code for geom crs");    
     
 };
 
