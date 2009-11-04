@@ -145,7 +145,7 @@ exports["test: Schema.from_"] = function() {
     assert.isEqual("test", schema.name, "correct schema name");
     assert.isEqual(3, schema.fields.length, "correct number of fields");
     
-    // test atts array
+    // test fields array
     assert.isEqual("name", schema.fields[0][0], "correct name for first field");
     assert.isEqual("String", schema.fields[0][1], "correct type for first field");
     assert.isEqual("population", schema.fields[1][0], "correct name for second field");
