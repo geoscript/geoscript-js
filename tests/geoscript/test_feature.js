@@ -25,14 +25,14 @@ exports["test: Schema"] = function() {
     
     assert.isEqual("footprint", schema.geom[0]);
     
-    atts.sort(function(a, b) {
+    var sorted = atts.slice().sort(function(a, b) {
         return a[0] == b[0] ? 0 : (a[0] < b[0] ? -1 : 1);
     });
     assert.isSame([
         ["address", "String"],
         ["floors", "Integer"],
         ["footprint", "Polygon"]
-    ], atts);
+    ], sorted);
 
 };
 
@@ -76,6 +76,35 @@ exports["test: Schema._schema"] = function() {
     assert.isTrue(geomDesc.type.getBinding() === jts.geom.Point, "correct geometry type");
     var crs = geomDesc.getCoordinateReferenceSystem();
     assert.isEqual("EPSG:4326", CRS.lookupIdentifier(crs, true), "correct geometry crs");
+    
+};
+
+exports["test: Schema.fromAtts"] = function() {
+    
+    var atts = {
+        name: "Some Location",
+        location: new geom.Point([1, 2]),
+        population: 100
+    };
+    var schema = feature.Schema.fromAtts(atts);
+    
+    assert.isTrue(schema instanceof feature.Schema, "correct type");    
+
+    // test attributes
+    assert.isSame(["location", "name", "population"], schema.attNames.sort(), "correct attNames");
+    var defs = schema.atts.slice().sort(function(a, b) {
+        return a[0] == b[0] ? 0 : (a[0] < b[0] ? -1 : 1);
+    });
+    assert.isSame([
+        ["location", "Point"],
+        ["name", "String"],
+        ["population", "Double"]
+    ], defs, "correct atts");    
+    
+    // test geom
+    assert.isEqual(2, schema.geom.length, "correct geom length");
+    assert.isEqual("location", schema.geom[0], "correct geom name");
+    assert.isEqual("Point", schema.geom[1], "correct geom type");
     
 };
 
