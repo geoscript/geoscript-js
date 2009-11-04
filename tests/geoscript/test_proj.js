@@ -13,8 +13,7 @@ exports["test: transform"] = function() {
 
 exports["test: Projection"] = function() {
     var p = new proj.Projection("EPSG:4326");
-    assert.isEqual("EPSG:WGS 84", p.name, "[srid] correct name");
-    assert.isEqual("EPSG:4326", p.code, "[srid] correct code");
+    assert.isEqual("EPSG:4326", p.id, "[srid] correct id");
     
     var wkt = 
         'GEOGCS[' +
@@ -27,8 +26,7 @@ exports["test: Projection"] = function() {
             'UNIT["Degree",0.017453292519943295]' +
         ']';
     var p2 = new proj.Projection(wkt);
-    assert.isEqual("GCS_WGS_1984", p2.name, "[wkt] correct name");
-    assert.isEqual("EPSG:4326", p2.code, "[wkt] correct code");
+    assert.isEqual("EPSG:4326", p2.id, "[wkt] correct id");
 };
 
 if (require.main === module.id) {
