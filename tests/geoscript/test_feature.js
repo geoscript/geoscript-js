@@ -3,6 +3,12 @@ var assert = require("test/assert"),
     proj = require("geoscript/proj"),
     feature = require("geoscript/feature");
 
+var geotools = Packages.org.geotools;
+var CRS = geotools.referencing.CRS;
+var SimpleFeatureTypeBuilder = geotools.feature.simple.SimpleFeatureTypeBuilder;
+var NameImpl = geotools.feature.NameImpl;
+var jts = Packages.com.vividsolutions.jts;
+
 exports["test: Schema"] = function() {
 
     var schema = new feature.Schema({
@@ -47,6 +53,62 @@ exports["test: Schema.geom"] = function() {
     assert.isTrue(schema.geom[2] instanceof proj.Projection);
     assert.isEqual("EPSG:4326", schema.geom[2].code);
 
+};
+
+exports["test: Schema._schema"] = function() {
+    
+    var schema = new feature.Schema({
+        name: "Cities", 
+        atts: [
+            ["name", "String"],
+            ["location", "Point", "epsg:4326"], 
+            ["population", "Integer"]
+        ]
+    });    
+    var _schema = schema._schema;
+    
+    assert.isTrue(_schema instanceof geotools.feature.simple.SimpleFeatureTypeImpl, "_schema of correct type");
+    assert.isEqual(3, _schema.getAttributeCount(), "correct number of attributes");
+    
+    // test geom
+    var geomDesc = _schema.getGeometryDescriptor();
+    assert.isEqual("location", geomDesc.getLocalName(), "correct geometry name");
+    assert.isTrue(geomDesc.type.getBinding() === jts.geom.Point, "correct geometry type");
+    var crs = geomDesc.getCoordinateReferenceSystem();
+    assert.isEqual("EPSG:4326", CRS.lookupIdentifier(crs, true), "correct geometry crs");
+    
+};
+
+exports["test: Schema.from_"] = function() {
+
+    var builder = new SimpleFeatureTypeBuilder();
+    builder.setName(new NameImpl("test"));
+    builder.add("name", java.lang.String);
+    builder.add("population", java.lang.Integer);
+    builder.crs(CRS.decode("epsg:4326"));
+    builder.add("location", jts.geom.Point);
+    var _schema = builder.buildFeatureType();
+    var schema = feature.Schema.from_(_schema);
+
+    assert.isTrue(schema instanceof feature.Schema, "schema of correct type");
+    assert.isEqual("test", schema.name, "correct schema name");
+    assert.isEqual(3, schema.atts.length, "correct number of attributes");
+    
+    // test atts array
+    assert.isEqual("name", schema.atts[0][0], "correct name for first att");
+    assert.isEqual("String", schema.atts[0][1], "correct type for first att");
+    assert.isEqual("population", schema.atts[1][0], "correct name for second att");
+    assert.isEqual("Integer", schema.atts[1][1], "correct type for second att");    
+    assert.isEqual("location", schema.atts[2][0], "correct name for third att");
+    assert.isEqual("Point", schema.atts[2][1], "correct type for third att");
+    
+    // test geom
+    assert.isEqual(3, schema.geom.length, "correct length for geom array");
+    assert.isEqual("location", schema.geom[0], "correct name for geom");
+    assert.isEqual("Point", schema.geom[1], "correct type for geom");
+    assert.isTrue(schema.geom[2] instanceof proj.Projection, "correct type for geom crs");
+    assert.isEqual("EPSG:4326", schema.geom[2].code, "correct code for geom crs");    
+    
 };
 
 if (require.main === module.id) {
