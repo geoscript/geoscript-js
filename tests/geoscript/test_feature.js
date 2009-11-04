@@ -55,6 +55,28 @@ exports["test: Schema.geom"] = function() {
 
 };
 
+exports["test: Schema.feature"] = function() {
+
+    var schema = new feature.Schema({
+        name: "test",
+        atts: [
+            ["geom", "Geometry"]
+        ]
+    });
+    
+    var atts = {
+        geom: new geom.Point([1, 2])        
+    };
+    
+    var f = schema.feature(atts);
+    
+    assert.isTrue(f instanceof feature.Feature, "creates feature");
+    assert.isTrue(f.schema === schema, "feature has correct schema");
+    
+    assert.isSame(atts.geom.coordinates, f.get("geom").coordinates, "feature has correct geom");
+
+};
+
 exports["test: Schema._schema"] = function() {
     
     var schema = new feature.Schema({
@@ -137,6 +159,24 @@ exports["test: Schema.from_"] = function() {
     assert.isEqual("Point", schema.geom[1], "correct type for geom");
     assert.isTrue(schema.geom[2] instanceof proj.Projection, "correct type for geom crs");
     assert.isEqual("EPSG:4326", schema.geom[2].id, "correct code for geom crs");    
+    
+};
+
+exports["test: Feature"] = function() {
+    
+    var atts = {
+        name: "Some Location",
+        location: new geom.Point([1, 2]),
+        population: 100
+    };
+    
+    var f = new feature.Feature({atts: atts});
+    
+    assert.isTrue(f instanceof feature.Feature, "feature created");
+    assert.isEqual(atts.name, f.get("name"), "correct name attribute");
+    // TODO: decide whether we need to maintain geometry identity when creating features
+    assert.isSame(atts.location.coordinates,f.get("location").coordinates, "correct location attribute");
+    assert.isEqual(atts.population, f.get("population"), "correct population attribute");    
     
 };
 
