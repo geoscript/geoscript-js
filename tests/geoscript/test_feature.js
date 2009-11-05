@@ -152,9 +152,9 @@ exports["test: Feature"] = function() {
     
     assert.isTrue(f instanceof feature.Feature, "feature created");
     assert.isEqual(values.name, f.get("name"), "correct name value");
-    // TODO: decide whether we need to maintain geometry identity when creating features
-    assert.isSame(values.location.coordinates,f.get("location").coordinates, "correct location value");
     assert.isEqual(values.population, f.get("population"), "correct population value");    
+    assert.isTrue(values.location === f.get("location"), "correct location value using get");
+    assert.isTrue(values.location === f.geometry, "correct location value using geometry");
     
 };
 
