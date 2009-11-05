@@ -25,13 +25,13 @@ exports["test: Schema"] = function() {
     assert.is(3, schema.fields.length, "correct number of fields");
     assert.isSame(fields, schema.fields, "correct fields");
     
-    assert.is("footprint", schema.geom.name, "correct geometry name");
-    assert.is("Polygon", schema.geom.type, "correct geometry type");
+    assert.is("footprint", schema.geometry.name, "correct geometry name");
+    assert.is("Polygon", schema.geometry.type, "correct geometry type");
     
 
 };
 
-exports["test: Schema.geom"] = function() {
+exports["test: Schema.geometry"] = function() {
 
     var schema = new feature.Schema({
         name: "Cities", 
@@ -42,10 +42,10 @@ exports["test: Schema.geom"] = function() {
         ]
     });
     
-    assert.is("location", schema.geom.name, "correct geom name");
-    assert.is("Point", schema.geom.type, "correct geom type");
-    assert.isTrue(schema.geom.projection instanceof proj.Projection, "correct geom.projection type");
-    assert.is("EPSG:4326", schema.geom.projection.id, "correct geom.projection id");
+    assert.is("location", schema.geometry.name, "correct geometry name");
+    assert.is("Point", schema.geometry.type, "correct geometry type");
+    assert.isTrue(schema.geometry.projection instanceof proj.Projection, "correct geometry.projection type");
+    assert.is("EPSG:4326", schema.geometry.projection.id, "correct geometry.projection id");
 
 };
 
@@ -64,7 +64,7 @@ exports["test: Schema._schema"] = function() {
     assert.isTrue(_schema instanceof geotools.feature.simple.SimpleFeatureTypeImpl, "_schema of correct type");
     assert.is(3, _schema.getAttributeCount(), "correct number of attributes");
     
-    // test geom
+    // test geometry
     var geomDesc = _schema.getGeometryDescriptor();
     assert.is("location", geomDesc.getLocalName(), "correct geometry name");
     assert.isTrue(geomDesc.type.getBinding() === jts.geom.Point, "correct geometry type");
@@ -95,9 +95,9 @@ exports["test: Schema.fromValues"] = function() {
         {name: "population", type: "Double"}
     ], sorted, "correct fields");
     
-    // test geom
-    assert.is("location", schema.geom.name, "correct geom name");
-    assert.is("Point", schema.geom.type, "correct geom type");
+    // test geometry
+    assert.is("location", schema.geometry.name, "correct geometry name");
+    assert.is("Point", schema.geometry.type, "correct geometry type");
     
 };
 
@@ -124,11 +124,11 @@ exports["test: Schema.from_"] = function() {
     assert.is("location", schema.fields[2].name, "correct name for third field");
     assert.is("Point", schema.fields[2].type, "correct type for third field");
     
-    // test geom
-    assert.is("location", schema.geom.name, "correct name for geom");
-    assert.is("Point", schema.geom.type, "correct type for geom");
-    assert.isTrue(schema.geom.projection instanceof proj.Projection, "correct type for geom crs");
-    assert.is("EPSG:4326", schema.geom.projection.id, "correct code for geom crs");    
+    // test geometry
+    assert.is("location", schema.geometry.name, "correct name for geometry");
+    assert.is("Point", schema.geometry.type, "correct type for geometry");
+    assert.isTrue(schema.geometry.projection instanceof proj.Projection, "correct type for geometry crs");
+    assert.is("EPSG:4326", schema.geometry.projection.id, "correct code for geometry crs");    
     
 };
 
