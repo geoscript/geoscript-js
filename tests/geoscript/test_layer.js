@@ -17,7 +17,7 @@ exports["test: MemoryLayer.add"] = function() {
     var mem = new layer.MemoryLayer();
     mem.add({geom: p});
     
-    assert.isEqual(1, mem.count(), "one item added");
+    assert.is(1, mem.count, "one item added");
     
     var f = mem.features()[0];
     
