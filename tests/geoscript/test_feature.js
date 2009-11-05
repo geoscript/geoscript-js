@@ -153,8 +153,8 @@ exports["test: Feature"] = function() {
     assert.isTrue(f instanceof feature.Feature, "feature created");
     assert.isEqual(values.name, f.get("name"), "correct name value");
     assert.isEqual(values.population, f.get("population"), "correct population value");    
-    assert.isTrue(values.location === f.get("location"), "correct location value using get");
-    assert.isTrue(values.location === f.geometry, "correct location value using geometry");
+    assert.is(values.location, f.get("location"), "correct location value using get");
+    assert.is(values.location, f.geometry, "correct location value using geometry");
     
 };
 
