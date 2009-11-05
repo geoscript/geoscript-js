@@ -10,8 +10,8 @@ exports["test: Polygon"] = function() {
     
     assert.isTrue(p instanceof geom.Geometry, "polygon is a geometry");
     assert.isTrue(p instanceof geom.Polygon, "polygon is a polygon");
-    assert.isEqual(2, p.coordinates.length, "polygon has two items in coordinates");
-    assert.isEqual(48600, p.getArea(), "polygon has correct area");
+    assert.is(2, p.coordinates.length, "polygon has two items in coordinates");
+    assert.is(48600, p.area, "polygon has correct area");
     
 };
 
