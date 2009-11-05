@@ -12,4 +12,5 @@ Modules
     geom
     feature
     proj
+    layer
 
