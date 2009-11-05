@@ -15,13 +15,13 @@ exports["test: Polygon"] = function() {
     
 };
 
-exports["test: Polygon.toWKT"] = function() {
+exports["test: Polygon.wkt"] = function() {
 
     var p = new geom.Polygon([
         [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],
         [ [-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45] ]
     ]);
-    assert.isEqual("POLYGON ((-180 -90, -180 90, 180 90, 180 -90, -180 -90), (-90 -45, -90 45, 90 45, 90 -45, -90 -45))", p.toWKT(), "correct wkt");
+    assert.is("POLYGON ((-180 -90, -180 90, 180 90, 180 -90, -180 -90), (-90 -45, -90 45, 90 45, 90 -45, -90 -45))", p.wkt, "correct wkt");
 
 };
 

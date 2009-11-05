@@ -13,10 +13,10 @@ exports["test: LineString"] = function() {
     
 };
 
-exports["test: LineString.toWKT"] = function() {
+exports["test: LineString.wkt"] = function() {
 
     var l = new geom.LineString([[-180, -90], [0, 0], [180, 90]]);
-    assert.isEqual("LINESTRING (-180 -90, 0 0, 180 90)", l.toWKT(), "correct wkt");
+    assert.is("LINESTRING (-180 -90, 0 0, 180 90)", l.wkt, "correct wkt");
 
 };
 

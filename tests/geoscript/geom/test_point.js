@@ -48,10 +48,10 @@ exports["test: Point.equals"] = function() {
 
 };
 
-exports["test: Point.toWKT"] = function() {
+exports["test: Point.wkt"] = function() {
 
     var p = new geom.Point([1, 2]);
-    assert.isEqual("POINT (1 2)", p.toWKT(), "correct wkt");
+    assert.is("POINT (1 2)", p.wkt, "correct wkt");
 
 };
 
