@@ -21,7 +21,7 @@ exports["test: MemoryLayer.add"] = function() {
     
     var f = mem.features()[0];
     
-    assert.isSame(p.coordinates, f.geom().coordinates, "first feature has correct geom");
+    assert.isSame(p.coordinates, f.getGeometry().coordinates, "first feature has correct geometry");
     
 };
 
