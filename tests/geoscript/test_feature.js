@@ -10,29 +10,24 @@ var NameImpl = geotools.feature.NameImpl;
 var jts = Packages.com.vividsolutions.jts;
 
 exports["test: Schema"] = function() {
+    
+    var fields = [
+        {name: "floors", type: "Integer"},
+        {name: "address", type: "String"},
+        {name: "footprint", type: "Polygon"}
+    ];
 
     var schema = new feature.Schema({
         name: "building",
-        fields: [
-            ["address", "String"],
-            ["floors", "Integer"],
-            ["footprint", "Polygon"]
-        ]
+        fields: fields
     });
     
-    var fields = schema.fields;
-    assert.isEqual(3, fields.length, "correct number of fields");
+    assert.is(3, schema.fields.length, "correct number of fields");
+    assert.isSame(fields, schema.fields, "correct fields");
     
-    assert.isEqual("footprint", schema.geom[0], "correct geometry name");
+    assert.is("footprint", schema.geom.name, "correct geometry name");
+    assert.is("Polygon", schema.geom.type, "correct geometry type");
     
-    var sorted = fields.slice().sort(function(a, b) {
-        return a[0] == b[0] ? 0 : (a[0] < b[0] ? -1 : 1);
-    });
-    assert.isSame([
-        ["address", "String"],
-        ["floors", "Integer"],
-        ["footprint", "Polygon"]
-    ], sorted);
 
 };
 
@@ -41,17 +36,16 @@ exports["test: Schema.geom"] = function() {
     var schema = new feature.Schema({
         name: "Cities", 
         fields: [
-            ["name", "String"],
-            ["location", "Point", "epsg:4326"], 
-            ["population", "Integer"]
+            {name: "name", type: "String"},
+            {name: "location", type: "Point", projection: "epsg:4326"}, 
+            {name: "population", type: "Integer"}
         ]
     });
     
-    assert.isEqual(3, schema.geom.length);
-    assert.isEqual("location", schema.geom[0]);
-    assert.isEqual("Point", schema.geom[1]);
-    assert.isTrue(schema.geom[2] instanceof proj.Projection);
-    assert.isEqual("EPSG:4326", schema.geom[2].id);
+    assert.is("location", schema.geom.name, "correct geom name");
+    assert.is("Point", schema.geom.type, "correct geom type");
+    assert.isTrue(schema.geom.projection instanceof proj.Projection, "correct geom.projection type");
+    assert.is("EPSG:4326", schema.geom.projection.id, "correct geom.projection id");
 
 };
 
@@ -60,22 +54,22 @@ exports["test: Schema._schema"] = function() {
     var schema = new feature.Schema({
         name: "Cities", 
         fields: [
-            ["name", "String"],
-            ["location", "Point", "epsg:4326"], 
-            ["population", "Integer"]
+            {name: "name", type: "String"},
+            {name: "location", type: "Point", projection: "epsg:4326"}, 
+            {name: "population", type: "Integer"}
         ]
     });    
     var _schema = schema._schema;
     
     assert.isTrue(_schema instanceof geotools.feature.simple.SimpleFeatureTypeImpl, "_schema of correct type");
-    assert.isEqual(3, _schema.getAttributeCount(), "correct number of attributes");
+    assert.is(3, _schema.getAttributeCount(), "correct number of attributes");
     
     // test geom
     var geomDesc = _schema.getGeometryDescriptor();
-    assert.isEqual("location", geomDesc.getLocalName(), "correct geometry name");
+    assert.is("location", geomDesc.getLocalName(), "correct geometry name");
     assert.isTrue(geomDesc.type.getBinding() === jts.geom.Point, "correct geometry type");
     var crs = geomDesc.getCoordinateReferenceSystem();
-    assert.isEqual("EPSG:4326", CRS.lookupIdentifier(crs, true), "correct geometry crs");
+    assert.is("EPSG:4326", CRS.lookupIdentifier(crs, true), "correct geometry crs");
     
 };
 
@@ -92,19 +86,18 @@ exports["test: Schema.fromValues"] = function() {
 
     // test attributes
     assert.isSame(["location", "name", "population"], schema.fieldNames.sort(), "correct fieldNames");
-    var defs = schema.fields.slice().sort(function(a, b) {
-        return a[0] == b[0] ? 0 : (a[0] < b[0] ? -1 : 1);
+    var sorted = schema.fields.slice().sort(function(a, b) {
+        return a.name == b.name ? 0 : (a.name < b.name ? -1 : 1);
     });
     assert.isSame([
-        ["location", "Point"],
-        ["name", "String"],
-        ["population", "Double"]
-    ], defs, "correct fields");
+        {name: "location", type: "Point"},
+        {name: "name", type: "String"},
+        {name: "population", type: "Double"}
+    ], sorted, "correct fields");
     
     // test geom
-    assert.isEqual(2, schema.geom.length, "correct geom length");
-    assert.isEqual("location", schema.geom[0], "correct geom name");
-    assert.isEqual("Point", schema.geom[1], "correct geom type");
+    assert.is("location", schema.geom.name, "correct geom name");
+    assert.is("Point", schema.geom.type, "correct geom type");
     
 };
 
@@ -120,23 +113,22 @@ exports["test: Schema.from_"] = function() {
     var schema = feature.Schema.from_(_schema);
 
     assert.isTrue(schema instanceof feature.Schema, "schema of correct type");
-    assert.isEqual("test", schema.name, "correct schema name");
-    assert.isEqual(3, schema.fields.length, "correct number of fields");
+    assert.is("test", schema.name, "correct schema name");
+    assert.is(3, schema.fields.length, "correct number of fields");
     
     // test fields array
-    assert.isEqual("name", schema.fields[0][0], "correct name for first field");
-    assert.isEqual("String", schema.fields[0][1], "correct type for first field");
-    assert.isEqual("population", schema.fields[1][0], "correct name for second field");
-    assert.isEqual("Integer", schema.fields[1][1], "correct type for second field"); 
-    assert.isEqual("location", schema.fields[2][0], "correct name for third field");
-    assert.isEqual("Point", schema.fields[2][1], "correct type for third field");
+    assert.is("name", schema.fields[0].name, "correct name for first field");
+    assert.is("String", schema.fields[0].type, "correct type for first field");
+    assert.is("population", schema.fields[1].name, "correct name for second field");
+    assert.is("Integer", schema.fields[1].type, "correct type for second field"); 
+    assert.is("location", schema.fields[2].name, "correct name for third field");
+    assert.is("Point", schema.fields[2].type, "correct type for third field");
     
     // test geom
-    assert.isEqual(3, schema.geom.length, "correct length for geom array");
-    assert.isEqual("location", schema.geom[0], "correct name for geom");
-    assert.isEqual("Point", schema.geom[1], "correct type for geom");
-    assert.isTrue(schema.geom[2] instanceof proj.Projection, "correct type for geom crs");
-    assert.isEqual("EPSG:4326", schema.geom[2].id, "correct code for geom crs");    
+    assert.is("location", schema.geom.name, "correct name for geom");
+    assert.is("Point", schema.geom.type, "correct type for geom");
+    assert.isTrue(schema.geom.projection instanceof proj.Projection, "correct type for geom crs");
+    assert.is("EPSG:4326", schema.geom.projection.id, "correct code for geom crs");    
     
 };
 
@@ -151,8 +143,8 @@ exports["test: Feature"] = function() {
     var f = new feature.Feature({values: values});
     
     assert.isTrue(f instanceof feature.Feature, "feature created");
-    assert.isEqual(values.name, f.get("name"), "correct name value");
-    assert.isEqual(values.population, f.get("population"), "correct population value");    
+    assert.is(values.name, f.get("name"), "correct name value");
+    assert.is(values.population, f.get("population"), "correct population value");    
     assert.is(values.location, f.get("location"), "correct location value using get");
     assert.is(values.location, f.geometry, "correct location value using geometry");
     
