@@ -17,4 +17,5 @@ Layer Types
     :maxdepth: 1
 
     layer/memory
+    layer/shapefile
 
