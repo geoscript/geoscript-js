@@ -4,7 +4,8 @@
 The :mod:`geom` module
 ======================
 
-The :mod:`geom` module provides constructors for point, line, and polygon geometries.
+The :mod:`geom` module provides constructors for point, line, polygon and
+multi-part geometries.
 
 .. code-block:: javascript
 
@@ -19,4 +20,7 @@ Geometry Types
     geom/point
     geom/linestring
     geom/polygon
+    geom/multipoint
+    geom/multilinestring
+    geom/multipolygon
 
