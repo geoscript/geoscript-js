@@ -13,4 +13,5 @@ Modules
     feature
     proj
     layer
+    workspace
 
