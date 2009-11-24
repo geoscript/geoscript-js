@@ -36,6 +36,34 @@ exports["test: extend"] = function() {
 
 };
 
+exports["test: apply"] = function() {
+    
+    var target = {foo: "bar"};
+    var source = {foo: "baz", bar: "foo"};
+    var o = util.apply(target, source);
+    
+    assert.is(target, o, "returns the target");
+    assert.is("baz", o.foo, "existing property from source applied");
+    assert.is("foo", o.bar, "new property from source applied");
+    
+    var o2 = util.apply(o);
+    assert.isSame(o, o2, "clones object when called with one arg");
+    assert.isFalse(o2 === o, "returns new object when called with one arg");
+    
+};
+
+exports["test: applyIf"] = function() {
+
+    var target = {foo: "bar"};
+    var source = {foo: "baz", bar: "foo"};
+    var o = util.applyIf(target, source);
+    
+    assert.is(target, o, "returns the target");
+    assert.is("bar", o.foo, "existing property from source not applied");
+    assert.is("foo", o.bar, "new property from source applied");
+    
+};
+
 if (require.main === module.id) {
     require("test/runner").run(exports);
 }
