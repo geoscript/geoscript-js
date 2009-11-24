@@ -9,7 +9,7 @@ Getting Narwhal
 You can get Narwhal by downloading and extracting a zip archive, or cloning the
 repository from http://github.com.
 
-Download the `zip archive <http://github.com/280north/narwhal/zipball/master>`_ 
+Download the `zip archive <http://github.com/280north/narwhal/zipball/master>`__ 
 and extract it somewhere on your system (I'll assume your home directory here).
 
 *or*
@@ -38,7 +38,7 @@ Getting GeoScript JS
 The GeoScript JS source is also hosted on http://github.com. As above, you can
 get the source by downloading the zip archive or cloning the repository.
 
-Download the `zip archive <http://github.com/tschaub/geoscript/zipball/master>`_ 
+Download the `zip archive <http://github.com/tschaub/geoscript/zipball/master>`__ 
 and extract it somewhere on your system (I'll assume you extract it to your home 
 directory).
 

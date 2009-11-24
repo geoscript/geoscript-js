@@ -18,4 +18,6 @@ Layer Types
 
     layer/memory
     layer/shapefile
+    layer/postgis
+    layer/h2
 
