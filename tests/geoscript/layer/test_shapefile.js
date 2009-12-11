@@ -41,14 +41,7 @@ exports["test: ShapefileLayer.features"] = function() {
     assert.is(testScope, log[0].scope, "forEach calls block with correct scope");
     
     assert.isTrue(!features.hasNext(), "after forEach, hasNext returns false");
-    
-    var err;
-    try {
-        features.next();
-    } catch (e) {
-        err = e;
-    }
-    assert.isTrue(err instanceof StopIteration, "next throws StopIteration when no more features");
+    assert.is(undefined, features.next(), "if not hasNext, next returns undefined")
     
     // query with a filter
     features = shp.features({filter: "STATE_ABBR EQ 'TX'"});
