@@ -50,6 +50,15 @@ exports["test: ShapefileLayer.features"] = function() {
     }
     assert.isTrue(err instanceof StopIteration, "next throws StopIteration when no more features");
     
+    // query with a filter
+    features = shp.features({filter: "STATE_ABBR EQ 'TX'"});
+    assert.isTrue(features.hasNext(), "[filter] hasNext returns true");
+    
+    feature = features.next();
+    assert.is("TX", feature.get("STATE_ABBR", "[filter] got feature with expected STATE_ABBR"));
+    
+    assert.isFalse(features.hasNext(), "[filter] only one feature in query results");    
+    
 };
 
 if (require.main === module.id) {
