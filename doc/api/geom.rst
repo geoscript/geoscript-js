@@ -24,3 +24,18 @@ Geometry Types
     geom/multilinestring
     geom/multipolygon
 
+
+Module Data
+-----------
+
+.. data:: BUFFER_CAP_ROUND
+
+    Used to calculate round caps for geometry buffer operations.
+    
+.. data:: BUFFER_CAP_SQUARE
+
+    Used to calculate square caps for geometry buffer operations.
+    
+.. data:: BUFFER_CAP_BUTT
+
+    Used to calculate butt caps for geometry buffer operations.
