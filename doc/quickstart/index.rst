@@ -38,7 +38,7 @@ Getting GeoScript JS
 The GeoScript JS source is also hosted on http://github.com. As above, you can
 get the source by downloading the zip archive or cloning the repository.
 
-Download the `zip archive <http://github.com/tschaub/geoscript/zipball/master>`__ 
+Download the `zip archive <http://github.com/tschaub/geoscript-js/zipball/master>`__ 
 and extract it somewhere on your system (I'll assume you extract it to your home 
 directory).
 
@@ -46,7 +46,7 @@ directory).
 
 Clone the repository::
 
-    ~$ git clone git://github.com/tschaub/geoscript.git
+    ~$ git clone git://github.com/tschaub/geoscript-js.git
 
 
 .. _Narwhal: http://narwhaljs.org
