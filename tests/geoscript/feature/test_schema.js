@@ -115,10 +115,10 @@ exports["test: Schema._schema"] = function() {
     
     // test geometry
     var geomDesc = _schema.getGeometryDescriptor();
-    assert.is("location", geomDesc.getLocalName(), "correct geometry name");
+    assert.is("location", String(geomDesc.getLocalName()), "correct geometry name");
     assert.isTrue(geomDesc.type.getBinding() === jts.geom.Point, "correct geometry type");
     var crs = geomDesc.getCoordinateReferenceSystem();
-    assert.is("EPSG:4326", CRS.lookupIdentifier(crs, true), "correct geometry crs");
+    assert.is("EPSG:4326", String(CRS.lookupIdentifier(crs, true)), "correct geometry crs");
     
 };
 
