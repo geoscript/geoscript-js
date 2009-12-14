@@ -20,6 +20,7 @@ Geometry Types
     geom/point
     geom/linestring
     geom/polygon
+    geom/collection
     geom/multipoint
     geom/multilinestring
     geom/multipolygon
