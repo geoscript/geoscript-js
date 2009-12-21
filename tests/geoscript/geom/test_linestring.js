@@ -1,7 +1,7 @@
 var assert = require("test/assert"),
     geom = require("geoscript/geom");
 
-exports["test: LineString"] = function() {
+exports["test: constructor"] = function() {
     
     var l = new geom.LineString([[-180, -90], [0, 0], [180, 90]]);
     
@@ -12,14 +12,14 @@ exports["test: LineString"] = function() {
     
 };
 
-exports["test: LineString.wkt"] = function() {
+exports["test: wkt"] = function() {
 
     var l = new geom.LineString([[-180, -90], [0, 0], [180, 90]]);
     assert.is("LINESTRING (-180 -90, 0 0, 180 90)", l.wkt, "correct wkt");
 
 };
 
-exports["test: LineString.json"] = function() {
+exports["test: json"] = function() {
 
     var g = new geom.LineString([[-180, -90], [0, 0], [180, 90]]);
     var json = g.json;
@@ -39,7 +39,7 @@ exports["test: LineString.json"] = function() {
     
 };
 
-exports["test: LineString.fromJSON"] = function() {
+exports["test: fromJSON"] = function() {
 
     var g = new geom.LineString([[-180, -90], [0, 0], [180, 90]]);
     var obj, msg;

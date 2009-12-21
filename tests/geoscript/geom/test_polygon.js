@@ -1,7 +1,7 @@
 var assert = require("test/assert"),
     geom = require("geoscript/geom");
     
-exports["test: Polygon"] = function() {
+exports["test: constructor"] = function() {
 
     var p = new geom.Polygon([
         [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],
@@ -15,7 +15,7 @@ exports["test: Polygon"] = function() {
     
 };
 
-exports["test: Polygon.wkt"] = function() {
+exports["test: wkt"] = function() {
 
     var p = new geom.Polygon([
         [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],
@@ -25,7 +25,7 @@ exports["test: Polygon.wkt"] = function() {
 
 };
 
-exports["test: Polygon.json"] = function() {
+exports["test: json"] = function() {
 
     var g = new geom.Polygon([
         [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],
@@ -48,7 +48,7 @@ exports["test: Polygon.json"] = function() {
     
 };
 
-exports["test: Polygon.fromJSON"] = function() {
+exports["test: fromJSON"] = function() {
 
     var g = new geom.Polygon([
         [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],

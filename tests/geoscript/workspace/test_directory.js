@@ -5,7 +5,7 @@ var layer = require("geoscript/layer");
 var file = require("file");
 var path = file.resolve(module.path, "../../data/");
 
-exports["test: DirectoryWorkspace.constructor"] = function() {
+exports["test: constructor"] = function() {
 
     var dir = new workspace.DirectoryWorkspace();
     
@@ -14,7 +14,7 @@ exports["test: DirectoryWorkspace.constructor"] = function() {
 
 };
 
-exports["test: DirectoryWorkspace.names"] = function() {
+exports["test: names"] = function() {
 
     var dir = new workspace.DirectoryWorkspace(path);
     
@@ -22,7 +22,7 @@ exports["test: DirectoryWorkspace.names"] = function() {
     
 };
 
-exports["test: DirectoryWorkspace.get"] = function() {
+exports["test: get"] = function() {
 
     var dir = new workspace.DirectoryWorkspace(path);
     

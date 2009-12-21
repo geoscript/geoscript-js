@@ -9,7 +9,7 @@ var SimpleFeatureTypeBuilder = geotools.feature.simple.SimpleFeatureTypeBuilder;
 var NameImpl = geotools.feature.NameImpl;
 var jts = Packages.com.vividsolutions.jts;
 
-exports["test: Schema.constructor"] = function() {
+exports["test: constructor"] = function() {
     
     var fields = [
         {name: "floors", type: "Integer"},
@@ -31,7 +31,7 @@ exports["test: Schema.constructor"] = function() {
 
 };
 
-exports["test: Schema.fields"] = function() {
+exports["test: fields"] = function() {
 
     var schema = new feature.Schema({
         name: "Cities", 
@@ -56,7 +56,7 @@ exports["test: Schema.fields"] = function() {
     
 };
 
-exports["test: Schema.get"] = function() {
+exports["test: get"] = function() {
 
     var schema = new feature.Schema({
         name: "Cities", 
@@ -80,7 +80,7 @@ exports["test: Schema.get"] = function() {
     
 };
 
-exports["test: Schema.geometry"] = function() {
+exports["test: geometry"] = function() {
 
     var schema = new feature.Schema({
         name: "Cities", 
@@ -98,7 +98,7 @@ exports["test: Schema.geometry"] = function() {
 
 };
 
-exports["test: Schema._schema"] = function() {
+exports["test: _schema"] = function() {
     
     var schema = new feature.Schema({
         name: "Cities", 
@@ -122,7 +122,7 @@ exports["test: Schema._schema"] = function() {
     
 };
 
-exports["test: Schema.fromValues"] = function() {
+exports["test: fromValues"] = function() {
     
     var values = {
         name: "Some Location",
@@ -150,7 +150,7 @@ exports["test: Schema.fromValues"] = function() {
     
 };
 
-exports["test: Schema.from_"] = function() {
+exports["test: from_"] = function() {
 
     var builder = new SimpleFeatureTypeBuilder();
     builder.setName(new NameImpl("test"));

@@ -1,7 +1,7 @@
 var assert = require("test/assert"),
     geom = require("geoscript/geom");
 
-exports["test: Point"] = function() {
+exports["test: constructor"] = function() {
     
     var p = new geom.Point([1, 2]);
     
@@ -17,7 +17,7 @@ exports["test: Point"] = function() {
     
 };
 
-exports["test: Point.equals"] = function() {
+exports["test: equals"] = function() {
 
     var p1, p2;
     
@@ -48,14 +48,14 @@ exports["test: Point.equals"] = function() {
 
 };
 
-exports["test: Point.wkt"] = function() {
+exports["test: wkt"] = function() {
 
     var p = new geom.Point([1, 2]);
     assert.is("POINT (1 2)", p.wkt, "correct wkt");
 
 };
 
-exports["test: Point.fromWKT"] = function() {
+exports["test: fromWKT"] = function() {
 
     var p = new geom.Point([1, 2]);
     var p2 = geom.Geometry.fromWKT("POINT (1 2)");
@@ -65,7 +65,7 @@ exports["test: Point.fromWKT"] = function() {
 
 };
 
-exports["test: Point.json"] = function() {
+exports["test: json"] = function() {
 
     var g = new geom.Point([1, 2]);
     var json = g.json;
@@ -85,7 +85,7 @@ exports["test: Point.json"] = function() {
     
 };
 
-exports["test: Point.fromJSON"] = function() {
+exports["test: fromJSON"] = function() {
 
     var g = new geom.Point([1, 2]);
     var obj, msg;
@@ -104,7 +104,7 @@ exports["test: Point.fromJSON"] = function() {
 
 };
 
-exports["test: Point.buffer"] = function() {
+exports["test: buffer"] = function() {
 
     var p = new geom.Point([0, 0]);
     var b = p.buffer(1);

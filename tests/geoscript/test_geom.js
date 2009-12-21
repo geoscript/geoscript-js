@@ -53,13 +53,11 @@ exports["test: create(polygon)"] = function() {
     g = new geom.Polygon(coordinates);
     assert.isTrue(g.equals(o), "equivalent to trad polygon");
     
-    print("passed");
-    
     // create a polygon with coords only
-    //o = geom.create(coordinates);
-    //assert.isTrue(o instanceof geom.Polygon, "[coords only] polygon created");
-    //g = new geom.Polygon(coordinates);
-    //assert.isTrue(g.equals(o), "[coords only] equivalent to trad polygon");
+    o = geom.create(coordinates);
+    assert.isTrue(o instanceof geom.Polygon, "[coords only] polygon created");
+    g = new geom.Polygon(coordinates);
+    assert.isTrue(g.equals(o), "[coords only] equivalent to trad polygon");
 
 };
 
