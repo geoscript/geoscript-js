@@ -11,7 +11,7 @@ exports["test: constructor"] = function() {
 
 exports["test: temporary"] = function() {
     
-    var temp = new Layer({name: "foo"});
+    var temp = new Layer({});
     assert.isTrue(temp.temporary);
     
     var file = require("file");
