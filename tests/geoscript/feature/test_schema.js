@@ -44,6 +44,7 @@ exports["test: fields"] = function() {
     
     var fields = schema.fields;
     
+    assert.isTrue(fields instanceof Array, "fields is array");
     assert.is(3, fields.length, "correct fields length");
     assert.is("name", fields[0].name, "correct name for first field");
     assert.is("String", fields[0].type, "correct type for first field");
@@ -54,6 +55,23 @@ exports["test: fields"] = function() {
     assert.is("population", fields[2].name, "correct name for third field");
     assert.is("Integer", fields[2].type, "correct type for third field");
     
+};
+
+exports["test: fieldNames"] = function() {
+
+    var schema = new feature.Schema({
+        name: "Cities", 
+        fields: [
+            {name: "name", type: "String"},
+            {name: "location", type: "Point", projection: "epsg:4326"}, 
+            {name: "population", type: "Integer"}
+        ]
+    });
+    
+    var names = schema.fieldNames;    
+    assert.isTrue(names instanceof Array, "fieldNames is array");
+    assert.isSame(["location", "name", "population"], names.sort(), "correct names");
+
 };
 
 exports["test: get"] = function() {
@@ -95,6 +113,28 @@ exports["test: geometry"] = function() {
     assert.is("Point", schema.geometry.type, "correct geometry type");
     assert.isTrue(schema.geometry.projection instanceof proj.Projection, "correct geometry.projection type");
     assert.is("EPSG:4326", schema.geometry.projection.id, "correct geometry.projection id");
+
+};
+
+exports["test: clone"] = function() {
+
+    var schema = new feature.Schema({
+        name: "Cities", 
+        fields: [
+            {name: "name", type: "String"},
+            {name: "location", type: "Point", projection: "epsg:4326"}, 
+            {name: "population", type: "Integer"}
+        ]
+    });
+    
+    var clone = schema.clone();
+    
+    assert.isTrue(clone instanceof feature.Schema, "clone is a Schema");
+    assert.isSame(schema.fieldNames, clone.fieldNames, "clone has same field names");
+    assert.is(schema.name, clone.name, "clone gets same name by default");
+    
+    var clone2 = schema.clone("foo");
+    assert.is("foo", clone2.name, "clone can be assigned a new name");
 
 };
 
