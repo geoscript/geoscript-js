@@ -4,10 +4,13 @@ var assert = require("test/assert"),
 
 exports["test: transform"] = function() {
 
-    var p = new geom.Point([-125, 50]);
-    var rp = proj.transform(p, "epsg:4326", "epsg:3005");
-    assert.isEqual(1071693, Math.floor(rp.x));
-    assert.isEqual(554289, Math.floor(rp.y));
+    var point = new geom.Point([-125, 50]);
+    var out = new proj.Projection("epsg:3005");
+    var transformed = proj.transform(point, "epsg:4326", out);
+    assert.isEqual(1071693, Math.floor(transformed.x), "correct x");
+    assert.isEqual(554289, Math.floor(transformed.y), "correct y");
+    assert.isTrue(!!transformed.projection, "transformed geometry is given a projection");
+    assert.isTrue(transformed.projection.equals(out), "transformed geometry is given correct projection");
 
 };
 
@@ -27,6 +30,31 @@ exports["test: Projection"] = function() {
         ']';
     var p2 = new proj.Projection(wkt);
     assert.isEqual("EPSG:4326", p2.id, "[wkt] correct id");
+
+};
+
+exports["test: Projection.equals"] = function() {
+
+    var p1 = new proj.Projection("EPSG:4326");
+    
+    var wkt = 
+        'GEOGCS[' +
+            '"GCS_WGS_1984",' +
+            'DATUM[' +
+                '"D_WGS_1984",' +
+                'SPHEROID["WGS_1984",6378137,298.257223563]' +
+            '],' +
+            'PRIMEM["Greenwich",0],' +
+            'UNIT["Degree",0.017453292519943295]' +
+        ']';
+    var p2 = new proj.Projection(wkt);
+    
+    assert.isTrue(p1.equals(p2), "p1 equals p2");
+    assert.isTrue(p2.equals(p1), "p2 equals p1");
+    
+    var p3 = new proj.Projection("epsg:3005");
+    assert.isFalse(p1.equals(p3), "p1 doesn't equal p3");
+
 };
 
 if (require.main === module.id) {
