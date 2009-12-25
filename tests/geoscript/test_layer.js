@@ -5,14 +5,14 @@ var assert = require("test/assert");
 var layer = require("geoscript/layer");
 var geom = require("geoscript/geom");
 
-exports["test: constructor"] = function() {
+exports["test: Layer.constructor"] = function() {
 
     var l = new layer.Layer();
     assert.isTrue(l instanceof layer.Layer, "instanceof layer.Layer");
 
 };
 
-exports["test: temporary"] = function() {
+exports["test: Layer.temporary"] = function() {
     
     var temp = new layer.Layer({});
     assert.isTrue(temp.temporary);
@@ -29,7 +29,7 @@ exports["test: temporary"] = function() {
     
 };
 
-exports["test: clone"] = function() {
+exports["test: Layer.clone"] = function() {
 
     var clone;
     var temp = new layer.Layer({name: "foo"});
