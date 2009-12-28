@@ -1,9 +1,11 @@
-//exports["test: MemoryLayer"] = require("./layer/test_memory");
-//exports["test: Shapefile"] = require("./layer/test_shapefile");
-
 var assert = require("test/assert");
 var layer = require("geoscript/layer");
 var geom = require("geoscript/geom");
+var admin = require("../admin");
+
+var shpDir = admin.shp.dest;
+exports.setup = admin.shp.setup;
+exports.teardown = admin.shp.teardown;
 
 exports["test: Layer.constructor"] = function() {
 
@@ -17,11 +19,8 @@ exports["test: Layer.temporary"] = function() {
     var temp = new layer.Layer({});
     assert.isTrue(temp.temporary);
     
-    var file = require("file");
-    var path = file.resolve(module.path, "../data");
-    
     var shp = new layer.Layer({
-        workspace: path,
+        workspace: shpDir,
         name: "states"
     });
     assert.isFalse(shp.temporary);
@@ -44,12 +43,9 @@ exports["test: Layer.clone"] = function() {
     clone = temp.clone("bar");
     assert.is("bar", clone.name, "clone can be given a new name");
     
-    // clone an existing layer with features
-    var file = require("file");
-    var path = file.resolve(module.path, "../data");
-    
+    // clone an existing layer with features    
     var shp = new layer.Layer({
-        workspace: path,
+        workspace: shpDir,
         name: "states"
     });
     
@@ -61,11 +57,8 @@ exports["test: Layer.clone"] = function() {
 
 exports["test: create(shapefile)"] = function() {
     
-    var file = require("file");
-    var path = file.resolve(module.path, "../data");
-    
     var shp = layer.create({
-        workspace: path,
+        workspace: shpDir,
         name: "states"
     });
     
@@ -75,9 +68,6 @@ exports["test: create(shapefile)"] = function() {
 };
 
 exports["test: create(memory)"] = function() {
-    
-    var file = require("file");
-    var path = file.resolve(module.path, "../data");
     
     var mem = layer.create({});
     
