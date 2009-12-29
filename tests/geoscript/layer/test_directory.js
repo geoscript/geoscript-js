@@ -2,28 +2,38 @@ var assert = require("test/assert");
 var layer = require("geoscript/layer");
 var Feature = require("geoscript/feature").Feature;
 
-var file = require("file");
-var path = file.resolve(module.path, "../../data/states.shp");
+var admin = require("../../admin");
 
-exports["test: ShapefileLayer.constructor"] = function() {
+var shpDir = admin.shp.dest;
+exports.setup = admin.shp.setup;
+exports.teardown = admin.shp.teardown;
 
-    var shp = new layer.ShapefileLayer();
-    
-    assert.isTrue(shp instanceof layer.Layer, "instanceof Layer");
-    assert.isTrue(shp instanceof layer.ShapefileLayer, "instanceof ShapefileLayer");    
+exports["test: count"] = function() {
 
-};
-
-exports["test: ShapefileLayer.count"] = function() {
-
-    var shp = new layer.ShapefileLayer(path);
+    var shp = new layer.Layer({
+        workspace: shpDir,
+        name: "states"
+    });
     assert.is(49, shp.count, "correct count");
     
 };
 
-exports["test: ShapefileLayer.features"] = function() {
+exports["test: temporary"] = function() {
+    
+    var shp = new layer.Layer({
+        workspace: shpDir,
+        name: "states"
+    });
+    assert.isFalse(shp.temporary);
+    
+};
 
-    var shp = new layer.ShapefileLayer(path);
+exports["test: features"] = function() {
+
+    var shp = new layer.Layer({
+        workspace: shpDir,
+        name: "states"
+    });
     var count, features, feature;
     
     // call features with no filter

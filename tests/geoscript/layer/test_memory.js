@@ -2,19 +2,18 @@ var assert = require("test/assert");
 var layer = require("geoscript/layer");
 var geom = require("geoscript/geom");
 
-exports["test: MemoryLayer.constructor"] = function() {
 
-    var mem = new layer.MemoryLayer();
+exports["test: Layer.temporary"] = function() {
     
-    assert.isTrue(mem instanceof layer.Layer, "instanceof Layer");
-    assert.isTrue(mem instanceof layer.MemoryLayer, "instanceof MemoryLayer");    
-
+    var temp = new layer.Layer({});
+    assert.isTrue(temp.temporary);
+    
 };
 
-exports["test: MemoryLayer.add"] = function() {
+exports["test: add"] = function() {
     
     var p = new geom.Point([1, 2]);
-    var mem = new layer.MemoryLayer();
+    var mem = new layer.Layer({});
     mem.add({geom: p});
     
     assert.is(1, mem.count, "one item added");
@@ -29,5 +28,4 @@ exports["test: MemoryLayer.add"] = function() {
 if (require.main === module.id) {
     require("test/runner").run(exports);
 }
-
 

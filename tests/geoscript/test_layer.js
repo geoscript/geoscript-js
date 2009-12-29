@@ -14,20 +14,6 @@ exports["test: Layer.constructor"] = function() {
 
 };
 
-exports["test: Layer.temporary"] = function() {
-    
-    var temp = new layer.Layer({});
-    assert.isTrue(temp.temporary);
-    
-    var shp = new layer.Layer({
-        workspace: shpDir,
-        name: "states"
-    });
-    assert.isFalse(shp.temporary);
-
-    
-};
-
 exports["test: Layer.clone"] = function() {
 
     var clone;
@@ -75,6 +61,10 @@ exports["test: create(memory)"] = function() {
     assert.isTrue(mem.temporary, "temporary layer");
     
 };
+
+exports["test: (MemoryWorkspace)"] = require("./layer/test_memory");
+exports["test: (DirectoryWorkspace)"] = require("./layer/test_directory");
+
 
 if (require.main === module.id) {
     require("test/runner").run(exports);
