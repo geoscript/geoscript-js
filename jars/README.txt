@@ -12,3 +12,4 @@ with the exception of the following:
 * gt-epsg-oracle-2.6.0.jar
 * gt-epsg-postgresql-2.6.0.jar
 * gt-epsg-wkt-2.6.0.jar
+* gt-mysql-2.6.0.jar
