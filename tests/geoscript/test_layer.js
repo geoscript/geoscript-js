@@ -62,8 +62,8 @@ exports["test: create(memory)"] = function() {
     
 };
 
-exports["test: (MemoryWorkspace)"] = require("./layer/test_memory");
-exports["test: (DirectoryWorkspace)"] = require("./layer/test_directory");
+exports["test: (Memory)"] = require("./layer/test_memory");
+exports["test: (Directory)"] = require("./layer/test_directory");
 
 
 if (require.main === module.id) {
