@@ -49,6 +49,18 @@ exports["test: apply"] = function() {
     var o2 = util.apply(o);
     assert.isSame(o, o2, "clones object when called with one arg");
     assert.isFalse(o2 === o, "returns new object when called with one arg");
+
+    // allow more sources
+    target = {};
+    var s1 = {foo: "bar"};
+    var s2 = {bar: "baz"};
+    var s3 = {baz: "foo"};
+    var s4 = {foo: "yup"};
+    o = util.apply(target, s1, s2, s3, s4);
+    assert.is(target, o, "[multiple] returns the target");
+    assert.is(undefined, s1.bar, "[multiple] sources untouched");
+    assert.is("foo", target.baz, "[multiple] defaults from deep sources applied");
+    assert.is("yup", target.foo, "[multiple] members from all sources applied");
     
 };
 
@@ -61,6 +73,18 @@ exports["test: applyIf"] = function() {
     assert.is(target, o, "returns the target");
     assert.is("bar", o.foo, "existing property from source not applied");
     assert.is("foo", o.bar, "new property from source applied");
+    
+    // allow more sources
+    target = {};
+    var s1 = {foo: "bar"};
+    var s2 = {bar: "baz"};
+    var s3 = {baz: "foo"};
+    var s4 = {foo: "nope"};
+    o = util.applyIf(target, s1, s2, s3, s4);
+    assert.is(target, o, "[multiple] returns the target");
+    assert.is(undefined, s1.bar, "[multiple] sources untouched");
+    assert.is("foo", target.baz, "[multiple] defaults from deep sources applied");
+    assert.is("bar", target.foo, "[multiple] only applied if not present");
     
 };
 
