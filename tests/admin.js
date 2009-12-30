@@ -1,6 +1,8 @@
 var zip = require("zip");
 var file = require("file");
 
+var DriverManager = Packages.java.sql.DriverManager;
+
 var path = function(rel) {
     return file.absolute(file.resolve(module.path, rel));
 }
@@ -17,6 +19,16 @@ var meta = {
             if (file.exists(meta.shp.dest)) {
                 file.rmtree(meta.shp.dest);                
             }
+        }
+    },
+    pg: {
+        driver: new Packages.org.postgres.Driver,
+        setup: function() {
+            var uri = "jdbc:postgresql:geoscript";
+            var params = new java.util.Properties();
+            params.setProperty("user", "postgres");
+            params.setProperty("password", "postgres");
+            var connection = meta.pg.driver.getConnection(uri, params);
         }
     }
 };
