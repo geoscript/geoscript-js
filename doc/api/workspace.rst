@@ -18,4 +18,7 @@ Workspace Types
 
     workspace/memory
     workspace/directory
+    workspace/postgis
+    workspace/h2
+    workspace/spatialite
 

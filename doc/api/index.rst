@@ -12,6 +12,6 @@ Modules
     geom
     feature
     proj
-    layer
+    layer-mod
     workspace
 
