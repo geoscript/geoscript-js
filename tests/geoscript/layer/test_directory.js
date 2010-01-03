@@ -36,8 +36,8 @@ exports["test: features"] = function() {
     });
     var count, features, feature;
     
-    // call features with no filter
-    features = shp.features();
+    // get all features
+    features = shp.features;
     count = shp.count;
         
     assert.isTrue(features.hasNext(), "hasNext returns true");
@@ -51,16 +51,26 @@ exports["test: features"] = function() {
     assert.is(testScope, log[0].scope, "forEach calls block with correct scope");
     
     assert.isTrue(!features.hasNext(), "after forEach, hasNext returns false");
-    assert.is(undefined, features.next(), "if not hasNext, next returns undefined")
+    assert.is(undefined, features.next(), "if not hasNext, next returns undefined");
     
+};
+
+exports["test: query"] = function() {
+    
+    var shp = new layer.Layer({
+        workspace: shpDir,
+        name: "states"
+    });
+    var count, features, feature;
+
     // query with a filter
-    features = shp.features({filter: "STATE_ABBR EQ 'TX'"});
-    assert.isTrue(features.hasNext(), "[filter] hasNext returns true");
+    features = shp.query("STATE_ABBR EQ 'TX'");
+    assert.isTrue(features.hasNext(), "hasNext returns true");
     
     feature = features.next();
-    assert.is("TX", feature.get("STATE_ABBR", "[filter] got feature with expected STATE_ABBR"));
+    assert.is("TX", feature.get("STATE_ABBR", "got feature with expected STATE_ABBR"));
     
-    assert.isFalse(features.hasNext(), "[filter] only one feature in query results");    
+    assert.isFalse(features.hasNext(), "only one feature in query results");    
     
 };
 

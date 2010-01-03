@@ -18,7 +18,7 @@ exports["test: add"] = function() {
     
     assert.is(1, mem.count, "one item added");
     
-    var f = mem.features().next();
+    var f = mem.features.next();
     
     assert.isTrue(p.equalsExact(f.geometry), "first feature has correct geometry");
     
