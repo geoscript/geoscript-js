@@ -11,6 +11,7 @@ Modules
 
     geom
     feature
+    filter-mod
     proj
     layer-mod
     workspace
