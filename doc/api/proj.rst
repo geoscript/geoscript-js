@@ -29,3 +29,10 @@ geometry from one system to another, use the `transform` method.
     js> Math.floor(p2.y)
     5060716
 
+Constructors
+------------
+
+.. toctree::
+    :maxdepth: 1
+
+    proj/projection
