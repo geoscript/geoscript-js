@@ -1,25 +1,37 @@
-{#
+{% if synopsis is defined %}
+.. module:: {{ module }}
+    :synopsis: {{ synopsis|indent(8) }}
 
-    This template is of general use for documenting GeoScript modules. It
-    produces a doc with the following sections:
-    
-        * Header (full class name)
-        * Constructor (class def)
-        * Examples (optional)
-        * Config Options (optional)
-        * Public Properties (optional)
-        * Public Methods (optional)
-        * Events (optional)
-        * Class Methods (optional)
+The :mod:`{{ module}}` module
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#}
-
+{% if summary is defined %}
+{{ summary }}
+{% endif %}
+{% else %}
 .. currentmodule:: {{ module }}
+{% endif %}
+
+{% if classes is defined %}
+
+Constructors
+------------
+
+.. toctree::
+    :maxdepth: 1
+    
+    {% for name in classes %}
+    {{ module }}/{{ name }}
+    {% endfor %}
+    
+{% elif class is defined %}
 
 :class:`{{ module }}.{{ class }}`
 ================================================================================
 
 {{ constructor }}
+
+{% endif %}
 
 {% if example is defined %}
 Example Use
@@ -33,7 +45,7 @@ Properties
 ----------
 
 {% for (name, desc) in property|dictsort %}
-.. attribute:: {{ class }}.{{ name }}
+.. attribute:: {% if class is defined %}{{ class }}.{% endif %}{{ name }}
 
     {{ desc|indent(4) }}
 {% endfor %}
@@ -44,7 +56,40 @@ Methods
 -------
 
 {% for (name, desc) in method|dictsort %}
-.. method:: {{ class }}.{{ name }}
+.. method:: {% if class is defined %}{{ class }}.{% endif %}{{ name }}
+
+    {{ desc|indent(4) }}
+{% endfor %}
+{% endif %}
+
+{% if staticmethod is defined %}
+Static Methods
+--------------
+
+{% for (name, desc) in staticmethod|dictsort %}
+.. method:: {% if class is defined %}{{ class }}.{% endif %}{{ name }}
+
+    {{ desc|indent(4) }}
+{% endfor %}
+{% endif %}
+
+{% if staticproperty is defined %}
+Static Properties
+-----------------
+
+{% for (name, desc) in staticproperty|dictsort %}
+.. attribute:: {% if class is defined %}{{ class }}.{% endif %}{{ name }}
+
+    {{ desc|indent(4) }}
+{% endfor %}
+{% endif %}
+
+{% if data is defined %}
+Module Data
+-----------
+
+{% for (name, desc) in data|dictsort %}
+.. data:: {{ name}}
 
     {{ desc|indent(4) }}
 {% endfor %}
