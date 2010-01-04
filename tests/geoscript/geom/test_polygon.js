@@ -48,37 +48,6 @@ exports["test: json"] = function() {
     
 };
 
-exports["test: fromJSON"] = function() {
-
-    var g = new geom.Polygon([
-        [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],
-        [ [-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45] ]
-    ]);
-    var str = '{' +
-        '"type": "Polygon",' +
-        '"coordinates": [' +
-            '[ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],' +
-            '[ [-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45] ]' +
-        ']' +
-    '}';
-
-    var obj, msg;
-    try {
-        obj = geom.Geometry.fromJSON(str);
-    } catch (err) {
-        msg = err.message;
-    }
-    if (obj) {
-        assert.isTrue(obj instanceof geom.Geometry, "polygon from json is a geometry");
-        assert.isTrue(obj instanceof geom.Polygon, "polygon from json is a polygon");
-        assert.isTrue(g.equals(obj), "geometry equals obj");
-    } else {
-        assert.isTrue(false, "trouble parsing json: " + msg);
-    }
-
-};
-
-
 if (require.main === module.id) {
     require("test/runner").run(exports);
 }

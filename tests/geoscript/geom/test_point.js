@@ -55,16 +55,6 @@ exports["test: wkt"] = function() {
 
 };
 
-exports["test: fromWKT"] = function() {
-
-    var p = new geom.Point([1, 2]);
-    var p2 = geom.Geometry.fromWKT("POINT (1 2)");
-    assert.isTrue(p2 instanceof geom.Geometry, "point from wkt is a geometry");
-    assert.isTrue(p2 instanceof geom.Point, "point from wkt is a point");
-    assert.isTrue(p2.equals(p), "p2 equals p");
-
-};
-
 exports["test: json"] = function() {
 
     var g = new geom.Point([1, 2]);
@@ -83,25 +73,6 @@ exports["test: json"] = function() {
         assert.isTrue(false, "invalid json: " + msg);
     }
     
-};
-
-exports["test: fromJSON"] = function() {
-
-    var g = new geom.Point([1, 2]);
-    var obj, msg;
-    try {
-        obj = geom.Geometry.fromJSON('{"type": "Point", "coordinates": [1, 2]}');
-    } catch (err) {
-        msg = err.message;
-    }
-    if (obj) {
-        assert.isTrue(obj instanceof geom.Geometry, "point from json is a geometry");
-        assert.isTrue(obj instanceof geom.Point, "point from json is a point");
-        assert.isTrue(g.equals(obj), "geometry equals obj");
-    } else {
-        assert.isTrue(false, "trouble parsing json: " + msg);
-    }
-
 };
 
 exports["test: buffer"] = function() {

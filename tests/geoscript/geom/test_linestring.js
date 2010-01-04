@@ -39,25 +39,6 @@ exports["test: json"] = function() {
     
 };
 
-exports["test: fromJSON"] = function() {
-
-    var g = new geom.LineString([[-180, -90], [0, 0], [180, 90]]);
-    var obj, msg;
-    try {
-        obj = geom.Geometry.fromJSON('{"type": "LineString", "coordinates": [[-180, -90], [0, 0], [180, 90]]}');
-    } catch (err) {
-        msg = err.message;
-    }
-    if (obj) {
-        assert.isTrue(obj instanceof geom.Geometry, "linestring from json is a geometry");
-        assert.isTrue(obj instanceof geom.LineString, "linestring from json is a linestring");
-        assert.isTrue(g.equals(obj), "geometry equals obj");
-    } else {
-        assert.isTrue(false, "trouble parsing json: " + msg);
-    }
-
-};
-
 if (require.main === module.id) {
     require("test/runner").run(exports);
 }
