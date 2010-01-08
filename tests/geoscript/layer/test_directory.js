@@ -39,7 +39,7 @@ exports["test: features"] = function() {
     // get all features
     features = shp.features;
     count = shp.count;
-        
+
     assert.isTrue(features.hasNext(), "hasNext returns true");
     
     var log = [];
@@ -52,6 +52,38 @@ exports["test: features"] = function() {
     
     assert.isTrue(!features.hasNext(), "after forEach, hasNext returns false");
     assert.is(undefined, features.next(), "if not hasNext, next returns undefined");
+    
+    // test some additional cursor properties
+    features = shp.features;
+    assert.is(-1, features.index, "index is -1 to start");
+    assert.is(null, features.current, "current is null before read");
+    
+    // read 1 - index: 0
+    feature = features.next();
+    assert.isTrue(feature instanceof Feature, "0: next reads a feature");
+    assert.is(0, features.index, "0: index is 0 after 1 read");
+    assert.isTrue(feature === features.current, "0: current feature set to most recently read");
+    
+    // skip 3 - index: 3
+    features.skip(3);
+    assert.is(3, features.index, "3: index is 3 after skip");
+    assert.isTrue(feature === features.current, "3: current feature is still last read");
+    
+    // read 3 - index: 6
+    var list = features.read(3);
+    assert.is(3, list.length, "6: read 3 returns 3");
+    assert.isTrue(list[0] instanceof Feature, "6: list contains features");
+    assert.isTrue(list[2] === features.current, "6: current is most recetly read");
+    
+    // skip 40 - index: 46
+    features.skip(40);
+    assert.is(46, features.index, "46: index is 46 after skip");
+    
+    // read 10 - index: 48 (only 49 features)
+    list = features.read(10);
+    assert.is(48, features.index, "48: index is 48 after exhausting cursor");
+    assert.is(2, list.length, "48: 2 features read");
+    assert.is(null, features.current, "48: current is null after closing cursor");
     
 };
 
@@ -70,7 +102,7 @@ exports["test: query"] = function() {
     feature = features.next();
     assert.is("TX", feature.get("STATE_ABBR", "got feature with expected STATE_ABBR"));
     
-    assert.isFalse(features.hasNext(), "only one feature in query results");    
+    assert.isFalse(features.hasNext(), "only one feature in query results");
     
 };
 
