@@ -28,6 +28,27 @@ exports["test: temporary"] = function() {
     
 };
 
+exports["test: get"] = function() {
+    
+    var shp = new layer.Layer({
+        workspace: shpDir,
+        name: "states"
+    });
+    
+    var feature = shp.get("states.1");
+    assert.isTrue(feature instanceof Feature, "states.1 is a feature");
+    assert.is("states.1", feature.id, "got feature with id states.1");
+
+    feature = shp.get("bogus");
+    assert.is(undefined, feature, "bogus id returns undefined");
+
+    feature = shp.get("states.10");
+    assert.isTrue(feature instanceof Feature, "states.10 is a feature");
+    assert.is("states.10", feature.id, "got feature with id states.10");
+
+    
+};
+
 exports["test: features"] = function() {
 
     var shp = new layer.Layer({
