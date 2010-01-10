@@ -123,6 +123,40 @@ exports["test: create(multipolygon)"] = function() {
 
 };
 
+exports["test: create(bounds)"] = function() {
+    
+    var b, o;
+    
+    // min/max x/y
+    b = new geom.Bounds({
+        minx: -180, maxx: 180, miny: -90, maxy: 90
+    });
+    o = geom.create({
+        minx: -180, maxx: 180, miny: -90, maxy: 90
+    });
+    assert.isTrue(o instanceof geom.Bounds, "[min/max x/y] bounds created");
+    assert.isTrue(o.equals(b), "[min/max x/y] equivalent to constructor");
+
+    // projection
+    b = new geom.Bounds({
+        minx: -180, maxx: 180, miny: -90, maxy: 90, projection: "epsg:4326"
+    });
+    o = geom.create({
+        minx: -180, maxx: 180, miny: -90, maxy: 90, projection: "epsg:4326"
+    });
+    assert.isTrue(o instanceof geom.Bounds, "[projection] bounds created");
+    assert.isTrue(o.equals(b), "[projection] equivalent to constructor");
+
+    // from config
+    b = new geom.Bounds({
+        minx: -180, maxx: 180, miny: -90, maxy: 90, projection: "epsg:4326"
+    });
+    o = geom.create(b.config);
+    assert.isTrue(o instanceof geom.Bounds, "[config] bounds created");
+    assert.isTrue(o.equals(b), "[config] equivalent to constructor");
+    
+};
+
 exports["test: fromWKT(point)"] = function() {
     var g1 = new geom.Point([1, 2]);
     var g2 = geom.fromWKT("POINT (1 2)");
@@ -153,6 +187,7 @@ exports["test: fromWKT(polygon)"] = function() {
 exports["test: Point"] = require("./geom/test_point");
 exports["test: Linestring"] = require("./geom/test_linestring");
 exports["test: Polygon"] = require("./geom/test_polygon");
+exports["test: Bounds"] = require("./geom/test_bounds");
 
 if (require.main === module.id) {
     require("test/runner").run(exports);
