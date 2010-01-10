@@ -104,6 +104,50 @@ exports["test: include"] = function() {
     
 };
 
+exports["test: intersects"] = function() {
+
+    var b = new geom.Bounds({
+        minx: -10, maxx: 10, miny: -5, maxy: 5
+    });
+    
+    var inside = new geom.Bounds({
+        minx: -5, maxx: 5, miny: -2, maxy: 2
+    });
+    
+    var touching1 = new geom.Bounds({
+        minx: -10, maxx: 5, miny: -2, maxy: 5
+    });
+
+    var touching2 = new geom.Bounds({
+        minx: 10, maxx: 15, miny: -5, maxy: 5
+    });
+    
+    var intersecting = new geom.Bounds({
+        minx: 0, maxx: 20, miny: 0, maxy: 10
+    });
+    
+    var outside = new geom.Bounds({
+        minx: 50, maxx: 60, miny: 50, maxy: 50
+    });
+    
+    assert.isTrue(b.intersects(inside), "inside");
+    assert.isTrue(inside.intersects(b), "r:inside");
+    assert.isTrue(b.intersects(touching1), "touching inside");
+    assert.isTrue(touching1.intersects(b), "r:touching inside");
+    assert.isTrue(b.intersects(touching2), "touching edges");
+    assert.isTrue(touching1.intersects(b), "r:touching edges");
+    assert.isTrue(b.intersects(intersecting), "intersecting");
+    assert.isTrue(intersecting.intersects(b), "r:intersecting");
+    assert.isFalse(b.intersects(outside), "outside");
+    assert.isFalse(outside.intersects(b), "r:outside");
+    
+    assert.isTrue(b.intersects(geom.create([[0, 0], [2, 2]])), "inside line");
+    assert.isTrue(b.intersects(geom.create([[0, 0], [20, 20]])), "intersecting line");
+    assert.isTrue(b.intersects(geom.create([[10, 0], [20, 0]])), "touching line");
+    assert.isFalse(b.intersects(geom.create([[15, 15], [20, 20]])), "outside line");
+    
+};
+
 exports["test: contains"] = function() {
     
     var b = new geom.Bounds({
