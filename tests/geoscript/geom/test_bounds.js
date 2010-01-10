@@ -78,6 +78,64 @@ exports["test: equals"] = function() {
     
 };
 
+exports["test: include"] = function() {
+    
+    var b1 = new geom.Bounds({
+        minx: -10, maxx: 10, miny: -9, maxy: 9
+    });
+    
+    var b2 = new geom.Bounds({
+        minx: -11, maxx: 9, miny: -8, maxy: 10
+    });
+    
+    var point = new geom.Point([20, 0]);
+    
+    var line = new geom.LineString([[0, 0], [20, 20]]);
+    
+    var r = b1.include(b2);
+    assert.isTrue(r === b1, "include returns the bounds");
+    assert.isSame([-11, -9, 10, 10], b1.toArray(), "include bounds works");
+    
+    b1.include(point);
+    assert.isSame([-11, -9, 20, 10], b1.toArray(), "include point works");
+    
+    b1.include(line);
+    assert.isSame([-11, -9, 20, 20], b1.toArray(), "include line works");
+    
+};
+
+exports["test: contains"] = function() {
+    
+    var b = new geom.Bounds({
+        minx: -10, maxx: 10, miny: -5, maxy: 5
+    });
+    
+    var inside = new geom.Bounds({
+        minx: -5, maxx: 5, miny: -2, maxy: 2
+    });
+    
+    var touching = new geom.Bounds({
+        minx: -10, maxx: 5, miny: -2, maxy: 5
+    });
+    
+    var intersecting = new geom.Bounds({
+        minx: 0, maxx: 20, miny: 0, maxy: 10
+    });
+    
+    var outside = new geom.Bounds({
+        minx: 50, maxx: 60, miny: 50, maxy: 50
+    });
+    
+    assert.isTrue(b.contains(inside), "inside");
+    assert.isTrue(b.contains(touching), "touching");
+    assert.isFalse(b.contains(intersecting), "intersecting");
+    assert.isFalse(b.contains(outside), "outside");
+    
+    assert.isTrue(b.contains(geom.create([[0, 0], [2, 2]])), "inside line");
+    assert.isFalse(b.contains(geom.create([[0, 0], [20, 20]])), "intersecting line");
+    
+};
+
 exports["test: fromArray"] = function() {
     
     var b1 = new geom.Bounds({
