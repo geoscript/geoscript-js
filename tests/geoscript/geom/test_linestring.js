@@ -59,6 +59,17 @@ exports["test: bounds"] = function() {
 
 };
 
+exports["test: centroid"] = function() {
+
+    var g = new geom.LineString([[-20, -10], [-10, 0]]);
+    
+    var c = g.centroid;
+    assert.isTrue(c instanceof geom.Point, "centroid is point");
+    assert.isTrue(c.equals(new geom.Point([-15, -5])), "correct centroid");
+
+};
+
+
 if (require.main === module.id) {
     require("test/runner").run(exports);
 }

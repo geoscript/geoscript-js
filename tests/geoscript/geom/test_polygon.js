@@ -71,6 +71,20 @@ exports["test: bounds"] = function() {
 
 };
 
+exports["test: centroid"] = function() {
+
+    var p = new geom.Polygon([
+        [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],
+        [ [-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45] ]
+    ]);
+    
+    var c = p.centroid;
+    assert.isTrue(c instanceof geom.Point, "centroid is point");
+    assert.isTrue(c.equals(new geom.Point([0, 0])), "correct centroid");
+
+};
+
+
 if (require.main === module.id) {
     require("test/runner").run(exports);
 }
