@@ -1,5 +1,6 @@
-var assert = require("test/assert"),
-    geom = require("geoscript/geom");
+var assert = require("test/assert");
+var geom = require("geoscript/geom");
+var proj = require("geoscript/proj");
     
 exports["test: constructor"] = function() {
 
@@ -46,6 +47,28 @@ exports["test: json"] = function() {
         assert.isTrue(false, "invalid json: " + msg);
     }
     
+};
+
+exports["test: bounds"] = function() {
+
+    var g, b;
+    
+    var g = new geom.Polygon([
+        [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],
+        [ [-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45] ]
+    ]);
+    b = g.bounds;
+    
+    assert.isTrue(b instanceof geom.Bounds, "is bounds");
+    assert.isSame([-180, -90, 180, 90], b.toArray(), "is correct bounds");
+    
+    g.projection = "epsg:4326";
+    b = g.bounds;
+    assert.isTrue(b instanceof geom.Bounds, "[projection] is bounds");
+    assert.isSame([-180, -90, 180, 90], b.toArray(), "[projection] is correct bounds");
+    assert.isTrue(b.projection instanceof proj.Projection, "[projection] has projection");
+    assert.is("EPSG:4326", b.projection.id, "[projection] correct projection");
+
 };
 
 if (require.main === module.id) {
