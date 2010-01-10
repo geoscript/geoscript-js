@@ -148,6 +148,17 @@ exports["test: intersects"] = function() {
     
 };
 
+exports["test: intersection"] = function() {
+    
+    var b1 = geom.Bounds.fromArray([0, 0, 10, 10]);
+    var b2 = geom.Bounds.fromArray([5, 5, 20, 20]);
+    var b3 = geom.Bounds.fromArray([20, 20, 30, 30]);
+    
+    var r = b1.intersection(b2);
+    assert.isSame([5, 5, 10, 10], r.toArray(), "correct intersection");
+    
+};
+
 exports["test: contains"] = function() {
     
     var b = new geom.Bounds({
