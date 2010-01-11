@@ -157,6 +157,9 @@ exports["test: intersection"] = function() {
     var r = b1.intersection(b2);
     assert.isSame([5, 5, 10, 10], r.toArray(), "correct intersection");
     
+    r = b1.intersection(b3);
+    assert.isTrue(r.empty, "empty intersection");
+    
 };
 
 exports["test: contains"] = function() {
