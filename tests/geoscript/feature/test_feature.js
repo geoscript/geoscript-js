@@ -20,6 +20,30 @@ exports["test: constructor"] = function() {
     
 };
 
+exports["test: bounds"] = function() {
+
+    var schema = new feature.Schema({fields: [
+        {name: "location", type: "Geometry"},
+        {name: "name", type: "String"}
+    ]});
+    var f, g;
+    
+    // test no geometry
+    f = new feature.Feature({schema: schema});
+    assert.is(undefined, f.bounds, "undefined for no geometry");
+    
+    // test point
+    g = new geom.Point([1, 2]);
+    f.set("location", g);
+    assert.isTrue(g.bounds.equals(f.bounds), "point bounds");
+
+    // test linestring
+    g = new geom.LineString([[0, 5], [10, 15]]);
+    f.set("location", g);
+    assert.isTrue(g.bounds.equals(f.bounds), "linestring bounds");    
+    
+};
+
 exports["test: json"] = function() {
 
     var values = {
