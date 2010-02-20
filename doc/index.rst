@@ -4,15 +4,23 @@ GeoScript JS
 GeoScript JS is a JavaScript implementation of GeoScript packaged for the
 Narwhal_ platform.
 
-See the `quick start <quickstart>`_ for information on getting started with
-GeoScript. The `API Reference <api>`_ contains documentation on all GeoScript
-modules.
+  :ref:`Quickstart <quickstart>` 
+    Get up and running with GeoScript 
+
+  `Learning <../learning>`__
+    A tour of the GeoScript library
+  
+  `Examples <../examples>`__
+    A library of examples and howto's
+
+  :ref:`API <api>`
+    The GeoScript JS API reference 
 
 
 .. toctree::
-    :maxdepth: 1
-    
-    quickstart/index
+    :hidden:
+
+    quickstart
     api/index
 
 
