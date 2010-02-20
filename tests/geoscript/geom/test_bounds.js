@@ -236,6 +236,31 @@ exports["test: transform"] = function() {
     
 };
 
+exports["test: empty"] = function() {
+    
+    var b1 = new geom.Bounds({
+        minx: -10, miny: -20, maxx: 10, maxy: -10
+    });
+    var b2 = new geom.Bounds({
+        minx: -10, miny: 0, maxx: 10, maxy: 20
+    });
+    
+    // b1 doesn't intersect b2
+    var b3 = b1.intersection(b2);
+    assert.isTrue(b3.empty, "empty intersection");
+    
+    // create an empty bounds with no projection
+    var empty1 = new geom.Bounds({});
+    assert.isTrue(empty1.empty, "constructed empty with no projection");
+    assert.is(null, empty1.projection, "empty bounds with null projection");
+
+    // create an empty bounds with projection
+    var empty2 = new geom.Bounds({projection: "epsg:4326"});
+    assert.isTrue(empty2.empty, "constructed empty with projection");
+    assert.isTrue(empty2.projection instanceof proj.Projection, "constructed empty with projection");
+        
+};
+
 if (require.main === module.id) {
     require("test/runner").run(exports);
 }
