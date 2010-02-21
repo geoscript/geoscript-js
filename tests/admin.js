@@ -28,6 +28,7 @@ var meta = {
         },
         teardown: function() {
             if (file.exists(meta.h2.dest)) {
+                Packages.org.h2.tools.DeleteDbFiles.execute(meta.h2.dest, "geoscript", true);
                 file.rmtree(meta.h2.dest);
             }
         }
