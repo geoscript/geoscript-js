@@ -19,6 +19,19 @@ var meta = {
             }
         }
     },
+    h2: {
+        source: path("data/h2.zip"),
+        dest: path("tmp/h2"),
+        setup: function() {
+            meta.h2.teardown();
+            zip.unzip(meta.h2.source, meta.h2.dest);
+        },
+        teardown: function() {
+            if (file.exists(meta.h2.dest)) {
+                file.rmtree(meta.h2.dest);
+            }
+        }
+    },
     pg: {
         driver: new Packages.org.postgresql.Driver,
         setup: function() {
@@ -31,4 +44,6 @@ var meta = {
     }
 };
 
-exports.shp = meta.shp;
+for (var key in meta) {
+    exports[key] = meta[key];
+}
