@@ -127,6 +127,19 @@ exports["test: query"] = function() {
     
 };
 
+exports["test: remove"] = function() {
+    
+    var shp = new layer.Layer({
+        workspace: shpDir,
+        name: "states"
+    });
+    assert.is(49, shp.count, "49 features before remove");
+    
+    shp.remove("STATE_NAME = 'Illinois'");
+    assert.is(48, shp.count, "48 features after remove");
+    
+};
+
 if (require.main === module.id) {
     require("test/runner").run(exports);
 }
