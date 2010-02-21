@@ -16,6 +16,9 @@ exports["test: create(directory)"] = function() {
 };
 
 exports["test: Directory"] = require("./workspace/test_directory");
+exports["test: H2"] = require("./workspace/test_h2");
+exports["test: Memory"] = require("./workspace/test_memory");
+exports["test: PostGIS"] = require("./workspace/test_postgis");
 
 if (require.main === module.id) {
     require("test/runner").run(exports);

@@ -13,25 +13,30 @@ exports["test: constructor"] = function() {
     var dir = new workspace.Directory();
     
     assert.isTrue(dir instanceof workspace.Workspace, "instanceof Workspace");
-    assert.isTrue(dir instanceof workspace.Directory, "instanceof Directory");    
+    assert.isTrue(dir instanceof workspace.Directory, "instanceof Directory"); 
+    
+    dir.close();   
 
 };
 
 exports["test: names"] = function() {
 
-    var dir = new workspace.Directory(dataDir);
-    
+    var dir = new workspace.Directory(dataDir);    
+
     assert.isSame(["states"], dir.names, "dir.names is array of string names");
+
+    dir.close();   
     
 };
 
 exports["test: get"] = function() {
 
     var dir = new workspace.Directory(dataDir);
-    
     var l = dir.get(dir.names[0]);
     
     assert.isTrue(l instanceof layer.Layer, "get returns a layer instance");
+
+    dir.close();   
     
 };
 
