@@ -2,6 +2,12 @@ var assert = require("test/assert");
 var Layer = require("geoscript/layer").Layer;
 var geom = require("geoscript/geom");
 
+var admin = require("../../admin");
+
+var shpDir = admin.shp.dest;
+exports.setup = admin.shp.setup;
+exports.teardown = admin.shp.teardown;
+
 exports["test: constructor"] = function() {
 
     var l = new Layer();
@@ -13,16 +19,12 @@ exports["test: temporary"] = function() {
     
     var temp = new Layer({});
     assert.isTrue(temp.temporary);
-    
-    var file = require("file");
-    var path = file.resolve(module.path, "../../data");
-    
+        
     var shp = new Layer({
-        workspace: path,
+        workspace: shpDir,
         name: "states"
     });
     assert.isFalse(shp.temporary);
-
     
 };
 
@@ -42,16 +44,20 @@ exports["test: clone"] = function() {
     assert.is("bar", clone.name, "clone can be given a new name");
     
     // clone an existing layer with features
-    var file = require("file");
-    var path = file.resolve(module.path, "../../data");
-    
     var shp = new Layer({
-        workspace: path,
+        workspace: shpDir,
         name: "states"
     });
+    // confim that original has a projection set
+    assert.isTrue(!!shp.projection, "original has projection");
     
     clone = shp.clone();
     assert.isTrue(clone.temporary, "clone is a temporary layer");
     assert.is(shp.count, clone.count, "clone has same count as original");
+    assert.isTrue(shp.projection.equals(clone.projection), "clone projection equals original");
 
 };
+
+if (require.main === module.id) {
+    require("test/runner").run(exports);
+}
