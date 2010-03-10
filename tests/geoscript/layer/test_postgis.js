@@ -91,6 +91,6 @@ exports["test: query"] = function() {
 //     layer.workspace.close();
 // };
 
-if (require.main === module.id) {
+if (require.main == module) {
     require("test/runner").run(exports);
 }

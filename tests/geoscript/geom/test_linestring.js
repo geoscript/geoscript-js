@@ -70,6 +70,6 @@ exports["test: centroid"] = function() {
 };
 
 
-if (require.main === module.id) {
+if (require.main == module) {
     require("test/runner").run(exports);
 }

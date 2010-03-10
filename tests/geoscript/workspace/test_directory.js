@@ -40,7 +40,7 @@ exports["test: get"] = function() {
     
 };
 
-if (require.main === module.id) {
+if (require.main == module) {
     require("test/runner").run(exports);
 }
 

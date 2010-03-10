@@ -189,6 +189,6 @@ exports["test: Linestring"] = require("./geom/test_linestring");
 exports["test: Polygon"] = require("./geom/test_polygon");
 exports["test: Bounds"] = require("./geom/test_bounds");
 
-if (require.main === module.id) {
+if (require.main == module) {
     require("test/runner").run(exports);
 }

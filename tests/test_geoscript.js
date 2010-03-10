@@ -6,6 +6,6 @@ exports["test: layer"] = require("./geoscript/test_layer");
 exports["test: workspace"] = require("./geoscript/test_workspace");
 exports["test: util"] = require("./geoscript/test_util");
 
-if (require.main === module.id) {
+if (require.main == module) {
     require("test/runner").run(exports);
 }
