@@ -22,6 +22,7 @@ Narwhal_ platform.
 
     quickstart
     api/index
+    download
 
 
 .. _Narwhal: http://narwhaljs.org
