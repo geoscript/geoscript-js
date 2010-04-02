@@ -3,9 +3,9 @@
 Downloads
 =========
 
-.. cssclass:: downloads
+.. cssclass:: downloads-link
 
-`All Downloads <http://github.com/tschaub/geoscript-js/downloads>`__
+See `all downloads <http://github.com/tschaub/geoscript-js/downloads>`__.
 
 .. warning::
 
