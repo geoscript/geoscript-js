@@ -9,7 +9,7 @@ Getting Narwhal
 ---------------
 
 You can get Narwhal by downloading and extracting a zip archive, or cloning the
-repository from http://github.com.
+repository from GitHub.
 
 Download the `zip archive <http://github.com/280north/narwhal/zipball/master>`__ 
 and extract it somewhere on your system (I'll assume your home directory here).
@@ -37,21 +37,15 @@ details.
 Getting GeoScript JS
 --------------------
 
-The GeoScript JS source is also hosted on http://github.com. As above, you can
-get the source by downloading the zip archive or cloning the repository.
-
-Download the `zip archive <http://github.com/tschaub/geoscript-js/zipball/master>`__ 
-and extract it somewhere on your system (I'll assume you extract it to your home 
-directory).
+Download the latest GeoScript JS source from the :ref:`downloads <download>`
+page.  Extract the source somewhere on your system (I'll assume you extract it 
+to your home directory).
 
 *or*
 
-Clone the repository::
+Clone the repository from GitHub::
 
     ~$ git clone git://github.com/tschaub/geoscript-js.git
-
-
-.. _Narwhal: http://narwhaljs.org
 
 
 Running GeoScript JS
@@ -70,15 +64,16 @@ Now open a JavaScript console and experiment with GeoScript:
 
     ~/geoscript$ js
     Rhino 1.7 release 3 PRERELEASE 2009 04 05
-    js> var geom = require('geoscript/geom');
-    js> var p1 = new geom.Point([0, 0])
-    js> var p2 = new geom.Point([10, 20])
-    js> p1.distance(p2)
+    js> var GEOM = require("geoscript/geom");
+    js> var p1 = new GEOM.Point([0, 0]);
+    js> var p2 = new GEOM.Point([10, 20]);
+    js> p1.distance(p2);
     22.360679774997898
-    js> var poly = p2.buffer(23)
+    js> var poly = p2.buffer(23);
     js> poly.contains(p1)
     true
     js> quit()
+
 
 Running Tests
 -------------
@@ -88,3 +83,5 @@ following::
 
     ~/geoscript$ js tests/all.js
 
+
+.. _Narwhal: http://narwhaljs.org
