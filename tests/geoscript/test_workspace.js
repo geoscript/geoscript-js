@@ -4,7 +4,8 @@ var workspace = require("geoscript/workspace");
 exports["test: create(memory)"] = function() {
 
     var mem = workspace.create();
-    assert.isTrue(mem instanceof workspace.Memory, "instanceof Memory");    
+    assert.isTrue(mem instanceof workspace.Memory, "instanceof Memory");
+    mem.close();
 
 };
 
@@ -12,6 +13,7 @@ exports["test: create(directory)"] = function() {
 
     var dir = workspace.create(".");
     assert.isTrue(dir instanceof workspace.Directory, "instanceof Directory");
+    dir.close();
 
 };
 
