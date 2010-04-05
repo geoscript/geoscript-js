@@ -157,33 +157,6 @@ exports["test: create(bounds)"] = function() {
     
 };
 
-exports["test: fromWKT(point)"] = function() {
-    var g1 = new geom.Point([1, 2]);
-    var g2 = geom.fromWKT("POINT (1 2)");
-    assert.isTrue(g2 instanceof geom.Geometry, "point from wkt is a geometry");
-    assert.isTrue(g2 instanceof geom.Point, "point from wkt is a point");
-    assert.isTrue(g2.equals(g1), "g2 equals g1");
-};
-
-exports["test: fromWKT(linestring)"] = function() {
-    var g1 = new geom.LineString([[-180, -90], [0, 0], [180, 90]]);
-    var g2 = geom.fromWKT("LINESTRING (-180 -90, 0 0, 180 90)");
-    assert.isTrue(g2 instanceof geom.Geometry, "linestring from wkt is a geometry");
-    assert.isTrue(g2 instanceof geom.LineString, "linestring from wkt is a linestring");
-    assert.isTrue(g2.equals(g1), "g2 equals g1");
-};
-
-exports["test: fromWKT(polygon)"] = function() {
-    var g1 = new geom.Polygon([
-        [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],
-        [ [-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45] ]
-    ]);
-    var g2 = geom.fromWKT("POLYGON ((-180 -90, -180 90, 180 90, 180 -90, -180 -90), (-90 -45, -90 45, 90 45, 90 -45, -90 -45))");
-    assert.isTrue(g2 instanceof geom.Geometry, "polygon from wkt is a geometry");
-    assert.isTrue(g2 instanceof geom.Polygon, "polygon from wkt is a polygon");
-    assert.isTrue(g2.equals(g1), "g2 equals g1");
-};
-
 exports["test: Point"] = require("./geom/test_point");
 exports["test: Linestring"] = require("./geom/test_linestring");
 exports["test: Polygon"] = require("./geom/test_polygon");

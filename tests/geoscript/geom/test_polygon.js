@@ -16,16 +16,6 @@ exports["test: constructor"] = function() {
     
 };
 
-exports["test: wkt"] = function() {
-
-    var p = new geom.Polygon([
-        [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],
-        [ [-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45] ]
-    ]);
-    assert.is("POLYGON ((-180 -90, -180 90, 180 90, 180 -90, -180 -90), (-90 -45, -90 45, 90 45, 90 -45, -90 -45))", p.wkt, "correct wkt");
-
-};
-
 exports["test: json"] = function() {
 
     var g = new geom.Polygon([

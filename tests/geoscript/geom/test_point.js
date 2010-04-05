@@ -48,13 +48,6 @@ exports["test: equals"] = function() {
 
 };
 
-exports["test: wkt"] = function() {
-
-    var p = new geom.Point([1, 2]);
-    assert.is("POINT (1 2)", p.wkt, "correct wkt");
-
-};
-
 exports["test: json"] = function() {
 
     var g = new geom.Point([1, 2]);

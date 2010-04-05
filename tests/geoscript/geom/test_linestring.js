@@ -13,13 +13,6 @@ exports["test: constructor"] = function() {
     
 };
 
-exports["test: wkt"] = function() {
-
-    var l = new geom.LineString([[-180, -90], [0, 0], [180, 90]]);
-    assert.is("LINESTRING (-180 -90, 0 0, 180 90)", l.wkt, "correct wkt");
-
-};
-
 exports["test: json"] = function() {
 
     var g = new geom.LineString([[-180, -90], [0, 0], [180, 90]]);
