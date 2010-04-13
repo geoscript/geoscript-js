@@ -194,6 +194,26 @@ exports["test: contains"] = function() {
     
 };
 
+exports["test: clone"] = function() {
+    
+    var b = new geom.Bounds({
+        minx: -150, maxx: 160, miny: -60, maxy: 50, projection: "epsg:4326"
+    });
+    
+    var c = b.clone();
+    
+    assert.isTrue(c instanceof geom.Bounds, "clone is bounds");
+    assert.isTrue(c.equals(b), "clone is equivalent to original");
+    
+    b.include(new geom.Bounds({
+        minx: -180, maxx: 180, miny: -90, maxy: 90, projection: "epsg:4326"
+    }));
+    
+    assert.isFalse(c.equals(b), "modifying original doesn't modify clone");
+    
+};
+
+
 exports["test: fromArray"] = function() {
     
     var b1 = new geom.Bounds({
