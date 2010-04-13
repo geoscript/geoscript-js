@@ -1,5 +1,6 @@
 var assert = require("test/assert");
 var Feature = require("geoscript/feature").Feature;
+var GEOM = require("geoscript/geom");
 
 exports["test: features"] = function(getLayer) {
     return function() {
@@ -58,6 +59,19 @@ exports["test: features"] = function(getLayer) {
         layer.workspace.close();
     
     };
+};
+
+exports["test: getBounds"] = function(getLayer) {
+    return function() {
+        var layer = getLayer();
+        var bounds = layer.getBounds("STATE_ABBR = 'MT'");
+        assert.isTrue(bounds instanceof GEOM.Bounds);
+        assert.isTrue(
+            // TODO: set projection on bounds
+            bounds.equals(GEOM.Bounds.fromArray([-116.0625, 44.35372899999999, -104.04258, 49])),
+            "correct bounds for MT"
+        );
+    }
 };
 
 exports["test: query"] = function(getLayer) {
