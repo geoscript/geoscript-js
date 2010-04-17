@@ -81,6 +81,20 @@ exports["test: buffer"] = function() {
 
 };
 
+exports["test: intersection"] = function() {
+    var p1 = new geom.Point([0, 0]);
+    var p2 = new geom.Point([0, 0]);
+    var p3 = new geom.Point([1, 1]);
+    
+    var i12 = p1.intersection(p2);
+    assert.isTrue(i12 instanceof geom.Point, "intersection is point");
+    assert.isTrue(i12.equals(p1), "correct intersection");
+    
+    var i13 = p1.intersection(p3);
+    assert.isTrue(i13.isEmpty(), "empty intersection");
+    
+}
+
 if (require.main == module) {
     require("test/runner").run(exports);
 }

@@ -160,6 +160,7 @@ exports["test: create(bounds)"] = function() {
 exports["test: Point"] = require("./geom/test_point");
 exports["test: Linestring"] = require("./geom/test_linestring");
 exports["test: Polygon"] = require("./geom/test_polygon");
+exports["test: Collection"] = require("./geom/test_collection");
 exports["test: Bounds"] = require("./geom/test_bounds");
 
 if (require.main == module) {
