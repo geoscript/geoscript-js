@@ -23,7 +23,10 @@ exports["test: constructor"] = function() {
     });
     
     assert.is(3, schema.fields.length, "correct number of fields");
-    assert.isSame(fields, schema.fields, "correct fields");
+    for (var i=0; i<fields.length; ++i) {
+        assert.isSame(fields[i].type, schema.fields[i].type, "correct field type for " + i);
+        assert.isSame(fields[i].name, schema.fields[i].name, "correct field name for " + i);
+    }
     
     assert.is("footprint", schema.geometry.name, "correct geometry name");
     assert.is("Polygon", schema.geometry.type, "correct geometry type");
@@ -173,17 +176,14 @@ exports["test: fromValues"] = function() {
     
     assert.isTrue(schema instanceof feature.Schema, "correct type");    
 
-    // test attributes
+    // test field names
     assert.isSame(["location", "name", "population"], schema.fieldNames.sort(), "correct fieldNames");
-    var sorted = schema.fields.slice().sort(function(a, b) {
-        return a.name == b.name ? 0 : (a.name < b.name ? -1 : 1);
-    });
-    assert.isSame([
-        {name: "location", type: "Point"},
-        {name: "name", type: "String"},
-        {name: "population", type: "Double"}
-    ], sorted, "correct fields");
-    
+
+    // test field types
+    assert.isSame("Point", schema.get("location").type, "correct location type");
+    assert.isSame("String", schema.get("name").type, "correct name type");
+    assert.isSame("Double", schema.get("population").type, "correct population type");
+
     // test geometry
     assert.is("location", schema.geometry.name, "correct geometry name");
     assert.is("Point", schema.geometry.type, "correct geometry type");
