@@ -40,6 +40,17 @@ Example Use
 {{ example }}
 {% endif %}    
 
+{% if config is defined %}
+Config Properties
+-----------------
+
+{% for (name, desc) in config|dictsort %}
+.. describe:: {{ name }}
+
+    {{ desc|indent(4) }}
+{% endfor %}
+{% endif %}
+
 {% if property is defined %}
 Properties
 ----------
