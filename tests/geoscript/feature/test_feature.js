@@ -143,6 +143,22 @@ exports["test: clone"] = function() {
     assert.is(150, c.get("population"), "set population on clone");
     assert.is(100, f.get("population"), "original is unmodified");
     
+    var c2 = f.clone({
+        values: {population: 200}
+    });
+    assert.is(200, c2.get("population"), "clone extended with value from config");
+    
+    var c3 = f.clone({
+        schema: {
+            fields: [
+                {name: "name", type: "String"},
+                {name: "location", type: "Point"}
+            ]
+        }
+    });
+    assert.is(undefined, c3.get("population"), "clone limited to provided schema");
+    assert.is("Some Location", c3.get("name"), "clone given name from original");
+    
 };
 
 if (require.main == module) {
