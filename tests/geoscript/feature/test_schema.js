@@ -136,8 +136,18 @@ exports["test: clone"] = function() {
     assert.isSame(schema.fieldNames, clone.fieldNames, "clone has same field names");
     assert.is(schema.name, clone.name, "clone gets same name by default");
     
-    var clone2 = schema.clone("foo");
+    var clone2 = schema.clone({name: "foo"});
     assert.is("foo", clone2.name, "clone can be assigned a new name");
+    
+    var clone3 = schema.clone({
+        fields: [
+            {name: "location", type: "Polygon", projection: "epsg:4326"},
+            {name: "newField", type: "String"}
+        ]
+    });
+    
+    assert.isSame(["name", "location", "population", "newField"], clone3.fieldNames, "clone extended with new field");
+    assert.is("Polygon", clone3.get("location").type, "clone given updated field config");
 
 };
 
