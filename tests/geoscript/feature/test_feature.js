@@ -20,6 +20,34 @@ exports["test: constructor"] = function() {
     
 };
 
+exports["test: set"] = function() {
+    
+    var values = {
+        name: "Some Location",
+        location: new geom.Point([1, 2]),
+        population: 100
+    };
+    
+    var f = new feature.Feature({values: values});
+    
+    f.set("name", "New Name");
+    assert.is("New Name", f.get("name"), "correct new name value");
+    
+    f.set("population", 150);
+    assert.is(150, f.get("population"), "correct new population value");    
+    
+    var point = new geom.Point([2, 3]);
+    f.set("location", point);
+    assert.isTrue(point.equals(f.get("location")), "correct new location value using get");
+    assert.isTrue(point.equals(f.geometry), "correct new location value using geometry");
+    
+    point = new geom.Point([3, 4]);
+    point.projection = "EPSG:4326";
+    f.geometry = point;
+    assert.isTrue(point.equals(f.geometry), "geometry correctly set");    
+    
+};
+
 exports["test: bounds"] = function() {
 
     var schema = new feature.Schema({fields: [
