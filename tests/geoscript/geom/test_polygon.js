@@ -74,6 +74,20 @@ exports["test: centroid"] = function() {
 
 };
 
+exports["test: clone"] = function() {
+
+    var p = new geom.Polygon([
+        [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],
+        [ [-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45] ]
+    ]);
+    var c = p.clone();
+    assert.isTrue(c instanceof geom.Polygon, "clone is polygon");
+    assert.isTrue(c.equals(p), "clone is equivalent to original");
+    
+    c.projection = "EPSG:4326";
+    assert.isTrue(p.projection === undefined, "modifying clone doesn't modify original");
+    
+}
 
 if (require.main == module) {
     require("test/runner").run(exports);

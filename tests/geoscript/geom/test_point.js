@@ -95,6 +95,18 @@ exports["test: intersection"] = function() {
     
 }
 
+exports["test: clone"] = function() {
+    
+    var p = new geom.Point([0, 0]);
+    p.projection = "EPSG:4326";
+    
+    var c = p.clone();
+    assert.isTrue(c instanceof geom.Point, "clone is point");
+    assert.isTrue(c.equals(p), "clone equivalent to original");
+    assert.isTrue(!!c.projection, "clone gets a projection");
+    
+}
+
 if (require.main == module) {
     require("test/runner").run(exports);
 }
