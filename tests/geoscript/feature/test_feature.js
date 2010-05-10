@@ -75,8 +75,29 @@ exports["test: json"] = function() {
         assert.isTrue(false, "invalid json: " + msg);
     }
     
-    
+};
 
+exports["test: clone"] = function() {
+    
+    var point = new geom.Point([1, 2]);
+    point.projection = "EPSG:4326";
+    
+    var values = {
+        name: "Some Location",
+        location: point,
+        population: 100
+    };
+    
+    var f = new feature.Feature({values: values});
+    var c = f.clone();
+    
+    assert.isTrue(c instanceof feature.Feature, "clone is feature");
+    assert.is(100, c.get("population"), "population from original");
+    
+    c.set("population", 150);
+    assert.is(150, c.get("population"), "set population on clone");
+    assert.is(100, f.get("population"), "original is unmodified");
+    
 };
 
 if (require.main == module) {
