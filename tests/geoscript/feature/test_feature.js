@@ -20,6 +20,23 @@ exports["test: constructor"] = function() {
     
 };
 
+exports["test: get"] = function() {
+
+    var values = {
+        name: "Some Location",
+        location: new geom.Point([1, 2]),
+        population: 100
+    };
+    
+    var f = new feature.Feature({values: values});
+    
+    assert.is("string", typeof f.get("name"), "correct name type");
+    assert.is("Some Location", f.get("name"), "correct name value");
+    
+    assert.is("undefined", typeof f.get("foo"), "undefined field has undefined value");
+    
+};
+
 exports["test: set"] = function() {
     
     var values = {
