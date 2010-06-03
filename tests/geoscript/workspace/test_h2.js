@@ -1,11 +1,18 @@
 var assert = require("test/assert");
 var workspace = require("geoscript/workspace");
 var layer = require("geoscript/layer");
-var file = require("file");
+var FS;
+try {
+    // CommonJS
+    FS = require("fs");
+} catch (err) {
+    // Narwhal
+    FS = require("file");
+}
 
 var admin = require("../../admin");
 
-var database = file.join(admin.h2.dest, "geoscript");
+var database = FS.join(admin.h2.dest, "geoscript");
 exports.setup = admin.h2.setup;
 exports.teardown = admin.h2.teardown;
 

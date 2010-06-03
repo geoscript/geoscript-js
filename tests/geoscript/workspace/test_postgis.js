@@ -1,7 +1,6 @@
 var assert = require("test/assert");
 var workspace = require("geoscript/workspace");
 var layer = require("geoscript/layer");
-var file = require("file");
 
 var database = "geoscript";
 

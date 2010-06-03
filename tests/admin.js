@@ -1,8 +1,16 @@
 var zip = require("zip");
-var file = require("file");
+var FS;
+try {
+    // CommonJS
+    FS = require("fs");
+} catch (err) {
+    // Narwhal
+    FS = require("file");
+    FS.removeTree = FS.rmtree;
+}
 
 var path = function(rel) {
-    return file.absolute(file.resolve(module.path, rel));
+    return FS.absolute(FS.resolve(module.path, rel));
 }
 
 var meta = {
@@ -14,8 +22,8 @@ var meta = {
             zip.unzip(meta.shp.source, meta.shp.dest);
         },
         teardown: function() {
-            if (file.exists(meta.shp.dest)) {
-                file.rmtree(meta.shp.dest);                
+            if (FS.exists(meta.shp.dest)) {
+                FS.removeTree(meta.shp.dest);                
             }
         }
     },
@@ -27,9 +35,9 @@ var meta = {
             zip.unzip(meta.h2.source, meta.h2.dest);
         },
         teardown: function() {
-            if (file.exists(meta.h2.dest)) {
+            if (FS.exists(meta.h2.dest)) {
                 Packages.org.h2.tools.DeleteDbFiles.execute(meta.h2.dest, "geoscript", true);
-                file.rmtree(meta.h2.dest);
+                FS.removeTree(meta.h2.dest);
             }
         }
     },
