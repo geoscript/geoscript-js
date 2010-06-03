@@ -5,7 +5,8 @@ try {
     var FS = require("FS");
     unzip = function(source, dest) {
         var zip = new ZIP.ZipFile(source);
-        for (var entry in zip.entries) {
+        for (var i=0, ii=zip.entries.length; i<ii; ++i) {
+            var entry = zip.entries[i];
             var path = FS.join(dest, entry);
             if (zip.isDirectory(entry)) {
                 FS.makeDirectory(path);
@@ -14,8 +15,8 @@ try {
                 if (!FS.isDirectory(parent)) {
                      FS.makeTree(parent);
                 }
-                var dest = FS.openRaw(path, {write: true});
-                zip.open(entry).copy(dest).close();
+                var handle = FS.openRaw(path, {write: true});
+                zip.open(entry).copy(handle).close();
             }
             if (entry.time > -1) {
                 FS.touch(path, entry.time);

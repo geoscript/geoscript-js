@@ -5,12 +5,22 @@
  * geometry type.
  */
 
+var FS;
+try {
+    // CommonJS
+    FS = require("fs");
+} catch (err) {
+    // Narwhal
+    FS = require("file");
+}
+
 // import Directory and Layer constructors
 var Directory = require("geoscript/workspace").Directory;
 var Layer = require("geoscript/layer").Layer;
 
 // create a directory workspace from an existing directory on disk
-var dir = new Directory("data/shapefiles");
+var path = FS.resolve(module.path, "data/shapefiles");
+var dir = new Directory(path);
 
 // create a layer based on an existing shapefile in the directory
 var states = dir.get("states");
