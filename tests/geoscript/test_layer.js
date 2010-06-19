@@ -1,16 +1,17 @@
-var assert = require("test/assert");
+var assert = require("assert");
 var layer = require("geoscript/layer");
 var geom = require("geoscript/geom");
 var admin = require("../admin");
 
 var shpDir = admin.shp.dest;
-exports.setup = admin.shp.setup;
-exports.teardown = admin.shp.teardown;
+print("shpDir: " + shpDir);
+exports.setUp = admin.shp.setUp;
+exports.tearDown = admin.shp.tearDown;
 
 exports["test: Layer.constructor"] = function() {
 
     var l = new layer.Layer();
-    assert.isTrue(l instanceof layer.Layer, "instanceof layer.Layer");
+    assert.ok(l instanceof layer.Layer, "instanceof layer.Layer");
 
 };
 
@@ -21,13 +22,13 @@ exports["test: Layer.clone"] = function() {
 
     // create a clone without providing a name
     clone = temp.clone();
-    assert.isTrue(clone instanceof layer.Layer, "clone is a layer.Layer");
-    assert.isTrue(typeof clone.name === "string", "clone has a name");
-    assert.isTrue(clone.name !== temp.name, "clone gets a new name");
+    assert.ok(clone instanceof layer.Layer, "clone is a layer.Layer");
+    assert.ok(typeof clone.name === "string", "clone has a name");
+    assert.ok(clone.name !== temp.name, "clone gets a new name");
     
     // create a clone with a new name
     clone = temp.clone("bar");
-    assert.is("bar", clone.name, "clone can be given a new name");
+    assert.strictEqual(clone.name, "bar", "clone can be given a new name");
     
     // clone an existing layer with features    
     var shp = new layer.Layer({
@@ -36,8 +37,8 @@ exports["test: Layer.clone"] = function() {
     });
     
     clone = shp.clone();
-    assert.isTrue(clone.temporary, "clone is a temporary layer");
-    assert.is(shp.count, clone.count, "clone has same count as original");
+    assert.ok(clone.temporary, "clone is a temporary layer");
+    assert.strictEqual(clone.count, shp.count, "clone has same count as original");
 
 };
 
@@ -48,8 +49,8 @@ exports["test: create(shapefile)"] = function() {
         name: "states"
     });
     
-    assert.isTrue(shp instanceof layer.Layer, "instanceof layer.Layer");
-    assert.is(49, shp.count, "49 features");
+    assert.ok(shp instanceof layer.Layer, "instanceof layer.Layer");
+    assert.strictEqual(shp.count, 49, "49 features");
     
 };
 
@@ -57,8 +58,8 @@ exports["test: create(memory)"] = function() {
     
     var mem = layer.create({});
     
-    assert.isTrue(mem instanceof layer.Layer, "instanceof layer.Layer");
-    assert.isTrue(mem.temporary, "temporary layer");
+    assert.ok(mem instanceof layer.Layer, "instanceof layer.Layer");
+    assert.ok(mem.temporary, "temporary layer");
     
 };
 
@@ -67,6 +68,6 @@ exports["test: (H2)"] = require("./layer/test_h2");
 exports["test: (PostGIS)"] = require("./layer/test_postgis");
 exports["test: (Memory)"] = require("./layer/test_memory");
 
-if (require.main == module) {
-    require("test/runner").run(exports);
+if (require.main == module.id) {
+    require("test").run(exports);
 }

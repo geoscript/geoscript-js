@@ -2,8 +2,8 @@ var Layer = require("geoscript/layer").Layer;
 var COMMON = require("./common");
 var ADMIN = require("../../admin");
 
-exports.setup = ADMIN.shp.setup;
-exports.teardown = ADMIN.shp.teardown;
+exports.setUp = ADMIN.shp.setUp;
+exports.tearDown = ADMIN.shp.tearDown;
 
 var getLayer = function() {
     return new Layer({
@@ -17,6 +17,6 @@ for (var test in COMMON) {
     exports[test] = COMMON[test](getLayer);
 }
 
-if (require.main == module) {
-    require("test/runner").run(exports);
+if (require.main == module.id) {
+    require("test").run(exports);
 }

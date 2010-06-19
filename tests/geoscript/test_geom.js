@@ -1,4 +1,4 @@
-var assert = require("test/assert");
+var assert = require("assert");
 var geom = require("geoscript/geom");
 
 exports["test: create(point)"] = function() {
@@ -8,15 +8,15 @@ exports["test: create(point)"] = function() {
     
     // create a point
     o = geom.create({type: type, coordinates: coordinates});
-    assert.isTrue(o instanceof geom.Point, "point created");
+    assert.ok(o instanceof geom.Point, "point created");
     g = new geom.Point(coordinates);
-    assert.isTrue(g.equals(o), "equivalent to trad point");
+    assert.ok(g.equals(o), "equivalent to trad point");
 
     // create a point with coords only
     o = geom.create(coordinates);
-    assert.isTrue(o instanceof geom.Point, "[coords only] point created");
+    assert.ok(o instanceof geom.Point, "[coords only] point created");
     g = new geom.Point(coordinates);
-    assert.isTrue(g.equals(o), "[coords only] equivalent to trad point");
+    assert.ok(g.equals(o), "[coords only] equivalent to trad point");
 
 };
 
@@ -27,15 +27,15 @@ exports["test: create(linestring)"] = function() {
 
     // create a linestring
     o = geom.create({type: type, coordinates: coordinates});
-    assert.isTrue(o instanceof geom.LineString, "linestring created");
+    assert.ok(o instanceof geom.LineString, "linestring created");
     g = new geom.LineString(coordinates);
-    assert.isTrue(g.equals(o), "equivalent to trad linestring");
+    assert.ok(g.equals(o), "equivalent to trad linestring");
     
     // create a linestring with coords only
     o = geom.create(coordinates);
-    assert.isTrue(o instanceof geom.LineString, "[coords only] linestring created");
+    assert.ok(o instanceof geom.LineString, "[coords only] linestring created");
     g = new geom.LineString(coordinates);
-    assert.isTrue(g.equals(o), "[coords only] equivalent to trad linestring");
+    assert.ok(g.equals(o), "[coords only] equivalent to trad linestring");
 
 };
 
@@ -49,15 +49,15 @@ exports["test: create(polygon)"] = function() {
 
     // create a polygon
     o = geom.create({type: type, coordinates: coordinates});
-    assert.isTrue(o instanceof geom.Polygon, "polygon created");
+    assert.ok(o instanceof geom.Polygon, "polygon created");
     g = new geom.Polygon(coordinates);
-    assert.isTrue(g.equals(o), "equivalent to trad polygon");
+    assert.ok(g.equals(o), "equivalent to trad polygon");
     
     // create a polygon with coords only
     o = geom.create(coordinates);
-    assert.isTrue(o instanceof geom.Polygon, "[coords only] polygon created");
+    assert.ok(o instanceof geom.Polygon, "[coords only] polygon created");
     g = new geom.Polygon(coordinates);
-    assert.isTrue(g.equals(o), "[coords only] equivalent to trad polygon");
+    assert.ok(g.equals(o), "[coords only] equivalent to trad polygon");
 
 };
 
@@ -68,9 +68,9 @@ exports["test: create(multipoint)"] = function() {
 
     // create a multipoint
     o = geom.create({type: type, coordinates: coordinates});
-    assert.isTrue(o instanceof geom.MultiPoint, "multipoint created");
+    assert.ok(o instanceof geom.MultiPoint, "multipoint created");
     g = new geom.MultiPoint(coordinates);
-    assert.isTrue(g.equals(o), "equivalent to trad multipoint");
+    assert.ok(g.equals(o), "equivalent to trad multipoint");
     
     /**
      * MultiPoint and LineString coordinates cannot be disambiguated.
@@ -87,9 +87,9 @@ exports["test: create(multilinestring)"] = function() {
 
     // create a multilinestring
     o = geom.create({type: type, coordinates: coordinates});
-    assert.isTrue(o instanceof geom.MultiLineString, "multilinestring created");
+    assert.ok(o instanceof geom.MultiLineString, "multilinestring created");
     g = new geom.MultiLineString(coordinates);
-    assert.isTrue(g.equals(o), "equivalent to trad multilinestring");
+    assert.ok(g.equals(o), "equivalent to trad multilinestring");
 
     /**
      * MultiLineString and Polygon coordinates cannot be disambiguated.
@@ -111,15 +111,15 @@ exports["test: create(multipolygon)"] = function() {
 
     // create a multipolygon
     o = geom.create({type: type, coordinates: coordinates});
-    assert.isTrue(o instanceof geom.MultiPolygon, "multipolygon created");
+    assert.ok(o instanceof geom.MultiPolygon, "multipolygon created");
     g = new geom.MultiPolygon(coordinates);
-    assert.isTrue(g.equals(o), "equivalent to trad multipolygon");
+    assert.ok(g.equals(o), "equivalent to trad multipolygon");
 
     // create a multipolygon with coords only
     o = geom.create(coordinates);
-    assert.isTrue(o instanceof geom.MultiPolygon, "[coords only] multipolygon created");
+    assert.ok(o instanceof geom.MultiPolygon, "[coords only] multipolygon created");
     g = new geom.MultiPolygon(coordinates);
-    assert.isTrue(g.equals(o), "[coords only] equivalent to trad multipolygon");
+    assert.ok(g.equals(o), "[coords only] equivalent to trad multipolygon");
 
 };
 
@@ -134,8 +134,8 @@ exports["test: create(bounds)"] = function() {
     o = geom.create({
         minx: -180, maxx: 180, miny: -90, maxy: 90
     });
-    assert.isTrue(o instanceof geom.Bounds, "[min/max x/y] bounds created");
-    assert.isTrue(o.equals(b), "[min/max x/y] equivalent to constructor");
+    assert.ok(o instanceof geom.Bounds, "[min/max x/y] bounds created");
+    assert.ok(o.equals(b), "[min/max x/y] equivalent to constructor");
 
     // projection
     b = new geom.Bounds({
@@ -144,16 +144,16 @@ exports["test: create(bounds)"] = function() {
     o = geom.create({
         minx: -180, maxx: 180, miny: -90, maxy: 90, projection: "epsg:4326"
     });
-    assert.isTrue(o instanceof geom.Bounds, "[projection] bounds created");
-    assert.isTrue(o.equals(b), "[projection] equivalent to constructor");
+    assert.ok(o instanceof geom.Bounds, "[projection] bounds created");
+    assert.ok(o.equals(b), "[projection] equivalent to constructor");
 
     // from config
     b = new geom.Bounds({
         minx: -180, maxx: 180, miny: -90, maxy: 90, projection: "epsg:4326"
     });
     o = geom.create(b.config);
-    assert.isTrue(o instanceof geom.Bounds, "[config] bounds created");
-    assert.isTrue(o.equals(b), "[config] equivalent to constructor");
+    assert.ok(o instanceof geom.Bounds, "[config] bounds created");
+    assert.ok(o.equals(b), "[config] equivalent to constructor");
     
 };
 
@@ -163,6 +163,6 @@ exports["test: Polygon"] = require("./geom/test_polygon");
 exports["test: Collection"] = require("./geom/test_collection");
 exports["test: Bounds"] = require("./geom/test_bounds");
 
-if (require.main == module) {
-    require("test/runner").run(exports);
+if (require.main == module.id) {
+    require("test").run(exports);
 }

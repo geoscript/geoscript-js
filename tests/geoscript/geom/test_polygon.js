@@ -1,4 +1,4 @@
-var assert = require("test/assert");
+var assert = require("assert");
 var geom = require("geoscript/geom");
 var proj = require("geoscript/proj");
     
@@ -9,10 +9,10 @@ exports["test: constructor"] = function() {
         [ [-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45] ]
     ]);
     
-    assert.isTrue(p instanceof geom.Geometry, "polygon is a geometry");
-    assert.isTrue(p instanceof geom.Polygon, "polygon is a polygon");
-    assert.is(2, p.coordinates.length, "polygon has two items in coordinates");
-    assert.is(48600, p.area, "polygon has correct area");
+    assert.ok(p instanceof geom.Geometry, "polygon is a geometry");
+    assert.ok(p instanceof geom.Polygon, "polygon is a polygon");
+    assert.strictEqual(p.coordinates.length, 2, "polygon has two items in coordinates");
+    assert.strictEqual(p.area, 48600, "polygon has correct area");
     
 };
 
@@ -23,18 +23,18 @@ exports["test: json"] = function() {
         [ [-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45] ]
     ]);
     var json = g.json;
-    assert.is("string", typeof json, "json is string");
+    assert.strictEqual(typeof json, "string", "json is string");
     var obj, msg;
     try {
-        obj = JSON.decode(json);
+        obj = JSON.parse(json);
     } catch(err) {
         msg = err.message;
     }
     if (obj) {
-        assert.is("Polygon", obj.type, "correct type");
-        assert.isSame(g.coordinates, obj.coordinates, "correct coordinates");
+        assert.strictEqual(obj.type, "Polygon", "correct type");
+        assert.deepEqual(obj.coordinates, g.coordinates, "correct coordinates");
     } else {
-        assert.isTrue(false, "invalid json: " + msg);
+        assert.ok(false, "invalid json: " + msg);
     }
     
 };
@@ -49,15 +49,15 @@ exports["test: bounds"] = function() {
     ]);
     b = g.bounds;
     
-    assert.isTrue(b instanceof geom.Bounds, "is bounds");
-    assert.isSame([-180, -90, 180, 90], b.toArray(), "is correct bounds");
+    assert.ok(b instanceof geom.Bounds, "is bounds");
+    assert.deepEqual([-180, -90, 180, 90], b.toArray(), "is correct bounds");
     
     g.projection = "epsg:4326";
     b = g.bounds;
-    assert.isTrue(b instanceof geom.Bounds, "[projection] is bounds");
-    assert.isSame([-180, -90, 180, 90], b.toArray(), "[projection] is correct bounds");
-    assert.isTrue(b.projection instanceof proj.Projection, "[projection] has projection");
-    assert.is("EPSG:4326", b.projection.id, "[projection] correct projection");
+    assert.ok(b instanceof geom.Bounds, "[projection] is bounds");
+    assert.deepEqual([-180, -90, 180, 90], b.toArray(), "[projection] is correct bounds");
+    assert.ok(b.projection instanceof proj.Projection, "[projection] has projection");
+    assert.strictEqual(b.projection.id, "EPSG:4326", "[projection] correct projection");
 
 };
 
@@ -69,8 +69,8 @@ exports["test: centroid"] = function() {
     ]);
     
     var c = p.centroid;
-    assert.isTrue(c instanceof geom.Point, "centroid is point");
-    assert.isTrue(c.equals(new geom.Point([0, 0])), "correct centroid");
+    assert.ok(c instanceof geom.Point, "centroid is point");
+    assert.ok(c.equals(new geom.Point([0, 0])), "correct centroid");
 
 };
 
@@ -81,14 +81,14 @@ exports["test: clone"] = function() {
         [ [-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45] ]
     ]);
     var c = p.clone();
-    assert.isTrue(c instanceof geom.Polygon, "clone is polygon");
-    assert.isTrue(c.equals(p), "clone is equivalent to original");
+    assert.ok(c instanceof geom.Polygon, "clone is polygon");
+    assert.ok(c.equals(p), "clone is equivalent to original");
     
     c.projection = "EPSG:4326";
-    assert.isTrue(p.projection === undefined, "modifying clone doesn't modify original");
+    assert.ok(p.projection === undefined, "modifying clone doesn't modify original");
     
 }
 
-if (require.main == module) {
-    require("test/runner").run(exports);
+if (require.main == module.id) {
+    require("test").run(exports);
 }

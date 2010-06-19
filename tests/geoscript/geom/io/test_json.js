@@ -1,4 +1,4 @@
-var ASSERT = require("test/assert");
+var ASSERT = require("assert");
 var GEOM = require("geoscript/geom");
 var read = require("geoscript/geom/io/json").read;
 var write = require("geoscript/geom/io/json").write;
@@ -37,7 +37,7 @@ exports["test: read"] = function() {
     for (var i=0, ii=cases.length; i<ii; ++i) {
         c = cases[i];
         if (c.geo === Error) {
-            ASSERT.throwsError(
+            ASSERT.throws(
                 function() {
                     read(c.str);
                 },
@@ -48,18 +48,18 @@ exports["test: read"] = function() {
             got = read(c.str);
             if (c.geo instanceof Array) {
                 if (!(got instanceof Array)) {
-                    ASSERT.isTrue(false, c.id + ": expected array, got " + got);
+                    ASSERT.ok(false, c.id + ": expected array, got " + got);
                 } else {
                     if (got.length !== c.geo.length) {
-                        ASSERT.isTrue(false, c.id + ": expected " + c.geo.length + " geometries, got " + got.length);
+                        ASSERT.ok(false, c.id + ": expected " + c.geo.length + " geometries, got " + got.length);
                     } else {
                         for (var j=0, jj=c.geo.length; j<jj; ++j) {
-                            ASSERT.isTrue(c.geo[j].equals(got[j]), c.id + "[" + j + "]: got equivalent geometry");
+                            ASSERT.ok(c.geo[j].equals(got[j]), c.id + "[" + j + "]: got equivalent geometry");
                         }
                     }
                 }
             } else {
-                ASSERT.isTrue(c.geo.equals(got), c.id + ": got equivalent geometry");
+                ASSERT.ok(c.geo.equals(got), c.id + ": got equivalent geometry");
             }
         }
     }
@@ -76,21 +76,21 @@ exports["test: write"] = function() {
             got = write(c.geo);
             err = false;
             try {
-                gotObj = JSON.decode(got);
+                gotObj = JSON.parse(got);
             } catch (e) {
                 err = true;
             }
             if (!err) {
-                expObj = JSON.decode(c.str);
-                ASSERT.isSame(expObj, gotObj, c.id + ": correctly serialized");
+                expObj = JSON.parse(c.str);
+                ASSERT.deepEquals(gotObj, expObj c.id + ": correctly serialized");
             } else {
-                ASSERT.isTrue(false, c.id + ": invalid json '" + got + "'");
+                ASSERT.ok(false, c.id + ": invalid json '" + got + "'");
             }
         }
     }
     
 };
 
-if (require.main == module) {
-    require("test/runner").run(exports);
+if (require.main == module.id) {
+    require("test").run(exports);
 }

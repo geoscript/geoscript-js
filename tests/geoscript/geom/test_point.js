@@ -1,19 +1,19 @@
-var assert = require("test/assert"),
+var assert = require("assert"),
     geom = require("geoscript/geom");
 
 exports["test: constructor"] = function() {
     
     var p = new geom.Point([1, 2]);
     
-    assert.isTrue(p instanceof geom.Geometry, "point is a geometry");
-    assert.isTrue(p instanceof geom.Point, "point is a point");
-    assert.isEqual(2, p.coordinates.length, "point has two items in coordinates");
-    assert.isEqual(1, p.x, "correct x coordinate");
-    assert.isEqual(2, p.y, "correct y coordinate");
-    assert.isTrue(isNaN(p.z), "no z");
+    assert.ok(p instanceof geom.Geometry, "point is a geometry");
+    assert.ok(p instanceof geom.Point, "point is a point");
+    assert.equal(2, p.coordinates.length, "point has two items in coordinates");
+    assert.equal(1, p.x, "correct x coordinate");
+    assert.equal(2, p.y, "correct y coordinate");
+    assert.ok(isNaN(p.z), "no z");
     
     var p2 = new geom.Point([1, 2, 3]);
-    assert.isEqual(3, p2.z, "3d");
+    assert.equal(3, p2.z, "3d");
     
 };
 
@@ -23,28 +23,28 @@ exports["test: equals"] = function() {
     
     p1 = new geom.Point([1, 2]);
     p2 = new geom.Point([1, 2]);
-    assert.isTrue(p1.equals(p2));
-    assert.isTrue(p2.equals(p1));
+    assert.ok(p1.equals(p2));
+    assert.ok(p2.equals(p1));
     
     p1 = new geom.Point([1, 2]);
     p2 = new geom.Point([2, 3]);
-    assert.isTrue(!p1.equals(p2));
-    assert.isTrue(!p2.equals(p1));
+    assert.ok(!p1.equals(p2));
+    assert.ok(!p2.equals(p1));
     
     p1 = new geom.Point([1, 2, 3]);
     p2 = new geom.Point([1, 2, 3]);
-    assert.isTrue(p1.equals(p2), "[1] 3d");
-    assert.isTrue(p2.equals(p1), "[2] 3d");
+    assert.ok(p1.equals(p2), "[1] 3d");
+    assert.ok(p2.equals(p1), "[2] 3d");
 
     p1 = new geom.Point([1, 2, 3]);
     p2 = new geom.Point([1, 2, 4]);
-    assert.isTrue(p1.equals(p2), "[1] different z");
-    assert.isTrue(p2.equals(p1), "[2] different z");
+    assert.ok(p1.equals(p2), "[1] different z");
+    assert.ok(p2.equals(p1), "[2] different z");
 
     p1 = new geom.Point([1, 2]);
     p2 = new geom.Point([1, 2, 3]);
-    assert.isTrue(p1.equals(p2), "2d == 3d");
-    assert.isTrue(p2.equals(p1), "3d == 2d");
+    assert.ok(p1.equals(p2), "2d == 3d");
+    assert.ok(p2.equals(p1), "3d == 2d");
 
 };
 
@@ -52,18 +52,18 @@ exports["test: json"] = function() {
 
     var g = new geom.Point([1, 2]);
     var json = g.json;
-    assert.is("string", typeof json, "json is string");
+    assert.strictEqual(typeof json, "string", "json is string");
     var obj, msg;
     try {
-        obj = JSON.decode(json);
+        obj = JSON.parse(json);
     } catch(err) {
         msg = err.message;
     }
     if (obj) {
-        assert.is("Point", obj.type, "correct type");
-        assert.isSame(g.coordinates, obj.coordinates, "correct coordinates");
+        assert.strictEqual(obj.type, "Point", "correct type");
+        assert.deepEqual(obj.coordinates, g.coordinates, "correct coordinates");
     } else {
-        assert.isTrue(false, "invalid json: " + msg);
+        assert.ok(false, "invalid json: " + msg);
     }
     
 };
@@ -73,11 +73,11 @@ exports["test: buffer"] = function() {
     var p = new geom.Point([0, 0]);
     var b = p.buffer(1);
     
-    assert.isTrue(b instanceof geom.Polygon, "buffered point creates a polygon");
-    assert.is("3.12", b.area.toFixed(2), "almost PI");
+    assert.ok(b instanceof geom.Polygon, "buffered point creates a polygon");
+    assert.strictEqual(b.area.toFixed(2), "3.12", "almost PI");
     
     b = p.buffer(1, 24);
-    assert.is("3.14", b.area.toFixed(2), "more arc segments, higher accuracy");
+    assert.strictEqual(b.area.toFixed(2), "3.14", "more arc segments, higher accuracy");
 
 };
 
@@ -87,11 +87,11 @@ exports["test: intersection"] = function() {
     var p3 = new geom.Point([1, 1]);
     
     var i12 = p1.intersection(p2);
-    assert.isTrue(i12 instanceof geom.Point, "intersection is point");
-    assert.isTrue(i12.equals(p1), "correct intersection");
+    assert.ok(i12 instanceof geom.Point, "intersection is point");
+    assert.ok(i12.equals(p1), "correct intersection");
     
     var i13 = p1.intersection(p3);
-    assert.isTrue(i13.isEmpty(), "empty intersection");
+    assert.ok(i13.isEmpty(), "empty intersection");
     
 }
 
@@ -101,12 +101,12 @@ exports["test: clone"] = function() {
     p.projection = "EPSG:4326";
     
     var c = p.clone();
-    assert.isTrue(c instanceof geom.Point, "clone is point");
-    assert.isTrue(c.equals(p), "clone equivalent to original");
-    assert.isTrue(!!c.projection, "clone gets a projection");
+    assert.ok(c instanceof geom.Point, "clone is point");
+    assert.ok(c.equals(p), "clone equivalent to original");
+    assert.ok(!!c.projection, "clone gets a projection");
     
 }
 
-if (require.main == module) {
-    require("test/runner").run(exports);
+if (require.main == module.id) {
+    require("test").run(exports);
 }

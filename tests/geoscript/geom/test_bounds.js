@@ -1,11 +1,11 @@
-var assert = require("test/assert");
+var assert = require("assert");
 var geom = require("geoscript/geom");
 var proj = require("geoscript/proj");
 
 exports["test: constructor"] = function() {
     
     var bounds = new geom.Bounds();
-    assert.isTrue(bounds instanceof geom.Bounds, "constructor returns instance");
+    assert.ok(bounds instanceof geom.Bounds, "constructor returns instance");
     
 };
 
@@ -15,10 +15,10 @@ exports["test: minx, miny, maxx, maxy"] = function() {
         minx: -180, maxx: 180, miny: -90, maxy: 90
     });
     
-    assert.is(-180, bounds.minx, "correct minx");
-    assert.is(180, bounds.maxx, "correct maxx");
-    assert.is(-90, bounds.miny, "correct miny");
-    assert.is(90, bounds.maxy, "correct maxy");
+    assert.strictEqual(bounds.minx, -180, "correct minx");
+    assert.strictEqual(bounds.maxx, 180, "correct maxx");
+    assert.strictEqual(bounds.miny, -90, "correct miny");
+    assert.strictEqual(bounds.maxy, 90, "correct maxy");
     
 };
 
@@ -30,27 +30,27 @@ exports["test: projection"] = function() {
     var bounds = new geom.Bounds({
         minx: -180, maxx: 180, miny: -90, maxy: 90
     });
-    assert.is(null, bounds.projection, "projection null by default");
+    assert.strictEqual(bounds.projection, null, "projection null by default");
     
     bounds.projection = gg;
-    assert.isTrue(bounds.projection instanceof proj.Projection, "projection set after construction");
-    assert.isTrue(bounds.projection.equals(gg), "correct projection set after construction");
+    assert.ok(bounds.projection instanceof proj.Projection, "projection set after construction");
+    assert.ok(bounds.projection.equals(gg), "correct projection set after construction");
     
     // with instance
     bounds = new geom.Bounds({
         minx: -180, maxx: 180, miny: -90, maxy: 90,
         projection: gg
     });    
-    assert.isTrue(bounds.projection instanceof proj.Projection, "projection set from instance");
-    assert.isTrue(bounds.projection.equals(gg), "correct projection set from instance");
+    assert.ok(bounds.projection instanceof proj.Projection, "projection set from instance");
+    assert.ok(bounds.projection.equals(gg), "correct projection set from instance");
     
     // with string
     var bounds = new geom.Bounds({
         minx: -180, maxx: 180, miny: -90, maxy: 90,
         projection: "epsg:4326"
     });
-    assert.isTrue(bounds.projection instanceof proj.Projection, "projection set from string");
-    assert.isTrue(bounds.projection.equals(gg), "correct projection set from string");
+    assert.ok(bounds.projection instanceof proj.Projection, "projection set from string");
+    assert.ok(bounds.projection.equals(gg), "correct projection set from string");
     
 };
 
@@ -73,7 +73,7 @@ exports["test: equals"] = function() {
     });
     
     assert.isFalse(b1.equals(b2), "same bounds");
-    assert.isTrue(b1.equals(b3), "different bounds");
+    assert.ok(b1.equals(b3), "different bounds");
     assert.isFalse(b1.equals(b4), "different projection");
     
 };
@@ -93,14 +93,14 @@ exports["test: include"] = function() {
     var line = new geom.LineString([[0, 0], [20, 20]]);
     
     var r = b1.include(b2);
-    assert.isTrue(r === b1, "include returns the bounds");
-    assert.isSame([-11, -9, 10, 10], b1.toArray(), "include bounds works");
+    assert.ok(r === b1, "include returns the bounds");
+    assert.deepEqual([-11, -9, 10, 10], b1.toArray(), "include bounds works");
     
     b1.include(point);
-    assert.isSame([-11, -9, 20, 10], b1.toArray(), "include point works");
+    assert.deepEqual([-11, -9, 20, 10], b1.toArray(), "include point works");
     
     b1.include(line);
-    assert.isSame([-11, -9, 20, 20], b1.toArray(), "include line works");
+    assert.deepEqual([-11, -9, 20, 20], b1.toArray(), "include line works");
     
 };
 
@@ -130,20 +130,20 @@ exports["test: intersects"] = function() {
         minx: 50, maxx: 60, miny: 50, maxy: 50
     });
     
-    assert.isTrue(b.intersects(inside), "inside");
-    assert.isTrue(inside.intersects(b), "r:inside");
-    assert.isTrue(b.intersects(touching1), "touching inside");
-    assert.isTrue(touching1.intersects(b), "r:touching inside");
-    assert.isTrue(b.intersects(touching2), "touching edges");
-    assert.isTrue(touching1.intersects(b), "r:touching edges");
-    assert.isTrue(b.intersects(intersecting), "intersecting");
-    assert.isTrue(intersecting.intersects(b), "r:intersecting");
+    assert.ok(b.intersects(inside), "inside");
+    assert.ok(inside.intersects(b), "r:inside");
+    assert.ok(b.intersects(touching1), "touching inside");
+    assert.ok(touching1.intersects(b), "r:touching inside");
+    assert.ok(b.intersects(touching2), "touching edges");
+    assert.ok(touching1.intersects(b), "r:touching edges");
+    assert.ok(b.intersects(intersecting), "intersecting");
+    assert.ok(intersecting.intersects(b), "r:intersecting");
     assert.isFalse(b.intersects(outside), "outside");
     assert.isFalse(outside.intersects(b), "r:outside");
     
-    assert.isTrue(b.intersects(geom.create([[0, 0], [2, 2]])), "inside line");
-    assert.isTrue(b.intersects(geom.create([[0, 0], [20, 20]])), "intersecting line");
-    assert.isTrue(b.intersects(geom.create([[10, 0], [20, 0]])), "touching line");
+    assert.ok(b.intersects(geom.create([[0, 0], [2, 2]])), "inside line");
+    assert.ok(b.intersects(geom.create([[0, 0], [20, 20]])), "intersecting line");
+    assert.ok(b.intersects(geom.create([[10, 0], [20, 0]])), "touching line");
     assert.isFalse(b.intersects(geom.create([[15, 15], [20, 20]])), "outside line");
     
 };
@@ -155,10 +155,10 @@ exports["test: intersection"] = function() {
     var b3 = geom.Bounds.fromArray([20, 20, 30, 30]);
     
     var r = b1.intersection(b2);
-    assert.isSame([5, 5, 10, 10], r.toArray(), "correct intersection");
+    assert.deepEqual([5, 5, 10, 10], r.toArray(), "correct intersection");
     
     r = b1.intersection(b3);
-    assert.isTrue(r.empty, "empty intersection");
+    assert.ok(r.empty, "empty intersection");
     
 };
 
@@ -184,12 +184,12 @@ exports["test: contains"] = function() {
         minx: 50, maxx: 60, miny: 50, maxy: 50
     });
     
-    assert.isTrue(b.contains(inside), "inside");
-    assert.isTrue(b.contains(touching), "touching");
+    assert.ok(b.contains(inside), "inside");
+    assert.ok(b.contains(touching), "touching");
     assert.isFalse(b.contains(intersecting), "intersecting");
     assert.isFalse(b.contains(outside), "outside");
     
-    assert.isTrue(b.contains(geom.create([[0, 0], [2, 2]])), "inside line");
+    assert.ok(b.contains(geom.create([[0, 0], [2, 2]])), "inside line");
     assert.isFalse(b.contains(geom.create([[0, 0], [20, 20]])), "intersecting line");
     
 };
@@ -202,8 +202,8 @@ exports["test: clone"] = function() {
     
     var c = b.clone();
     
-    assert.isTrue(c instanceof geom.Bounds, "clone is bounds");
-    assert.isTrue(c.equals(b), "clone is equivalent to original");
+    assert.ok(c instanceof geom.Bounds, "clone is bounds");
+    assert.ok(c.equals(b), "clone is equivalent to original");
     
     b.include(new geom.Bounds({
         minx: -180, maxx: 180, miny: -90, maxy: 90, projection: "epsg:4326"
@@ -222,7 +222,7 @@ exports["test: fromArray"] = function() {
     
     var b2 = geom.Bounds.fromArray([-180, -90, 180, 90]);
     
-    assert.isTrue(b1.equals(b2), "bounds from array is equivalent");
+    assert.ok(b1.equals(b2), "bounds from array is equivalent");
     
 };
 
@@ -232,7 +232,7 @@ exports["test: toArray"] = function() {
         minx: -180, maxx: 180, miny: -90, maxy: 90
     });
     
-    assert.isSame([-180, -90, 180, 90], b1.toArray(), "correct array");
+    assert.deepEqual([-180, -90, 180, 90], b1.toArray(), "correct array");
     
 };
 
@@ -249,10 +249,10 @@ exports["test: transform"] = function() {
     var b2 = bounds.transform(mt);
     //259210.89459448296,40589.91024867553,3401247.9728652285,1797356.1848749956
     
-    assert.is(259210, b2.minx | 0, "correct minx");
-    assert.is(40589, b2.miny | 0, "correct miny");
-    assert.is(3401247, b2.maxx | 0, "correct maxx");
-    assert.is(1797356, b2.maxy | 0, "correct maxy");
+    assert.strictEqual(b2.minx | 0, 259210, "correct minx");
+    assert.strictEqual(b2.miny | 0, 40589, "correct miny");
+    assert.strictEqual(b2.maxx | 0, 3401247, "correct maxx");
+    assert.strictEqual(b2.maxy | 0, 1797356, "correct maxy");
     
 };
 
@@ -267,20 +267,20 @@ exports["test: empty"] = function() {
     
     // b1 doesn't intersect b2
     var b3 = b1.intersection(b2);
-    assert.isTrue(b3.empty, "empty intersection");
+    assert.ok(b3.empty, "empty intersection");
     
     // create an empty bounds with no projection
     var empty1 = new geom.Bounds({});
-    assert.isTrue(empty1.empty, "constructed empty with no projection");
-    assert.is(null, empty1.projection, "empty bounds with null projection");
+    assert.ok(empty1.empty, "constructed empty with no projection");
+    assert.strictEqual(empty1.projection, null, "empty bounds with null projection");
 
     // create an empty bounds with projection
     var empty2 = new geom.Bounds({projection: "epsg:4326"});
-    assert.isTrue(empty2.empty, "constructed empty with projection");
-    assert.isTrue(empty2.projection instanceof proj.Projection, "constructed empty with projection");
+    assert.ok(empty2.empty, "constructed empty with projection");
+    assert.ok(empty2.projection instanceof proj.Projection, "constructed empty with projection");
         
 };
 
-if (require.main == module) {
-    require("test/runner").run(exports);
+if (require.main == module.id) {
+    require("test").run(exports);
 }

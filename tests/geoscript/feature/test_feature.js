@@ -1,4 +1,4 @@
-var assert = require("test/assert"),
+var assert = require("assert"),
     geom = require("geoscript/geom"),
     feature = require("geoscript/feature");
 
@@ -12,11 +12,11 @@ exports["test: constructor"] = function() {
     
     var f = new feature.Feature({values: values});
     
-    assert.isTrue(f instanceof feature.Feature, "feature created");
-    assert.is(values.name, f.get("name"), "correct name value");
-    assert.is(values.population, f.get("population"), "correct population value");    
-    assert.is(values.location, f.get("location"), "correct location value using get");
-    assert.is(values.location, f.geometry, "correct location value using geometry");
+    assert.ok(f instanceof feature.Feature, "feature created");
+    assert.strictEqual(f.get("name"), values.name, "correct name value");
+    assert.strictEqual(f.get("population"), values.population, "correct population value");    
+    assert.strictEqual(f.get("location"), values.location, "correct location value using get");
+    assert.strictEqual(f.geometry, values.location, "correct location value using geometry");
     
 };
 
@@ -30,10 +30,10 @@ exports["test: get"] = function() {
     
     var f = new feature.Feature({values: values});
     
-    assert.is("string", typeof f.get("name"), "correct name type");
-    assert.is("Some Location", f.get("name"), "correct name value");
+    assert.strictEqual(typeof f.get("name"), "string", "correct name type");
+    assert.strictEqual(f.get("name"), "Some Location", "correct name value");
     
-    assert.is("undefined", typeof f.get("foo"), "undefined field has undefined value");
+    assert.strictEqual(typeof f.get("foo"), "undefined", "undefined field has undefined value");
     
 };
 
@@ -48,20 +48,20 @@ exports["test: set"] = function() {
     var f = new feature.Feature({values: values});
     
     f.set("name", "New Name");
-    assert.is("New Name", f.get("name"), "correct new name value");
+    assert.strictEqual(f.get("name"), "New Name", "correct new name value");
     
     f.set("population", 150);
-    assert.is(150, f.get("population"), "correct new population value");    
+    assert.strictEqual(f.get("population"), 150, "correct new population value");    
     
     var point = new geom.Point([2, 3]);
     f.set("location", point);
-    assert.isTrue(point.equals(f.get("location")), "correct new location value using get");
-    assert.isTrue(point.equals(f.geometry), "correct new location value using geometry");
+    assert.ok(point.equals(f.get("location")), "correct new location value using get");
+    assert.ok(point.equals(f.geometry), "correct new location value using geometry");
     
     point = new geom.Point([3, 4]);
     point.projection = "EPSG:4326";
     f.geometry = point;
-    assert.isTrue(point.equals(f.geometry), "geometry correctly set");    
+    assert.ok(point.equals(f.geometry), "geometry correctly set");    
     
 };
 
@@ -75,17 +75,17 @@ exports["test: bounds"] = function() {
     
     // test no geometry
     f = new feature.Feature({schema: schema});
-    assert.is(undefined, f.bounds, "undefined for no geometry");
+    assert.strictEqual(f.bounds, undefined, "undefined for no geometry");
     
     // test point
     g = new geom.Point([1, 2]);
     f.set("location", g);
-    assert.isTrue(g.bounds.equals(f.bounds), "point bounds");
+    assert.ok(g.bounds.equals(f.bounds), "point bounds");
 
     // test linestring
     g = new geom.LineString([[0, 5], [10, 15]]);
     f.set("location", g);
-    assert.isTrue(g.bounds.equals(f.bounds), "linestring bounds");    
+    assert.ok(g.bounds.equals(f.bounds), "linestring bounds");    
     
 };
 
@@ -102,22 +102,22 @@ exports["test: json"] = function() {
     var json = f.json;
     var obj, msg;
     try {
-        obj = JSON.decode(json);
+        obj = JSON.parse(json);
     } catch(err) {
         msg = err.message;
     }
     if (obj) {
-        assert.is("Feature", obj.type, "correct type");
+        assert.strictEqual(obj.type, "Feature", "correct type");
         var props = {
             name: values.name,
             population: values.population
         };
-        assert.isSame(props, obj.properties, "correct properties");
+        assert.deepEqual(obj.properties, props, "correct properties");
         var g = obj.geometry;
-        assert.is("Point", g.type, "correct geometry type");
-        assert.isSame([1, 2], g.coordinates, "correct geometry coordinates");
+        assert.strictEqual(g.type, "Point", "correct geometry type");
+        assert.deepEqual([1, 2], g.coordinates, "correct geometry coordinates");
     } else {
-        assert.isTrue(false, "invalid json: " + msg);
+        assert.ok(false, "invalid json: " + msg);
     }
     
 };
@@ -136,17 +136,17 @@ exports["test: clone"] = function() {
     var f = new feature.Feature({values: values});
     var c = f.clone();
     
-    assert.isTrue(c instanceof feature.Feature, "clone is feature");
-    assert.is(100, c.get("population"), "population from original");
+    assert.ok(c instanceof feature.Feature, "clone is feature");
+    assert.strictEqual(c.get("population"), 100, "population from original");
     
     c.set("population", 150);
-    assert.is(150, c.get("population"), "set population on clone");
-    assert.is(100, f.get("population"), "original is unmodified");
+    assert.strictEqual(c.get("population"), 150, "set population on clone");
+    assert.strictEqual(f.get("population"), 100, "original is unmodified");
     
     var c2 = f.clone({
         values: {population: 200}
     });
-    assert.is(200, c2.get("population"), "clone extended with value from config");
+    assert.strictEqual(c2.get("population"), 200, "clone extended with value from config");
     
     var c3 = f.clone({
         schema: {
@@ -156,11 +156,11 @@ exports["test: clone"] = function() {
             ]
         }
     });
-    assert.is(undefined, c3.get("population"), "clone limited to provided schema");
-    assert.is("Some Location", c3.get("name"), "clone given name from original");
+    assert.strictEqual(c3.get("population"), undefined, "clone limited to provided schema");
+    assert.strictEqual(c3.get("name"), "Some Location", "clone given name from original");
     
 };
 
-if (require.main == module) {
-    require("test/runner").run(exports);
+if (require.main == module.id) {
+    require("test").run(exports);
 }

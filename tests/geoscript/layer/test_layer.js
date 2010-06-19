@@ -1,24 +1,24 @@
-var assert = require("test/assert");
+var assert = require("assert");
 var Layer = require("geoscript/layer").Layer;
 var geom = require("geoscript/geom");
 
 var admin = require("../../admin");
 
 var shpDir = admin.shp.dest;
-exports.setup = admin.shp.setup;
-exports.teardown = admin.shp.teardown;
+exports.setUp = admin.shp.setUp;
+exports.tearDown = admin.shp.tearDown;
 
 exports["test: constructor"] = function() {
 
     var l = new Layer();
-    assert.isTrue(l instanceof Layer, "instanceof Layer");
+    assert.ok(l instanceof Layer, "instanceof Layer");
 
 };
 
 exports["test: temporary"] = function() {
     
     var temp = new Layer({});
-    assert.isTrue(temp.temporary);
+    assert.ok(temp.temporary);
         
     var shp = new Layer({
         workspace: shpDir,
@@ -35,13 +35,13 @@ exports["test: clone"] = function() {
 
     // create a clone without providing a name
     clone = temp.clone();
-    assert.isTrue(clone instanceof Layer, "clone is a Layer");
-    assert.isTrue(typeof clone.name === "string", "clone has a name");
-    assert.isTrue(clone.name !== temp.name, "clone gets a new name");
+    assert.ok(clone instanceof Layer, "clone is a Layer");
+    assert.ok(typeof clone.name === "string", "clone has a name");
+    assert.ok(clone.name !== temp.name, "clone gets a new name");
     
     // create a clone with a new name
     clone = temp.clone("bar");
-    assert.is("bar", clone.name, "clone can be given a new name");
+    assert.strictEqual(clone.name, "bar", "clone can be given a new name");
     
     // clone an existing layer with features
     var shp = new Layer({
@@ -49,15 +49,15 @@ exports["test: clone"] = function() {
         name: "states"
     });
     // confim that original has a projection set
-    assert.isTrue(!!shp.projection, "original has projection");
+    assert.ok(!!shp.projection, "original has projection");
     
     clone = shp.clone();
-    assert.isTrue(clone.temporary, "clone is a temporary layer");
-    assert.is(shp.count, clone.count, "clone has same count as original");
-    assert.isTrue(shp.projection.equals(clone.projection), "clone projection equals original");
+    assert.ok(clone.temporary, "clone is a temporary layer");
+    assert.strictEqual(clone.count, shp.count, "clone has same count as original");
+    assert.ok(shp.projection.equals(clone.projection), "clone projection equals original");
 
 };
 
-if (require.main == module) {
-    require("test/runner").run(exports);
+if (require.main == module.id) {
+    require("test").run(exports);
 }

@@ -10,8 +10,8 @@ try {
     FS = require("file");
 }
 
-exports.setup = ADMIN.h2.setup;
-exports.teardown = ADMIN.h2.teardown;
+exports.setUp = ADMIN.h2.setUp;
+exports.tearDown = ADMIN.h2.tearDown;
 
 var database = FS.join(ADMIN.h2.dest, "geoscript");
 
@@ -27,6 +27,6 @@ for (var test in COMMON) {
     exports[test] = COMMON[test](getLayer);
 }
 
-if (require.main == module) {
-    require("test/runner").run(exports);
+if (require.main == module.id) {
+    require("test").run(exports);
 }

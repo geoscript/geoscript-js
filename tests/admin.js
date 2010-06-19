@@ -29,9 +29,6 @@ try {
     unzip = ZIP.unzip;
 }
 
-var zip = require("zip");
-
-
 var FS;
 try {
     // CommonJS
@@ -50,11 +47,11 @@ var meta = {
     shp: {
         source: path("data/states.shp.zip"),
         dest: path("tmp/shp"),
-        setup: function() {
-            meta.shp.teardown();
+        setUp: function() {
+            meta.shp.tearDown();
             unzip(meta.shp.source, meta.shp.dest);
         },
-        teardown: function() {
+        tearDown: function() {
             if (FS.exists(meta.shp.dest)) {
                 FS.removeTree(meta.shp.dest);                
             }
@@ -63,11 +60,11 @@ var meta = {
     h2: {
         source: path("data/h2.zip"),
         dest: path("tmp/h2"),
-        setup: function() {
-            meta.h2.teardown();
+        setUp: function() {
+            meta.h2.tearDown();
             unzip(meta.h2.source, meta.h2.dest);
         },
-        teardown: function() {
+        tearDown: function() {
             if (FS.exists(meta.h2.dest)) {
                 Packages.org.h2.tools.DeleteDbFiles.execute(meta.h2.dest, "geoscript", true);
                 FS.removeTree(meta.h2.dest);
@@ -76,7 +73,7 @@ var meta = {
     },
     pg: {
         driver: new Packages.org.postgresql.Driver,
-        setup: function() {
+        setUp: function() {
             var uri = "jdbc:postgresql:geoscript";
             var params = new java.util.Properties();
             params.setProperty("user", "postgres");

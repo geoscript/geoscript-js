@@ -1,19 +1,19 @@
-var assert = require("test/assert");
+var assert = require("assert");
 var workspace = require("geoscript/workspace");
 var layer = require("geoscript/layer");
 
 var admin = require("../../admin");
 
 var dataDir = admin.shp.dest;
-exports.setup = admin.shp.setup;
-exports.teardown = admin.shp.teardown;
+exports.setUp = admin.shp.setUp;
+exports.tearDown = admin.shp.tearDown;
 
 exports["test: constructor"] = function() {
 
     var dir = new workspace.Directory();
     
-    assert.isTrue(dir instanceof workspace.Workspace, "instanceof Workspace");
-    assert.isTrue(dir instanceof workspace.Directory, "instanceof Directory"); 
+    assert.ok(dir instanceof workspace.Workspace, "instanceof Workspace");
+    assert.ok(dir instanceof workspace.Directory, "instanceof Directory"); 
     
     dir.close();   
 
@@ -23,7 +23,7 @@ exports["test: names"] = function() {
 
     var dir = new workspace.Directory(dataDir);    
 
-    assert.isSame(["states"], dir.names, "dir.names is array of string names");
+    assert.deepEqual(dir.names, ["states"], "dir.names is array of string names");
 
     dir.close();   
     
@@ -34,13 +34,13 @@ exports["test: get"] = function() {
     var dir = new workspace.Directory(dataDir);
     var l = dir.get(dir.names[0]);
     
-    assert.isTrue(l instanceof layer.Layer, "get returns a layer instance");
+    assert.ok(l instanceof layer.Layer, "get returns a layer instance");
 
     dir.close();   
     
 };
 
-if (require.main == module) {
-    require("test/runner").run(exports);
+if (require.main == module.id) {
+    require("test").run(exports);
 }
 
