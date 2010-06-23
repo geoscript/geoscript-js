@@ -17,4 +17,5 @@ Modules
     proj
     layer
     workspace
+    style
 
