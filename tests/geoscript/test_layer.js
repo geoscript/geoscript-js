@@ -4,7 +4,6 @@ var geom = require("geoscript/geom");
 var admin = require("../admin");
 
 var shpDir = admin.shp.dest;
-print("shpDir: " + shpDir);
 exports.setUp = admin.shp.setUp;
 exports.tearDown = admin.shp.tearDown;
 
