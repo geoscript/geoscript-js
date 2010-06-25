@@ -1,6 +1,7 @@
 var assert = require("assert");
 var Layer = require("geoscript/layer").Layer;
 var geom = require("geoscript/geom");
+var STYLE = require("geoscript/style");
 
 var admin = require("../../admin");
 
@@ -26,6 +27,29 @@ exports["test: temporary"] = function() {
     });
     assert.isFalse(shp.temporary);
     
+};
+
+exports["test: style (single symbolizer)"] = function() {
+    
+    var layer = new Layer({
+        workspace: shpDir,
+        name: "states"
+    });
+    var rule, symbolizer;
+    
+    // test single symbolizer
+    layer.style = {
+        strokeColor: "#ff0000"
+    };
+    assert.ok(layer.style instanceof STYLE.Style, "style object");
+    assert.equal(layer.style.rules.length, 1, "rules length 1");
+    var rule = layer.style.rules[0];
+    assert.ok(rule instanceof STYLE.Rule, "rule created");
+    assert.equal(rule.symbolizers.length, 1, "symbolizers length 1");
+    var symbolizer = rule.symbolizers[0];
+    assert.ok(symbolizer instanceof STYLE.PolygonSymbolizer, "poly symbolizer");
+    assert.equal(symbolizer.strokeColor, "#ff0000", "correct fill color");
+
 };
 
 exports["test: clone"] = function() {
