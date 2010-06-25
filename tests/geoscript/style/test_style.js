@@ -23,7 +23,7 @@ exports["test: _style (simple)"] = function() {
     var _style = style._style;
     ASSERT.ok(_style instanceof geotools.styling.Style, "_style instanceof geotools Style");
     
-    var featureTypeStyles = _style.getFeatureTypeStyles();
+    var featureTypeStyles = _style.featureTypeStyles();
     ASSERT.equal(featureTypeStyles.size(), 1, "one feature type style");
     
     var rules = featureTypeStyles.get(0).getRules();
@@ -77,7 +77,7 @@ exports["test: _style (multiple featureTypeStyle)"] = function() {
     var _style = style._style;
     ASSERT.ok(_style instanceof geotools.styling.Style, "_style instanceof geotools Style");
     
-    var featureTypeStyles = _style.getFeatureTypeStyles();
+    var featureTypeStyles = _style.featureTypeStyles();
     ASSERT.equal(featureTypeStyles.size(), 2, "two feature type styles");
     
     var rules = featureTypeStyles.get(0).getRules();
