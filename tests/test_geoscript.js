@@ -4,6 +4,7 @@ exports["test: feature"] = require("./geoscript/test_feature");
 exports["test: filter"] = require("./geoscript/test_filter");
 exports["test: layer"] = require("./geoscript/test_layer");
 exports["test: workspace"] = require("./geoscript/test_workspace");
+exports["test: map"] = require("./geoscript/test_map");
 exports["test: util"] = require("./geoscript/test_util");
 
 if (require.main == module.id) {
