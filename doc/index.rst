@@ -2,7 +2,7 @@ GeoScript JS
 ============
 
 GeoScript JS is a JavaScript implementation of GeoScript packaged for the
-Narwhal_ platform.
+RingoJS_ platform (or any other CommonJS_ module loader based on Rhino).
 
   :ref:`Quickstart <quickstart>` 
     Get up and running with GeoScript 
@@ -25,4 +25,5 @@ Narwhal_ platform.
     download
 
 
-.. _Narwhal: http://narwhaljs.org
+.. _RingoJS: http://ringojs.org/
+.. _CommonJS: http://commonjs.org/
