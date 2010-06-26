@@ -3,85 +3,74 @@
 Quick Start
 ===========
 
-GeoScript JS is packaged for the Narwhal_ platform.
+GeoScript JS is packaged for the RingoJS_ platform (but should work on other 
+CommonJS_ module loaders based on Rhino).
 
-Getting Narwhal
+Getting RingoJS
 ---------------
 
-You can get Narwhal by downloading and extracting a zip archive, or cloning the
-repository from GitHub.
+GeoScript currently requires that you get the latest RingoJS source from GitHub.
+In order to get the latest RingoJS running, you'll need Git_ and Ant_.
 
-Download the `zip archive <http://github.com/280north/narwhal/zipball/master>`__ 
-and extract it somewhere on your system (I'll assume your home directory here).
+First, clone the RingoJS repository (alternatively you can `download the latest 
+<http://github.com/ringo/ringojs/zipball/master>`__)::
 
-*or*
+    git clone git://github.com/ringo/ringojs.git
 
-Clone the repository::
+Change into the ``ringojs`` directory and build with Ant::
 
-    ~$ git clone git://github.com/280north/narwhal.git
+    ant jar
 
-Now put the `narwhal` executable on your PATH::
+At this point, you should be able to confirm that RingoJS is working.  From the
+``ringojs`` directory, start up the RingoJS shell::
 
-    ~$ export PATH=$PATH:~/narwhal/bin
+    bin/ringo
 
-With this, you should be able to confirm that Narwhal is working. Open a
-JavaScript console to test this::
-
-    ~$ narwhal
-
-You should be able to execute JavaScript statements here. When you are convinced
-things work, ``quit()``. If things don't work, see the Narwhal_ site for more
-details.
+You should be able to execute JavaScript statements in the shell. When you are 
+convinced things work, ``quit()``. If things don't work, see the RingoJS_ site 
+for more details.
 
 
 Getting GeoScript JS
 --------------------
 
 Download the latest GeoScript JS source from the :ref:`downloads <download>`
-page.  Extract the source somewhere on your system (I'll assume you extract it 
-to your home directory).
+page.  Extract the source to your ``ringojs/packages`` directory.  Alternatively
+you can use ``ringo-admin`` to install the latest from GitHub::
 
-*or*
-
-Clone the repository from GitHub::
-
-    ~$ git clone git://github.com/tschaub/geoscript-js.git
+    bin/ringo-admin install tschaub/geoscript-js
 
 
 Running GeoScript JS
 --------------------
 
 After getting the package source, you can open the JavaScript console and import
-any of the GeoScript modules. First, you need to activate your environment so
-Narwhal knows how to load the modules::
-
-    ~$ cd geoscript
-    ~/geoscript$ bin/sea
-
-Now open a JavaScript console and experiment with GeoScript:
+any of the GeoScript modules.
 
 .. code-block:: javascript
 
-    ~/geoscript$ js
-    Rhino 1.7 release 3 PRERELEASE 2009 04 05
-    js> var GEOM = require("geoscript/geom");
-    js> var p1 = new GEOM.Point([0, 0]);
-    js> var p2 = new GEOM.Point([10, 20]);
-    js> p1.distance(p2);
+    ~/ringojs$ bin/ringo
+
+    >> var GEOM = require("geoscript/geom");
+    >> var p1 = new GEOM.Point([0, 0]);
+    >> var p2 = new GEOM.Point([10, 20]);
+    >> p1.distance(p2);
     22.360679774997898
-    js> var poly = p2.buffer(23);
-    js> poly.contains(p1)
+    >> var poly = p2.buffer(23);
+    >> poly.contains(p1)
     true
-    js> quit()
+    >> quit()
 
 
 Running Tests
 -------------
 
-After activating your environment (``bin/sea``), you can run all tests with the
-following::
+You can run all the tests with the following::
 
-    ~/geoscript$ js tests/all.js
+    bin/ringo packages/geoscript/tests/all.js
 
 
-.. _Narwhal: http://narwhaljs.org
+.. _RingoJS: http://ringojs.org/
+.. _CommonJS: http://commonjs.org/
+.. _Git: http://git-scm.com/
+.. _Ant: http://ant.apache.org/
