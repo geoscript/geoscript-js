@@ -20,9 +20,7 @@ exports.index = function(req) {
 
     return skinResponse("skins/index.html", {
         host: req.host,
-        port: req.port,
-        scriptName: req.scriptName,
-        pathInfo: req.pathInfo
+        port: req.port
     });
 
 };
