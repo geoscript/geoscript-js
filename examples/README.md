@@ -12,5 +12,5 @@ running the examples, create a data directory in this examples directory and
 extract the test data.  This can be accomplished by running the setup.js script 
 in this same directory.
 
-    $ js setup.js
+    ringo examples/setup.js
 
