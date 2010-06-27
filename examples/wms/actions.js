@@ -8,6 +8,7 @@ var Map = require("geoscript/map").Map;
 var map = new Map({
     layers: [{
         name: "states",
+        title: "US States",
         workspace: FS.join(module.directory, "..", "data", "shapefiles"),
         style: {
             fillColor: "steelblue",
@@ -20,7 +21,8 @@ exports.index = function(req) {
 
     return skinResponse("skins/index.html", {
         host: req.host,
-        port: req.port
+        port: req.port,
+        layers: map.layers
     });
 
 };

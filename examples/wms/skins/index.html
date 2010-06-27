@@ -3,6 +3,7 @@
     <head>
         <title>GeoScript WMS Example</title>
         <link rel="stylesheet" type="text/css" href="http://openlayers.org/api/theme/default/style.css">
+        <link rel="shortcut icon" href="/static/favicon.ico">
         <script src="http://openlayers.org/api/OpenLayers.js"></script>
         <style>
             #map {
@@ -22,13 +23,8 @@
                         "Global Imagery",
                         "http://maps.opengeo.org/geowebcache/service/wms", 
                         {layers: "bluemarble"} 
-                    ),
-                    new OpenLayers.Layer.WMS(
-                        "GeoScript WMS",
-                        "http://<% host %>:<% port %>/wms", 
-                        {layers: "states"},
-                        {isBaseLayer: false, buffer: 0, opacity: 0.7}
-                    ) 
+                    )
+                    <% for layer in <% layers %> render layer %>
                 ],
                 center: new OpenLayers.LonLat(-98.28, 37.85),
                 zoom: 3
@@ -37,3 +33,11 @@
         </script>
     </body>
 </html>
+
+<% subskin "layer" %>
+    , new OpenLayers.Layer.WMS(
+        "GeoScript WMS - <% layer.title %>",
+        "http://<% host %>:<% port %>/wms", 
+        {layers: "<% layer.name %>"},
+        {isBaseLayer: false, buffer: 0, opacity: 0.7}
+    ) 

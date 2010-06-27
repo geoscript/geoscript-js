@@ -3,3 +3,7 @@ exports.urls = [
 ];
 
 exports.app = require("ringo/webapp").handleRequest;
+
+exports.httpConfig = {
+    staticDir: "static"
+};
