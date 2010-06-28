@@ -29,12 +29,26 @@ exports["test: names"] = function() {
     
 };
 
+exports["test: layers"] = function() {
+
+    var dir = new workspace.Directory(dataDir);    
+    var layers = dir.layers;
+    assert.ok(layers instanceof Array, "got layers array");
+    assert.equal(layers.length, 1, "one layer in workspace");
+    assert.ok(layers[0] instanceof layer.Layer, "first element is layer");
+
+    dir.close();   
+    
+};
+
 exports["test: get"] = function() {
 
     var dir = new workspace.Directory(dataDir);
     var l = dir.get(dir.names[0]);
     
     assert.ok(l instanceof layer.Layer, "get returns a layer instance");
+    
+    assert.throws(function() {dir.get("foo")}, Error, "getting invalid name throws error");
 
     dir.close();   
     
