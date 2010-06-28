@@ -52,6 +52,39 @@ exports["test: style (single symbolizer)"] = function() {
 
 };
 
+exports["test: style (multiple symbolizers)"] = function() {
+    
+    var layer = new Layer({
+        workspace: shpDir,
+        name: "states"
+    });
+    var rule, symbolizer;
+    
+    // test array of symbolizers
+    layer.style = [{
+        strokeColor: "#ff0000",
+        strokeWidth: 2
+    }, {
+        strokeColor: "blue",
+        strokeWidth: 1
+    }];
+    assert.ok(layer.style instanceof STYLE.Style, "style object");
+    assert.equal(layer.style.rules.length, 1, "rules length 1");
+    var rule = layer.style.rules[0];
+    assert.ok(rule instanceof STYLE.Rule, "rule created");
+    assert.equal(rule.symbolizers.length, 2, "symbolizers length 2");
+    var symbolizer = rule.symbolizers[0];
+    assert.ok(symbolizer instanceof STYLE.PolygonSymbolizer, "first is poly symbolizer");
+    assert.equal(symbolizer.strokeColor, "#ff0000", "first has correct stroke color");
+    assert.equal(symbolizer.strokeWidth, 2, "first has correct stroke width");
+
+    symbolizer = rule.symbolizers[1];
+    assert.ok(symbolizer instanceof STYLE.PolygonSymbolizer, "second is poly symbolizer");
+    assert.equal(symbolizer.strokeColor, "#0000ff", "second has correct stroke color");
+    assert.equal(symbolizer.strokeWidth, 1, "second has correct stroke width");
+
+};
+
 exports["test: clone"] = function() {
 
     var clone;
