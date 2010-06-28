@@ -27,6 +27,9 @@ exports["test: strokeColor"] = function() {
 
     symbolizer.strokeColor = "#ff0000";
     ASSERT.strictEqual(symbolizer.strokeColor, "#ff0000", "stroke color properly set");
+
+    symbolizer.strokeColor = "yellow";
+    ASSERT.strictEqual(symbolizer.strokeColor, "#ffff00", "stroke color properly set with color name");
     
 };
 
@@ -56,7 +59,10 @@ exports["test: fillColor"] = function() {
     ASSERT.strictEqual(symbolizer.fillColor, "#808080", "fill color gray by default");
 
     symbolizer.fillColor = "#00FF00";
-    ASSERT.strictEqual(symbolizer.fillColor, "#00FF00", "fill color properly set");
+    ASSERT.strictEqual(symbolizer.fillColor, "#00ff00", "fill color properly set");
+
+    symbolizer.fillColor = "green";
+    ASSERT.strictEqual(symbolizer.fillColor, "#008000", "fill color properly set with color name");
 
 };
 

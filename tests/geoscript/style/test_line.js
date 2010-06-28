@@ -21,10 +21,13 @@ exports["test: constructor"] = function() {
 exports["test: strokeColor"] = function() {
     
     var symbolizer = new STYLE.LineSymbolizer({});
-
     ASSERT.strictEqual(symbolizer.strokeColor, "#000000", "stroke color black by default");
+
     symbolizer.strokeColor = "#ff0000";
     ASSERT.strictEqual(symbolizer.strokeColor, "#ff0000", "stroke color properly set");
+
+    symbolizer.strokeColor = "silver";
+    ASSERT.strictEqual(symbolizer.strokeColor, "#c0c0c0", "stroke color properly set with color name");
     
 };
 
