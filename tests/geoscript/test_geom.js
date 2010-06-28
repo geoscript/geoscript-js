@@ -1,5 +1,5 @@
-var assert = require("assert");
-var geom = require("geoscript/geom");
+var ASSERT = require("assert");
+var GEOM = require("geoscript/geom");
 
 exports["test: create(point)"] = function() {
     var type = "Point";
@@ -7,16 +7,16 @@ exports["test: create(point)"] = function() {
     var o, g;
     
     // create a point
-    o = geom.create({type: type, coordinates: coordinates});
-    assert.ok(o instanceof geom.Point, "point created");
-    g = new geom.Point(coordinates);
-    assert.ok(g.equals(o), "equivalent to trad point");
+    o = GEOM.create({type: type, coordinates: coordinates});
+    ASSERT.ok(o instanceof GEOM.Point, "point created");
+    g = new GEOM.Point(coordinates);
+    ASSERT.ok(g.equals(o), "equivalent to trad point");
 
     // create a point with coords only
-    o = geom.create(coordinates);
-    assert.ok(o instanceof geom.Point, "[coords only] point created");
-    g = new geom.Point(coordinates);
-    assert.ok(g.equals(o), "[coords only] equivalent to trad point");
+    o = GEOM.create(coordinates);
+    ASSERT.ok(o instanceof GEOM.Point, "[coords only] point created");
+    g = new GEOM.Point(coordinates);
+    ASSERT.ok(g.equals(o), "[coords only] equivalent to trad point");
 
 };
 
@@ -26,16 +26,16 @@ exports["test: create(linestring)"] = function() {
     var o, g;
 
     // create a linestring
-    o = geom.create({type: type, coordinates: coordinates});
-    assert.ok(o instanceof geom.LineString, "linestring created");
-    g = new geom.LineString(coordinates);
-    assert.ok(g.equals(o), "equivalent to trad linestring");
+    o = GEOM.create({type: type, coordinates: coordinates});
+    ASSERT.ok(o instanceof GEOM.LineString, "linestring created");
+    g = new GEOM.LineString(coordinates);
+    ASSERT.ok(g.equals(o), "equivalent to trad linestring");
     
     // create a linestring with coords only
-    o = geom.create(coordinates);
-    assert.ok(o instanceof geom.LineString, "[coords only] linestring created");
-    g = new geom.LineString(coordinates);
-    assert.ok(g.equals(o), "[coords only] equivalent to trad linestring");
+    o = GEOM.create(coordinates);
+    ASSERT.ok(o instanceof GEOM.LineString, "[coords only] linestring created");
+    g = new GEOM.LineString(coordinates);
+    ASSERT.ok(g.equals(o), "[coords only] equivalent to trad linestring");
 
 };
 
@@ -48,16 +48,16 @@ exports["test: create(polygon)"] = function() {
     var o, g;
 
     // create a polygon
-    o = geom.create({type: type, coordinates: coordinates});
-    assert.ok(o instanceof geom.Polygon, "polygon created");
-    g = new geom.Polygon(coordinates);
-    assert.ok(g.equals(o), "equivalent to trad polygon");
+    o = GEOM.create({type: type, coordinates: coordinates});
+    ASSERT.ok(o instanceof GEOM.Polygon, "polygon created");
+    g = new GEOM.Polygon(coordinates);
+    ASSERT.ok(g.equals(o), "equivalent to trad polygon");
     
     // create a polygon with coords only
-    o = geom.create(coordinates);
-    assert.ok(o instanceof geom.Polygon, "[coords only] polygon created");
-    g = new geom.Polygon(coordinates);
-    assert.ok(g.equals(o), "[coords only] equivalent to trad polygon");
+    o = GEOM.create(coordinates);
+    ASSERT.ok(o instanceof GEOM.Polygon, "[coords only] polygon created");
+    g = new GEOM.Polygon(coordinates);
+    ASSERT.ok(g.equals(o), "[coords only] equivalent to trad polygon");
 
 };
 
@@ -67,10 +67,10 @@ exports["test: create(multipoint)"] = function() {
     var o, g;
 
     // create a multipoint
-    o = geom.create({type: type, coordinates: coordinates});
-    assert.ok(o instanceof geom.MultiPoint, "multipoint created");
-    g = new geom.MultiPoint(coordinates);
-    assert.ok(g.equals(o), "equivalent to trad multipoint");
+    o = GEOM.create({type: type, coordinates: coordinates});
+    ASSERT.ok(o instanceof GEOM.MultiPoint, "multipoint created");
+    g = new GEOM.MultiPoint(coordinates);
+    ASSERT.ok(g.equals(o), "equivalent to trad multipoint");
     
     /**
      * MultiPoint and LineString coordinates cannot be disambiguated.
@@ -86,10 +86,10 @@ exports["test: create(multilinestring)"] = function() {
     var o, g;
 
     // create a multilinestring
-    o = geom.create({type: type, coordinates: coordinates});
-    assert.ok(o instanceof geom.MultiLineString, "multilinestring created");
-    g = new geom.MultiLineString(coordinates);
-    assert.ok(g.equals(o), "equivalent to trad multilinestring");
+    o = GEOM.create({type: type, coordinates: coordinates});
+    ASSERT.ok(o instanceof GEOM.MultiLineString, "multilinestring created");
+    g = new GEOM.MultiLineString(coordinates);
+    ASSERT.ok(g.equals(o), "equivalent to trad multilinestring");
 
     /**
      * MultiLineString and Polygon coordinates cannot be disambiguated.
@@ -110,16 +110,16 @@ exports["test: create(multipolygon)"] = function() {
     var o, g;
 
     // create a multipolygon
-    o = geom.create({type: type, coordinates: coordinates});
-    assert.ok(o instanceof geom.MultiPolygon, "multipolygon created");
-    g = new geom.MultiPolygon(coordinates);
-    assert.ok(g.equals(o), "equivalent to trad multipolygon");
+    o = GEOM.create({type: type, coordinates: coordinates});
+    ASSERT.ok(o instanceof GEOM.MultiPolygon, "multipolygon created");
+    g = new GEOM.MultiPolygon(coordinates);
+    ASSERT.ok(g.equals(o), "equivalent to trad multipolygon");
 
     // create a multipolygon with coords only
-    o = geom.create(coordinates);
-    assert.ok(o instanceof geom.MultiPolygon, "[coords only] multipolygon created");
-    g = new geom.MultiPolygon(coordinates);
-    assert.ok(g.equals(o), "[coords only] equivalent to trad multipolygon");
+    o = GEOM.create(coordinates);
+    ASSERT.ok(o instanceof GEOM.MultiPolygon, "[coords only] multipolygon created");
+    g = new GEOM.MultiPolygon(coordinates);
+    ASSERT.ok(g.equals(o), "[coords only] equivalent to trad multipolygon");
 
 };
 
@@ -128,32 +128,32 @@ exports["test: create(bounds)"] = function() {
     var b, o;
     
     // min/max x/y
-    b = new geom.Bounds({
+    b = new GEOM.Bounds({
         minx: -180, maxx: 180, miny: -90, maxy: 90
     });
-    o = geom.create({
+    o = GEOM.create({
         minx: -180, maxx: 180, miny: -90, maxy: 90
     });
-    assert.ok(o instanceof geom.Bounds, "[min/max x/y] bounds created");
-    assert.ok(o.equals(b), "[min/max x/y] equivalent to constructor");
+    ASSERT.ok(o instanceof GEOM.Bounds, "[min/max x/y] bounds created");
+    ASSERT.ok(o.equals(b), "[min/max x/y] equivalent to constructor");
 
     // projection
-    b = new geom.Bounds({
+    b = new GEOM.Bounds({
         minx: -180, maxx: 180, miny: -90, maxy: 90, projection: "epsg:4326"
     });
-    o = geom.create({
+    o = GEOM.create({
         minx: -180, maxx: 180, miny: -90, maxy: 90, projection: "epsg:4326"
     });
-    assert.ok(o instanceof geom.Bounds, "[projection] bounds created");
-    assert.ok(o.equals(b), "[projection] equivalent to constructor");
+    ASSERT.ok(o instanceof GEOM.Bounds, "[projection] bounds created");
+    ASSERT.ok(o.equals(b), "[projection] equivalent to constructor");
 
     // from config
-    b = new geom.Bounds({
+    b = new GEOM.Bounds({
         minx: -180, maxx: 180, miny: -90, maxy: 90, projection: "epsg:4326"
     });
-    o = geom.create(b.config);
-    assert.ok(o instanceof geom.Bounds, "[config] bounds created");
-    assert.ok(o.equals(b), "[config] equivalent to constructor");
+    o = GEOM.create(b.config);
+    ASSERT.ok(o instanceof GEOM.Bounds, "[config] bounds created");
+    ASSERT.ok(o.equals(b), "[config] equivalent to constructor");
     
 };
 

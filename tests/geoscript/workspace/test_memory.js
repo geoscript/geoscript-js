@@ -1,12 +1,12 @@
-var assert = require("assert");
-var workspace = require("geoscript/workspace");
+var ASSERT = require("assert");
+var WORKSPACE = require("geoscript/workspace");
 
 exports["test: constructor"] = function() {
 
-    var mem = new workspace.Memory();
+    var mem = new WORKSPACE.Memory();
     
-    assert.ok(mem instanceof workspace.Workspace, "instanceof Workspace");
-    assert.ok(mem instanceof workspace.Memory, "instanceof Memory");
+    ASSERT.ok(mem instanceof WORKSPACE.Workspace, "instanceof Workspace");
+    ASSERT.ok(mem instanceof WORKSPACE.Memory, "instanceof Memory");
     
     mem.close(); 
 

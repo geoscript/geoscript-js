@@ -1,22 +1,22 @@
-var assert = require("assert"),
-    geom = require("geoscript/geom"),
-    proj = require("geoscript/proj");
+var ASSERT = require("assert");
+var GEOM = require("geoscript/geom");
+var PROJ = require("geoscript/proj");
 
 exports["test: transform"] = function() {
 
-    var point = new geom.Point([-125, 50]);
-    var out = new proj.Projection("epsg:3005");
-    var transformed = proj.transform(point, "epsg:4326", out);
-    assert.equal(1071693, Math.floor(transformed.x), "correct x");
-    assert.equal(554289, Math.floor(transformed.y), "correct y");
-    assert.ok(!!transformed.projection, "transformed geometry is given a projection");
-    assert.ok(transformed.projection.equals(out), "transformed geometry is given correct projection");
+    var point = new GEOM.Point([-125, 50]);
+    var out = new PROJ.Projection("epsg:3005");
+    var transformed = PROJ.transform(point, "epsg:4326", out);
+    ASSERT.equal(1071693, Math.floor(transformed.x), "correct x");
+    ASSERT.equal(554289, Math.floor(transformed.y), "correct y");
+    ASSERT.ok(!!transformed.projection, "transformed geometry is given a projection");
+    ASSERT.ok(transformed.projection.equals(out), "transformed geometry is given correct projection");
 
 };
 
 exports["test: Projection"] = function() {
-    var p = new proj.Projection("EPSG:4326");
-    assert.equal("EPSG:4326", p.id, "[srid] correct id");
+    var p = new PROJ.Projection("EPSG:4326");
+    ASSERT.equal("EPSG:4326", p.id, "[srid] correct id");
     
     var wkt = 
         'GEOGCS[' +
@@ -28,14 +28,14 @@ exports["test: Projection"] = function() {
             'PRIMEM["Greenwich",0],' +
             'UNIT["Degree",0.017453292519943295]' +
         ']';
-    var p2 = new proj.Projection(wkt);
-    assert.equal("EPSG:4326", p2.id, "[wkt] correct id");
+    var p2 = new PROJ.Projection(wkt);
+    ASSERT.equal("EPSG:4326", p2.id, "[wkt] correct id");
 
 };
 
 exports["test: Projection.equals"] = function() {
 
-    var p1 = new proj.Projection("EPSG:4326");
+    var p1 = new PROJ.Projection("EPSG:4326");
     
     var wkt = 
         'GEOGCS[' +
@@ -47,13 +47,13 @@ exports["test: Projection.equals"] = function() {
             'PRIMEM["Greenwich",0],' +
             'UNIT["Degree",0.017453292519943295]' +
         ']';
-    var p2 = new proj.Projection(wkt);
+    var p2 = new PROJ.Projection(wkt);
     
-    assert.ok(p1.equals(p2), "p1 equals p2");
-    assert.ok(p2.equals(p1), "p2 equals p1");
+    ASSERT.ok(p1.equals(p2), "p1 equals p2");
+    ASSERT.ok(p2.equals(p1), "p2 equals p1");
     
-    var p3 = new proj.Projection("epsg:3005");
-    assert.isFalse(p1.equals(p3), "p1 doesn't equal p3");
+    var p3 = new PROJ.Projection("epsg:3005");
+    ASSERT.isFalse(p1.equals(p3), "p1 doesn't equal p3");
 
 };
 

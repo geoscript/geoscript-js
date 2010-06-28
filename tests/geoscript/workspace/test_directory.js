@@ -1,19 +1,19 @@
-var assert = require("assert");
-var workspace = require("geoscript/workspace");
-var layer = require("geoscript/layer");
+var ASSERT = require("assert");
+var WORKSPACE = require("geoscript/workspace");
+var LAYER = require("geoscript/layer");
 
-var admin = require("../../admin");
+var ADMIN = require("../../admin");
 
-var dataDir = admin.shp.dest;
-exports.setUp = admin.shp.setUp;
-exports.tearDown = admin.shp.tearDown;
+var dataDir = ADMIN.shp.dest;
+exports.setUp = ADMIN.shp.setUp;
+exports.tearDown = ADMIN.shp.tearDown;
 
 exports["test: constructor"] = function() {
 
-    var dir = new workspace.Directory();
+    var dir = new WORKSPACE.Directory();
     
-    assert.ok(dir instanceof workspace.Workspace, "instanceof Workspace");
-    assert.ok(dir instanceof workspace.Directory, "instanceof Directory"); 
+    ASSERT.ok(dir instanceof WORKSPACE.Workspace, "instanceof Workspace");
+    ASSERT.ok(dir instanceof WORKSPACE.Directory, "instanceof Directory"); 
     
     dir.close();   
 
@@ -21,9 +21,9 @@ exports["test: constructor"] = function() {
 
 exports["test: names"] = function() {
 
-    var dir = new workspace.Directory(dataDir);    
+    var dir = new WORKSPACE.Directory(dataDir);    
 
-    assert.deepEqual(dir.names, ["states"], "dir.names is array of string names");
+    ASSERT.deepEqual(dir.names, ["states"], "dir.names is array of string names");
 
     dir.close();   
     
@@ -31,11 +31,11 @@ exports["test: names"] = function() {
 
 exports["test: layers"] = function() {
 
-    var dir = new workspace.Directory(dataDir);    
+    var dir = new WORKSPACE.Directory(dataDir);    
     var layers = dir.layers;
-    assert.ok(layers instanceof Array, "got layers array");
-    assert.equal(layers.length, 1, "one layer in workspace");
-    assert.ok(layers[0] instanceof layer.Layer, "first element is layer");
+    ASSERT.ok(layers instanceof Array, "got layers array");
+    ASSERT.equal(layers.length, 1, "one layer in workspace");
+    ASSERT.ok(layers[0] instanceof LAYER.Layer, "first element is layer");
 
     dir.close();   
     
@@ -43,12 +43,12 @@ exports["test: layers"] = function() {
 
 exports["test: get"] = function() {
 
-    var dir = new workspace.Directory(dataDir);
+    var dir = new WORKSPACE.Directory(dataDir);
     var l = dir.get(dir.names[0]);
     
-    assert.ok(l instanceof layer.Layer, "get returns a layer instance");
+    ASSERT.ok(l instanceof LAYER.Layer, "get returns a layer instance");
     
-    assert.throws(function() {dir.get("foo")}, Error, "getting invalid name throws error");
+    ASSERT.throws(function() {dir.get("foo")}, Error, "getting invalid name throws error");
 
     dir.close();   
     

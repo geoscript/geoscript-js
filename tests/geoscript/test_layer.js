@@ -1,64 +1,64 @@
-var assert = require("assert");
-var layer = require("geoscript/layer");
-var geom = require("geoscript/geom");
-var admin = require("../admin");
+var ASSERT = require("assert");
+var LAYER = require("geoscript/layer");
+var GEOM = require("geoscript/geom");
+var ADMIN = require("../admin");
 
-var shpDir = admin.shp.dest;
-exports.setUp = admin.shp.setUp;
-exports.tearDown = admin.shp.tearDown;
+var shpDir = ADMIN.shp.dest;
+exports.setUp = ADMIN.shp.setUp;
+exports.tearDown = ADMIN.shp.tearDown;
 
 exports["test: Layer.constructor"] = function() {
 
-    var l = new layer.Layer();
-    assert.ok(l instanceof layer.Layer, "instanceof layer.Layer");
+    var l = new LAYER.Layer();
+    ASSERT.ok(l instanceof LAYER.Layer, "instanceof LAYER.Layer");
 
 };
 
 exports["test: Layer.clone"] = function() {
 
     var clone;
-    var temp = new layer.Layer({name: "foo"});
+    var temp = new LAYER.Layer({name: "foo"});
 
     // create a clone without providing a name
     clone = temp.clone();
-    assert.ok(clone instanceof layer.Layer, "clone is a layer.Layer");
-    assert.ok(typeof clone.name === "string", "clone has a name");
-    assert.ok(clone.name !== temp.name, "clone gets a new name");
+    ASSERT.ok(clone instanceof LAYER.Layer, "clone is a LAYER.Layer");
+    ASSERT.ok(typeof clone.name === "string", "clone has a name");
+    ASSERT.ok(clone.name !== temp.name, "clone gets a new name");
     
     // create a clone with a new name
     clone = temp.clone("bar");
-    assert.strictEqual(clone.name, "bar", "clone can be given a new name");
+    ASSERT.strictEqual(clone.name, "bar", "clone can be given a new name");
     
     // clone an existing layer with features    
-    var shp = new layer.Layer({
+    var shp = new LAYER.Layer({
         workspace: shpDir,
         name: "states"
     });
     
     clone = shp.clone();
-    assert.ok(clone.temporary, "clone is a temporary layer");
-    assert.strictEqual(clone.count, shp.count, "clone has same count as original");
+    ASSERT.ok(clone.temporary, "clone is a temporary layer");
+    ASSERT.strictEqual(clone.count, shp.count, "clone has same count as original");
 
 };
 
 exports["test: create(shapefile)"] = function() {
     
-    var shp = layer.create({
+    var shp = LAYER.create({
         workspace: shpDir,
         name: "states"
     });
     
-    assert.ok(shp instanceof layer.Layer, "instanceof layer.Layer");
-    assert.strictEqual(shp.count, 49, "49 features");
+    ASSERT.ok(shp instanceof LAYER.Layer, "instanceof LAYER.Layer");
+    ASSERT.strictEqual(shp.count, 49, "49 features");
     
 };
 
 exports["test: create(memory)"] = function() {
     
-    var mem = layer.create({});
+    var mem = LAYER.create({});
     
-    assert.ok(mem instanceof layer.Layer, "instanceof layer.Layer");
-    assert.ok(mem.temporary, "temporary layer");
+    ASSERT.ok(mem instanceof LAYER.Layer, "instanceof LAYER.Layer");
+    ASSERT.ok(mem.temporary, "temporary layer");
     
 };
 

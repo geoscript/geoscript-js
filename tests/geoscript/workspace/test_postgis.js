@@ -1,15 +1,15 @@
-var assert = require("assert");
-var workspace = require("geoscript/workspace");
-var layer = require("geoscript/layer");
+var ASSERT = require("assert");
+var WORKSPACE = require("geoscript/workspace");
+var LAYER = require("geoscript/layer");
 
 var database = "geoscript";
 
 exports["test: constructor"] = function() {
 
-    var ws = new workspace.PostGIS();
+    var ws = new WORKSPACE.PostGIS();
     
-    assert.ok(ws instanceof workspace.Workspace, "instanceof Workspace");
-    assert.ok(ws instanceof workspace.PostGIS, "instanceof PostGIS");
+    ASSERT.ok(ws instanceof WORKSPACE.Workspace, "instanceof Workspace");
+    ASSERT.ok(ws instanceof WORKSPACE.PostGIS, "instanceof PostGIS");
     
     ws.close();
 
@@ -17,8 +17,8 @@ exports["test: constructor"] = function() {
 
 exports["test: names"] = function() {
 
-    var ws = new workspace.PostGIS({database: database});
-    assert.ok(ws.names.indexOf("states") > -1, "ws.names includes 'states'");
+    var ws = new WORKSPACE.PostGIS({database: database});
+    ASSERT.ok(ws.names.indexOf("states") > -1, "ws.names includes 'states'");
 
     ws.close();
     
@@ -26,10 +26,10 @@ exports["test: names"] = function() {
 
 exports["test: get"] = function() {
 
-    var ws = new workspace.PostGIS({database: database});
+    var ws = new WORKSPACE.PostGIS({database: database});
     
     var states = ws.get("states");
-    assert.ok(states instanceof layer.Layer, "get returns a layer instance");
+    ASSERT.ok(states instanceof LAYER.Layer, "get returns a layer instance");
 
     ws.close();
 

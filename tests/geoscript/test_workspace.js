@@ -1,18 +1,18 @@
-var assert = require("assert");
-var workspace = require("geoscript/workspace");
+var ASSERT = require("assert");
+var WORKSPACE = require("geoscript/workspace");
 
 exports["test: create(memory)"] = function() {
 
-    var mem = workspace.create();
-    assert.ok(mem instanceof workspace.Memory, "instanceof Memory");
+    var mem = WORKSPACE.create();
+    ASSERT.ok(mem instanceof WORKSPACE.Memory, "instanceof Memory");
     mem.close();
 
 };
 
 exports["test: create(directory)"] = function() {
 
-    var dir = workspace.create(".");
-    assert.ok(dir instanceof workspace.Directory, "instanceof Directory");
+    var dir = WORKSPACE.create(".");
+    ASSERT.ok(dir instanceof WORKSPACE.Directory, "instanceof Directory");
     dir.close();
 
 };
