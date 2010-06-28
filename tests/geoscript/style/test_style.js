@@ -1,5 +1,6 @@
 var ASSERT = require("assert");
 var STYLE = require("geoscript/style");
+var Filter = require("geoscript/filter").Filter;
 
 var geotools = Packages.org.geotools;
 
@@ -105,6 +106,9 @@ exports["test: constructor (array of symbolizer config)"] = function() {
 exports["test: constructor (rule config)"] = function() {
 
     var style = new STYLE.Style({
+        filter: "value = 'foo'",
+        maxScaleDenominator: 200000,
+        minScaleDenominator: 100000,
         symbolizers: [{
             type: "PolygonSymbolizer",
             fillColor: "#ffff00"
@@ -115,6 +119,10 @@ exports["test: constructor (rule config)"] = function() {
     ASSERT.equal(style.rules.length, 1, "rules length 1");
     var rule = style.rules[0];
     ASSERT.ok(rule instanceof STYLE.Rule, "rule created");
+    ASSERT.ok(rule.filter instanceof Filter, "rule has filter");
+    ASSERT.equal(rule.filter.cql, "value = 'foo'", "correct filter");
+    ASSERT.equal(rule.minScaleDenominator, 100000, "correct min scale denominator");
+    ASSERT.equal(rule.maxScaleDenominator, 200000, "correct max scale denominator");
     ASSERT.equal(rule.symbolizers.length, 1, "symbolizers length 1");
     var symbolizer = rule.symbolizers[0];
     ASSERT.ok(symbolizer instanceof STYLE.PolygonSymbolizer, "poly symbolizer");
@@ -237,6 +245,9 @@ exports["test: _style (multiple featureTypeStyle)"] = function() {
     // style with one rule and two symbolizers with different zIndex
     var style = new STYLE.Style({
         rules: [{
+            filter: "value = 'foo'",
+            maxScaleDenominator: 200000,
+            minScaleDenominator: 100000,
             symbolizers: [{
                 zIndex: 0,
                 type: "LineSymbolizer",
@@ -262,6 +273,10 @@ exports["test: _style (multiple featureTypeStyle)"] = function() {
 
     var rule = rules[0];
     ASSERT.ok(rule instanceof geotools.styling.Rule, "rule is correct type in first feature type style");
+    ASSERT.equal(rule.getMinScaleDenominator(), 100000, "first rule has correct min scale denominator");
+    ASSERT.equal(rule.getMaxScaleDenominator(), 200000, "first rule has correct max scale denominator");
+    ASSERT.ok(rule.getFilter() instanceof geotools.filter.IsEqualsToImpl, "first rule has filter");
+    ASSERT.equal(String(rule.getFilter().getRightValue()), "foo", "first rule filter is good");
     
     var symbolizers = rule.getSymbolizers();
     ASSERT.equal(symbolizers.length, 1, "one symbolizer in first feature type style");
@@ -279,6 +294,10 @@ exports["test: _style (multiple featureTypeStyle)"] = function() {
 
     var rule = rules[0];
     ASSERT.ok(rule instanceof geotools.styling.Rule, "rule is correct type in second feature type style");
+    ASSERT.equal(rule.getMinScaleDenominator(), 100000, "second rule has correct min scale denominator");
+    ASSERT.equal(rule.getMaxScaleDenominator(), 200000, "second rule has correct max scale denominator");
+    ASSERT.ok(rule.getFilter() instanceof geotools.filter.IsEqualsToImpl, "second rule has filter");
+    ASSERT.equal(String(rule.getFilter().getRightValue()), "foo", "second rule filter is good");
     
     var symbolizers = rule.getSymbolizers();
     ASSERT.equal(symbolizers.length, 1, "one symbolizer in second feature type style");
