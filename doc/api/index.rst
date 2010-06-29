@@ -18,4 +18,5 @@ Modules
     layer
     workspace
     style
+    map
 
