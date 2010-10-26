@@ -48,7 +48,7 @@ exports["test: get"] = function() {
     
     ASSERT.ok(l instanceof LAYER.Layer, "get returns a layer instance");
     
-    ASSERT.throws(function() {dir.get("foo")}, Error, "getting invalid name throws error");
+    ASSERT.equal(dir.get("foo"), undefined, "getting invalid name returns undefined");
 
     dir.close();   
     
