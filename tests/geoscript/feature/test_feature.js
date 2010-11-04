@@ -18,6 +18,13 @@ exports["test: constructor"] = function() {
     ASSERT.strictEqual(f.get("location"), values.location, "correct location value using get");
     ASSERT.strictEqual(f.geometry, values.location, "correct location value using geometry");
     
+    ASSERT.throws(function() {
+        var f = new FEATURE.Feature({
+            schema: [{name: "foo", type: "String"}],
+            values: {bar: "bad field"}
+        });
+    }, Error, "values mistmatch with schema");
+    
 };
 
 exports["test: get"] = function() {
@@ -62,6 +69,10 @@ exports["test: set"] = function() {
     point.projection = "EPSG:4326";
     f.geometry = point;
     ASSERT.ok(point.equals(f.geometry), "geometry correctly set");    
+    
+    ASSERT.throws(function() {
+        f.set("bogusname", "some value");
+    }, Error, "bogus field name");
     
 };
 
