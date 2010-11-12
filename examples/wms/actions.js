@@ -1,6 +1,6 @@
 var FS = require("fs");
 var Request = require("ringo/webapp/request").Request;
-var skinResponse = require("ringo/webapp/response").skinResponse;
+var Response = require("ringo/webapp/response").Response;
 var Map = require("geoscript/map").Map;
 
 var map = new Map({
@@ -17,11 +17,10 @@ var map = new Map({
 
 exports.index = function(req) {
 
-    return skinResponse("skins/index.html", {
-        host: req.host,
-        port: req.port,
-        layers: map.layers
-    });
+    return Response.skin(
+        module.resolve("skins/index.html"), 
+        {host: req.host, port: req.port, layers: map.layers}
+    );
 
 };
 
