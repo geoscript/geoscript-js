@@ -1,13 +1,11 @@
 exports.urls = [
-    ["/", "actions"],
+    ["/", require("./actions")],
 ];
 exports.middleware = [
-    "ringo/middleware/etag",
-    "ringo/middleware/notfound"
+    require("ringo/middleware/etag").middleware,
+    require("ringo/middleware/notfound").middleware,
+    require("ringo/middleware/static").middleware(module.resolve("static")),
 ];
-exports.httpConfig = {
-    staticDir: "static"
-};
 
 exports.app = require("ringo/webapp").handleRequest;
 
