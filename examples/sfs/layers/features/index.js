@@ -34,7 +34,7 @@ exports.GET = function(req, parts) {
     
     return {
         status: 200,
-        headers: {"Content-Type": "text/plain"},
+        headers: {"Content-Type": "application/json"},
         body: body
     };
     
