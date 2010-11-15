@@ -16,7 +16,6 @@ exports.GET = function(req, parts) {
     
     var cursor = layer.features;
     if (params.start) {
-        print("skipping: " + Number(params.start))
         cursor.skip(Number(params.start));
     }
     var count = params.count && Number(params.count);
