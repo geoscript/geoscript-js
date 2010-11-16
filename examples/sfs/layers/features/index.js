@@ -1,4 +1,8 @@
 var layers = require("../../config").layers;
+/*
+ * Use GData feed filter syntax.
+ * http://code.google.com/apis/analytics/docs/gdata/gdataReferenceDataFeed.html#filterSyntax
+ */
 
 exports.GET = function(req, parts) {
     var params = req.queryParams || {};
