@@ -1,8 +1,5 @@
 var layers = require("../../config").layers;
-/*
- * Use GData feed filter syntax.
- * http://code.google.com/apis/analytics/docs/gdata/gdataReferenceDataFeed.html#filterSyntax
- */
+var Filter = require("geoscript/filter").Filter;
 
 exports.GET = function(req, parts) {
     var params = req.queryParams || {};
@@ -18,11 +15,24 @@ exports.GET = function(req, parts) {
     var header = '{"type": "FeatureCollection", "features": [';
     var footer = ']}\n';
     
-    var cursor = layer.features;
-    if (params.start) {
-        cursor.skip(Number(params.start));
+    var filter = params.filter;
+    if (filter) {
+        try {
+            filter = new Filter(filter);
+        } catch(err) {
+            return {
+                status: 400,
+                headers: {"Content-Type": "application/json"},
+                body: [JSON.stringify({error: true, message: "Bad filter syntax."})]
+            }
+        }
     }
-    var count = params.count && Number(params.count);
+    
+    var cursor = layer.query(filter);
+    if (params["start-index"]) {
+        cursor.skip(Number(params["start-index"]));
+    }
+    var count = params["max-results"] && Number(params["max-results"]);
     
     var body = {
         forEach: function(callback) {
