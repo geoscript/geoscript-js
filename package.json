@@ -2,7 +2,7 @@
     "name": "geoscript",
     "description": "Library for geospatial data access, manipulation, and rendering.",
     "author": "Tim Schaub",
-    "dependencies": ["narwhal"],
+    "dependencies": [],
     "contributors": [],
     "jars": "jars"
 }
