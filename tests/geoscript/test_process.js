@@ -64,33 +64,92 @@ exports["test callable"] = function() {
         }
     });
     
-    var promise = add([2, 3]);
+    var promise = add(2, 3);
     
-    ASSERT.strictEqual(promise.wait(), 5, "correctly added");
+    ASSERT.deepEqual(promise.wait(), [5], "correctly added");
     
 };
 
-exports["test chain"] = function() {
+exports["test chain(wait)"] = function() {
 
-    var add = callable({
-        runner: function(values, callback, errback) {
-            callback(values[0] + values[1]);
-        }
-    });
-    var decrement = callable({
-        runner: function(values, callback, errback) {
-            callback(values[0] - 1);
-        }
-    });
+    var process = chain(add, decrement, boost);
+
+    var promise = process.run(2, 4);
+    ASSERT.deepEqual(promise.wait(), [10], "add then decrement then boost");
     
-    var promise = add([2, 4]);
-    promise.then(function(value) {
-        ASSERT.strictEqual(value, 6, "add first")
-        decrement(value).then(function(answer) {
-            ASSERT.strictEqual(answer, 5, "decrement next");
-        });
+    // add fails
+    promise = process.run("foo", 2);
+    var result;
+    try {
+        result = promise.wait();
+    } catch (err) {
+        ASSERT.deepEqual(err, ["add only accepts numeric values"]);
+    }
+    if (result) {
+        ASSERT.fail("expected add to throw");
+    }
+    
+    // decrement fails
+    promise = process.run(-10, 2);
+    result = null;
+    try {
+        result = promise.wait();
+    } catch (err) {
+        ASSERT.deepEqual(err, ["decrement only works with positive numbers"]);
+    }
+    if (result) {
+        ASSERT.fail("expected decrement to throw");
+    }
+
+    // boost fails
+    promise = process.run(100, 50);
+    result = null;
+    try {
+        result = promise.wait();
+    } catch (err) {
+        ASSERT.deepEqual(err, ["boost only works with small numbers"]);
+    }
+    if (result) {
+        ASSERT.fail("expected boost to throw");
+    }
+    
+
+};
+
+exports["test chain(callbacks)"] = function() {
+
+    var process = chain(add, decrement, boost);
+    
+    // test then callback
+    var promise = process.run(2, 4);
+
+    var done = defer();
+    promise.then(function() {
+        done.resolve(Array.slice(arguments));
+    }, function() {
+        done.resolve(Array.slice(arguments), true);
     });
-    promise.wait();
+    var value = done.promise.wait();
+    ASSERT.deepEqual(value, [10], "then callback called with correct value");
+
+    // test then errback
+    promise = process.run(200, 4);
+
+    var done = defer();
+    promise.then(function() {
+        done.resolve(Array.slice(arguments));
+    }, function() {
+        done.resolve(Array.slice(arguments), true);
+    });
+    value = null;
+    try {
+        value = done.promise.wait();
+    } catch (err) {
+        ASSERT.deepEqual(err, ["boost only works with small numbers"]);
+    }
+    if (value) {
+        ASSERT.fail("expected boost to throw");
+    }
     
 };
 
