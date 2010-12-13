@@ -1,6 +1,35 @@
 var ASSERT = require("assert");
-var Process = require("geoscript/process").Process;
-var callable = require("geoscript/process").callable;
+var {Process, callable, chain} = require("geoscript/process");
+var defer = require("ringo/promise").defer;
+
+var add = new Process({
+    runner: function(values, callback, errback) {
+        if (isNaN(values[0]) || isNaN(values[1])) {
+            errback("add only accepts numeric values")
+        } else {
+            callback(values[0] + values[1]);
+        }
+    }
+});
+var decrement = new Process({
+    runner: function(values, callback, errback) {
+        if (values[0] <= 0) {
+            errback("decrement only works with positive numbers");
+        } else {
+            callback(values[0] - 1);
+        }
+    }
+});
+var boost = new Process({
+    runner: function(values, callback, errback) {
+        if (values[0] > 100) {
+            errback("boost only works with small numbers");
+        } else {
+            callback(values[0] * 2);
+        }
+    }
+});
+
 
 exports["test Process.constructor"] = function() {
     
@@ -9,22 +38,21 @@ exports["test Process.constructor"] = function() {
     
 };
 
-exports["test simple"] = function() {
+exports["test run"] = function() {
     
-    var add = new Process({
-        runner: function(values, callback, errback) {
-            callback(values[0] + values[1]);
-        }
-    });
+    var promise = add.run(2, 3);
+
+    ASSERT.deepEqual(promise.wait(), [5], "correct sum");
     
-    var promise = add.run([2, 3]);
-    var log = [];
-    promise.then(function(output) {
-        log.push(output);
-    });
-    promise.wait();
-    ASSERT.strictEqual(log.length, 1, "output logged");
-    ASSERT.strictEqual(log[0], 5, "correct output logged");
+};
+
+exports["test error"] = function() {
+    
+    var promise = decrement.run(4);
+    ASSERT.deepEqual(promise.wait(), [3], "correct value");
+
+    promise = decrement.run(-2);
+    ASSERT.throws(promise.wait, null, "error thrown for negative number");
     
 };
 
