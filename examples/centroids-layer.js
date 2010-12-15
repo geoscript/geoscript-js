@@ -5,14 +5,7 @@
  * geometry type.
  */
 
-var FS;
-try {
-    // CommonJS
-    FS = require("fs");
-} catch (err) {
-    // Narwhal
-    FS = require("file");
-}
+var FS = require("fs");
 
 // import Directory and Layer constructors
 var Directory = require("geoscript/workspace").Directory;
