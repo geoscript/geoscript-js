@@ -1,6 +1,6 @@
 var Process = require("geoscript/process").Process;
 
-var buffer = new Process({
+var buffer = exports.buffer = new Process({
     title: "Buffer",
     description: "Buffer geometries for features.  The features input can be an array, a cursor, or any object with a forEach method.  It is assumed that all features share the same schema and that the schema has a default geometry field.  The distance input is expected to be in the same units as the geometry coordinates.",
     runner: function(args, callback, errback) {
@@ -50,3 +50,18 @@ var buffer = new Process({
     }
 });
 
+
+if (require.main == module.id) {
+    var fs = require("fs");
+    var Directory = require("geoscript/workspace").Directory;
+    var path = fs.resolve(module.path, "../data/shapefiles");
+    var dir = new Directory(path);
+    var states = dir.get("states");
+    var promise = buffer.run(states.features, 1);
+    var values = promise.wait();
+    var features = [];
+    values[0].forEach(function(feature) {
+        features.push(feature);
+    });
+    require("geoscript/viewer").draw(features);
+}
