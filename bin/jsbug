@@ -1,3 +1,0 @@
-#!/bin/bash
-
-NARWHAL_DEBUGGER=1 js "$@"
