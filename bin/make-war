@@ -1,19 +1,79 @@
 #!/usr/bin/env ringo
 
 var system = require("system");
+var engine = require("ringo/engine");
 var Parser = require("ringo/args").Parser;
 var fs = require("fs");
+var fileUtils = require("ringo/utils/files");
 var quit = require("ringo/shell").quit;
+var skin = require("ringo/skin");
+
+function zip(directory, zipfile) {
+    directory = java.io.File(directory);
+    zipfile = java.io.File(zipfile);
+    var base = directory.toURI();
+    var queue = new java.util.LinkedList();
+    queue.push(directory);
+    var out = new java.io.FileOutputStream(zipfile);
+    var res = out;
+    try {
+        var zout = new java.util.zip.ZipOutputStream(out);
+        res = zout;
+        while (!queue.isEmpty()) {
+            directory = queue.pop();
+            var files = directory.listFiles();
+            for (var i in files) {
+                var kid = files[i];
+                var name = base.relativize(kid.toURI()).getPath();
+                if (kid.isDirectory()) {
+                    queue.push(kid);
+                    name = name.charAt(name.length - 1) == '/' ? name : name + "/";
+                    zout.putNextEntry(new java.util.zip.ZipEntry(name));
+                } else {
+                    zout.putNextEntry(new java.util.zip.ZipEntry(name));
+                    copyStream(kid, zout);
+                    zout.closeEntry();
+                }
+            }
+        }
+    } finally {
+        res.close();
+    }
+}
+
+function copyStream(file, out) {
+    var input = new java.io.FileInputStream(file);
+    try {
+        var buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 1024);
+        while (true) {
+            var readCount = input.read(buffer);
+            if (readCount < 0) {
+                break;
+            }
+            out.write(buffer, 0, readCount);
+        }
+    } finally {
+        input.close();
+    }
+}
 
 if (require.main == module) {
     // parse command line options
     var parser = new Parser();
     parser.addOption("w", "web-xml", "WEB-XML", "The web.xml configuration file (default: 'default-web.xml')");
     parser.addOption("n", "name", "NAME", "The servlet name (defaults to the provided directory name)");
+    parser.addOption("a", "app", "APP", "The exported application variable name (default: 'app')");
+    parser.addOption("c", "config", "CONFIG", "The config module name (default: 'config')");
+    parser.addOption("i", "ignore", "IGNORE", "Pattern to ignore when copying jars from ringo/lib (default: '^\.')");
     parser.addOption("h", "help", null, "Print help message to stdout");
     
     var cmd = system.args.shift();
-    var options = parser.parse(system.args, {});
+    var options = parser.parse(system.args, {
+        webXml: fs.join(module.directory, "default-web.xml"),
+        app: "app",
+        config: "config",
+        ignore: "^\\."
+    });
     var path = system.args.shift();
 
     if (!path || system.args.length > 0 || options.help) {
@@ -36,10 +96,59 @@ if (require.main == module) {
         options.name = fs.base(path);
     }
     
-    var web = options.webXml || fs.join(fs.module.directory, "default-web.xml");
-    if (!fs.isFile(web)) {
-        print("Can't find web.xml: '" + web + "'");
+    
+    if (!fs.isFile(options.webXml)) {
+        print("Can't find web.xml: '" + options.webXml + "'");
         quit(1);
     }
+    
+    // create temp dir for assembling war
+    var marker = fileUtils.createTempFile("war");
+    var tmpDir = marker + ".dir";
+    fs.makeTree(tmpDir);
+    var webInfDir = fs.join(tmpDir, "WEB-INF");
+    fs.makeDirectory(webInfDir);
+    fs.remove(marker);
+    
+    // copy web.xml to WEB-INF
+    fs.write(fs.join(webInfDir, "web.xml"), skin.render(options.webXml, options));
+
+    // add app to WEB-INF
+    var appDir = fs.join(webInfDir, "app");
+    fs.copyTree(path, appDir);
+        
+    // copy geoscript to WEB-INF/app/packages
+    var packageDir = fs.join(appDir, "packages", "geoscript");
+    var gsDir = fs.join(module.directory, "..");
+    fs.makeTree(packageDir);
+    fs.copyTree(fs.join(gsDir, "lib"), fs.join(packageDir, "lib"));
+    fs.copyTree(fs.join(gsDir, "jars"), fs.join(packageDir, "jars"));
+    fs.copy(fs.join(gsDir, "package.json"), fs.join(packageDir, "package.json"));
+    
+    // copy geoscript jars to WEB-INF/lib
+    var libDir = fs.join(webInfDir, "lib");
+    fs.makeDirectory(libDir);
+    // var gsLibDir = fs.join(module.directory, "..", "jars");
+    // fs.copyTree(gsLibDir, libDir);
+    
+    // copy ringo jars to WEB-INF/lib
+    var ringoLibDir = fs.join(engine.properties["ringo.home"], "lib");
+    var ignore = new RegExp(options.ignore);
+    fs.listTree(ringoLibDir).forEach(function(path) {
+        var fullPath = fs.join(ringoLibDir, path);
+        if (fs.isFile(fullPath)) {
+            var base = fs.base(path);
+            if (!ignore.test(base)) {
+                fs.copy(fullPath, fs.join(libDir, base));
+            }
+        }
+    });
+    
+    // create archive
+    zip(tmpDir, options.name + ".war");
+    
+    // clean up
+    fs.removeTree(tmpDir);
+    
 }
 

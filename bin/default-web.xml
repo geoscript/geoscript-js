@@ -6,7 +6,7 @@
    version="2.5"> 
   <display-name>GeoScript App</display-name>
     <servlet>
-        <servlet-name>${name}</servlet-name>
+        <servlet-name><% name %></servlet-name>
         <servlet-class>org.ringojs.jsgi.JsgiServlet</servlet-class>
         <init-param>
             <param-name>ringo-home</param-name>
@@ -18,17 +18,17 @@
         </init-param>
         <init-param>
             <param-name>config</param-name>
-            <param-value>config</param-value>
+            <param-value><% config %></param-value>
         </init-param>
         <init-param>
             <param-name>app</param-name>
-            <param-value>app</param-value>
+            <param-value><% app %></param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>${name}</servlet-name>
+        <servlet-name><% name %></servlet-name>
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
