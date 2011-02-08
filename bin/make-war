@@ -1,0 +1,45 @@
+#!/usr/bin/env ringo
+
+var system = require("system");
+var Parser = require("ringo/args").Parser;
+var fs = require("fs");
+var quit = require("ringo/shell").quit;
+
+if (require.main == module) {
+    // parse command line options
+    var parser = new Parser();
+    parser.addOption("w", "web-xml", "WEB-XML", "The web.xml configuration file (default: 'default-web.xml')");
+    parser.addOption("n", "name", "NAME", "The servlet name (defaults to the provided directory name)");
+    parser.addOption("h", "help", null, "Print help message to stdout");
+    
+    var cmd = system.args.shift();
+    var options = parser.parse(system.args, {});
+    var path = system.args.shift();
+
+    if (!path || system.args.length > 0 || options.help) {
+        print("Usage:");
+        print("", cmd, "[OPTIONS]", "PATH");
+        print("Options:");
+        print(parser.help());
+        quit(options.help ? 0 : 1);
+    }
+    
+    if (path.slice(-1) === java.io.File.separator) {
+        path = path.slice(0, -1);
+    }
+    if (!fs.isDirectory(path)) {
+        print("Can't find provided path: '" + path + "'");
+        quit(1);
+    }
+    
+    if (!options.name) {
+        options.name = fs.base(path);
+    }
+    
+    var web = options.webXml || fs.join(fs.module.directory, "default-web.xml");
+    if (!fs.isFile(web)) {
+        print("Can't find web.xml: '" + web + "'");
+        quit(1);
+    }
+}
+
