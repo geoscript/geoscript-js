@@ -1,14 +1,7 @@
 var Layer = require("geoscript/layer").Layer;
 var COMMON = require("./common");
 var ADMIN = require("../../admin");
-var FS;
-try {
-    // CommonJS
-    FS = require("fs");
-} catch (err) {
-    // Narwhal
-    FS = require("file");
-}
+var FS = require("fs");
 
 exports.setUp = ADMIN.h2.setUp;
 exports.tearDown = ADMIN.h2.tearDown;

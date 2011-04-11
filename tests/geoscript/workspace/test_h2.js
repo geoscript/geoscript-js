@@ -1,15 +1,7 @@
 var ASSERT = require("assert");
 var WORKSPACE = require("geoscript/workspace");
 var LAYER = require("geoscript/layer");
-var FS;
-try {
-    // CommonJS
-    FS = require("fs");
-} catch (err) {
-    // Narwhal
-    FS = require("file");
-}
-
+var FS = require("fs");
 var admin = require("../../admin");
 
 var database = FS.join(admin.h2.dest, "geoscript");
