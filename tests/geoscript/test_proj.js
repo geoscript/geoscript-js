@@ -8,7 +8,7 @@ exports["test: transform"] = function() {
     var out = new PROJ.Projection("epsg:3005");
     var transformed = PROJ.transform(point, "epsg:4326", out);
     ASSERT.equal(1071693, Math.floor(transformed.x), "correct x");
-    ASSERT.equal(554289, Math.floor(transformed.y), "correct y");
+    ASSERT.equal(554290, Math.floor(transformed.y), "correct y");
     ASSERT.ok(!!transformed.projection, "transformed geometry is given a projection");
     ASSERT.ok(transformed.projection.equals(out), "transformed geometry is given correct projection");
 

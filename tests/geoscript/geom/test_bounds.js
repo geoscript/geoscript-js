@@ -249,10 +249,10 @@ exports["test: transform"] = function() {
     var b2 = bounds.transform(mt);
     //259210.89459448296,40589.91024867553,3401247.9728652285,1797356.1848749956
     
-    ASSERT.strictEqual(b2.minx | 0, 259210, "correct minx");
-    ASSERT.strictEqual(b2.miny | 0, 40589, "correct miny");
-    ASSERT.strictEqual(b2.maxx | 0, 3401247, "correct maxx");
-    ASSERT.strictEqual(b2.maxy | 0, 1797356, "correct maxy");
+    ASSERT.strictEqual(b2.minx | 0, 259212, "correct minx");
+    ASSERT.strictEqual(b2.miny | 0, 40590, "correct miny");
+    ASSERT.strictEqual(b2.maxx | 0, 3401250, "correct maxx");
+    ASSERT.strictEqual(b2.maxy | 0, 1797357, "correct maxy");
     
 };
 
