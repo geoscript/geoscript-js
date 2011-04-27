@@ -3,6 +3,8 @@ var Request = require("ringo/webapp/request").Request;
 var Response = require("ringo/webapp/response").Response;
 var Map = require("geoscript/map").Map;
 
+var ByteArray = require("binary").ByteArray;
+
 var map = new Map({
     layers: [{
         name: "states",
@@ -29,10 +31,10 @@ exports.wms = function(req) {
     var request = new Request(req);
     var bbox = request.queryParams["BBOX"].split(",").map(Number);
 
-    var image = map.render({
+    var image = new ByteArray(map.render({
         imageType: "png",
         bounds: bbox
-    });
+    }));
 
     return {
         status: 200,
