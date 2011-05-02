@@ -281,6 +281,68 @@ exports["test: empty"] = function() {
         
 };
 
+exports["test: quadTree"] = function() {
+    
+    var bounds = new GEOM.Bounds({
+        minx: -180, miny: -90, maxx: 180, maxy: 90, projection: "epsg:4326"
+    });
+    
+    // ~infinite quads
+    var quads = [
+        [-180,-90,180,90],      // level 0 (1)
+        [-180,-90,0,0],         // level 1 (4)
+        [-180,0,0,90],
+        [0,-90,180,0],
+        [0,0,180,90],
+        [-180,-90,-90,-45],     // level 2 (16)
+        [-180,-45,-90,0],
+        [-180,0,-90,45],
+        [-180,45,-90,90],
+        [-90,-90,0,-45],
+        [-90,-45,0,0],
+        [-90,0,0,45],
+        [-90,45,0,90],
+        [0,-90,90,-45],
+        [0,-45,90,0],
+        [0,0,90,45],
+        [0,45,90,90],
+        [90,-90,180,-45],
+        [90,-45,180,0],
+        [90,0,180,45],
+        [90,45,180,90],
+        [-180,-90,-135,-67.5],  // level 3 (64)
+        [-180,-67.5,-135,-45],
+        [-180,-45,-135,-22.5],
+        [-180,-22.5,-135,0],
+        [-180,0,-135,22.5],
+        [-180,22.5,-135,45],
+        [-180,45,-135,67.5],
+        [-180,67.5,-135,90],
+        [-135,-90,-90,-67.5],
+        [-135,-67.5,-90,-45],
+        [-135,-45,-90,-22.5]   // ...
+    ];
+    var c = 0;
+    for (var quad in bounds.quadTree()) {
+        ASSERT.deepEqual(quad.toArray(), quads[c], "infinite quads " + c);
+        if (c >= quads.length-1) {
+            break;
+        }
+        ++c;
+    }
+    
+    // a couple levels of quads
+    var start = 1,
+        stop = 3,
+        c = 1;
+    for (var quad in bounds.quadTree(start, stop)) {
+        ASSERT.deepEqual(quad.toArray(), quads[c], "range of quads " + c);
+        ++c;
+    }
+    ASSERT.equal(c, 21, "range does not include stop level");
+    
+}
+
 if (require.main == module.id) {
     require("test").run(exports);
 }
