@@ -1,6 +1,7 @@
 var ASSERT = require("assert");
 var {Process, callable, chain} = require("geoscript/process");
 var defer = require("ringo/promise").defer;
+var Field = require("geoscript/feature").Field;
 
 var add = new Process({
     run: function(config) {
@@ -48,6 +49,50 @@ exports["test Process.constructor"] = function() {
     var f = new Process();
     ASSERT.ok(f instanceof Process, "constructor returns instance");
     
+};
+
+exports["test inputs"] = function() {
+    var p = new Process({
+        inputs: {
+            foo: {
+                type: "Integer",
+                description: "Foo field."
+            },
+            bar: {
+                type: "String",
+                description: "Bar field."
+            }
+        }
+    });
+    ASSERT.ok(!!p.inputs, "process has inputs property");
+    ASSERT.ok(p.inputs.foo instanceof Field, "foo field");
+    ASSERT.strictEqual(p.inputs.foo.name, "foo", "foo field named foo");
+    ASSERT.strictEqual(p.inputs.foo.type, "Integer", "foo field Integer type");
+    ASSERT.ok(p.inputs.bar instanceof Field, "bar field");
+    ASSERT.strictEqual(p.inputs.bar.name, "bar", "bar field named bar");
+    ASSERT.strictEqual(p.inputs.bar.type, "String", "bar field String type");
+};
+
+exports["test outputs"] = function() {
+    var p = new Process({
+        outputs: {
+            foo: {
+                type: "Integer",
+                description: "Foo field."
+            },
+            bar: {
+                type: "String",
+                description: "Bar field."
+            }
+        }
+    });
+    ASSERT.ok(!!p.outputs, "process has outputs property");
+    ASSERT.ok(p.outputs.foo instanceof Field, "foo field");
+    ASSERT.strictEqual(p.outputs.foo.name, "foo", "foo field named foo");
+    ASSERT.strictEqual(p.outputs.foo.type, "Integer", "foo field Integer type");
+    ASSERT.ok(p.outputs.bar instanceof Field, "bar field");
+    ASSERT.strictEqual(p.outputs.bar.name, "bar", "bar field named bar");
+    ASSERT.strictEqual(p.outputs.bar.type, "String", "bar field String type");
 };
 
 exports["test run"] = function() {
