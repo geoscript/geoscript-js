@@ -4,5 +4,6 @@
     "author": "Tim Schaub",
     "dependencies": [],
     "contributors": [],
-    "jars": "jars"
+    "jars": "jars",
+    "main": "lib/geoscript"
 }
