@@ -17,6 +17,11 @@
     </repositories>
     <dependencies>
         <dependency>
+            <groupId>rhino</groupId>
+            <artifactId>js</artifactId>
+            <version>1.7R3</version>
+        </dependency>
+        <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-main</artifactId>
             <version>${gt.version}</version>
@@ -67,7 +72,7 @@
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
-                    <outputDirectory>${basedir}/jars-test</outputDirectory>
+                    <outputDirectory>${basedir}/jars</outputDirectory>
                 </configuration>
                 <executions>
                     <execution>
