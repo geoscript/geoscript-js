@@ -13,7 +13,7 @@ started using GeoScript JS.
 
 ### Getting set up for development
 
-Clone the repository and then use Maven to install dependencies.
+Clone the repository and then use Maven to pull in dependencies and run tests.
 
     git clone git://github.com/tschaub/geoscript-js.git
     cd geoscript-js
