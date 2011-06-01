@@ -8,6 +8,5 @@ if (require.paths.indexOf(lib) === -1) {
 exports["test: geoscript"] = require("./test_geoscript");
 
 if (require.main == module || require.main == module.id) {
-    print(require.paths);
-    require("test").run(exports);
+    system.exit(require("test").run(exports));
 }

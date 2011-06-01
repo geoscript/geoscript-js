@@ -8,5 +8,5 @@ exports["test: map"] = require("./geoscript/test_map");
 exports["test: util"] = require("./geoscript/test_util");
 
 if (require.main == module.id) {
-    require("test").run(exports);
+    system.exit(require("test").run(exports));
 }

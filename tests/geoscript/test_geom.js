@@ -164,5 +164,5 @@ exports["test: Collection"] = require("./geom/test_collection");
 exports["test: Bounds"] = require("./geom/test_bounds");
 
 if (require.main == module.id) {
-    require("test").run(exports);
+    system.exit(require("test").run(exports));
 }

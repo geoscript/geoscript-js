@@ -23,5 +23,5 @@ exports["test: Memory"] = require("./workspace/test_memory");
 // exports["test: PostGIS"] = require("./workspace/test_postgis");
 
 if (require.main == module.id) {
-    require("test").run(exports);
+    system.exit(require("test").run(exports));
 }

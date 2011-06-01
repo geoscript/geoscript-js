@@ -3,5 +3,5 @@ exports["test: Field"] = require("./feature/test_field");
 exports["test: Schema"] = require("./feature/test_schema");
 
 if (require.main == module.id) {
-    require("test").run(exports);
+    system.exit(require("test").run(exports));
 }

@@ -68,5 +68,5 @@ exports["test: (H2)"] = require("./layer/test_h2");
 exports["test: (Memory)"] = require("./layer/test_memory");
 
 if (require.main == module.id) {
-    require("test").run(exports);
+    system.exit(require("test").run(exports));
 }

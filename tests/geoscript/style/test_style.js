@@ -313,5 +313,5 @@ exports["test: _style (multiple featureTypeStyle)"] = function() {
 };
 
 if (require.main == module.id) {
-    require("test").run(exports);
+    system.exit(require("test").run(exports));
 }

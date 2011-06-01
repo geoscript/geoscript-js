@@ -89,5 +89,5 @@ exports["test: applyIf"] = function() {
 };
 
 if (require.main == module.id) {
-    require("test").run(exports);
+    system.exit(require("test").run(exports));
 }
