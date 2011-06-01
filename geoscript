@@ -1,0 +1,5 @@
+cp=''
+for x in `ls jars/*.jar`; do
+    cp=$cp:`pwd`/$x
+done
+java -cp $cp org.mozilla.javascript.tools.shell.Main -version 170 -modules lib
