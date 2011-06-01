@@ -8,11 +8,11 @@ GeoScript JS is a package of CommonJS_ modules that uses the Mozilla Rhino JavaS
 Getting GeoScript JS
 --------------------
 
-To get the GeoScript JS source, clone the repository with `git`.
+To get the GeoScript JS source, clone the repository with `git`::
 
     git clone git://github.com/tschaub/geoscript-js.git
 
-Next, use `mvn` to pull down dependencies and run tests.
+Next, use `mvn` to pull down dependencies and run tests::
 
     cd geoscript-js
     mvn install
