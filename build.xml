@@ -40,6 +40,7 @@
         <java jar="externals/ringojs/run.jar" fork="true" failonerror="yes">
             <sysproperty key="ringo.home" path="externals/ringojs"/>
             <sysproperty key="ringo.classpath" value="lib/**,../../jars/**"/>
+            <sysproperty key="ringo.modulepath" path="lib"/>
             <arg path="tests/all.js"/>
         </java>
     </target>
