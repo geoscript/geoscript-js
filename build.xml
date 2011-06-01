@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<project name="GeoScriptJS" default="usage" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+
+    <property name="project" value="geoscript-js"/>
+    <property name="version" value="0.10"/>
+    <property name="home" value="."/>
+    <property name="build" value="${home}/build"/>
+
+    <target name="usage">
+        <echo message=""/>
+        <echo message="GeoScriptJS build targets"/>
+        <echo message=""/>
+        <echo message=" test       --> runs tests"/>
+        <echo message=" package    --> creates distribution"/>
+        <echo message=" clean      --> clean up compiled resources"/>
+    </target>
+
+    <target name="init">
+
+        <echo message="pulling in submodules"/>
+        <exec executable="git" failonerror="true">
+            <arg line="submodule init"/>
+        </exec>
+        <exec executable="git" failonerror="true">
+            <arg line="submodule sync"/>
+        </exec>
+        <exec executable="git" failonerror="true">
+            <arg line="submodule update"/>
+        </exec>
+
+        <echo message="building ringo jars"/>
+        <ant dir="externals/ringojs" target="jar"/>
+        <copy todir="externals/ringojs/lib" flatten="true" includeEmptyDirs="false">
+            <fileset dir="lib"/>
+        </copy>
+
+    </target>
+
+    <target name="test">
+        <java jar="externals/ringojs/run.jar" fork="true" failonerror="yes">
+            <sysproperty key="ringo.home" path="externals/ringojs"/>
+            <sysproperty key="ringo.classpath" value="lib/**,../../jars/**"/>
+            <arg path="tests/all.js"/>
+        </java>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build}"/>
+    </target>
+
+</project>

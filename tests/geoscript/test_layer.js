@@ -64,7 +64,7 @@ exports["test: create(memory)"] = function() {
 
 exports["test: (Shapefile)"] = require("./layer/test_shapefile");
 exports["test: (H2)"] = require("./layer/test_h2");
-exports["test: (PostGIS)"] = require("./layer/test_postgis");
+// exports["test: (PostGIS)"] = require("./layer/test_postgis");
 exports["test: (Memory)"] = require("./layer/test_memory");
 
 if (require.main == module.id) {
