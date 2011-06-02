@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="GeoScriptJS" default="usage" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="GeoScriptJS" default="usage" basedir=".">
 
     <property name="project" value="geoscript-js"/>
     <property name="version" value="0.10"/>
