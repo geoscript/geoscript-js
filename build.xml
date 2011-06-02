@@ -2,7 +2,6 @@
 <project name="GeoScriptJS" default="usage" basedir=".">
 
     <property name="project" value="geoscript-js"/>
-    <property name="version" value="0.10"/>
     <property name="home" value="."/>
     <property name="build" value="${home}/build"/>
 
@@ -11,7 +10,6 @@
         <echo message="GeoScriptJS build targets"/>
         <echo message=""/>
         <echo message=" test       --> runs tests"/>
-        <echo message=" package    --> creates distribution"/>
         <echo message=" clean      --> clean up compiled resources"/>
     </target>
 
