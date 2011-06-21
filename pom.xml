@@ -5,6 +5,11 @@
     <artifactId>javascript</artifactId>
     <packaging>jar</packaging>
     <version>0.9-SNAPSHOT</version>
+    <properties>
+        <gt.version>2.7.0.1</gt.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
     <repositories>
         <repository>
             <id>opengeo</id>
@@ -148,7 +153,4 @@
             </plugin>
         </plugins>
     </build>
-    <properties>
-        <gt.version>2.7.0.1</gt.version>
-    </properties>
 </project>

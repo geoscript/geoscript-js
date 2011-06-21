@@ -1,4 +1,5 @@
 var ASSERT = require("assert");
+var FS = require("FS");
 var LAYER = require("geoscript/layer");
 var ADMIN = require("../admin");
 var Map = require("geoscript/map").Map;
@@ -26,7 +27,12 @@ exports["test: render"] = function() {
     
     var map = new Map();
     map.add(states);
-    map.render({path: "out.png"});
+    var out = "out.png";
+    map.render({path: out});
+    
+    ASSERT.ok(FS.isFile(out), out + " exists");
+    
+    FS.remove(out);
     
 };
 

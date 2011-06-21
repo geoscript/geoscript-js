@@ -28,9 +28,6 @@
 
         <echo message="building ringo jars"/>
         <ant dir="externals/ringojs" target="jar"/>
-        <copy todir="externals/ringojs/lib" flatten="true" includeEmptyDirs="false">
-            <fileset dir="lib"/>
-        </copy>
 
     </target>
 

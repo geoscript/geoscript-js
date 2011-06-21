@@ -29,7 +29,7 @@ var path = function(rel) {
 var meta = {
     shp: {
         source: path("data/states.shp.zip"),
-        dest: path("tmp/shp"),
+        dest: path("tmp"),
         setUp: function() {
             meta.shp.tearDown();
             unzip(meta.shp.source, meta.shp.dest);
@@ -42,7 +42,7 @@ var meta = {
     },
     h2: {
         source: path("data/h2.zip"),
-        dest: path("tmp/h2"),
+        dest: path("tmp"),
         setUp: function() {
             meta.h2.tearDown();
             unzip(meta.h2.source, meta.h2.dest);
