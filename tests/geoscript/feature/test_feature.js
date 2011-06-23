@@ -39,6 +39,13 @@ exports["test: get"] = function() {
     
     ASSERT.strictEqual(typeof f.get("name"), "string", "correct name type");
     ASSERT.strictEqual(f.get("name"), "Some Location", "correct name value");
+    ASSERT.strictEqual(f.get("population"), 100, "correct population value");
+    
+    f.set("population", 0);
+    ASSERT.strictEqual(f.get("population"), 0, "correct population value after setting to 0");    
+
+    f.set("name", null);
+    ASSERT.strictEqual(f.get("name"), null, "correct name value after setting to null");    
     
     ASSERT.strictEqual(typeof f.get("foo"), "undefined", "undefined field has undefined value");
     
