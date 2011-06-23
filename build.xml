@@ -4,6 +4,7 @@
     <property name="project" value="geoscript-js"/>
     <property name="home" value="."/>
     <property name="build" value="${home}/build"/>
+    <property name="test.only" value="${home}/tests/all.js"/>
 
     <target name="usage">
         <echo message=""/>
@@ -36,7 +37,7 @@
             <sysproperty key="ringo.home" path="externals/ringojs"/>
             <sysproperty key="ringo.classpath" value="lib/**,../../jars/**"/>
             <sysproperty key="ringo.modulepath" path="lib"/>
-            <arg path="tests/all.js"/>
+            <arg path="${test.only}"/>
         </java>
     </target>
 
