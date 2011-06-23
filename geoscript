@@ -1,5 +1,12 @@
+# put GeoTools jars on the classpath
 cp=''
 for x in `ls jars/*.jar`; do
     cp=$cp:`pwd`/$x
 done
-java -cp $cp org.mozilla.javascript.tools.shell.Main -version 170 -modules lib
+
+if [ $# -eq 1 ]; then
+    java -cp $cp org.mozilla.javascript.tools.shell.Main -version 170 -modules lib -main $1
+else
+    java -cp $cp org.mozilla.javascript.tools.shell.Main -version 170 -modules lib
+fi
+
