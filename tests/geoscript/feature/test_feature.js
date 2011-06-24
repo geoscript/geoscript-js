@@ -35,7 +35,8 @@ exports["test: get"] = function() {
         name: "Some Location",
         location: new GEOM.Point([1, 2]),
         population: 100,
-        time: now
+        time: now,
+        legit: true
     };
     
     var f = new FEATURE.Feature({values: values});
@@ -47,6 +48,8 @@ exports["test: get"] = function() {
     ASSERT.strictEqual(f.get("time").getTime(), now.getTime(), "correct time");
     var _value = f._feature.getAttribute("time");
     ASSERT.ok(_value instanceof java.util.Date, "underlying time attribute is java.util.Date");
+    
+    ASSERT.strictEqual(f.get("legit"), true, "correct legit value");
     
     f.set("population", 0);
     ASSERT.strictEqual(f.get("population"), 0, "correct population value after setting to 0");    
@@ -66,7 +69,8 @@ exports["test: set"] = function() {
         name: "Some Location",
         location: new GEOM.Point([1, 2]),
         population: 100,
-        time: now
+        time: now,
+        legit: false
     };
     
     var f = new FEATURE.Feature({values: values});
@@ -94,6 +98,11 @@ exports["test: set"] = function() {
     
     var _value = f._feature.getAttribute("time");
     ASSERT.ok(_value instanceof java.util.Date, "underlying time attribute is java.util.Date");
+    
+    f.set("legit", true);
+    ASSERT.strictEqual(f.get("legit"), true, "set legit true");
+    f.set("legit", false);
+    ASSERT.strictEqual(f.get("legit"), false, "set legit false");
     
     ASSERT.throws(function() {
         f.set("bogusname", "some value");
