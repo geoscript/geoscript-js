@@ -19,11 +19,11 @@ Clone the repository and then use Maven to pull in dependencies and run tests.
     cd geoscript-js
     mvn install
 
-After pulling down the dependencies, you can launch the Rhino shell with the included `geoscript` script.
+After pulling down the dependencies, you can launch the Rhino shell with the included `bin/geoscript` script.
     
-    ./geoscript
+    ./bin/geoscript
 
-Once running the shell, you can pull in GeoScript modules with `require`.
+Add this script to your path, and you can run GeoScript from anywhere.  Once running the shell, you can pull in GeoScript modules with `require`.
 
     js> var geom = require("geoscript/geom")
     js> var p = new geom.Point([1, 2])
