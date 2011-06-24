@@ -29,10 +29,13 @@ exports["test: constructor"] = function() {
 
 exports["test: get"] = function() {
 
+    var now = new Date();
+
     var values = {
         name: "Some Location",
         location: new GEOM.Point([1, 2]),
-        population: 100
+        population: 100,
+        time: now
     };
     
     var f = new FEATURE.Feature({values: values});
@@ -40,6 +43,10 @@ exports["test: get"] = function() {
     ASSERT.strictEqual(typeof f.get("name"), "string", "correct name type");
     ASSERT.strictEqual(f.get("name"), "Some Location", "correct name value");
     ASSERT.strictEqual(f.get("population"), 100, "correct population value");
+    ASSERT.ok(f.get("time") instanceof Date, "time is date");
+    ASSERT.strictEqual(f.get("time").getTime(), now.getTime(), "correct time");
+    var _value = f._feature.getAttribute("time");
+    ASSERT.ok(_value instanceof java.util.Date, "underlying time attribute is java.util.Date");
     
     f.set("population", 0);
     ASSERT.strictEqual(f.get("population"), 0, "correct population value after setting to 0");    
@@ -53,10 +60,13 @@ exports["test: get"] = function() {
 
 exports["test: set"] = function() {
     
+    var now = new Date();
+
     var values = {
         name: "Some Location",
         location: new GEOM.Point([1, 2]),
-        population: 100
+        population: 100,
+        time: now
     };
     
     var f = new FEATURE.Feature({values: values});
@@ -75,7 +85,15 @@ exports["test: set"] = function() {
     point = new GEOM.Point([3, 4]);
     point.projection = "EPSG:4326";
     f.geometry = point;
-    ASSERT.ok(point.equals(f.geometry), "geometry correctly set");    
+    ASSERT.ok(point.equals(f.geometry), "geometry correctly set");
+    
+    var later = new Date(now.getTime() + 100);
+    f.set("time", later);
+    ASSERT.ok(f.get("time") instanceof Date, "time set to a date");
+    ASSERT.strictEqual(f.get("time").getTime(), later.getTime(), "time set correctly");
+    
+    var _value = f._feature.getAttribute("time");
+    ASSERT.ok(_value instanceof java.util.Date, "underlying time attribute is java.util.Date");
     
     ASSERT.throws(function() {
         f.set("bogusname", "some value");
