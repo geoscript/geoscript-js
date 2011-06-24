@@ -62,6 +62,50 @@ exports["test: features"] = function(getLayer) {
     };
 };
 
+exports["test: update"] = function(getLayer) {
+    return function() {
+        var layer, cursor, feature;
+        
+        layer = getLayer();
+        
+        cursor = layer.query("STATE_ABBR = 'MT'");
+        feature = cursor.next();
+        cursor.close();
+
+        // modify feature but do not persist changes
+        ASSERT.strictEqual(feature.get("STATE_NAME"), "Montana", "original name");
+        feature.set("STATE_NAME", "Montucky");
+        
+        // re-read layer
+        layer = getLayer();
+        cursor = layer.query("STATE_ABBR = 'MT'");
+        feature = cursor.next();
+        cursor.close();
+
+        // confirm that original name is still set
+        ASSERT.strictEqual(feature.get("STATE_NAME"), "Montana", "same old name");
+        
+        // set new name
+        feature.set("STATE_NAME", "Montucky");
+        // and make it bigger while we're at it
+        var big = feature.geometry.area;
+        feature.geometry = feature.geometry.buffer(2);
+        // now persist changes
+        layer.update();
+        
+        // finally, confirm that changes stuck
+        layer = getLayer();
+        cursor = layer.query("STATE_ABBR = 'MT'");
+        feature = cursor.next();
+        cursor.close();
+        ASSERT.strictEqual(feature.get("STATE_NAME"), "Montucky", "new name");
+        ASSERT.ok(feature.geometry.area > big, "bigger");
+        
+        layer.workspace.close();
+    
+    };
+};
+
 exports["test: bounds"] = function(getLayer) {
     return function() {
         var layer = getLayer();
