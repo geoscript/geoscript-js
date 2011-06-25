@@ -1,5 +1,6 @@
 var ASSERT = require("assert");
 var Feature = require("geoscript/feature").Feature;
+var Filter = require("geoscript/filter").Filter;
 var GEOM = require("geoscript/geom");
 var PROJ = require("geoscript/proj");
 
@@ -152,7 +153,32 @@ exports["test: query"] = function(getLayer) {
         feature = features.next();
         ASSERT.strictEqual(feature.get("STATE_ABBR"), "TX", "got feature with expected STATE_ABBR");
     
-        ASSERT.isFalse(features.hasNext(), "only one feature in query results");    
+        ASSERT.isFalse(features.hasNext(), "only one feature in query results");
+        
+        var cursor;
+        
+        var isMT = new Filter("STATE_ABBR EQ 'MT'");
+        cursor = layer.query(isMT);
+        feature = cursor.get();
+        ASSERT.ok(feature instanceof Feature, "one feature is MT")
+        ASSERT.isTrue(cursor.closed, "a) cursor closed");
+        
+        var nearMT = new Filter("BBOX(the_geom, " + feature.geometry.bounds.toArray() + ")");
+        
+        cursor = layer.query(nearMT);
+        features = cursor.get(20);
+        ASSERT.strictEqual(features.length, 5, "there are 5 features near MT");
+        ASSERT.isTrue(cursor.closed, "b) cursor closed");
+
+        cursor = layer.query(nearMT);
+        features = cursor.get(3);
+        ASSERT.strictEqual(features.length, 3, "got first 3 features near MT");
+        ASSERT.isTrue(cursor.closed, "c) cursor closed");
+
+        cursor = layer.query(nearMT.and(isMT.not));
+        features = cursor.get(20);
+        ASSERT.strictEqual(features.length, 4, "4 features near and not MT");
+        ASSERT.isTrue(cursor.closed, "d) cursor closed");
 
         layer.workspace.close();        
     };
