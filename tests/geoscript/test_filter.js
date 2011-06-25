@@ -60,6 +60,17 @@ exports["test Filter.evaluate"] = function() {
     ASSERT.ok(isCheapPet.evaluate(parakeet), "parakeet isCheapPet");
     ASSERT.isFalse(isBirdish.evaluate(dog), "dog isBirdish");
     ASSERT.ok(isBirdish.evaluate(chicken), "chicken isBirdish");
+    
+    // test chaining
+    isFlyingPet = isPet.and(canFly);
+    isCheapPet = isPet.and(isCheap);
+    isBirdish = isFowl.or(canFly);
+    ASSERT.ok(isFlyingPet.evaluate(parakeet), "(chained) parakeet isFlyingPet");
+    ASSERT.isFalse(isFlyingPet.evaluate(dog), "(chained) dog isFlyingPet");
+    ASSERT.isFalse(isCheapPet.evaluate(dog), "(chained) dog isCheapPet");
+    ASSERT.ok(isCheapPet.evaluate(parakeet), "(chained) parakeet isCheapPet");
+    ASSERT.isFalse(isBirdish.evaluate(dog), "(chained) dog isBirdish");
+    ASSERT.ok(isBirdish.evaluate(chicken), "(chained) chicken isBirdish");
 
 };
 
