@@ -14,7 +14,7 @@ var states = dir.get("states");
 
 // create a filter and get a single feature
 var isMT = new Filter("STATE_ABBR EQ 'MT'");
-var mt = states.query(isMT).get();
+var mt = states.get(isMT);
 
 // make geometry bigger
 mt.geometry = mt.geometry.buffer(1);
