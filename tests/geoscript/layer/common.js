@@ -191,6 +191,14 @@ exports["test: remove"] = function(getLayer) {
     
         layer.remove("STATE_NAME = 'Illinois'");
         ASSERT.strictEqual(layer.count, 48, "48 features after remove");  
+
+        var isTX = new Filter("STATE_ABBR = 'TX'");
+        var feature = layer.get(isTX);
+        ASSERT.ok(feature instanceof Feature, "got a single feature");
+        layer.remove(feature);
+        ASSERT.strictEqual(layer.count, 47, "47 features after remove");
+        
+        ASSERT.strictEqual(layer.get(isTX), undefined, "no more TX");
         
         layer.workspace.close();
     };
