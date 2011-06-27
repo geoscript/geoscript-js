@@ -206,6 +206,32 @@ exports["test: clone"] = function() {
     
 };
 
+exports["test: schema"] = function() {
+    
+    var f = new FEATURE.Feature({
+        schema: {
+            name: "mySchema",
+            fields: [
+                {name: "dateField", type: "Date"},
+                {name: "bigDecField", type: "BigDecimal"},
+                {name: "uriField", type: "URI"}
+            ]
+        }
+    });
+    
+    function assertCorrectBinding(name, type) {
+        var field = f.schema.get(name);
+        ASSERT.strictEqual(field._field.getType().getBinding(), type, "binding for " + name);
+    }
+    
+    assertCorrectBinding("dateField", java.util.Date);
+    assertCorrectBinding("bigDecField", java.math.BigDecimal);
+    assertCorrectBinding("uriField", java.net.URI);
+    
+}
+
+
+
 if (require.main == module.id) {
     system.exit(require("test").run(exports));
 }

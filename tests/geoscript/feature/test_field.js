@@ -67,7 +67,7 @@ exports["test: fromValue"] = function() {
 
     field = FEATURE.Field.fromValue("loc", new GEOM.Point([1, 2]));
     ASSERT.strictEqual(field.name, "loc", "correct name");
-    ASSERT.strictEqual(field.type, "Point", "correct type");    
+    ASSERT.strictEqual(field.type, "Point", "correct type");
     
 };
 
