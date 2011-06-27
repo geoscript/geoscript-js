@@ -157,7 +157,7 @@ exports["test: query"] = function(getLayer) {
         
         var cursor;
         
-        var isMT = new Filter("STATE_ABBR EQ 'MT'");
+        var isMT = new Filter("STATE_ABBR = 'MT'");
         cursor = layer.query(isMT);
         feature = cursor.get();
         ASSERT.ok(feature instanceof Feature, "one feature is MT")
