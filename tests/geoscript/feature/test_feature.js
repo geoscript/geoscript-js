@@ -213,6 +213,7 @@ exports["test: schema"] = function() {
             name: "mySchema",
             fields: [
                 {name: "dateField", type: "Date"},
+                {name: "timestampField", type: "Timestamp"},
                 {name: "bigDecField", type: "BigDecimal"},
                 {name: "uriField", type: "URI"}
             ]
@@ -225,8 +226,14 @@ exports["test: schema"] = function() {
     }
     
     assertCorrectBinding("dateField", java.util.Date);
+    assertCorrectBinding("timestampField", java.sql.Timestamp);
     assertCorrectBinding("bigDecField", java.math.BigDecimal);
     assertCorrectBinding("uriField", java.net.URI);
+    
+    f.set("dateField", new Date());
+    ASSERT.ok(f._feature.getAttribute("dateField") instanceof java.util.Date, "date cast to java.util.Date");
+    f.set("timestampField", new Date());
+    ASSERT.ok(f._feature.getAttribute("timestampField") instanceof java.sql.Timestamp, "date cast to java.sql.Timestamp");
     
 }
 
