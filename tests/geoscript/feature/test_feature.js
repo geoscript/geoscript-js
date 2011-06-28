@@ -243,6 +243,18 @@ exports["test: schema"] = function() {
     f.set("timestampField", new Date());
     ASSERT.ok(f._feature.getAttribute("timestampField") instanceof java.sql.Timestamp, "date cast to java.sql.Timestamp");
     
+    function assertNull(name) {
+        f.set(name, null);
+        ASSERT.strictEqual(f.get(name), null, name + " set to null");
+    }
+    
+    assertNull("dateField");
+    assertNull("timeField");
+    assertNull("datetimeField");
+    assertNull("timestampField");
+    assertNull("bigDecField");
+    assertNull("uriField");
+    
 }
 
 
