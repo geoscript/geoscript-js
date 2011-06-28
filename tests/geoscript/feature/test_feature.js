@@ -213,6 +213,8 @@ exports["test: schema"] = function() {
             name: "mySchema",
             fields: [
                 {name: "dateField", type: "Date"},
+                {name: "timeField", type: "Time"},
+                {name: "datetimeField", type: "Datetime"},
                 {name: "timestampField", type: "Timestamp"},
                 {name: "bigDecField", type: "BigDecimal"},
                 {name: "uriField", type: "URI"}
@@ -225,13 +227,19 @@ exports["test: schema"] = function() {
         ASSERT.strictEqual(field._field.getType().getBinding(), type, "binding for " + name);
     }
     
-    assertCorrectBinding("dateField", java.util.Date);
+    assertCorrectBinding("dateField", java.sql.Date);
+    assertCorrectBinding("timeField", java.sql.Time);
+    assertCorrectBinding("datetimeField", java.util.Date);
     assertCorrectBinding("timestampField", java.sql.Timestamp);
     assertCorrectBinding("bigDecField", java.math.BigDecimal);
     assertCorrectBinding("uriField", java.net.URI);
     
     f.set("dateField", new Date());
-    ASSERT.ok(f._feature.getAttribute("dateField") instanceof java.util.Date, "date cast to java.util.Date");
+    ASSERT.ok(f._feature.getAttribute("dateField") instanceof java.sql.Date, "date cast to java.sql.Date");
+    f.set("timeField", new Date());
+    ASSERT.ok(f._feature.getAttribute("timeField") instanceof java.sql.Time, "date cast to java.sql.Time");
+    f.set("datetimeField", new Date());
+    ASSERT.ok(f._feature.getAttribute("datetimeField") instanceof java.util.Date, "date cast to java.util.Date");
     f.set("timestampField", new Date());
     ASSERT.ok(f._feature.getAttribute("timestampField") instanceof java.sql.Timestamp, "date cast to java.sql.Timestamp");
     
