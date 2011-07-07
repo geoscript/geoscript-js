@@ -1,2 +1,6 @@
 jars
-target
+build/
+.classpath
+.project
+.settings/
+target/

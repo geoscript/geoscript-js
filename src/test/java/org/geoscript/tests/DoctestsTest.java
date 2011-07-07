@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,10 +31,10 @@ import org.mozilla.javascript.tools.shell.Global;
  */
 @RunWith(Parameterized.class)
 public class DoctestsTest {
-    static final String baseDirectory = "src" + File.separator + "test" + File.separator + "doc";
     String name;
     String source;
     int optimizationLevel;
+    static URL baseDirectory = DoctestsTest.class.getResource("doc");
 
     public DoctestsTest(String name, String source, int optimizationLevel) {
         this.name = name;
@@ -42,7 +43,7 @@ public class DoctestsTest {
     }
 
     public static File[] getDoctestFiles() {
-        return recursiveListFiles(new File(baseDirectory));
+        return recursiveListFiles(new File(baseDirectory.getFile()));
     }
 
     public static String loadFile(File f) throws IOException {
