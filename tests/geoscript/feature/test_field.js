@@ -39,6 +39,19 @@ exports["test: constructor"] = function() {
     
 };
 
+exports["test: binding"] = function() {
+    
+    var field;
+    
+    // feature type
+    field = new FEATURE.Field({
+        name: "place",
+        type: "Feature"
+    });
+    ASSERT.ok(field._field.getType().getBinding() == Packages.org.geotools.feature.simple.SimpleFeatureImpl, "Feature");
+
+}
+
 exports["test: title"] = function() {
     
     var field = new FEATURE.Field({name: "foo", type: "String", title: "Foo"});
