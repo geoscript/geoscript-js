@@ -45,10 +45,10 @@ exports["test: binding"] = function() {
     
     // feature type
     field = new FEATURE.Field({
-        name: "place",
-        type: "Feature"
+        name: "places",
+        type: "FeatureCollection"
     });
-    ASSERT.ok(field._field.getType().getBinding() == Packages.org.geotools.feature.simple.SimpleFeatureImpl, "Feature");
+    ASSERT.ok(field._field.getType().getBinding() == Packages.org.geotools.feature.FeatureCollection, "FeatureCollection");
 
 }
 
