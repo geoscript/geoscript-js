@@ -17,6 +17,21 @@ exports["test: create(directory)"] = function() {
 
 };
 
+exports["test: Workspace.from_"] = function() {
+    
+    var ws, _store;
+    
+    var dir  = WORKSPACE.create(".");
+    ws = WORKSPACE.Workspace.from_(dir._store);
+    ASSERT.ok(ws instanceof WORKSPACE.Directory, "round tripped Directory");
+    ws.close();
+    
+    var bogus = {};
+    ws = WORKSPACE.Workspace.from_(bogus);
+    ASSERT.ok(ws instanceof WORKSPACE.Workspace, "created generic Workspace from bogus store");
+    
+}
+
 exports["test: Directory"] = require("./workspace/test_directory");
 exports["test: H2"] = require("./workspace/test_h2");
 exports["test: Memory"] = require("./workspace/test_memory");
