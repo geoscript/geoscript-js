@@ -155,34 +155,56 @@ exports["test: query"] = function(getLayer) {
     
         ASSERT.isFalse(features.hasNext(), "only one feature in query results");
         
-        var cursor;
         
         var isMT = new Filter("STATE_ABBR = 'MT'");
-        cursor = layer.query(isMT);
-        feature = cursor.get();
+        feature = layer.get(isMT);
         ASSERT.ok(feature instanceof Feature, "one feature is MT")
-        ASSERT.isTrue(cursor.closed, "a) cursor closed");
         
         var nearMT = new Filter("BBOX(the_geom, " + feature.geometry.bounds.toArray() + ")");
         
+        var cursor;
         cursor = layer.query(nearMT);
         features = cursor.get(20);
         ASSERT.strictEqual(features.length, 5, "there are 5 features near MT");
-        ASSERT.isTrue(cursor.closed, "b) cursor closed");
+        ASSERT.isTrue(cursor.closed, "a) cursor closed");
 
         cursor = layer.query(nearMT);
         features = cursor.get(3);
         ASSERT.strictEqual(features.length, 3, "got first 3 features near MT");
-        ASSERT.isTrue(cursor.closed, "c) cursor closed");
+        ASSERT.isTrue(cursor.closed, "b) cursor closed");
 
         cursor = layer.query(nearMT.and(isMT.not));
         features = cursor.get(20);
         ASSERT.strictEqual(features.length, 4, "4 features near and not MT");
-        ASSERT.isTrue(cursor.closed, "d) cursor closed");
+        ASSERT.isTrue(cursor.closed, "c) cursor closed");
 
         layer.workspace.close();        
     };
 };
+
+exports["test: get"] = function(getLayer) {
+    return function() {
+        var layer = getLayer();
+        var feature;
+
+        var isMT = new Filter("STATE_ABBR = 'MT'");
+        feature = layer.get(isMT);
+        ASSERT.ok(feature instanceof Feature, "got feature MT with filter")
+        ASSERT.strictEqual(feature.get("STATE_ABBR"), "MT", "MT has expected STATE_ABBR");
+
+        // query with a filter
+        feature = layer.get("STATE_ABBR EQ 'TX'");
+        ASSERT.ok(feature instanceof Feature, "got feature TX with string");
+        ASSERT.strictEqual(feature.get("STATE_ABBR"), "TX", "TX has expected STATE_ABBR");
+        
+        var id = feature.id;
+        feature = layer.get(id);
+        ASSERT.ok(feature instanceof Feature, "got feature TX with id");
+        ASSERT.strictEqual(feature.get("STATE_ABBR"), "TX", "TX has expected STATE_ABBR with id");
+        
+    };
+};
+
 
 exports["test: remove"] = function(getLayer) {
     return function() {
