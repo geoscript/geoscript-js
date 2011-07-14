@@ -74,6 +74,23 @@ exports["test Filter.evaluate"] = function() {
 
 };
 
+exports["test create"] = function() {
+    
+    var f = FILTER.create("name = 'foo'");
+    ASSERT.ok(f instanceof FILTER.Filter);
+    
+    var bar = new Feature({values: {name: "foo"}});
+    ASSERT.isTrue(f.evaluate(bar), "bar passed");
+    
+    var baz = new Feature({values: {name: "baz"}});
+    ASSERT.isFalse(f.evaluate(baz), "baz didn't pass");
+    
+    ASSERT.throws(function() {
+        FILTER.create("bogus");
+    }, Error, "create throws with bogus CQL");
+    
+}
+
 exports["test Filter.toXML"] = function() {
 
     // TODO: determine why this fails
