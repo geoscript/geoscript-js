@@ -74,6 +74,20 @@ exports["test Filter.evaluate"] = function() {
 
 };
 
+exports["test where"] = function() {
+    
+    var f = FILTER.where("name = 'foo'");
+    ASSERT.ok(f instanceof FILTER.Filter);
+    
+    var bar = new Feature({values: {name: "foo"}});
+    ASSERT.isTrue(f.evaluate(bar), "bar passed");
+    
+    f = FILTER.where("WITHIN", "the_geom", "POINT(1 1)");
+    ASSERT.strictEqual(f.cql, "WITHIN(the_geom, POINT (1 1))", "correct cql");
+    
+}
+
+
 exports["test create"] = function() {
     
     var f = FILTER.create("name = 'foo'");
