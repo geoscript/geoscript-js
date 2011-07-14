@@ -17,6 +17,27 @@ exports["test Filter.cql"] = function() {
     
 };
 
+exports["test and"] = function() {
+    
+    var f = FILTER.and(["name = 'foo'", "type = 'bar'"]);
+    ASSERT.strictEqual(f.cql, "(name = 'foo' AND type = 'bar')", "correct cql");
+    
+};
+
+exports["test or"] = function() {
+    
+    var f = FILTER.or(["name = 'foo'", "type = 'bar'"]);
+    ASSERT.strictEqual(f.cql, "(name = 'foo' OR type = 'bar')", "correct cql");
+    
+};
+
+exports["test not"] = function() {
+    
+    var f = FILTER.not("name = 'foo'");
+    ASSERT.strictEqual(f.cql, "NOT (name = 'foo')", "correct cql");
+    
+};
+
 exports["test Filter.evaluate"] = function() {
     
     var chicken = new Feature({values: {
