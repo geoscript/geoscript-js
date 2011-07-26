@@ -74,6 +74,17 @@ exports["test: endPoint"] = function() {
 
 };
 
+exports["test: reverse"] = function() {
+
+    var g = new GEOM.LineString([[0, 0], [1, 1], [2, 2]]);
+    
+    var r = g.reverse();
+    
+    ASSERT.ok(r instanceof GEOM.LineString, "reverse is linestring");
+    ASSERT.ok(r.equals(new GEOM.LineString([[2, 2], [1, 1], [0, 0]])), "correct linestring");
+
+};
+
 exports["test: centroid"] = function() {
 
     var g = new GEOM.LineString([[-20, -10], [-10, 0]]);
