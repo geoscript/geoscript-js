@@ -52,6 +52,28 @@ exports["test: bounds"] = function() {
 
 };
 
+exports["test: startPoint"] = function() {
+
+    var g = new GEOM.LineString([[0, 0], [1, 1], [2, 2]]);
+    
+    var p = g.startPoint;
+    
+    ASSERT.ok(p instanceof GEOM.Point, "startPoint is point");
+    ASSERT.ok(p.equals(new GEOM.Point([0, 0])), "correct startPoint");
+
+};
+
+exports["test: endPoint"] = function() {
+
+    var g = new GEOM.LineString([[0, 0], [1, 1], [2, 2]]);
+    
+    var p = g.endPoint;
+    
+    ASSERT.ok(p instanceof GEOM.Point, "endPoint is point");
+    ASSERT.ok(p.equals(new GEOM.Point([2, 2])), "correct endPoint");
+
+};
+
 exports["test: centroid"] = function() {
 
     var g = new GEOM.LineString([[-20, -10], [-10, 0]]);
