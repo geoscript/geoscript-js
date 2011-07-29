@@ -1,5 +1,5 @@
 var ASSERT = require("assert");
-var FS = require("FS");
+var FS = require("fs");
 var LAYER = require("geoscript/layer");
 var ADMIN = require("../admin");
 var Map = require("geoscript/map").Map;
