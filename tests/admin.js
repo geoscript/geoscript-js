@@ -1,5 +1,5 @@
 var ZIP = require("ringo/zip");
-var FS = require("FS");
+var FS = require("fs");
 
 var unzip = function(source, dest) {
     var zip = new ZIP.ZipFile(source);
