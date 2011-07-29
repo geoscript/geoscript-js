@@ -105,7 +105,10 @@ exports["test where"] = function() {
     
     f = FILTER.where("WITHIN", "the_geom", "POINT(1 1)");
     ASSERT.strictEqual(f.cql, "WITHIN(the_geom, POINT (1 1))", "correct cql");
-    
+
+    f = FILTER.where(["WITHIN", "the_geom", "POINT(1 1)"]);
+    ASSERT.strictEqual(f.cql, "WITHIN(the_geom, POINT (1 1))", "correct cql");
+
 }
 
 
