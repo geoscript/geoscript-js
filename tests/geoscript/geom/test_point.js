@@ -68,6 +68,13 @@ exports["test: json"] = function() {
     
 };
 
+exports["test: dimension"] = function() {
+
+    var g = new GEOM.Point([1, 2]);
+    ASSERT.strictEqual(g.dimension, 0, "correct dimension");
+
+};
+
 exports["test: buffer"] = function() {
 
     var p = new GEOM.Point([0, 0]);

@@ -74,6 +74,16 @@ exports["test: centroid"] = function() {
 
 };
 
+exports["test: dimension"] = function() {
+
+    var g = new GEOM.Polygon([
+        [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],
+        [ [-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45] ]
+    ]);
+    ASSERT.strictEqual(g.dimension, 2, "correct dimension");
+
+};
+
 exports["test: clone"] = function() {
 
     var p = new GEOM.Polygon([

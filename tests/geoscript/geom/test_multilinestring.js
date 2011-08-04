@@ -65,6 +65,13 @@ exports["test: endPoints"] = function() {
 
 };
 
+exports["test: dimension"] = function() {
+
+    var g = new GEOM.MultiLineString([[[-180, -90], [0, 0], [180, 90]], [[-10, -10], [0, 0], [10, 10]]]);
+    ASSERT.strictEqual(g.dimension, 1, "correct dimension");
+
+};
+
 if (require.main == module.id) {
     system.exit(require("test").run(exports));
 }

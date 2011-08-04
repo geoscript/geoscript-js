@@ -85,6 +85,14 @@ exports["test: reverse"] = function() {
 
 };
 
+exports["test: dimension"] = function() {
+
+    var g = new GEOM.LineString([[-20, -10], [-10, 0]]);
+    ASSERT.strictEqual(g.dimension, 1, "correct dimension");
+
+};
+
+
 exports["test: centroid"] = function() {
 
     var g = new GEOM.LineString([[-20, -10], [-10, 0]]);
