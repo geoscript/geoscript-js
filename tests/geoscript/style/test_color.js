@@ -56,6 +56,10 @@ exports["test: opacity"] = function() {
     
     var color;
     
+    color = new STYLE.Color("blue");
+    ASSERT.strictEqual(color.value, "#0000ff", "correct color");
+    ASSERT.strictEqual(color.opacity, 1, "default opacity")
+    
     // opacity in config
     color = new STYLE.Color({value: "white", opacity: 0.5});
     ASSERT.strictEqual(color.opacity, 0.5, "opacity in config");
