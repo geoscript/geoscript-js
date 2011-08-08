@@ -1,5 +1,6 @@
 var ASSERT = require("assert");
 var STYLE = require("geoscript/style");
+var Expression = require("geoscript/filter").Expression;
 
 exports["test: constructor"] = function() {
     
@@ -7,6 +8,9 @@ exports["test: constructor"] = function() {
     
     ASSERT.ok(color instanceof STYLE.Brush, "is Brush");
     ASSERT.ok(color instanceof STYLE.Color, "is Color");
+    
+    ASSERT.ok(color.opacity instanceof Expression, "opacity expression");
+    ASSERT.strictEqual(color.opacity.text, "1", "default opacity");
 
 };
 
