@@ -33,36 +33,6 @@ exports["test: name"] = function() {
 
 };
 
-exports["test: opacity"] = function() {
-    
-    var color;
-    
-    color = new STYLE.Color("blue");
-    ASSERT.strictEqual(color.value.text, "'#0000ff'", "correct color");
-    ASSERT.strictEqual(color.opacity.text, "1", "default opacity")
-    
-    // opacity in config
-    color = new STYLE.Color({value: "white", opacity: 0.5});
-    ASSERT.strictEqual(color.opacity.text, "0.5", "opacity in config");
-    ASSERT.strictEqual(color.value.text, "'#ffffff'", "correct color");
-    
-    color.opacity = 0.75;
-    ASSERT.strictEqual(color.opacity.text, "0.75", "opacity in config");
-
-    ASSERT.throws(function() {
-        color.opacity = 1.5;
-    }, Error, "opacity greater than 1");
-
-    ASSERT.throws(function() {
-        color.opacity = -2;
-    }, Error, "opacity less than 0");
-
-    ASSERT.throws(function() {
-        color.opacity = "foo";
-    }, Error, "bogus opacity");
-    
-};
-
 if (require.main == module.id) {
     system.exit(require("test").run(exports));
 }

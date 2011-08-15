@@ -9,9 +9,6 @@ exports["test: constructor"] = function() {
     ASSERT.ok(color instanceof STYLE.Brush, "is Brush");
     ASSERT.ok(color instanceof STYLE.Color, "is Color");
     
-    ASSERT.ok(color.opacity instanceof Expression, "opacity expression");
-    ASSERT.strictEqual(color.opacity.text, "1", "default opacity");
-
 };
 
 exports["test: value"] = function() {
@@ -53,36 +50,6 @@ exports["test: value"] = function() {
     
     color.value = [0, 255, 187];
     ASSERT.strictEqual(color.value.text, "'#00ffbb'", "rgb array");
-    
-};
-
-exports["test: opacity"] = function() {
-    
-    var color;
-    
-    color = new STYLE.Color("blue");
-    ASSERT.strictEqual(color.value.text, "'#0000ff'", "correct color");
-    ASSERT.strictEqual(color.opacity.text, "1", "default opacity")
-    
-    // opacity in config
-    color = new STYLE.Color({value: "white", opacity: 0.5});
-    ASSERT.strictEqual(color.opacity.text, "0.5", "opacity in config");
-    ASSERT.strictEqual(color.value.text, "'#ffffff'", "correct color");
-    
-    color.opacity = 0.75;
-    ASSERT.strictEqual(color.opacity.text, "0.75", "opacity in config");
-
-    ASSERT.throws(function() {
-        color.opacity = 1.5;
-    }, Error, "opacity greater than 1");
-
-    ASSERT.throws(function() {
-        color.opacity = -2;
-    }, Error, "opacity less than 0");
-
-    ASSERT.throws(function() {
-        color.opacity = "foo";
-    }, Error, "bogus opacity");
     
 };
 
