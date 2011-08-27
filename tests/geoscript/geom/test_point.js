@@ -14,6 +14,9 @@ exports["test: constructor"] = function() {
     
     var p2 = new GEOM.Point([1, 2, 3]);
     ASSERT.equal(3, p2.z, "3d");
+
+    var p3 = GEOM.Point([1, 2, 3]);
+    ASSERT.ok(p3.equals(p2), "newless construction");
     
 };
 
