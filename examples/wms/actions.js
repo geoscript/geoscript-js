@@ -2,6 +2,8 @@ var FS = require("fs");
 var Request = require("ringo/webapp/request").Request;
 var Response = require("ringo/webapp/response").Response;
 var Map = require("geoscript/map").Map;
+var Fill = require("geoscript/style").Fill;
+var Stroke = require("geoscript/style").Stroke;
 
 var ByteArray = require("binary").ByteArray;
 
@@ -10,10 +12,7 @@ var map = new Map({
         name: "states",
         title: "US States",
         workspace: FS.join(module.directory, "..", "data", "shapefiles"),
-        style: {
-            fillColor: "steelblue",
-            strokeColor: "wheat"
-        }
+        style: Fill("steelblue").and(Stroke("wheat"))
     }]
 });
 
