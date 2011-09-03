@@ -3,10 +3,10 @@ var STYLE = require("geoscript/style");
 
 exports["test: constructor"] = function() {
     
-    var symbolizer = new STYLE.Composite({});
+    var symbolizer = new STYLE.Style({});
     
     ASSERT.ok(symbolizer instanceof STYLE.Symbolizer, "is Symbolizer");
-    ASSERT.ok(symbolizer instanceof STYLE.Composite, "is Composite");
+    ASSERT.ok(symbolizer instanceof STYLE.Style, "is Style");
 
 };
 
@@ -17,7 +17,7 @@ exports["test: and"] = function() {
     var s3 = new STYLE.Symbolizer({});
     
     var composite = s1.and(s2);
-    ASSERT.ok(composite instanceof STYLE.Composite, "is Composite");
+    ASSERT.ok(composite instanceof STYLE.Style, "is Style");
     
     var o = composite.and(s3);
     

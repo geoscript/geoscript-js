@@ -1,4 +1,4 @@
-exports["test: Composite"] = require("./style/test_composite");
+exports["test: Style"] = require("./style/test_composite");
 exports["test: Symbolizer"] = require("./style/test_symbolizer");
 exports["test: Fill"] = require("./style/test_fill");
 exports["test: Stroke"] = require("./style/test_stroke");

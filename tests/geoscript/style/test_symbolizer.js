@@ -46,12 +46,12 @@ exports["test: and"] = function() {
     var s1 = new STYLE.Symbolizer({});
     var s2 = new STYLE.Symbolizer({});
     
-    var composite = s1.and(s2);
-    ASSERT.ok(composite instanceof STYLE.Composite, "is Composite");
+    var style = s1.and(s2);
+    ASSERT.ok(style instanceof STYLE.Style, "is Style");
     
-    ASSERT.strictEqual(composite.parts.length, 2, "composite has two parts");
-    ASSERT.ok(composite.parts[0] === s1, "first part");
-    ASSERT.ok(composite.parts[1] === s2, "second part");
+    ASSERT.strictEqual(style.parts.length, 2, "composite has two parts");
+    ASSERT.ok(style.parts[0] === s1, "first part");
+    ASSERT.ok(style.parts[1] === s2, "second part");
 
 };
 
