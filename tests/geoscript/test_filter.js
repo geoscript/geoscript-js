@@ -58,6 +58,7 @@ exports["test create"] = function() {
 }
 
 exports["test Filter"] = require("./filter/test_filter");
+exports["test Expression"] = require("./filter/test_expression");
 
 if (require.main == module.id) {
     system.exit(require("test").run(exports));
