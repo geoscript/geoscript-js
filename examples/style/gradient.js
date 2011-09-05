@@ -1,5 +1,5 @@
 var Directory = require("geoscript/workspace").Directory;
-var {Fill, Shape, gradient} = require("geoscript/style");
+var {Stroke, Fill, Shape, gradient} = require("geoscript/style");
 var Map = require("geoscript/map").Map;
 
 var states = Directory("data").get("states");
@@ -7,11 +7,7 @@ var states = Directory("data").get("states");
 states.style = gradient({
     expression: "PERSONS / LAND_KM", 
     values: [0, 200], 
-    // styles: [Fill("#000066"), Fill("red")], 
-    styles: [
-        Shape({name: "circle", size: 2, fill: "#000066"}), 
-        Shape({name: "circle", size: 9, fill: "red"})
-    ], 
+    styles: [Fill("#000066"), Fill("red")],
     classes: 10, 
     method: "exponential"
 }).and(
