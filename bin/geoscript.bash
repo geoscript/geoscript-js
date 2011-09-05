@@ -43,7 +43,13 @@ else
 fi
 
 if [ $# -eq 1 ]; then
-    java -cp $CP $CLASS -version 180 -modules $GEOSCRIPT_HOME/lib -main $1
+    # resolve absolute path to main module
+    MAIN_PATH=$(
+        cd -P -- "$(dirname -- "$1")" \
+        && pwd -P
+    ) && MAIN_PATH=$MAIN_PATH/$(basename -- "$1")
+
+    java -cp $CP $CLASS -version 180 -modules $GEOSCRIPT_HOME/lib -main $MAIN_PATH
 else
     java -cp $CP $CLASS -version 180 -modules $GEOSCRIPT_HOME/lib
 fi
