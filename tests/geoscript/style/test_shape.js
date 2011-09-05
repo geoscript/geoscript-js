@@ -6,11 +6,11 @@ exports["test: constructor"] = function() {
     
     var shape = new STYLE.Shape();
     
-    ASSERT.ok(shape instanceof STYLE.Brush, "is Brush");
+    ASSERT.ok(shape instanceof STYLE.Symbolizer, "is Symbolizer");
     ASSERT.ok(shape instanceof STYLE.Shape, "is Shape");
     
     ASSERT.ok(shape.name instanceof Expression, "name expression");
-    ASSERT.strictEqual(shape.name.text, "'circle'", "default name");
+    ASSERT.strictEqual(shape.name.text, "'square'", "default name");
 
     ASSERT.ok(shape.size instanceof Expression, "size expression");
     ASSERT.strictEqual(shape.size.text, "6", "default size");
@@ -22,9 +22,9 @@ exports["test: name"] = function() {
     var shape;
     
     // named color as config
-    shape = new STYLE.Shape("square");
+    shape = new STYLE.Shape("circle");
     ASSERT.ok(shape.name instanceof Expression, "name is expression");
-    ASSERT.strictEqual(shape.name.text, "'square'", "string config with named shape");
+    ASSERT.strictEqual(shape.name.text, "'circle'", "string config with named shape");
     
     // config with named color
     shape = new STYLE.Shape({name: "cross"});
