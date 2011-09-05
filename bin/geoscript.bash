@@ -43,8 +43,8 @@ else
 fi
 
 if [ $# -eq 1 ]; then
-    java -cp $CP $CLASS -version 170 -modules $GEOSCRIPT_HOME/lib -main $1
+    java -cp $CP $CLASS -version 180 -modules $GEOSCRIPT_HOME/lib -main $1
 else
-    java -cp $CP $CLASS -version 170 -modules $GEOSCRIPT_HOME/lib
+    java -cp $CP $CLASS -version 180 -modules $GEOSCRIPT_HOME/lib
 fi
 
