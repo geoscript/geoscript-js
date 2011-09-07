@@ -5,203 +5,107 @@ var Filter = require("geoscript/filter").Filter;
 var geotools = Packages.org.geotools;
 
 exports["test: constructor"] = function() {
+    
+    var style = new STYLE.Style();
+    
+    ASSERT.ok(style instanceof STYLE.Symbolizer, "is Symbolizer");
+    ASSERT.ok(style instanceof STYLE.Style, "is Style");
 
-    var style = new STYLE.Style({
-        rules: [{
-            maxScaleDenominator: 100000,
-            symbolizers: [{
-                type: "PolygonSymbolizer",
-                fillColor: "#ff0000"
-            }]
+    style = new STYLE.Style({
+        parts: [{
+            type: "Fill",
+            brush: "#ff0000",
+            maxScaleDenominator: 100000
         }, {
-            minScaleDenominator: 100000,
-            symbolizers: [{
-                type: "PolygonSymbolizer",
-                fillColor: "#ffff00"
-            }]
+            type: "Stroke",
+            brush: "#ffff00",
+            minScaleDenominator: 100000
         }]
     });
     
     ASSERT.ok(style instanceof STYLE.Style, "instance of Style");
-    ASSERT.equal(style.rules.length, 2, "rules length 2");
+    ASSERT.equal(style.parts.length, 2, "parts length 2");
 
-    var rule = style.rules[0];
-    ASSERT.ok(rule instanceof STYLE.Rule, "rule 0 created");
-    ASSERT.equal(rule.maxScaleDenominator, 100000, "correct max scale denominator");
-    ASSERT.equal(rule.symbolizers.length, 1, "rule 0 symbolizers length 1");
-    var symbolizer = rule.symbolizers[0];
-    ASSERT.ok(symbolizer instanceof STYLE.PolygonSymbolizer, "rule 0 poly symbolizer");
-    ASSERT.equal(symbolizer.fillColor, "#ff0000", "rule 0 correct fill color");
+    var symbolizer = style.parts[0];
+    ASSERT.ok(symbolizer instanceof STYLE.Symbolizer, "part 0 Symbolizer");
+    ASSERT.ok(symbolizer instanceof STYLE.Fill, "part 0 Fill");
+    ASSERT.equal(symbolizer.maxScaleDenominator, 100000, "part 0 max scale denominator");
+    ASSERT.equal(symbolizer.brush.hex, "ff0000", "part 0 fill color");
 
-    rule = style.rules[1];
-    ASSERT.ok(rule instanceof STYLE.Rule, "rule 1 created");
-    ASSERT.equal(rule.minScaleDenominator, 100000, "correct min scale denominator");
-    ASSERT.equal(rule.symbolizers.length, 1, "rule 1 symbolizers length 1");
-    symbolizer = rule.symbolizers[0];
-    ASSERT.ok(symbolizer instanceof STYLE.PolygonSymbolizer, "rule 1 poly symbolizer");
-    ASSERT.equal(symbolizer.fillColor, "#ffff00", "rule 1 correct fill color");
+    symbolizer = style.parts[1];
+    ASSERT.ok(symbolizer instanceof STYLE.Symbolizer, "part 1 Symbolizer");
+    ASSERT.ok(symbolizer instanceof STYLE.Stroke, "part 1 Stroke");
+    ASSERT.equal(symbolizer.minScaleDenominator, 100000, "part 1  min scale denominator");
+    ASSERT.equal(symbolizer.brush.hex, "ffff00", "part 1 fill color");
 
 };
 
-
-exports["test: constructor (symbolizer config)"] = function() {
-
-    var style = new STYLE.Style({
-        type: "PolygonSymbolizer",
-        fillColor: "#ff0000"
-    });
+exports["test: and"] = function() {
     
-    ASSERT.ok(style instanceof STYLE.Style, "instance of Style");
-    ASSERT.equal(style.rules.length, 1, "rules length 1");
-    var rule = style.rules[0];
-    ASSERT.ok(rule instanceof STYLE.Rule, "rule created");
-    ASSERT.equal(rule.symbolizers.length, 1, "symbolizers length 1");
-    var symbolizer = rule.symbolizers[0];
-    ASSERT.ok(symbolizer instanceof STYLE.PolygonSymbolizer, "poly symbolizer");
-    ASSERT.equal(symbolizer.fillColor, "#ff0000", "correct fill color");
+    var s1 = new STYLE.Symbolizer({});
+    var s2 = new STYLE.Symbolizer({});
+    var s3 = new STYLE.Symbolizer({});
+    
+    var style = s1.and(s2);
+    ASSERT.ok(style instanceof STYLE.Style, "is Style");
+    
+    var o = style.and(s3);
+    
+    ASSERT.ok(o === style, "returns self");
+    
+    ASSERT.strictEqual(style.parts.length, 3, "style has three parts");
+    ASSERT.ok(style.parts[0] === s1, "first part");
+    ASSERT.ok(style.parts[1] === s2, "second part");
+    ASSERT.ok(style.parts[2] === s3, "third part");
 
 };
 
 exports["test: constructor (symbolizer instance)"] = function() {
     
-    var style = new STYLE.Style(new STYLE.LineSymbolizer({
-        strokeColor: "#ff0000"
-    }));
+    var style = new STYLE.Style(new STYLE.Stroke("#ff0000"));
     
     ASSERT.ok(style instanceof STYLE.Style, "instance of Style");
-    ASSERT.equal(style.rules.length, 1, "rules length 1");
-    var rule = style.rules[0];
-    ASSERT.ok(rule instanceof STYLE.Rule, "rule created");
-    ASSERT.equal(rule.symbolizers.length, 1, "symbolizers length 1");
-    var symbolizer = rule.symbolizers[0];
-    ASSERT.ok(symbolizer instanceof STYLE.LineSymbolizer, "line symbolizer");
-    ASSERT.equal(symbolizer.strokeColor, "#ff0000", "correct stroke color");
+    var symbolizer = style.parts[0];
+    ASSERT.ok(symbolizer instanceof STYLE.Stroke, "Stroke symbolizer");
+    ASSERT.equal(symbolizer.brush.hex, "ff0000", "stroke color");
 
 };
 
 exports["test: constructor (array of symbolizer config)"] = function() {
 
     var style = new STYLE.Style([{
-        type: "PolygonSymbolizer",
-        fillColor: "#ff0000"
+        type: "Fill",
+        brush: "#ff0000"
     }, {
-        type: "LineSymbolizer",
-        strokeColor: "#ffff00"
+        type: "Stroke",
+        brush: "#ffff00"
     }]);
     
     ASSERT.ok(style instanceof STYLE.Style, "instance of Style");
-    ASSERT.equal(style.rules.length, 1, "rules length 1");
-    var rule = style.rules[0];
-    ASSERT.ok(rule instanceof STYLE.Rule, "rule created");
-    ASSERT.equal(rule.symbolizers.length, 2, "symbolizers length 2");
-    var symbolizer = rule.symbolizers[0];
-    ASSERT.ok(symbolizer instanceof STYLE.PolygonSymbolizer, "poly symbolizer");
-    ASSERT.equal(symbolizer.fillColor, "#ff0000", "correct fill color");
-    symbolizer = rule.symbolizers[1];
-    ASSERT.ok(symbolizer instanceof STYLE.LineSymbolizer, "line symbolizer");
-    ASSERT.equal(symbolizer.strokeColor, "#ffff00", "correct stroke color");
+    ASSERT.equal(style.parts.length, 2, "parts length 2");
+    var symbolizer = style.parts[0];
+    ASSERT.ok(symbolizer instanceof STYLE.Fill, "Fill symbolizer");
+    ASSERT.equal(symbolizer.brush.hex, "ff0000", "fill color");
+    symbolizer = style.parts[1];
+    ASSERT.ok(symbolizer instanceof STYLE.Stroke, "Stroke symbolizer");
+    ASSERT.equal(symbolizer.brush.hex, "ffff00", "stroke color");
 
 };
-
-exports["test: constructor (rule config)"] = function() {
-
-    var style = new STYLE.Style({
-        filter: "value = 'foo'",
-        maxScaleDenominator: 200000,
-        minScaleDenominator: 100000,
-        symbolizers: [{
-            type: "PolygonSymbolizer",
-            fillColor: "#ffff00"
-        }]
-    });
-    
-    ASSERT.ok(style instanceof STYLE.Style, "instance of Style");
-    ASSERT.equal(style.rules.length, 1, "rules length 1");
-    var rule = style.rules[0];
-    ASSERT.ok(rule instanceof STYLE.Rule, "rule created");
-    ASSERT.ok(rule.filter instanceof Filter, "rule has filter");
-    ASSERT.equal(rule.filter.cql, "value = 'foo'", "correct filter");
-    ASSERT.equal(rule.minScaleDenominator, 100000, "correct min scale denominator");
-    ASSERT.equal(rule.maxScaleDenominator, 200000, "correct max scale denominator");
-    ASSERT.equal(rule.symbolizers.length, 1, "symbolizers length 1");
-    var symbolizer = rule.symbolizers[0];
-    ASSERT.ok(symbolizer instanceof STYLE.PolygonSymbolizer, "poly symbolizer");
-    ASSERT.equal(symbolizer.fillColor, "#ffff00", "correct fill color");
-
-};
-
-exports["test: constructor (rule instance)"] = function() {
-
-    var style = new STYLE.Style(new STYLE.Rule({
-        symbolizers: [{
-            type: "PolygonSymbolizer",
-            fillColor: "#ffffff"
-        }]
-    }));
-    
-    ASSERT.ok(style instanceof STYLE.Style, "instance of Style");
-    ASSERT.equal(style.rules.length, 1, "rules length 1");
-    var rule = style.rules[0];
-    ASSERT.ok(rule instanceof STYLE.Rule, "rule created");
-    ASSERT.equal(rule.symbolizers.length, 1, "symbolizers length 1");
-    var symbolizer = rule.symbolizers[0];
-    ASSERT.ok(symbolizer instanceof STYLE.PolygonSymbolizer, "poly symbolizer");
-    ASSERT.equal(symbolizer.fillColor, "#ffffff", "correct fill color");
-
-};
-
-exports["test: constructor (array of rule config)"] = function() {
-
-    var style = new STYLE.Style([{
-        maxScaleDenominator: 100000,
-        symbolizers: [{
-            type: "PolygonSymbolizer",
-            fillColor: "#ff0000"
-        }]
-    }, {
-        minScaleDenominator: 100000,
-        symbolizers: [{
-            type: "PolygonSymbolizer",
-            fillColor: "#ffff00"
-        }]
-    }]);
-    
-    ASSERT.ok(style instanceof STYLE.Style, "instance of Style");
-    ASSERT.equal(style.rules.length, 2, "rules length 2");
-
-    var rule = style.rules[0];
-    ASSERT.ok(rule instanceof STYLE.Rule, "rule 0 created");
-    ASSERT.equal(rule.maxScaleDenominator, 100000, "correct max scale denominator");
-    ASSERT.equal(rule.symbolizers.length, 1, "rule 0 symbolizers length 1");
-    var symbolizer = rule.symbolizers[0];
-    ASSERT.ok(symbolizer instanceof STYLE.PolygonSymbolizer, "rule 0 poly symbolizer");
-    ASSERT.equal(symbolizer.fillColor, "#ff0000", "rule 0 correct fill color");
-
-    rule = style.rules[1];
-    ASSERT.ok(rule instanceof STYLE.Rule, "rule 1 created");
-    ASSERT.equal(rule.minScaleDenominator, 100000, "correct min scale denominator");
-    ASSERT.equal(rule.symbolizers.length, 1, "rule 1 symbolizers length 1");
-    symbolizer = rule.symbolizers[0];
-    ASSERT.ok(symbolizer instanceof STYLE.PolygonSymbolizer, "rule 1 poly symbolizer");
-    ASSERT.equal(symbolizer.fillColor, "#ffff00", "rule 1 correct fill color");
-
-};
-
 
 exports["test: _style (simple)"] = function() {
     
-    // simple style with one rule and two symbolizers
+    // simple style with two symbolizers
     var style = new STYLE.Style({
-        rules: [{
-            symbolizers: [{
-                shape: "circle",
-                size: 12,
-                fillColor: "#ff0000"
-            }, {
-                shape: "star",
-                size: 11,
-                fillColor: "#ffffff"
-            }]
+        parts: [{
+            type: "Shape",
+            name: "circle",
+            size: 12,
+            fill: "#ff0000"
+        }, {
+            type: "Shape",
+            name: "star",
+            size: 11,
+            fill: "#ffffff"
         }]
     });
     
@@ -212,13 +116,13 @@ exports["test: _style (simple)"] = function() {
     ASSERT.equal(featureTypeStyles.size(), 1, "one feature type style");
     
     var rules = featureTypeStyles.get(0).getRules();
-    ASSERT.equal(rules.length, 1, "one rule");
+    ASSERT.equal(rules.length, 2, "two rules");
 
     var rule = rules[0];
     ASSERT.ok(rule instanceof geotools.styling.Rule, "rule is correct type");
     
     var symbolizers = rule.getSymbolizers();
-    ASSERT.equal(symbolizers.length, 2, "two symbolizers");
+    ASSERT.equal(symbolizers.length, 1, "one symbolizer");
     
     var symbolizer = symbolizers[0];
     ASSERT.ok(symbolizer instanceof geotools.styling.PointSymbolizerImpl, "correct symbolizer type for first symbolizer");
@@ -229,7 +133,13 @@ exports["test: _style (simple)"] = function() {
     ASSERT.equal(graphic.getSize(), 12, "correct graphic size for first symbolizer")
     ASSERT.equal(graphic.getSymbols()[0].getFill().getColor(), "#ff0000", "correct fill color for first symbolizer")
 
-    var symbolizer = symbolizers[1];
+    var rule = rules[1];
+    ASSERT.ok(rule instanceof geotools.styling.Rule, "rule is correct type");
+    
+    var symbolizers = rule.getSymbolizers();
+    ASSERT.equal(symbolizers.length, 1, "one symbolizer");
+
+    var symbolizer = symbolizers[0];
     ASSERT.ok(symbolizer instanceof geotools.styling.PointSymbolizerImpl, "correct symbolizer type for second symbolizer");
     
     var graphic = symbolizer.getGraphic();
@@ -244,21 +154,19 @@ exports["test: _style (multiple featureTypeStyle)"] = function() {
     
     // style with one rule and two symbolizers with different zIndex
     var style = new STYLE.Style({
-        rules: [{
+        parts: [{
+            type: "Stroke",
             filter: "value = 'foo'",
             maxScaleDenominator: 200000,
             minScaleDenominator: 100000,
-            symbolizers: [{
-                zIndex: 0,
-                type: "LineSymbolizer",
-                strokeWidth: 5,
-                strokeColor: "#ffff00"
-            }, {
-                zIndex: 1,
-                type: "LineSymbolizer",
-                strokeWidth: 3,
-                strokeColor: "#ff0000"
-            }]
+            zIndex: 0,
+            width: 5,
+            brush: "#ffff00"
+        }, {
+            type: "Stroke",
+            zIndex: 1,
+            width: 3,
+            brush: "#ff0000"
         }]
     });    
     
@@ -294,10 +202,8 @@ exports["test: _style (multiple featureTypeStyle)"] = function() {
 
     var rule = rules[0];
     ASSERT.ok(rule instanceof geotools.styling.Rule, "rule is correct type in second feature type style");
-    ASSERT.equal(rule.getMinScaleDenominator(), 100000, "second rule has correct min scale denominator");
-    ASSERT.equal(rule.getMaxScaleDenominator(), 200000, "second rule has correct max scale denominator");
-    ASSERT.ok(rule.getFilter() instanceof geotools.filter.IsEqualsToImpl, "second rule has filter");
-    ASSERT.equal(String(rule.getFilter().getRightValue()), "foo", "second rule filter is good");
+    ASSERT.equal(rule.getMinScaleDenominator(), 0, "second rule has correct min scale denominator");
+    ASSERT.equal(rule.getMaxScaleDenominator(), Infinity, "second rule has correct max scale denominator");
     
     var symbolizers = rule.getSymbolizers();
     ASSERT.equal(symbolizers.length, 1, "one symbolizer in second feature type style");
