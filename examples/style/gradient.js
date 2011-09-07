@@ -1,5 +1,5 @@
 var Directory = require("geoscript/workspace").Directory;
-var {Stroke, Fill, Shape, gradient} = require("geoscript/style");
+var {Fill, gradient} = require("geoscript/style");
 var Map = require("geoscript/map").Map;
 
 var states = Directory("data").get("states");
@@ -17,3 +17,5 @@ states.style = gradient({
 var map = Map([states]);
 
 map.render({path: "states.png"});
+
+print("rendered map to states.png");
