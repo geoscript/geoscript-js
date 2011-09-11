@@ -18,7 +18,7 @@ Starting the Application
 
 Launch the WMS application by running the main.js script.
 
-    ringo examples/wms/main.js
+    ringo -m lib examples/wms/main.js
 
 You should now be able to browse to a page displaying 
 [your map](http://localhost:8080/).
