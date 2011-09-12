@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<assembly>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <fileSets>
+        <fileSet>
+            <includes>
+                <include>README*</include>
+                <include>license*</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>bin</directory>
+            <fileMode>0755</fileMode>
+        </fileSet>
+        <fileSet>
+            <directory>lib</directory>
+        </fileSet>
+        <fileSet>
+            <directory>jars</directory>
+        </fileSet>
+    </fileSets>
+</assembly>
