@@ -39,6 +39,18 @@ exports["test: json"] = function() {
     
 };
 
+exports["test: simplify"] = function() {
+
+    var g = new GEOM.Point([0, 0]).buffer(10);
+    g.projection = "epsg:4326";
+    var g2 = g.simplify(2);
+
+    ASSERT.ok(g2 instanceof GEOM.Polygon, "correct type");
+    ASSERT.ok(g.area > g2.area, "simplified area is smaller");
+    ASSERT.ok(g.projection.equals(g.projection), "same projection");
+
+};
+
 exports["test: bounds"] = function() {
 
     var g, b;

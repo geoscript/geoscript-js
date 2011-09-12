@@ -32,6 +32,19 @@ exports["test: json"] = function() {
     
 };
 
+exports["test: simplify"] = function() {
+
+    var g = new GEOM.MultiLineString([[[1, 1], [2, 2], [3, 1], [4, 2]], [[-1, -1], [-2, -2], [-3, -1], [-4, -2]]]);
+    g.projection = "epsg:4326";
+    var g2 = g.simplify(2);
+
+    ASSERT.ok(g2 instanceof GEOM.MultiLineString, "correct type");
+    ASSERT.ok(g.length > g2.length, "simplified length is shorter");
+    ASSERT.ok(g.projection.equals(g.projection), "same projection");
+
+};
+
+
 exports["test: bounds"] = function() {
 
     var l, b;
