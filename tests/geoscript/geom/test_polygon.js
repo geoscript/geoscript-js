@@ -51,6 +51,14 @@ exports["test: simplify"] = function() {
 
 };
 
+exports["test: valid"] = function() {
+    var poly = new GEOM.Polygon([[[30,10], [10,20], [20,40], [40,40], [30,10]]]);
+    ASSERT.strictEqual(poly.valid, true, "valid");
+    
+    poly = new GEOM.Polygon([[[1,1], [2,1], [1,0], [2,0], [1,1]]]);
+    ASSERT.strictEqual(poly.valid, false, "invalid");
+}
+
 exports["test: bounds"] = function() {
 
     var g, b;
