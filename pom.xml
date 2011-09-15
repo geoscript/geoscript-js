@@ -20,6 +20,15 @@
             </snapshots>
         </repository>
     </repositories>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.vividsolutions</groupId>
+                <artifactId>jts</artifactId>
+                <version>1.12</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>    
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
