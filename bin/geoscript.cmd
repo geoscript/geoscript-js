@@ -17,5 +17,9 @@ del /q tmp.txt
 
 set CLASS=org.mozilla.javascript.tools.shell.Main
 
-java -cp %CP% %CLASS% -version 180 -modules %GEOSCRIPT_HOME%\lib
+:: Convert any backslashes in the command to forward slashes
+set CMD=java -cp %CP% %CLASS% -version 180 -modules %GEOSCRIPT_HOME%\lib
+set CMD=%CMD:\=/%
 
+:: Execute
+%CMD%
