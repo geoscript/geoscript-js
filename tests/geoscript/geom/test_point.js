@@ -86,7 +86,7 @@ exports["test: buffer"] = function() {
     ASSERT.ok(b instanceof GEOM.Polygon, "buffered point creates a polygon");
     ASSERT.strictEqual(b.area.toFixed(2), "3.12", "almost PI");
     
-    b = p.buffer(1, 24);
+    b = p.buffer(1, {segs: 24});
     ASSERT.strictEqual(b.area.toFixed(2), "3.14", "more arc segments, higher accuracy");
 
 };
