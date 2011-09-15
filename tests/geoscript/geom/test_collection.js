@@ -12,7 +12,7 @@ exports["test: constructor"] = function() {
 exports["test: isEmpty"] = function() {
     
     var geometry = new GEOM.GeometryCollection([]);
-    ASSERT.ok(geometry.isEmpty(), "empty collection");
+    ASSERT.ok(geometry.empty, "empty collection");
     
 }
 

@@ -101,7 +101,7 @@ exports["test: intersection"] = function() {
     ASSERT.ok(i12.equals(p1), "correct intersection");
     
     var i13 = p1.intersection(p3);
-    ASSERT.ok(i13.isEmpty(), "empty intersection");
+    ASSERT.ok(i13.empty, "empty intersection");
     
 }
 
