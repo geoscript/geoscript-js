@@ -14,8 +14,14 @@ for /f %%a in (tmp.txt) do (
     set CP=!CP!;%%a
 )
 del /q tmp.txt
+set CP=.;..%CP%
 
 set CLASS=org.mozilla.javascript.tools.shell.Main
 
-java -cp %CP% %CLASS% -version 180 -modules %GEOSCRIPT_HOME%\lib
+:: Convert any backslashes in the command to forward slashes
+set CMD=java -cp "%CP%" %CLASS% -version 180 -modules file:///%GEOSCRIPT_HOME%\lib
+set CMD=%CMD:\=/%
+
+:: Execute
+%CMD%
 
