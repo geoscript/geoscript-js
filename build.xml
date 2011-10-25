@@ -5,6 +5,9 @@
     <property name="home" value="."/>
     <property name="build" value="${home}/build"/>
     <property name="test.only" value="${home}/tests/all.js"/>
+    <condition property="git" value="git.cmd" else="git">
+        <os family="windows"/>
+    </condition>
 
     <target name="usage">
         <echo message=""/>
@@ -17,13 +20,13 @@
     <target name="init">
 
         <echo message="pulling in submodules"/>
-        <exec executable="git" failonerror="true">
+        <exec executable="${git}" failonerror="true">
             <arg line="submodule init"/>
         </exec>
-        <exec executable="git" failonerror="true">
+        <exec executable="${git}" failonerror="true">
             <arg line="submodule sync"/>
         </exec>
-        <exec executable="git" failonerror="true">
+        <exec executable="${git}" failonerror="true">
             <arg line="submodule update"/>
         </exec>
 
