@@ -20,6 +20,16 @@ exports["test: constructor"] = function() {
     
 };
 
+exports["test: index"] = function() {
+    var p = new GEOM.Point([10, 20]);
+    ASSERT.equal(p[0], 10, "index 0");
+    ASSERT.equal(p[1], 20, "index 1");
+    ASSERT.ok(isNaN(p[2]), "index 2");
+    
+    var zp = new GEOM.Point([10, 20, 30]);
+    ASSERT.equal(zp[2], 30, "3d");
+}
+
 exports["test: equals"] = function() {
 
     var p1, p2;

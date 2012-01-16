@@ -3,17 +3,28 @@ var GEOM = require("geoscript/geom");
 var PROJ = require("geoscript/proj");
     
 exports["test: constructor"] = function() {
+    
+    var exterior = [[-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90]];
+    var interior = [[-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45]];
 
-    var p = new GEOM.Polygon([
-        [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],
-        [ [-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45] ]
-    ]);
+    var p = new GEOM.Polygon([exterior, interior]);
     
     ASSERT.ok(p instanceof GEOM.Geometry, "polygon is a geometry");
     ASSERT.ok(p instanceof GEOM.Polygon, "polygon is a polygon");
     ASSERT.strictEqual(p.coordinates.length, 2, "polygon has two items in coordinates");
     ASSERT.strictEqual(p.area, 48600, "polygon has correct area");
     
+    // construct from lists of points
+    var exteriorPoints = exterior.map(function(list) {
+        return new GEOM.Point([list[0], list[1]]);
+    });
+    var interiorPoints = interior.map(function(list) {
+        return new GEOM.Point([list[0], list[1]]);
+    });
+    
+    var p2 = new GEOM.Polygon([exteriorPoints, interiorPoints]);
+    ASSERT.ok(p.equals(p2), "polygons equal");
+
 };
 
 exports["test: json"] = function() {

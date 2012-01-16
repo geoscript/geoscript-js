@@ -11,6 +11,17 @@ exports["test: constructor"] = function() {
     ASSERT.strictEqual(l.coordinates.length, 3, "line has three coordinates");
     ASSERT.strictEqual(l.length, 402.49223594996215, "line has correct length");
     
+    var p0 = new GEOM.Point([-180, -90]);
+    var p1 = new GEOM.Point([0, 0]);
+    var p2 = new GEOM.Point([180, 90]);
+    var l2 = new GEOM.LineString([p0, p1, p2]);
+
+    ASSERT.ok(l2 instanceof GEOM.Geometry, "l2 is a geometry");
+    ASSERT.ok(l2 instanceof GEOM.LineString, "l2 is a line");
+    ASSERT.strictEqual(l2.coordinates.length, 3, "l2 has three coordinates");
+    ASSERT.strictEqual(l2.length, 402.49223594996215, "l2 has correct length");
+    ASSERT.ok(l.equals(l2), "lines are equal");
+    
 };
 
 exports["test: json"] = function() {
