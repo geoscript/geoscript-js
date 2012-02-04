@@ -5,15 +5,12 @@
  * geometry type.
  */
 
-var FS = require("fs");
-
 // import Directory and Layer constructors
 var Directory = require("geoscript/workspace").Directory;
 var Layer = require("geoscript/layer").Layer;
 
 // create a directory workspace from an existing directory on disk
-var path = FS.resolve(module.path, "data/shapefiles");
-var dir = new Directory(path);
+var dir = new Directory("examples/data/shapefiles");
 
 // create a layer based on an existing shapefile in the directory
 var states = dir.get("states");
