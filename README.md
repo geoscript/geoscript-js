@@ -44,3 +44,13 @@ Clone the repository and then use Maven to pull in dependencies and run tests.
     mvn install
 
 After pulling down the dependencies, you can launch the shell and use GeoScript JS modules as described above.
+
+### Generating a release
+
+Update version numbers in the main pom.xml file.  Generate an archive with all dependencies included:
+
+    mvn assembly:single
+
+For applications that already have the GeoTools dependency, an archive is published in repo.opengeo.org that contains only the JavaScript modules:
+
+    mvn deploy

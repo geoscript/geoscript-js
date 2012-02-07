@@ -4,7 +4,7 @@
     <groupId>org.geoscript</groupId>
     <artifactId>geoscript-js</artifactId>
     <packaging>jar</packaging>
-    <version>0.11</version>
+    <version>0.12-SNAPSHOT</version>
     <properties>
         <gt.version>2.7.0.1</gt.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -28,7 +28,7 @@
                 <version>1.12</version>
             </dependency>
         </dependencies>
-    </dependencyManagement>    
+    </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -98,6 +98,14 @@
         </dependency>
     </dependencies>
     <build>
+        <resources>
+            <resource>
+                <directory>${basedir}/lib</directory>
+                <includes>
+                    <include>**/*.js</include>
+                </includes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -174,6 +182,20 @@
             </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+        <repository>
+            <id>opengeo</id>
+            <name>OpenGeo Maven Repository</name>
+            <url>dav:http://repo.opengeo.org</url>
+            <uniqueVersion>false</uniqueVersion>
+        </repository>
+        <snapshotRepository>
+            <id>opengeo</id>
+            <name>OpenGeo Maven Repository</name>
+            <url>dav:http://repo.opengeo.org</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
     <profiles>
         <profile>
             <id>tools.jar</id>
