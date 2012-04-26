@@ -35,7 +35,7 @@
 
     </target>
 
-    <target name="test">
+    <target name="test" unless="skipTests">
         <java jar="externals/ringojs/run.jar" fork="true" failonerror="yes">
             <sysproperty key="ringo.home" path="externals/ringojs"/>
             <sysproperty key="ringo.classpath" value="lib/**,../../jars/**"/>
