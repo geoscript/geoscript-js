@@ -1,4 +1,4 @@
-package org.geoscript.tests;
+package org.geoscript.js;
 
 import static org.junit.Assert.assertTrue;
 
@@ -20,7 +20,7 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.tools.shell.Global;
 
 /**
- * Run doctests in folder src/test/doc.
+ * Run doctests in doc folder next to this class.
  * 
  * A doctest is a test in the form of an interactive shell session; Rhino
  * collects and runs the inputs to the shell prompt and compares them to the
@@ -73,7 +73,8 @@ public class DoctestsTest {
         cx.setOptimizationLevel(optimizationLevel);
         Global global = new Global();
         global.initStandardObjects(cx, true);
-        global.installRequire(cx, (List<String>) Arrays.asList("lib"), false);
+        List<String> paths = (List<String>) Arrays.asList(GeoScriptModule.getModulePath());
+        global.installRequire(cx, paths, false);
         try {
             // global.runDoctest throws an exception on any failure
             int testsPassed = global.runDoctest(cx, global, source, name, 1);

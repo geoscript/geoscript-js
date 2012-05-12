@@ -15,10 +15,12 @@
             <fileMode>0755</fileMode>
         </fileSet>
         <fileSet>
-            <directory>lib</directory>
+            <directory>src/main/resources/org/geoscript/js/lib</directory>
+            <outputDirectory>/lib</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>jars</directory>
+            <directory>${project.build.directory}/jars</directory>
+            <outputDirectory>/jars</outputDirectory>
         </fileSet>
     </fileSets>
 </assembly>

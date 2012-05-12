@@ -1,6 +1,5 @@
-jars
-build/
 .classpath
 .project
 .settings/
-target/
+/target/
+/data/
