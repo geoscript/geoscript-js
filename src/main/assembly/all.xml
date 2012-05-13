@@ -13,6 +13,9 @@
         <fileSet>
             <directory>bin</directory>
             <fileMode>0755</fileMode>
+            <excludes>
+                <exclude>geoscript-dev</exclude>
+            </excludes>
         </fileSet>
         <fileSet>
             <directory>src/main/resources/org/geoscript/js/lib</directory>

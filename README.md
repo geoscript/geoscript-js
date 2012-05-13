@@ -37,13 +37,13 @@ See the [GeoScript JS website](http://geoscript.org/js/) for details on getting 
 
 ### Getting set up for development
 
-Clone the repository and then use Maven to pull in dependencies and run tests.
+If you'd like to contribute to GeoScript JS development, clone the repository and then use Maven to pull in dependencies and run tests.
 
     git clone git://github.com/tschaub/geoscript-js.git
     cd geoscript-js
     mvn install
 
-After pulling down the dependencies, you can launch the shell and use GeoScript JS modules as described above.
+After pulling down the dependencies, you can launch the shell and use GeoScript JS modules as described above - with one exception: use the `geoscript-dev` script in the `bin` directory.
 
 ### Generating a release
 
