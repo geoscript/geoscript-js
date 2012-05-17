@@ -11,7 +11,7 @@ public class RingoTest {
 
     @Test
     public void runRingoTests() throws Exception {
-        String gsModulePath = new URI(GeoScriptModule.getModulePath()).getPath();
+        String gsModulePath = new URI(GeoScriptModules.getModulePath()).getPath();
         String testModulePath = RingoTest.class.getResource("tests/all.js").getFile();
         String[] args = new String[] { testModulePath };
         String ringoHome = Main.class.getResource("/").getFile();

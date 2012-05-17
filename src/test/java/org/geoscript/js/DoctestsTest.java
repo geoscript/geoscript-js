@@ -73,7 +73,7 @@ public class DoctestsTest {
         cx.setOptimizationLevel(optimizationLevel);
         Global global = new Global();
         global.initStandardObjects(cx, true);
-        List<String> paths = (List<String>) Arrays.asList(GeoScriptModule.getModulePath());
+        List<String> paths = (List<String>) Arrays.asList(GeoScriptModules.getModulePath());
         global.installRequire(cx, paths, false);
         try {
             // global.runDoctest throws an exception on any failure

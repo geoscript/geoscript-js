@@ -37,10 +37,6 @@ if [ ! "$JARS" ]; then
     JARS=$GEOSCRIPT_HOME/jars
 fi
 
-if [ ! "$MODULES" ]; then
-    MODULES=$GEOSCRIPT_HOME/lib
-fi
-
 # put GeoTools jars on the classpath
 CP=""
 for x in `ls $JARS/*.jar`; do
@@ -50,7 +46,7 @@ done
 if [ "$DEBUG" ]; then
     CLASS=org.mozilla.javascript.tools.debugger.Main
 else
-    CLASS=org.mozilla.javascript.tools.shell.Main
+    CLASS=org.geoscript.js.GeoScriptShell
 fi
 
 if [ $# -eq 1 ]; then
@@ -60,8 +56,8 @@ if [ $# -eq 1 ]; then
         && pwd -P
     ) && MAIN_PATH=$MAIN_PATH/$(basename -- "$1")
 
-    java -cp $CP $CLASS -version 180 -modules $MODULES -main $MAIN_PATH
+    java -cp $CP $CLASS -main $MAIN_PATH
 else
-    java -cp $CP $CLASS -version 180 -modules $MODULES
+    java -cp $CP $CLASS
 fi
 
