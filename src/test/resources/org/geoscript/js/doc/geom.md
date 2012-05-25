@@ -8,3 +8,5 @@ Use new wrappers:
     2
     js> p.z
     300000000
+    js> p.coordinates
+    1,2,300000000
