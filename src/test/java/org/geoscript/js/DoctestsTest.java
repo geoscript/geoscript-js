@@ -72,7 +72,7 @@ public class DoctestsTest {
         cx.setLanguageVersion(170);
         cx.setOptimizationLevel(optimizationLevel);
         Global global = new Global();
-        global.initStandardObjects(cx, true);
+        global.init(cx);
         List<String> paths = (List<String>) Arrays.asList(GeoScriptModules.getModulePath());
         global.installRequire(cx, paths, false);
         try {

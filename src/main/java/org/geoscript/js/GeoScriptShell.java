@@ -60,7 +60,7 @@ public class GeoScriptShell extends Global {
                     ScriptableObject.DONTENUM);
 
             shell.defineFunctionProperties(
-                    new String[] {"print"}, 
+                    new String[] {"print", "defineClass"}, 
                     Global.class,
                     ScriptableObject.DONTENUM);
             
