@@ -37,6 +37,29 @@ public class GeoScriptShell extends Global {
     public String getClassName() {
         return "global";
     }
+    
+    public static GeoScriptShell initShell(Context cx) {
+        cx.setLanguageVersion(180);
+        cx.setWrapFactory(new GeoScriptWrapFactory());
+
+        GeoScriptShell shell = new GeoScriptShell();
+        cx.initStandardObjects(shell, true);
+        List<String> paths = (List<String>) Arrays.asList(GeoScriptModules.getModulePath());
+        shell.installRequire(cx, paths, true);
+
+        shell.defineFunctionProperties(
+                new String[] {"quit"}, 
+                GeoScriptShell.class,
+                ScriptableObject.DONTENUM);
+
+        shell.defineFunctionProperties(
+                new String[] {"print", "defineClass"}, 
+                Global.class,
+                ScriptableObject.DONTENUM);
+        
+        cx.setErrorReporter(new ToolErrorReporter(false, System.err));
+        return shell;
+    }
 
     /**
      * Main entry point.
@@ -46,28 +69,8 @@ public class GeoScriptShell extends Global {
         // Associate a new Context with this thread
         Context cx = Context.enter();
         try {
-            cx.setLanguageVersion(180);
-            cx.setWrapFactory(new GeoScriptWrapFactory());
-
-            GeoScriptShell shell = new GeoScriptShell();
-            cx.initStandardObjects(shell, true);
-            List<String> paths = (List<String>) Arrays.asList(GeoScriptModules.getModulePath());
-            shell.installRequire(cx, paths, true);
-
-            shell.defineFunctionProperties(
-                    new String[] {"quit"}, 
-                    GeoScriptShell.class,
-                    ScriptableObject.DONTENUM);
-
-            shell.defineFunctionProperties(
-                    new String[] {"print", "defineClass"}, 
-                    Global.class,
-                    ScriptableObject.DONTENUM);
-            
-            cx.setErrorReporter(new ToolErrorReporter(false, System.err));
-
+            GeoScriptShell shell = GeoScriptShell.initShell(cx);
             shell.processInput(cx);
-
         } finally {
             Context.exit();
         }

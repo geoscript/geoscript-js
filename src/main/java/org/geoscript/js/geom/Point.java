@@ -1,9 +1,13 @@
 package org.geoscript.js.geom;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
+import org.mozilla.javascript.FunctionObject;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSConstructor;
 import org.mozilla.javascript.annotations.JSGetter;
@@ -22,9 +26,10 @@ public class Point extends Geometry implements Wrapper {
     
     /**
      * Point prototype constructor.
+     * @return 
      */
     public Point() {
-        geometry = null;
+        new Geometry();
     }
     
     /**
@@ -38,6 +43,25 @@ public class Point extends Geometry implements Wrapper {
         this.scope = scope;
         Coordinate coord = arrayToCoord(array);
         geometry = factory.createPoint(coord);
+    }
+    
+    /**
+     * Finishes JavaScript constructor initialization.  
+     * Sets up the prototype chain using superclass.
+     * 
+     * @param scope
+     * @param ctor
+     * @param prototype
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     * @throws InvocationTargetException
+     */
+    public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) 
+    throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+        ScriptableObject.defineClass(scope, Geometry.class, false, true);
+        Scriptable parentProto = ScriptableObject.getClassPrototype(scope, Geometry.class.getName());
+        prototype.setPrototype(parentProto);
     }
     
     @JSConstructor
@@ -95,7 +119,7 @@ public class Point extends Geometry implements Wrapper {
 
     @Override
     public String getClassName() {
-        return "Point";
+        return getClass().getName();
     }
 
 }

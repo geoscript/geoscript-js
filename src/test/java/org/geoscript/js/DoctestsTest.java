@@ -7,7 +7,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -17,7 +16,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.mozilla.javascript.Context;
-import org.mozilla.javascript.tools.shell.Global;
 
 /**
  * Run doctests in doc folder next to this class.
@@ -69,15 +67,11 @@ public class DoctestsTest {
     @Test
     public void runDoctest() throws Exception {
         Context cx = Context.enter();
-        cx.setLanguageVersion(170);
-        cx.setOptimizationLevel(optimizationLevel);
-        Global global = new Global();
-        global.init(cx);
-        List<String> paths = (List<String>) Arrays.asList(GeoScriptModules.getModulePath());
-        global.installRequire(cx, paths, false);
         try {
-            // global.runDoctest throws an exception on any failure
-            int testsPassed = global.runDoctest(cx, global, source, name, 1);
+            GeoScriptShell shell = GeoScriptShell.initShell(cx);
+            cx.setOptimizationLevel(optimizationLevel);
+            // shell.runDoctest throws an exception on any failure
+            int testsPassed = shell.runDoctest(cx, shell, source, name, 1);
             System.out.println(name + "(" + optimizationLevel + "): " +
                     testsPassed + " passed.");
             assertTrue("tests run in " + name, testsPassed > 0);

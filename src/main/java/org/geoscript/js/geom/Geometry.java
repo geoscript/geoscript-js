@@ -22,7 +22,6 @@ public class Geometry extends ScriptableObject implements Wrapper {
      * Geometry prototype constructor.
      */
     public Geometry() {
-        // prototype
         geometry = null;
     }
     
@@ -32,7 +31,7 @@ public class Geometry extends ScriptableObject implements Wrapper {
 
     @Override
     public String getClassName() {
-        return "Geometry";
+        return getClass().getName();
     }
     
     /**
