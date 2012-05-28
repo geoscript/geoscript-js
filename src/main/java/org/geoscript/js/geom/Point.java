@@ -19,30 +19,33 @@ public class Point extends Geometry implements Wrapper {
     /** serialVersionUID */
     private static final long serialVersionUID = 8771743870215086281L;
     
-    private com.vividsolutions.jts.geom.Point geometry;
-    
-    Context context;
-    Scriptable scope;
-    
     /**
-     * Point prototype constructor.
+     * Prototype constructor.
      * @return 
      */
     public Point() {
-        new Geometry();
     }
     
     /**
-     * Point constructor for coordinate array.
+     * Constructor from JTS geometry.
+     * @param scope
+     * @param geometry
+     */
+    public Point(Scriptable scope, com.vividsolutions.jts.geom.Point geometry) {
+        this.scope = scope;
+        setGeometry(geometry);
+    }
+    
+    /**
+     * Constructor for coordinate array.
      * @param context
      * @param scope
      * @param array
      */
-    public Point(Context context, Scriptable scope, NativeArray array) {
-        this.context = context;
+    public Point(Scriptable scope, NativeArray array) {
         this.scope = scope;
         Coordinate coord = arrayToCoord(array);
-        geometry = factory.createPoint(coord);
+        setGeometry(factory.createPoint(coord));
     }
     
     /**
@@ -64,12 +67,21 @@ public class Point extends Geometry implements Wrapper {
         prototype.setPrototype(parentProto);
     }
     
+
+    /**
+     * JavaScript constructor.
+     * @param cx
+     * @param args
+     * @param ctorObj
+     * @param inNewExpr
+     * @return
+     */
     @JSConstructor
     public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
         Point point = null;
         Object arg = args[0];
         if (arg instanceof NativeArray) {
-            point = new Point(cx, ctorObj.getParentScope(), (NativeArray) arg);
+            point = new Point(ctorObj.getParentScope(), (NativeArray) arg);
         }
         return point;
     }
@@ -80,7 +92,7 @@ public class Point extends Geometry implements Wrapper {
      */
     @JSGetter
     public Object getX() {
-        return geometry.getX();
+        return ((com.vividsolutions.jts.geom.Point) getGeometry()).getX();
     }
 
     /**
@@ -89,7 +101,7 @@ public class Point extends Geometry implements Wrapper {
      */
     @JSGetter
     public Object getY() {
-        return geometry.getY();
+        return ((com.vividsolutions.jts.geom.Point) getGeometry()).getY();
     }
 
     /**
@@ -98,28 +110,23 @@ public class Point extends Geometry implements Wrapper {
      */
     @JSGetter
     public Object getZ() {
-        return geometry.getCoordinate().z;
+        return getGeometry().getCoordinate().z;
     }
     
     /**
-     * Getter for point.coordinates
+     * Getter for coordinates
      * @return
      */
     @JSGetter
     public NativeArray getCoordinates() {
-        return coordToArray(context, scope, geometry.getCoordinate());
+        return coordToArray(scope, getGeometry().getCoordinate());
     }
 
     /**
      * Returns underlying JTS geometry.
      */
     public com.vividsolutions.jts.geom.Point unwrap() {
-        return geometry;
-    }
-
-    @Override
-    public String getClassName() {
-        return getClass().getName();
+        return (com.vividsolutions.jts.geom.Point) getGeometry();
     }
 
 }

@@ -1,10 +1,17 @@
 package org.geoscript.js.geom;
 
+import java.lang.reflect.Method;
+
+import java.util.Arrays;
+import java.util.List;
+
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.NativeArray;
+import org.mozilla.javascript.NativeJavaMethod;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Wrapper;
+import org.mozilla.javascript.annotations.JSGetter;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -17,14 +24,125 @@ public class Geometry extends ScriptableObject implements Wrapper {
     private com.vividsolutions.jts.geom.Geometry geometry;
     
     protected static GeometryFactory factory = new GeometryFactory();
-    
+
+    protected Scriptable scope;
+
     /**
      * Geometry prototype constructor.
      */
     public Geometry() {
-        geometry = null;
     }
     
+    com.vividsolutions.jts.geom.Geometry getGeometry() {
+        return geometry;
+    }
+    
+    void setGeometry(com.vividsolutions.jts.geom.Geometry geometry) {
+        this.geometry = geometry;
+    }
+    
+    @Override
+    public Object get(String name, Scriptable start) {
+        Object member = null;
+        if (geometry != null) {
+            member = getNativeMethod(name);
+        }
+        if (member == null) {
+            member = super.get(name, start);
+        }
+        return member;
+    }
+    
+    /**
+     * Create a JavaScript method from an underlying JTS Geometry method where
+     * possible.
+     * @param name Method name
+     * @return
+     */
+    NativeJavaMethod getNativeMethod(String name) {
+        NativeJavaMethod nativeMethod = null;
+        Method method = null;
+
+        List<String> unary = Arrays.asList(
+                "isEmpty", "isRectangle", "isSimple", "isValid");
+
+        if (unary.contains(name)) {
+            try {
+                method = geometry.getClass().getMethod(name);
+            } catch (Exception e) {
+                throw new RuntimeException("Unable to find method: " + name, e);
+            }
+        }
+        
+        List<String> binary = Arrays.asList(
+                "contains", "coveredBy", "covers", "crosses", "disjoint", 
+                "equals", "equalsExact", "overlaps", "intersects", "touches",
+                "within");
+        
+        if (binary.contains(name)) {
+            try {
+                method = geometry.getClass().getMethod(name, com.vividsolutions.jts.geom.Geometry.class);
+            } catch (Exception e) {
+                throw new RuntimeException("Unable to find method: " + name, e);
+            }
+        }
+        
+        List<String> constructive0 = Arrays.asList(
+                "clone", "convexHull", "getBoundary", "getEnvelope");
+
+        if (constructive0.contains(name)) {
+            try {
+                method = geometry.getClass().getMethod(name);
+            } catch (Exception e) {
+                throw new RuntimeException("Unable to find method: " + name, e);
+            }
+        }
+        
+        List<String> constructive1 = Arrays.asList(
+                "difference", "intersection", "symDifference", "union");
+
+        if (constructive1.contains(name)) {
+            try {
+                method = geometry.getClass().getMethod(name, com.vividsolutions.jts.geom.Geometry.class);
+            } catch (Exception e) {
+                throw new RuntimeException("Unable to find method: " + name, e);
+            }
+        }
+
+        if (method != null) {
+            nativeMethod = new NativeJavaMethod(method, name);
+        }
+        
+        return nativeMethod;
+    }
+    
+    @JSGetter
+    public double getArea() {
+        double area = 0;
+        if (geometry != null) {
+            area = geometry.getArea();
+        }
+        return area;
+    }
+
+    @JSGetter
+    public double getLength() {
+        double length = 0;
+        if (geometry != null) {
+            length = geometry.getLength();
+        }
+        return length;
+    }
+
+    @JSGetter
+    public int getDimension() {
+        int dimension = 0;
+        if (geometry != null) {
+            dimension = geometry.getDimension();
+        }
+        return dimension;
+    }
+
     public Object unwrap() {
         return geometry;
     }
@@ -70,7 +188,11 @@ public class Geometry extends ScriptableObject implements Wrapper {
      * @param coord
      * @return
      */
-    protected static NativeArray coordToArray(Context cx, Scriptable scope, Coordinate coord) {
+    protected static NativeArray coordToArray(Scriptable scope, Coordinate coord) {
+        Context cx = Context.getCurrentContext();
+        if (cx == null) {
+            throw new RuntimeException("No context associated with current thread.");
+        }
         Object[] elements = new Object[] {
                 coord.x, coord.y
         };
