@@ -203,5 +203,24 @@ public class Geometry extends ScriptableObject implements Wrapper {
         }
         return array;
     }
+    
+    /**
+     * Convert a JTS Coordinate array into a JavaScript array.
+     * @param scope
+     * @param coords
+     * @return
+     */
+    protected static NativeArray coordsToArray(Scriptable scope, Coordinate[] coords) {
+        Context cx = Context.getCurrentContext();
+        if (cx == null) {
+            throw new RuntimeException("No context associated with current thread.");
+        }
+        int length = coords.length;
+        NativeArray array = (NativeArray) cx.newArray(scope, length);
+        for (int i=0; i<length; ++i) {
+            array.put(i, array, coordToArray(scope, coords[i]));
+        }
+        return array;
+    }
 
 }
