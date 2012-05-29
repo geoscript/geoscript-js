@@ -139,6 +139,24 @@ public class Geometry extends ScriptableObject implements Wrapper {
         }
         return dimension;
     }
+    
+    @JSGetter
+    public Scriptable getConfig() {
+        Scriptable scope = getParentScope();
+        Context cx = Context.getCurrentContext();
+        if (cx == null) {
+            throw new RuntimeException("No context associated with current thread.");
+        }
+        Scriptable obj = cx.newObject(scope);
+        obj.put("type", obj, getClass().getSimpleName());
+        obj.put("coordinates", obj, getCoordinates());
+        return obj;
+    }
+
+    @JSGetter
+    public NativeArray getCoordinates() {
+        return null;
+    }
 
     public Object unwrap() {
         return geometry;

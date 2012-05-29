@@ -17,6 +17,12 @@ Point basics:
     300000000
     js> p.coordinates
     1,2,300000000
+    
+    js> var config = p.config;
+    js> config.type
+    Point
+    js> config.coordinates
+    1,2,300000000
 
     js> p.isEmpty()
     false

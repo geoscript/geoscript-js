@@ -19,6 +19,12 @@ LineString basics:
     js> coords[1]
     10,2
 
+    js> var config = l.config;
+    js> config.type
+    LineString
+    js> config.coordinates
+    0,2,10,2
+
     js> l.isEmpty()
     false
     js> l.isRectangle()
