@@ -11,6 +11,8 @@ public class Wrapper {
             wrapped = new Point(scope, (com.vividsolutions.jts.geom.Point) geometry);
         } else if (geometry instanceof com.vividsolutions.jts.geom.LineString) {
             wrapped = new LineString(scope, (com.vividsolutions.jts.geom.LineString) geometry);
+        } else if (geometry instanceof com.vividsolutions.jts.geom.Polygon) {
+            wrapped = new Polygon(scope, (com.vividsolutions.jts.geom.Polygon) geometry);
         }
         return wrapped;
     }
