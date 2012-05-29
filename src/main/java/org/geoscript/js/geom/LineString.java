@@ -19,31 +19,32 @@ public class LineString extends Geometry implements Wrapper {
     /** serialVersionUID */
     private static final long serialVersionUID = -5048539260091857410L;
 
+    private static Scriptable prototype;
+
     /**
      * Prototype constructor.
      * @return 
      */
     public LineString() {
     }
-    
+
     /**
      * Constructor from JTS geometry.
-     * @param scope
      * @param geometry
      */
     public LineString(Scriptable scope, com.vividsolutions.jts.geom.LineString geometry) {
-        this.scope = scope;
+        this.setParentScope(scope);
+        this.setPrototype(LineString.prototype);
         setGeometry(geometry);
     }
-    
+
     /**
      * Constructor for coordinate array.
      * @param context
      * @param scope
      * @param array
      */
-    public LineString(Scriptable scope, NativeArray array) {
-        this.scope = scope;
+    public LineString(NativeArray array) {
         int size = array.size();
         Coordinate[] coords = new Coordinate[size];
         for (int i=0; i<size; ++i) {
@@ -72,6 +73,7 @@ public class LineString extends Geometry implements Wrapper {
         ScriptableObject.defineClass(scope, Geometry.class, false, true);
         Scriptable parentProto = ScriptableObject.getClassPrototype(scope, Geometry.class.getName());
         prototype.setPrototype(parentProto);
+        LineString.prototype = prototype;
     }
     
 
@@ -88,7 +90,7 @@ public class LineString extends Geometry implements Wrapper {
         LineString line = null;
         Object arg = args[0];
         if (arg instanceof NativeArray) {
-            line = new LineString(ctorObj.getParentScope(), (NativeArray) arg);
+            line = new LineString((NativeArray) arg);
         }
         return line;
     }
@@ -99,7 +101,7 @@ public class LineString extends Geometry implements Wrapper {
      */
     @JSGetter
     public NativeArray getCoordinates() {
-        return coordsToArray(scope, getGeometry().getCoordinates());
+        return coordsToArray(getParentScope(), getGeometry().getCoordinates());
     }
 
     /**

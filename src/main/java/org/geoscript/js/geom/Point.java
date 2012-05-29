@@ -6,6 +6,7 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.FunctionObject;
 import org.mozilla.javascript.NativeArray;
+import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Wrapper;
@@ -18,7 +19,9 @@ public class Point extends Geometry implements Wrapper {
 
     /** serialVersionUID */
     private static final long serialVersionUID = 8771743870215086281L;
-    
+
+    private static Scriptable prototype;
+
     /**
      * Prototype constructor.
      * @return 
@@ -28,11 +31,11 @@ public class Point extends Geometry implements Wrapper {
     
     /**
      * Constructor from JTS geometry.
-     * @param scope
      * @param geometry
      */
     public Point(Scriptable scope, com.vividsolutions.jts.geom.Point geometry) {
-        this.scope = scope;
+        this.setParentScope(scope);
+        this.setPrototype(Point.prototype);
         setGeometry(geometry);
     }
     
@@ -42,8 +45,7 @@ public class Point extends Geometry implements Wrapper {
      * @param scope
      * @param array
      */
-    public Point(Scriptable scope, NativeArray array) {
-        this.scope = scope;
+    public Point(NativeArray array) {
         Coordinate coord = arrayToCoord(array);
         setGeometry(factory.createPoint(coord));
     }
@@ -65,8 +67,8 @@ public class Point extends Geometry implements Wrapper {
         ScriptableObject.defineClass(scope, Geometry.class, false, true);
         Scriptable parentProto = ScriptableObject.getClassPrototype(scope, Geometry.class.getName());
         prototype.setPrototype(parentProto);
+        Point.prototype = prototype;
     }
-    
 
     /**
      * JavaScript constructor.
@@ -81,7 +83,9 @@ public class Point extends Geometry implements Wrapper {
         Point point = null;
         Object arg = args[0];
         if (arg instanceof NativeArray) {
-            point = new Point(ctorObj.getParentScope(), (NativeArray) arg);
+            point = new Point((NativeArray) arg);
+        } else {
+            throw ScriptRuntime.constructError("Error", "Requires an array of coordinate values.");
         }
         return point;
     }
@@ -119,7 +123,7 @@ public class Point extends Geometry implements Wrapper {
      */
     @JSGetter
     public NativeArray getCoordinates() {
-        return coordToArray(scope, getGeometry().getCoordinate());
+        return coordToArray(getParentScope(), getGeometry().getCoordinate());
     }
 
     /**

@@ -25,8 +25,6 @@ public class Geometry extends ScriptableObject implements Wrapper {
     
     protected static GeometryFactory factory = new GeometryFactory();
 
-    protected Scriptable scope;
-
     /**
      * Geometry prototype constructor.
      */

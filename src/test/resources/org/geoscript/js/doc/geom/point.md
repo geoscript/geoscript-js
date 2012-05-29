@@ -35,3 +35,13 @@ Point basics:
     js> p1.equals(p3)
     true
     
+    js> var jts = Packages.com.vividsolutions.jts;
+    js> var wktReader = new jts.io.WKTReader();
+    js> var jtsPoint = wktReader.read("POINT(1 2)");
+    js> jtsPoint instanceof Point
+    true
+    js> jtsPoint instanceof Geometry
+    true
+    js> jtsPoint.equals(new Point([1, 2]))
+    true
+    
