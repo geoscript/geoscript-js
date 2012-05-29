@@ -101,7 +101,7 @@ public class LineString extends Geometry implements Wrapper {
      */
     @JSGetter
     public NativeArray getCoordinates() {
-        return coordsToArray(getParentScope(), getGeometry().getCoordinates());
+        return coordsToArray(getGeometry().getCoordinates());
     }
 
     /**

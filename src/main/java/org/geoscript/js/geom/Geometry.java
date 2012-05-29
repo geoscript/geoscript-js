@@ -1,7 +1,6 @@
 package org.geoscript.js.geom;
 
 import java.lang.reflect.Method;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -151,11 +150,25 @@ public class Geometry extends ScriptableObject implements Wrapper {
     }
     
     /**
+     * Convert a JavaScript array to an array of JTS Coordinates.
+     * @param array An array of 2 or 3 element arrays.
+     * @return
+     */
+    protected Coordinate[] arrayToCoords(NativeArray array) {
+        int size = array.size();
+        Coordinate[] coords = new Coordinate[size];
+        for (int i=0; i<size; ++i) {
+            coords[i] = arrayToCoord((NativeArray) array.get(i));
+        }
+        return coords;
+    }
+    
+    /**
      * Convert a JavaScript array to a JTS Coordinate.
      * @param array An array of length 2 or 3
      * @return Coordinate with x, y, and optional z value from array
      */
-    protected static Coordinate arrayToCoord(NativeArray array) {
+    protected Coordinate arrayToCoord(NativeArray array) {
         double x = Double.NaN;
         double y = Double.NaN;
         double z = Double.NaN;
@@ -186,7 +199,8 @@ public class Geometry extends ScriptableObject implements Wrapper {
      * @param coord
      * @return
      */
-    protected static NativeArray coordToArray(Scriptable scope, Coordinate coord) {
+    protected NativeArray coordToArray(Coordinate coord) {
+        Scriptable scope = getParentScope();
         Context cx = Context.getCurrentContext();
         if (cx == null) {
             throw new RuntimeException("No context associated with current thread.");
@@ -208,7 +222,8 @@ public class Geometry extends ScriptableObject implements Wrapper {
      * @param coords
      * @return
      */
-    protected static NativeArray coordsToArray(Scriptable scope, Coordinate[] coords) {
+    protected NativeArray coordsToArray(Coordinate[] coords) {
+        Scriptable scope = getParentScope();
         Context cx = Context.getCurrentContext();
         if (cx == null) {
             throw new RuntimeException("No context associated with current thread.");
@@ -216,7 +231,7 @@ public class Geometry extends ScriptableObject implements Wrapper {
         int length = coords.length;
         NativeArray array = (NativeArray) cx.newArray(scope, length);
         for (int i=0; i<length; ++i) {
-            array.put(i, array, coordToArray(scope, coords[i]));
+            array.put(i, array, coordToArray(coords[i]));
         }
         return array;
     }

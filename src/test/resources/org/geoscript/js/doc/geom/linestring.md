@@ -1,4 +1,4 @@
-Point basics:
+LineString basics:
 
     js> defineClass(org.geoscript.js.geom.LineString);
     js> var LineString = this["org.geoscript.js.geom.LineString"];

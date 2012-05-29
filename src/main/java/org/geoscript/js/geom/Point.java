@@ -123,7 +123,7 @@ public class Point extends Geometry implements Wrapper {
      */
     @JSGetter
     public NativeArray getCoordinates() {
-        return coordToArray(getParentScope(), getGeometry().getCoordinate());
+        return coordToArray(getGeometry().getCoordinate());
     }
 
     /**
