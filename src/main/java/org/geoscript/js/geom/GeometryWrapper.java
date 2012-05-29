@@ -3,7 +3,7 @@ package org.geoscript.js.geom;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 
-public class Wrapper {
+public class GeometryWrapper {
 
     public static ScriptableObject wrap(Scriptable scope, com.vividsolutions.jts.geom.Geometry geometry) {
         ScriptableObject wrapped = null;
@@ -16,5 +16,6 @@ public class Wrapper {
         }
         return wrapped;
     }
+
 
 }

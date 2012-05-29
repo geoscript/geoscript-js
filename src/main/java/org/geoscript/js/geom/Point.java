@@ -19,9 +19,12 @@ public class Point extends Geometry implements Wrapper {
 
     /** serialVersionUID */
     private static final long serialVersionUID = 8771743870215086281L;
-
-    private static Scriptable prototype;
-
+    
+    /**
+     * Most recently created prototype generated from a defineClass call.
+     */
+    private static Scriptable prototype = null;
+    
     /**
      * Prototype constructor.
      * @return 
@@ -34,8 +37,11 @@ public class Point extends Geometry implements Wrapper {
      * @param geometry
      */
     public Point(Scriptable scope, com.vividsolutions.jts.geom.Point geometry) {
+        if (prototype == null) {
+            throw new RuntimeException("Can't wrap geometry prior to defineClass call");
+        }
         this.setParentScope(scope);
-        this.setPrototype(Point.prototype);
+        this.setPrototype(prototype);
         setGeometry(geometry);
     }
     
@@ -69,7 +75,7 @@ public class Point extends Geometry implements Wrapper {
         prototype.setPrototype(parentProto);
         Point.prototype = prototype;
     }
-
+    
     /**
      * JavaScript constructor.
      * @param cx
