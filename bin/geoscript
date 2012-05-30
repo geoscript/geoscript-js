@@ -49,6 +49,11 @@ else
     CLASS=org.geoscript.js.GeoScriptShell
 fi
 
+ARGS=
+if [ -x $MODULES ]; then
+    ARGS="-Dgeoscript.modules=$MODULES"
+fi
+
 if [ $# -eq 1 ]; then
     # resolve absolute path to main module
     MAIN_PATH=$(
@@ -56,8 +61,8 @@ if [ $# -eq 1 ]; then
         && pwd -P
     ) && MAIN_PATH=$MAIN_PATH/$(basename -- "$1")
 
-    java -cp $CP $CLASS -main $MAIN_PATH
+    java -cp $CP $ARGS $CLASS -main $MAIN_PATH
 else
-    java -cp $CP $CLASS
+    java -cp $CP $ARGS $CLASS
 fi
 
