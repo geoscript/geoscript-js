@@ -7,7 +7,6 @@ import org.mozilla.javascript.Function;
 import org.mozilla.javascript.FunctionObject;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSConstructor;
 import org.mozilla.javascript.annotations.JSGetter;
@@ -18,6 +17,8 @@ public class Collection extends Geometry implements Wrapper {
     private static final long serialVersionUID = 669981017408451671L;
     
     private static Scriptable prototype;
+    
+    public Class<?> restrictedType = null;
 
     /**
      * Prototype constructor.
@@ -66,11 +67,21 @@ public class Collection extends Geometry implements Wrapper {
                     break;
                 }
             }
+            if (restrictedType != null) {
+                if (restrictedType != geometries[i].getClass()) {
+                    throw new RuntimeException("Component geometry must be of type " + restrictedType.getName());
+                }
+            }
         }
-        setGeometry(new com.vividsolutions.jts.geom.GeometryCollection(geometries, factory));
+        com.vividsolutions.jts.geom.GeometryCollection collection = createCollection(geometries);
+        setGeometry(collection);
     }
     
-    private int getArrayDimension(NativeArray array) {
+    public com.vividsolutions.jts.geom.GeometryCollection createCollection(com.vividsolutions.jts.geom.Geometry[] geometries) {
+        return new com.vividsolutions.jts.geom.GeometryCollection(geometries, factory);
+    }
+    
+    protected int getArrayDimension(NativeArray array) {
         int dim = -1;
         Object obj = array;
         while (obj instanceof NativeArray && ((NativeArray) obj).size() > 0) {
@@ -94,13 +105,10 @@ public class Collection extends Geometry implements Wrapper {
      */
     public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) 
     throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
-        ScriptableObject.defineClass(scope, Geometry.class, false, true);
-        Scriptable parentProto = ScriptableObject.getClassPrototype(scope, Geometry.class.getName());
-        prototype.setPrototype(parentProto);
+        prototype.setPrototype(getOrCreatePrototype(scope, Geometry.class));
         Collection.prototype = prototype;
     }
     
-
     /**
      * JavaScript constructor.
      * @param cx

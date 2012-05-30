@@ -7,7 +7,6 @@ import org.mozilla.javascript.Function;
 import org.mozilla.javascript.FunctionObject;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSConstructor;
 import org.mozilla.javascript.annotations.JSGetter;
@@ -68,9 +67,7 @@ public class Polygon extends Geometry implements Wrapper {
      */
     public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) 
     throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
-        ScriptableObject.defineClass(scope, Geometry.class, false, true);
-        Scriptable parentProto = ScriptableObject.getClassPrototype(scope, Geometry.class.getName());
-        prototype.setPrototype(parentProto);
+        prototype.setPrototype(getOrCreatePrototype(scope, Geometry.class));
         Polygon.prototype = prototype;
     }
     
