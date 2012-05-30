@@ -11,7 +11,7 @@ import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSConstructor;
 
-public class MultiPolygon extends Collection implements Wrapper {
+public class MultiPolygon extends GeometryCollection implements Wrapper {
 
     /** serialVersionUID */
     private static final long serialVersionUID = 250567051943372945L;
@@ -66,7 +66,7 @@ public class MultiPolygon extends Collection implements Wrapper {
      */
     public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) 
     throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
-        prototype.setPrototype(getOrCreatePrototype(scope, Collection.class));
+        prototype.setPrototype(getOrCreatePrototype(scope, GeometryCollection.class));
         MultiPolygon.prototype = prototype;
     }
     

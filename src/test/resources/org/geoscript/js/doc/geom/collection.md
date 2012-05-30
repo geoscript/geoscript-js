@@ -1,13 +1,13 @@
 Collection basics:
 
     js> defineClass(org.geoscript.js.geom.Point);
-    js> defineClass(org.geoscript.js.geom.Collection);
+    js> defineClass(org.geoscript.js.geom.GeometryCollection);
     js> var Point = this["org.geoscript.js.geom.Point"];
-    js> var Collection = this["org.geoscript.js.geom.Collection"];
+    js> var GeometryCollection = this["org.geoscript.js.geom.GeometryCollection"];
     js> var Geometry = this["org.geoscript.js.geom.Geometry"];
 
-    js> var g = new Collection([[0, 0], [1, 1]]);
-    js> g instanceof Collection
+    js> var g = new GeometryCollection([[0, 0], [1, 1]]);
+    js> g instanceof GeometryCollection
     true
     js> g instanceof Geometry
     true

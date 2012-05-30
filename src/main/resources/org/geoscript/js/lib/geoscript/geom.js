@@ -1,67 +1,30 @@
-var GEOM_UTIL = require("./geom/util");
-
-/** api: module = geom */
-
-/** api: synopsis
- *  A collection of geometry types.
- */
-
-/** api: summary
- *  The :mod:`geom` module provides a provides constructors for point, line,
- *  polygon and multi-part geometries.
- *
- *  .. code-block:: javascript
- *  
- *      js> var GEOM = require("geoscript/geom");
- */
-
-/** api: data[BUFFER_CAP_ROUND]
- *  Used to calculate round caps for buffer operations.
- */
-exports.BUFFER_CAP_ROUND = GEOM_UTIL.BUFFER_CAP_ROUND;
-
-/** api: data[BUFFER_CAP_SQUARE]
- *  Used to calculate square caps for buffer operations.
- */
-exports.BUFFER_CAP_SQUARE = GEOM_UTIL.BUFFER_CAP_SQUARE;
-
-/** api: data[BUFFER_CAP_BUTT] 
- *  Used to calculate butt caps for buffer operations.
- */
-exports.BUFFER_CAP_BUTT = GEOM_UTIL.BUFFER_CAP_BUTT;
+defineClass(org.geoscript.js.geom.Point);
+defineClass(org.geoscript.js.geom.LineString);
+defineClass(org.geoscript.js.geom.Polygon);
+defineClass(org.geoscript.js.geom.MultiPoint);
+defineClass(org.geoscript.js.geom.MultiLineString);
+defineClass(org.geoscript.js.geom.MultiPolygon);
 
 /** private: classes[] = geometry */
-exports.Geometry = require("./geom/geometry").Geometry;
+exports.Geometry = this["org.geoscript.js.geom.Geometry"];
 
 /** api: classes[] = point */
-exports.Point = require("./geom/point").Point;
+exports.Point = this["org.geoscript.js.geom.Point"];
 
 /** api: classes[] = linestring */
-exports.LineString = require("./geom/linestring").LineString;
+exports.LineString = this["org.geoscript.js.geom.LineString"];
 
 /** api: classes[] = polygon */
-exports.Polygon = require("./geom/polygon").Polygon;
+exports.Polygon = this["org.geoscript.js.geom.Polygon"];
 
 /** private: classes[] = collection */
-exports.GeometryCollection = require("./geom/collection").GeometryCollection;
+exports.GeometryCollection = this["org.geoscript.js.geom.GeometryCollection"];
 
 /** api: classes[] = multipoint */
-exports.MultiPoint = require("./geom/multipoint").MultiPoint;
+exports.MultiPoint = this["org.geoscript.js.geom.MultiPoint"];
 
 /** api: classes[] = multilinestring */
-exports.MultiLineString = require("./geom/multilinestring").MultiLineString;
+exports.MultiLineString = this["org.geoscript.js.geom.MultiLineString"];
 
 /** api: classes[] = multipolygon */
-exports.MultiPolygon = require("./geom/multipolygon").MultiPolygon;
-
-/** api: classes[] = bounds */
-exports.Bounds = require("./geom/bounds").Bounds;
-
-
-/** private: method[create]
- *  :arg config: ``Object`` Configuration object.
- *  :returns: :class:`geom.Geometry`
- *
- *  Create a geometry given a configuration object.
- */
-exports.create = GEOM_UTIL.create;
+exports.MultiPolygon = this["org.geoscript.js.geom.MultiPolygon"];

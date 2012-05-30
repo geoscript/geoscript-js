@@ -3,14 +3,14 @@ MultiLineString basics:
     js> defineClass(org.geoscript.js.geom.MultiLineString);
     js> defineClass(org.geoscript.js.geom.LineString);
     js> var MultiLineString = this["org.geoscript.js.geom.MultiLineString"];
-    js> var Collection = this["org.geoscript.js.geom.Collection"];
+    js> var GeometryCollection = this["org.geoscript.js.geom.GeometryCollection"];
     js> var Geometry = this["org.geoscript.js.geom.Geometry"];
     js> var LineString = this["org.geoscript.js.geom.LineString"];
     
     js> var g = new MultiLineString([[[0, 0], [1, 1]], [[0, 0], [-1, -1]]]);
     js> g instanceof MultiLineString
     true
-    js> g instanceof Collection
+    js> g instanceof GeometryCollection
     true
     js> g instanceof Geometry
     true

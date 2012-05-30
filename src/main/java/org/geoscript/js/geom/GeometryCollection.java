@@ -11,7 +11,7 @@ import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSConstructor;
 import org.mozilla.javascript.annotations.JSGetter;
 
-public class Collection extends Geometry implements Wrapper {
+public class GeometryCollection extends Geometry implements Wrapper {
 
     /** serialVersionUID */
     private static final long serialVersionUID = 669981017408451671L;
@@ -24,16 +24,16 @@ public class Collection extends Geometry implements Wrapper {
      * Prototype constructor.
      * @return 
      */
-    public Collection() {
+    public GeometryCollection() {
     }
 
     /**
      * Constructor from JTS geometry.
      * @param geometry
      */
-    public Collection(Scriptable scope, com.vividsolutions.jts.geom.GeometryCollection geometry) {
+    public GeometryCollection(Scriptable scope, com.vividsolutions.jts.geom.GeometryCollection geometry) {
         this.setParentScope(scope);
-        this.setPrototype(Collection.prototype);
+        this.setPrototype(GeometryCollection.prototype);
         setGeometry(geometry);
     }
 
@@ -43,7 +43,7 @@ public class Collection extends Geometry implements Wrapper {
      * @param scope
      * @param array
      */
-    public Collection(NativeArray array) {
+    public GeometryCollection(NativeArray array) {
         int numComponents = array.size();
         com.vividsolutions.jts.geom.Geometry[] geometries = new com.vividsolutions.jts.geom.Geometry[numComponents];
         for (int i=0; i<numComponents; ++i) {
@@ -106,7 +106,7 @@ public class Collection extends Geometry implements Wrapper {
     public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) 
     throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
         prototype.setPrototype(getOrCreatePrototype(scope, Geometry.class));
-        Collection.prototype = prototype;
+        GeometryCollection.prototype = prototype;
     }
     
     /**
@@ -119,10 +119,10 @@ public class Collection extends Geometry implements Wrapper {
      */
     @JSConstructor
     public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
-        Collection collection = null;
+        GeometryCollection collection = null;
         Object arg = args[0];
         if (arg instanceof NativeArray) {
-            collection = new Collection((NativeArray) arg);
+            collection = new GeometryCollection((NativeArray) arg);
         }
         return collection;
     }
