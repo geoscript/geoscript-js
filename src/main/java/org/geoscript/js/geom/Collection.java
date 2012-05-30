@@ -125,10 +125,17 @@ public class Collection extends Geometry implements Wrapper {
      */
     @JSGetter
     public NativeArray getCoordinates() {
-        NativeArray array = getComponents();
-        int length = array.size();
+        Context cx = Context.getCurrentContext();
+        if (cx == null) {
+            throw new RuntimeException("No context associated with current thread.");
+        }
+        Scriptable scope = getParentScope();
+        com.vividsolutions.jts.geom.GeometryCollection geometry = (com.vividsolutions.jts.geom.GeometryCollection) getGeometry();
+        int length = geometry.getNumGeometries();
+        NativeArray array = (NativeArray) cx.newArray(scope, length);
         for (int i=0; i<length; ++i) {
-            array.put(i, array, ((Geometry) array.get(i)).getCoordinates()); 
+            NativeArray coords = ((Geometry) GeometryWrapper.wrap(scope, geometry.getGeometryN(i))).getCoordinates();
+            array.put(i, array, coords); 
         }
         return array;
     }
