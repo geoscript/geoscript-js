@@ -45,9 +45,7 @@ public class GeoScriptShell extends Global {
         GeoScriptShell shell = new GeoScriptShell();
         cx.initStandardObjects(shell, true);
         List<String> paths = (List<String>) Arrays.asList(GeoScriptModules.getModulePath());
-        // TODO: reconsider sandboxed if this issue is addressed
-        // https://github.com/mozilla/rhino/issues/44
-        shell.installRequire(cx, paths, false);
+        shell.installRequire(cx, paths, true);
 
         shell.defineFunctionProperties(
                 new String[] {"quit"}, 
