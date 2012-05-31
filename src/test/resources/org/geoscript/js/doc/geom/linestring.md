@@ -24,6 +24,8 @@ LineString basics:
     LineString
     js> config.coordinates
     0,2,10,2
+    js> l.json
+    {"type":"LineString","coordinates":[[0,2],[10,2]]}
 
     js> l.isEmpty()
     false

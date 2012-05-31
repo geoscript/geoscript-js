@@ -1,12 +1,14 @@
 package org.geoscript.js.geom;
 
 import java.lang.reflect.InvocationTargetException;
+
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.NativeArray;
+import org.mozilla.javascript.NativeJSON;
 import org.mozilla.javascript.NativeJavaMethod;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
@@ -152,6 +154,15 @@ public class Geometry extends ScriptableObject implements Wrapper {
         obj.put("type", obj, getClass().getSimpleName());
         obj.put("coordinates", obj, getCoordinates());
         return obj;
+    }
+    
+    @JSGetter
+    public Object getJson() {
+        Scriptable config = getConfig();
+        Scriptable scope = getParentScope();
+        Context cx = Context.getCurrentContext();
+        Object json = NativeJSON.stringify(cx, scope, config, null, null);
+        return json;
     }
 
     @JSGetter

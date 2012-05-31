@@ -14,6 +14,8 @@ MultiPolygon basics:
     true
     js> g instanceof Geometry
     true
+    js> g.json
+    {"type":"MultiPolygon","coordinates":[[[[0,0],[1,0],[1,1],[0,1],[0,0]]]]}
     
     js> var components = g.components
     js> components.length

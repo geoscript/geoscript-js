@@ -33,6 +33,8 @@ Polygon basics:
     Polygon
     js> config.coordinates
     0,0,10,0,10,10,0,10,0,0
+    js> g.json
+    {"type":"Polygon","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]]]}
 
     js> g.isEmpty()
     false

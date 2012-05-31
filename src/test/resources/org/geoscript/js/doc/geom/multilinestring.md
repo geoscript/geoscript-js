@@ -14,6 +14,8 @@ MultiLineString basics:
     true
     js> g instanceof Geometry
     true
+    js> g.json
+    {"type":"MultiLineString","coordinates":[[[0,0],[1,1]],[[0,0],[-1,-1]]]}
     
     js> var components = g.components
     js> components.length

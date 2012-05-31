@@ -23,6 +23,8 @@ Point basics:
     Point
     js> config.coordinates
     1,2,300000000
+    js> p.json
+    {"type":"Point","coordinates":[1,2,300000000]}
 
     js> p.isEmpty()
     false
