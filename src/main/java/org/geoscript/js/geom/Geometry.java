@@ -1,14 +1,13 @@
 package org.geoscript.js.geom;
 
 import java.lang.reflect.InvocationTargetException;
-
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
+import org.geoscript.js.GeoObject;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.NativeArray;
-import org.mozilla.javascript.NativeJSON;
 import org.mozilla.javascript.NativeJavaMethod;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
@@ -18,7 +17,7 @@ import org.mozilla.javascript.annotations.JSGetter;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
-public class Geometry extends ScriptableObject implements Wrapper {
+public class Geometry extends GeoObject implements Wrapper {
 
     /** serialVersionUID */
     private static final long serialVersionUID = 8771743870215086281L;
@@ -145,24 +144,9 @@ public class Geometry extends ScriptableObject implements Wrapper {
     
     @JSGetter
     public Scriptable getConfig() {
-        Scriptable scope = getParentScope();
-        Context cx = Context.getCurrentContext();
-        if (cx == null) {
-            throw new RuntimeException("No context associated with current thread.");
-        }
-        Scriptable obj = cx.newObject(scope);
-        obj.put("type", obj, getClass().getSimpleName());
+        Scriptable obj = super.getConfig();
         obj.put("coordinates", obj, getCoordinates());
         return obj;
-    }
-    
-    @JSGetter
-    public Object getJson() {
-        Scriptable config = getConfig();
-        Scriptable scope = getParentScope();
-        Context cx = Context.getCurrentContext();
-        Object json = NativeJSON.stringify(cx, scope, config, null, null);
-        return json;
     }
 
     @JSGetter
@@ -174,11 +158,6 @@ public class Geometry extends ScriptableObject implements Wrapper {
         return geometry;
     }
 
-    @Override
-    public String getClassName() {
-        return getClass().getName();
-    }
-    
     /**
      * Convert a JavaScript array to an array of JTS Coordinates.
      * @param array An array of 2 or 3 element arrays.
