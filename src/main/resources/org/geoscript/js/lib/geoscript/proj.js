@@ -14,7 +14,8 @@
  */
 
 /** api: classes[] = projection */
-var Projection = require("./proj/projection").Projection;
+defineClass(Packages.org.geoscript.js.proj.Projection);
+var Projection = this["org.geoscript.js.proj.Projection"];
 
 /** api: method[transform]
  *  :arg geometry: :class:`geom.Geometry`
