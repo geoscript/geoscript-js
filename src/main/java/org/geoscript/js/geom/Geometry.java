@@ -1,6 +1,5 @@
 package org.geoscript.js.geom;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
@@ -10,7 +9,6 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeJavaMethod;
 import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSGetter;
 
@@ -244,28 +242,5 @@ public class Geometry extends GeoObject implements Wrapper {
         }
         return array;
     }
-
-    /**
-     * Retrieve a prototype for the given scriptable class.  If defineClass has
-     * already been called for the given scope, the previously created prototype
-     * will be returned.  If defineClass has not been called for the given,
-     * it will be called and the resulting prototype will be returned.
-     * @param scope
-     * @param cls
-     * @return
-     * @throws IllegalAccessException
-     * @throws InstantiationException
-     * @throws InvocationTargetException
-     */
-    protected static Scriptable getOrCreatePrototype(Scriptable scope, Class<? extends Scriptable> cls) throws IllegalAccessException, InstantiationException, InvocationTargetException {
-        Scriptable prototype = ScriptableObject.getClassPrototype(scope, cls.getName());
-        if (prototype == null) {
-            ScriptableObject.defineClass(scope, cls, false, true);
-            prototype = ScriptableObject.getClassPrototype(scope, cls.getName());
-        }
-        return prototype;
-    }
-    
-
 
 }
