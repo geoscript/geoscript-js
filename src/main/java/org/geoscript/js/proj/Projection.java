@@ -40,11 +40,6 @@ public class Projection extends GeoObject implements Wrapper {
     private static final long serialVersionUID = 6743421324347604960L;
     
     /**
-     * Most recently created prototype generated from a defineClass call.
-     */
-    private static Scriptable prototype = null;
-    
-    /**
      * Underlying GeoTools object.
      */
     CoordinateReferenceSystem crs;
@@ -71,11 +66,8 @@ public class Projection extends GeoObject implements Wrapper {
      * @param crs
      */
     public Projection(Scriptable scope, CoordinateReferenceSystem crs) {
-        if (prototype == null) {
-            throw new RuntimeException("Can't wrap CRS prior to defineClass call");
-        }
         this.setParentScope(scope);
-        this.setPrototype(prototype);
+        this.setPrototype(getOrCreatePrototype(scope, getClass()));
         this.crs = crs;
     }
     
@@ -170,7 +162,6 @@ public class Projection extends GeoObject implements Wrapper {
     public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) 
     throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
         prototype.setPrototype(getOrCreatePrototype(scope, GeoObject.class));
-        Projection.prototype = prototype;
     }
 
     public CoordinateReferenceSystem unwrap() {
