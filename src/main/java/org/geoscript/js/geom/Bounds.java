@@ -1,7 +1,5 @@
 package org.geoscript.js.geom;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.geoscript.js.GeoObject;
 import org.geoscript.js.proj.Projection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -39,9 +37,6 @@ public class Bounds extends GeoObject implements Wrapper {
      * Constructor from ReferencedEnvelope.
      * @param scope
      * @param crs
-     * @throws InvocationTargetException 
-     * @throws InstantiationException 
-     * @throws IllegalAccessException 
      */
     public Bounds(Scriptable scope, ReferencedEnvelope refEnv) {
         this.setParentScope(scope);
@@ -307,13 +302,8 @@ public class Bounds extends GeoObject implements Wrapper {
      * @param scope
      * @param ctor
      * @param prototype
-     * @throws NoSuchMethodException
-     * @throws IllegalAccessException
-     * @throws InstantiationException
-     * @throws InvocationTargetException
      */
-    public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) 
-    throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+    public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) {
         prototype.setPrototype(getOrCreatePrototype(scope, GeoObject.class));
     }
 

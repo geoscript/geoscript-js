@@ -1,7 +1,5 @@
 package org.geoscript.js.geom;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.FunctionObject;
@@ -60,13 +58,8 @@ public class LineString extends Geometry implements Wrapper {
      * @param scope
      * @param ctor
      * @param prototype
-     * @throws NoSuchMethodException
-     * @throws IllegalAccessException
-     * @throws InstantiationException
-     * @throws InvocationTargetException
      */
-    public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) 
-    throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+    public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) {
         prototype.setPrototype(getOrCreatePrototype(scope, Geometry.class));
     }
     

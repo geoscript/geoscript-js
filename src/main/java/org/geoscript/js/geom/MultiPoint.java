@@ -1,6 +1,5 @@
 package org.geoscript.js.geom;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
 import org.mozilla.javascript.Context;
@@ -57,13 +56,8 @@ public class MultiPoint extends GeometryCollection implements Wrapper {
      * @param scope
      * @param ctor
      * @param prototype
-     * @throws NoSuchMethodException
-     * @throws IllegalAccessException
-     * @throws InstantiationException
-     * @throws InvocationTargetException
      */
-    public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) 
-    throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+    public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) {
         prototype.setPrototype(getOrCreatePrototype(scope, GeometryCollection.class));
     }
     
