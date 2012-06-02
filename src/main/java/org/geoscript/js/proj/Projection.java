@@ -83,6 +83,12 @@ public class Projection extends GeoObject implements Wrapper {
         }
     }
     
+    public Projection(Scriptable scope, String id) {
+        this(id);
+        this.setParentScope(scope);
+        this.setPrototype(getOrCreatePrototype(scope, getClass()));
+    }
+    
     /**
      * JavaScript constructor.
      * @param cx
