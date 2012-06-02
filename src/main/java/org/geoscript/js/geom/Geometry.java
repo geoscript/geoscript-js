@@ -1,16 +1,25 @@
 package org.geoscript.js.geom;
 
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
 import org.geoscript.js.GeoObject;
+import org.geoscript.js.proj.Projection;
+import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
+import org.geotools.referencing.CRS;
 import org.mozilla.javascript.Context;
+import org.mozilla.javascript.FunctionObject;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeJavaMethod;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.Wrapper;
+import org.mozilla.javascript.annotations.JSFunction;
 import org.mozilla.javascript.annotations.JSGetter;
+import org.mozilla.javascript.annotations.JSSetter;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -23,6 +32,8 @@ public class Geometry extends GeoObject implements Wrapper {
     private com.vividsolutions.jts.geom.Geometry geometry;
     
     protected static GeometryFactory factory = new GeometryFactory();
+    
+    private Projection projection;
 
     /**
      * Geometry prototype constructor.
@@ -56,7 +67,7 @@ public class Geometry extends GeoObject implements Wrapper {
      * @param name Method name
      * @return
      */
-    NativeJavaMethod getNativeMethod(String name) {
+    Object getNativeMethod(String name) {
         NativeJavaMethod nativeMethod = null;
         Method method = null;
 
@@ -69,6 +80,7 @@ public class Geometry extends GeoObject implements Wrapper {
             } catch (Exception e) {
                 throw new RuntimeException("Unable to find method: " + name, e);
             }
+            return new NativeJavaMethod(method, name);
         }
         
         List<String> binary = Arrays.asList(
@@ -82,6 +94,15 @@ public class Geometry extends GeoObject implements Wrapper {
             } catch (Exception e) {
                 throw new RuntimeException("Unable to find method: " + name, e);
             }
+            if (projection != null) {
+                try {
+                    return new BinaryFunction(name, method, getParentScope(), this);
+                } catch (Exception e) {
+                    throw new RuntimeException("Failed to create binary method for " + name, e);
+                }
+            } else {
+                return new NativeJavaMethod(method, name);
+            }
         }
         
         List<String> constructive0 = Arrays.asList(
@@ -93,6 +114,7 @@ public class Geometry extends GeoObject implements Wrapper {
             } catch (Exception e) {
                 throw new RuntimeException("Unable to find method: " + name, e);
             }
+            return new NativeJavaMethod(method, name);
         }
         
         List<String> constructive1 = Arrays.asList(
@@ -104,13 +126,58 @@ public class Geometry extends GeoObject implements Wrapper {
             } catch (Exception e) {
                 throw new RuntimeException("Unable to find method: " + name, e);
             }
+            return new NativeJavaMethod(method, name);
         }
 
-        if (method != null) {
-            nativeMethod = new NativeJavaMethod(method, name);
-        }
-        
         return nativeMethod;
+    }
+    
+    @JSFunction
+    public Geometry transform(Object projObj) {
+        Projection fromProj = projection;
+        if (fromProj == null) {
+            throw new RuntimeException("Geometry must have a projection before transforming.");
+        }
+        Projection toProj = null;
+        if (projObj instanceof Projection) {
+            toProj = (Projection) projObj;
+        } else if (projObj instanceof String) {
+            toProj = new Projection(getParentScope(), (String) projObj);
+        } else {
+            throw new RuntimeException("Argument must be a Projection instance or string identifier.");
+        }
+        GeometryCoordinateSequenceTransformer gt = new GeometryCoordinateSequenceTransformer();
+        try {
+            gt.setMathTransform(CRS.findMathTransform(fromProj.unwrap(), toProj.unwrap()));
+        } catch (FactoryException e) {
+            throw new RuntimeException("Failed to find transform.", e);
+        }
+        com.vividsolutions.jts.geom.Geometry transGeom;
+        try {
+            transGeom = gt.transform((com.vividsolutions.jts.geom.Geometry) this.unwrap());
+        } catch (TransformException e) {
+            throw new RuntimeException("Failed to transform.", e);
+        }
+        return (Geometry) GeometryWrapper.wrap(getParentScope(), transGeom);
+    }
+    
+
+    @JSGetter
+    public Projection getProjection() {
+        return projection;
+    }
+    
+    @JSSetter
+    public void setProjection(Object projObj) {
+        Projection projection = null;
+        if (projObj instanceof Projection) {
+            projection = (Projection) projObj;
+        } else if (projObj instanceof String) {
+            projection = new Projection(getParentScope(), (String) projObj);
+        } else {
+            throw new RuntimeException("Set projection with Projection object or string identifier.");
+        }
+        this.projection = projection;
     }
     
     @JSGetter
@@ -144,6 +211,9 @@ public class Geometry extends GeoObject implements Wrapper {
     public Scriptable getConfig() {
         Scriptable obj = super.getConfig();
         obj.put("coordinates", obj, getCoordinates());
+        if (projection != null) {
+            obj.put("projection", obj, projection.getId());
+        }
         return obj;
     }
 
@@ -241,6 +311,60 @@ public class Geometry extends GeoObject implements Wrapper {
             array.put(i, array, coordToArray(coords[i]));
         }
         return array;
+    }
+
+    private class BinaryFunction extends FunctionObject {
+
+        /** serialVersionUID */
+        private static final long serialVersionUID = 2395795118963401426L;
+    
+        Geometry geometry;
+        Method trueMethod;
+        
+        public BinaryFunction(String name, Member methodOrConstructor,
+                Scriptable scope) {
+            super(name, methodOrConstructor, scope);
+        }
+        
+        @SuppressWarnings("unused")
+        public boolean nop(Geometry geometry) {
+            return true;
+        }
+    
+        BinaryFunction(String name, Method method, Scriptable scope, Geometry geometry) throws SecurityException, NoSuchMethodException {
+            this(name, BinaryFunction.class.getMethod("nop", Geometry.class), scope);
+            this.trueMethod = method;
+            this.geometry = geometry;
+        }
+        
+        @Override
+        public Object call(Context cx, Scriptable scope, Scriptable thisObj,
+                Object[] args) {
+            
+            Object otherObj = args[0];
+            Geometry other;
+            if (otherObj instanceof Geometry) {
+                other = (Geometry) otherObj;
+            } else {
+                throw new RuntimeException("Must provide a geometry");
+            }
+            Projection thisProj = geometry.projection;
+            if (thisProj != null) {
+                Projection otherProj = other.projection;
+                if (otherProj != null) {
+                    if (!thisProj.equals(otherProj)) {
+                        other = other.transform(thisProj);
+                    }
+                }
+            }
+            Boolean result;
+            try {
+                result = (Boolean) trueMethod.invoke(geometry.unwrap(), other.unwrap());
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to invoke method", e);
+            }
+            return result;
+        }
     }
 
 }
