@@ -16,8 +16,6 @@ public class MultiPolygon extends GeometryCollection implements Wrapper {
     /** serialVersionUID */
     private static final long serialVersionUID = 250567051943372945L;
 
-    private static Scriptable prototype;
-    
     public Class<?> restrictedType = Polygon.class;
 
     /**
@@ -30,10 +28,13 @@ public class MultiPolygon extends GeometryCollection implements Wrapper {
     /**
      * Constructor from JTS geometry.
      * @param geometry
+     * @throws InvocationTargetException 
+     * @throws InstantiationException 
+     * @throws IllegalAccessException 
      */
-    public MultiPolygon(Scriptable scope, com.vividsolutions.jts.geom.MultiPolygon geometry) {
+    public MultiPolygon(Scriptable scope, com.vividsolutions.jts.geom.MultiPolygon geometry) throws IllegalAccessException, InstantiationException, InvocationTargetException {
         this.setParentScope(scope);
-        this.setPrototype(MultiPolygon.prototype);
+        this.setPrototype(getOrCreatePrototype(scope, getClass()));
         setGeometry(geometry);
     }
 
@@ -67,7 +68,6 @@ public class MultiPolygon extends GeometryCollection implements Wrapper {
     public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) 
     throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
         prototype.setPrototype(getOrCreatePrototype(scope, GeometryCollection.class));
-        MultiPolygon.prototype = prototype;
     }
     
 

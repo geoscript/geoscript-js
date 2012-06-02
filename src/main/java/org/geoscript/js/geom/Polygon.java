@@ -18,8 +18,6 @@ public class Polygon extends Geometry implements Wrapper {
     /** serialVersionUID */
     private static final long serialVersionUID = 2047700235863381036L;
 
-    private static Scriptable prototype;
-
     /**
      * Prototype constructor.
      * @return 
@@ -30,10 +28,14 @@ public class Polygon extends Geometry implements Wrapper {
     /**
      * Constructor from JTS geometry.
      * @param geometry
+     * @throws InvocationTargetException 
+     * @throws InstantiationException 
+     * @throws IllegalAccessException 
      */
-    public Polygon(Scriptable scope, com.vividsolutions.jts.geom.Polygon geometry) {
+    public Polygon(Scriptable scope, com.vividsolutions.jts.geom.Polygon geometry) throws IllegalAccessException, InstantiationException, InvocationTargetException {
         this.setParentScope(scope);
-        this.setPrototype(Polygon.prototype);
+        Scriptable prototype = getOrCreatePrototype(scope, getClass());
+        this.setPrototype(prototype);
         setGeometry(geometry);
     }
 
@@ -68,7 +70,6 @@ public class Polygon extends Geometry implements Wrapper {
     public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) 
     throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
         prototype.setPrototype(getOrCreatePrototype(scope, Geometry.class));
-        Polygon.prototype = prototype;
     }
     
 

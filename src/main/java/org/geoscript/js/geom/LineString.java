@@ -18,8 +18,6 @@ public class LineString extends Geometry implements Wrapper {
     /** serialVersionUID */
     private static final long serialVersionUID = -5048539260091857410L;
 
-    private static Scriptable prototype;
-
     /**
      * Prototype constructor.
      * @return 
@@ -30,10 +28,13 @@ public class LineString extends Geometry implements Wrapper {
     /**
      * Constructor from JTS geometry.
      * @param geometry
+     * @throws InvocationTargetException 
+     * @throws InstantiationException 
+     * @throws IllegalAccessException 
      */
-    public LineString(Scriptable scope, com.vividsolutions.jts.geom.LineString geometry) {
+    public LineString(Scriptable scope, com.vividsolutions.jts.geom.LineString geometry) throws IllegalAccessException, InstantiationException, InvocationTargetException {
         this.setParentScope(scope);
-        this.setPrototype(LineString.prototype);
+        this.setPrototype(getOrCreatePrototype(scope, getClass()));
         setGeometry(geometry);
     }
 
@@ -70,7 +71,6 @@ public class LineString extends Geometry implements Wrapper {
     public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) 
     throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
         prototype.setPrototype(getOrCreatePrototype(scope, Geometry.class));
-        LineString.prototype = prototype;
     }
     
 

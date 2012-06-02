@@ -16,8 +16,6 @@ public class MultiPoint extends GeometryCollection implements Wrapper {
     /** serialVersionUID */
     private static final long serialVersionUID = 2356613086695997477L;
 
-    private static Scriptable prototype;
-    
     public Class<?> restrictedType = Point.class;
 
     /**
@@ -30,10 +28,13 @@ public class MultiPoint extends GeometryCollection implements Wrapper {
     /**
      * Constructor from JTS geometry.
      * @param geometry
+     * @throws InvocationTargetException 
+     * @throws InstantiationException 
+     * @throws IllegalAccessException 
      */
-    public MultiPoint(Scriptable scope, com.vividsolutions.jts.geom.MultiPoint geometry) {
+    public MultiPoint(Scriptable scope, com.vividsolutions.jts.geom.MultiPoint geometry) throws IllegalAccessException, InstantiationException, InvocationTargetException {
         this.setParentScope(scope);
-        this.setPrototype(MultiPoint.prototype);
+        this.setPrototype(getOrCreatePrototype(scope, getClass()));
         setGeometry(geometry);
     }
 
@@ -67,7 +68,6 @@ public class MultiPoint extends GeometryCollection implements Wrapper {
     public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) 
     throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
         prototype.setPrototype(getOrCreatePrototype(scope, GeometryCollection.class));
-        MultiPoint.prototype = prototype;
     }
     
 

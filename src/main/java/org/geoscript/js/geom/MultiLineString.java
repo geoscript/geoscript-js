@@ -16,8 +16,6 @@ public class MultiLineString extends GeometryCollection implements Wrapper {
     /** serialVersionUID */
     private static final long serialVersionUID = -4988339189326884593L;
 
-    private static Scriptable prototype;
-    
     public Class<?> restrictedType = LineString.class;
 
     /**
@@ -30,10 +28,13 @@ public class MultiLineString extends GeometryCollection implements Wrapper {
     /**
      * Constructor from JTS geometry.
      * @param geometry
+     * @throws InvocationTargetException 
+     * @throws InstantiationException 
+     * @throws IllegalAccessException 
      */
-    public MultiLineString(Scriptable scope, com.vividsolutions.jts.geom.MultiLineString geometry) {
+    public MultiLineString(Scriptable scope, com.vividsolutions.jts.geom.MultiLineString geometry) throws IllegalAccessException, InstantiationException, InvocationTargetException {
         this.setParentScope(scope);
-        this.setPrototype(MultiLineString.prototype);
+        this.setPrototype(getOrCreatePrototype(scope, getClass()));
         setGeometry(geometry);
     }
 
@@ -67,7 +68,6 @@ public class MultiLineString extends GeometryCollection implements Wrapper {
     public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) 
     throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
         prototype.setPrototype(getOrCreatePrototype(scope, GeometryCollection.class));
-        MultiLineString.prototype = prototype;
     }
     
 

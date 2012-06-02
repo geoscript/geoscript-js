@@ -67,7 +67,8 @@ public class Projection extends GeoObject implements Wrapper {
 
     /**
      * Constructor from GeoTools CRS.
-     * @param geometry
+     * @param scope
+     * @param crs
      */
     public Projection(Scriptable scope, CoordinateReferenceSystem crs) {
         if (prototype == null) {
@@ -172,7 +173,7 @@ public class Projection extends GeoObject implements Wrapper {
         Projection.prototype = prototype;
     }
 
-    public Object unwrap() {
+    public CoordinateReferenceSystem unwrap() {
         return crs;
     }
     

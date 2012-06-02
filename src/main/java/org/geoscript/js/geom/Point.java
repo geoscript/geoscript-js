@@ -20,11 +20,6 @@ public class Point extends Geometry implements Wrapper {
     private static final long serialVersionUID = 8771743870215086281L;
     
     /**
-     * Most recently created prototype generated from a defineClass call.
-     */
-    private static Scriptable prototype = null;
-    
-    /**
      * Prototype constructor.
      * @return 
      */
@@ -34,13 +29,13 @@ public class Point extends Geometry implements Wrapper {
     /**
      * Constructor from JTS geometry.
      * @param geometry
+     * @throws InvocationTargetException 
+     * @throws InstantiationException 
+     * @throws IllegalAccessException 
      */
-    public Point(Scriptable scope, com.vividsolutions.jts.geom.Point geometry) {
-        if (prototype == null) {
-            throw new RuntimeException("Can't wrap geometry prior to defineClass call");
-        }
+    public Point(Scriptable scope, com.vividsolutions.jts.geom.Point geometry) throws IllegalAccessException, InstantiationException, InvocationTargetException {
         this.setParentScope(scope);
-        this.setPrototype(prototype);
+        this.setPrototype(getOrCreatePrototype(scope, getClass()));
         setGeometry(geometry);
     }
     
@@ -70,7 +65,6 @@ public class Point extends Geometry implements Wrapper {
     public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) 
     throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
         prototype.setPrototype(getOrCreatePrototype(scope, Geometry.class));
-        Point.prototype = prototype;
     }
     
     /**
