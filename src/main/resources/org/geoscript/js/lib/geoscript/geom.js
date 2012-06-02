@@ -4,6 +4,7 @@ defineClass(org.geoscript.js.geom.Polygon);
 defineClass(org.geoscript.js.geom.MultiPoint);
 defineClass(org.geoscript.js.geom.MultiLineString);
 defineClass(org.geoscript.js.geom.MultiPolygon);
+defineClass(org.geoscript.js.geom.Bounds);
 
 /** private: classes[] = geometry */
 exports.Geometry = this["org.geoscript.js.geom.Geometry"];
@@ -28,3 +29,6 @@ exports.MultiLineString = this["org.geoscript.js.geom.MultiLineString"];
 
 /** api: classes[] = multipolygon */
 exports.MultiPolygon = this["org.geoscript.js.geom.MultiPolygon"];
+
+/** api: classes[] = bounds */
+exports.Bounds = this["org.geoscript.js.geom.Bounds"];
