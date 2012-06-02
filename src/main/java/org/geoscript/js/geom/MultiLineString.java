@@ -28,11 +28,8 @@ public class MultiLineString extends GeometryCollection implements Wrapper {
     /**
      * Constructor from JTS geometry.
      * @param geometry
-     * @throws InvocationTargetException 
-     * @throws InstantiationException 
-     * @throws IllegalAccessException 
      */
-    public MultiLineString(Scriptable scope, com.vividsolutions.jts.geom.MultiLineString geometry) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+    public MultiLineString(Scriptable scope, com.vividsolutions.jts.geom.MultiLineString geometry) {
         this.setParentScope(scope);
         this.setPrototype(getOrCreatePrototype(scope, getClass()));
         setGeometry(geometry);

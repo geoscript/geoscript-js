@@ -28,11 +28,8 @@ public class LineString extends Geometry implements Wrapper {
     /**
      * Constructor from JTS geometry.
      * @param geometry
-     * @throws InvocationTargetException 
-     * @throws InstantiationException 
-     * @throws IllegalAccessException 
      */
-    public LineString(Scriptable scope, com.vividsolutions.jts.geom.LineString geometry) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+    public LineString(Scriptable scope, com.vividsolutions.jts.geom.LineString geometry) {
         this.setParentScope(scope);
         this.setPrototype(getOrCreatePrototype(scope, getClass()));
         setGeometry(geometry);

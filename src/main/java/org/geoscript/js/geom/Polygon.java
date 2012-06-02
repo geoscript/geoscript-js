@@ -28,11 +28,8 @@ public class Polygon extends Geometry implements Wrapper {
     /**
      * Constructor from JTS geometry.
      * @param geometry
-     * @throws InvocationTargetException 
-     * @throws InstantiationException 
-     * @throws IllegalAccessException 
      */
-    public Polygon(Scriptable scope, com.vividsolutions.jts.geom.Polygon geometry) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+    public Polygon(Scriptable scope, com.vividsolutions.jts.geom.Polygon geometry) {
         this.setParentScope(scope);
         Scriptable prototype = getOrCreatePrototype(scope, getClass());
         this.setPrototype(prototype);

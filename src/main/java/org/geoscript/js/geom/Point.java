@@ -29,11 +29,8 @@ public class Point extends Geometry implements Wrapper {
     /**
      * Constructor from JTS geometry.
      * @param geometry
-     * @throws InvocationTargetException 
-     * @throws InstantiationException 
-     * @throws IllegalAccessException 
      */
-    public Point(Scriptable scope, com.vividsolutions.jts.geom.Point geometry) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+    public Point(Scriptable scope, com.vividsolutions.jts.geom.Point geometry) {
         this.setParentScope(scope);
         this.setPrototype(getOrCreatePrototype(scope, getClass()));
         setGeometry(geometry);

@@ -1,7 +1,5 @@
 package org.geoscript.js;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.NativeJSON;
 import org.mozilla.javascript.Scriptable;
@@ -52,14 +50,15 @@ public class GeoObject extends ScriptableObject implements Wrapper {
      * @param scope
      * @param cls
      * @return
-     * @throws IllegalAccessException
-     * @throws InstantiationException
-     * @throws InvocationTargetException
      */
-    protected static Scriptable getOrCreatePrototype(Scriptable scope, Class<? extends Scriptable> cls) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+    protected static Scriptable getOrCreatePrototype(Scriptable scope, Class<? extends Scriptable> cls) {
         Scriptable prototype = ScriptableObject.getClassPrototype(scope, cls.getName());
         if (prototype == null) {
-            ScriptableObject.defineClass(scope, cls, false, true);
+            try {
+                ScriptableObject.defineClass(scope, cls, false, true);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to defineClass " + cls.getName(), e);
+            }
             prototype = ScriptableObject.getClassPrototype(scope, cls.getName());
         }
         return prototype;

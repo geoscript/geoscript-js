@@ -28,11 +28,8 @@ public class MultiPoint extends GeometryCollection implements Wrapper {
     /**
      * Constructor from JTS geometry.
      * @param geometry
-     * @throws InvocationTargetException 
-     * @throws InstantiationException 
-     * @throws IllegalAccessException 
      */
-    public MultiPoint(Scriptable scope, com.vividsolutions.jts.geom.MultiPoint geometry) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+    public MultiPoint(Scriptable scope, com.vividsolutions.jts.geom.MultiPoint geometry) {
         this.setParentScope(scope);
         this.setPrototype(getOrCreatePrototype(scope, getClass()));
         setGeometry(geometry);

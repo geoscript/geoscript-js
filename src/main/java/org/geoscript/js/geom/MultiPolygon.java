@@ -28,11 +28,8 @@ public class MultiPolygon extends GeometryCollection implements Wrapper {
     /**
      * Constructor from JTS geometry.
      * @param geometry
-     * @throws InvocationTargetException 
-     * @throws InstantiationException 
-     * @throws IllegalAccessException 
      */
-    public MultiPolygon(Scriptable scope, com.vividsolutions.jts.geom.MultiPolygon geometry) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+    public MultiPolygon(Scriptable scope, com.vividsolutions.jts.geom.MultiPolygon geometry) {
         this.setParentScope(scope);
         this.setPrototype(getOrCreatePrototype(scope, getClass()));
         setGeometry(geometry);
