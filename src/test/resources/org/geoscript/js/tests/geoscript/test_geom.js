@@ -129,27 +129,27 @@ exports["test: create(bounds)"] = function() {
     
     // min/max x/y
     b = new GEOM.Bounds({
-        minx: -180, maxx: 180, miny: -90, maxy: 90
+        minX: -180, maxX: 180, minY: -90, maxY: 90
     });
     o = GEOM.create({
-        minx: -180, maxx: 180, miny: -90, maxy: 90
+        minX: -180, maxX: 180, minY: -90, maxY: 90
     });
     ASSERT.ok(o instanceof GEOM.Bounds, "[min/max x/y] bounds created");
     ASSERT.ok(o.equals(b), "[min/max x/y] equivalent to constructor");
 
     // projection
     b = new GEOM.Bounds({
-        minx: -180, maxx: 180, miny: -90, maxy: 90, projection: "epsg:4326"
+        minX: -180, maxX: 180, minY: -90, maxY: 90, projection: "epsg:4326"
     });
     o = GEOM.create({
-        minx: -180, maxx: 180, miny: -90, maxy: 90, projection: "epsg:4326"
+        minX: -180, maxX: 180, minY: -90, maxY: 90, projection: "epsg:4326"
     });
     ASSERT.ok(o instanceof GEOM.Bounds, "[projection] bounds created");
     ASSERT.ok(o.equals(b), "[projection] equivalent to constructor");
 
     // from config
     b = new GEOM.Bounds({
-        minx: -180, maxx: 180, miny: -90, maxy: 90, projection: "epsg:4326"
+        minX: -180, maxX: 180, minY: -90, maxY: 90, projection: "epsg:4326"
     });
     o = GEOM.create(b.config);
     ASSERT.ok(o instanceof GEOM.Bounds, "[config] bounds created");

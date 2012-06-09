@@ -262,8 +262,15 @@ public class Bounds extends GeoObject implements Wrapper {
     @JSGetter
     public Scriptable getConfig() {
         Scriptable obj = super.getConfig();
+        obj.put("minX", obj, getMinX());
+        obj.put("maxX", obj, getMaxX());
+        obj.put("minY", obj, getMinY());
+        obj.put("maxY", obj, getMaxY());
+        Projection projection = getProjection();
+        if (projection != null) {
+            obj.put("projection", obj, projection.getId());
+        }
         return obj;
-        
     }
     
     private Bounds sameProjection(Bounds other) {
