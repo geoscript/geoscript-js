@@ -1,6 +1,5 @@
 package org.geoscript.js.proj;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
 import org.geoscript.js.GeoObject;
@@ -54,6 +53,8 @@ public class Projection extends GeoObject implements Wrapper {
      */
     String wkt;
 
+    static Scriptable prototype;
+
     /**
      * Prototype constructor
      */
@@ -66,8 +67,11 @@ public class Projection extends GeoObject implements Wrapper {
      * @param crs
      */
     public Projection(Scriptable scope, CoordinateReferenceSystem crs) {
+        if (prototype == null) {
+            throw new RuntimeException("Prototype has not yet been set up by calling require('geoscript/proj') from a module");
+        }
         this.setParentScope(scope);
-        this.setPrototype(getOrCreatePrototype(scope, getClass()));
+        this.setPrototype(prototype);
         this.crs = crs;
     }
     
@@ -85,8 +89,11 @@ public class Projection extends GeoObject implements Wrapper {
     
     public Projection(Scriptable scope, String id) {
         this(id);
+        if (prototype == null) {
+            throw new RuntimeException("Prototype has not yet been set up by calling require('geoscript/geom') from a module");
+        }
         this.setParentScope(scope);
-        this.setPrototype(getOrCreatePrototype(scope, getClass()));
+        this.setPrototype(prototype);
     }
     
     /**
@@ -160,14 +167,9 @@ public class Projection extends GeoObject implements Wrapper {
      * @param scope
      * @param ctor
      * @param prototype
-     * @throws NoSuchMethodException
-     * @throws IllegalAccessException
-     * @throws InstantiationException
-     * @throws InvocationTargetException
      */
-    public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) 
-    throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
-        prototype.setPrototype(getOrCreatePrototype(scope, GeoObject.class));
+    public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) {
+        Projection.prototype = prototype;
     }
 
     public CoordinateReferenceSystem unwrap() {

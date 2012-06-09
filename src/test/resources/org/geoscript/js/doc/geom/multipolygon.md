@@ -1,12 +1,7 @@
 MultiPolygon basics:
 
-    js> defineClass(org.geoscript.js.geom.MultiPolygon);
-    js> defineClass(org.geoscript.js.geom.Polygon);
-    js> var MultiPolygon = this["org.geoscript.js.geom.MultiPolygon"];
-    js> var GeometryCollection = this["org.geoscript.js.geom.GeometryCollection"];
-    js> var Geometry = this["org.geoscript.js.geom.Geometry"];
-    js> var Polygon = this["org.geoscript.js.geom.Polygon"];
-    
+    js> var {Geometry, GeometryCollection, MultiPolygon, Polygon} = require("geoscript/geom");
+
     js> var g = new MultiPolygon([[[[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]]]);
     js> g instanceof MultiPolygon
     true

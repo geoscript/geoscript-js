@@ -42,26 +42,4 @@ public class GeoObject extends ScriptableObject implements Wrapper {
         return getClass().getName();
     }
 
-    /**
-     * Retrieve a prototype for the given scriptable class.  If defineClass has
-     * already been called for the given scope, the previously created prototype
-     * will be returned.  If defineClass has not been called for the given,
-     * it will be called and the resulting prototype will be returned.
-     * @param scope
-     * @param cls
-     * @return
-     */
-    protected static Scriptable getOrCreatePrototype(Scriptable scope, Class<? extends Scriptable> cls) {
-        Scriptable prototype = ScriptableObject.getClassPrototype(scope, cls.getName());
-        if (prototype == null) {
-            try {
-                ScriptableObject.defineClass(scope, cls, false, true);
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to defineClass " + cls.getName(), e);
-            }
-            prototype = ScriptableObject.getClassPrototype(scope, cls.getName());
-        }
-        return prototype;
-    }
-
 }

@@ -1,8 +1,6 @@
 Point basics:
 
-    js> defineClass(org.geoscript.js.geom.Point);
-    js> var Point = this["org.geoscript.js.geom.Point"];
-    js> var Geometry = this["org.geoscript.js.geom.Geometry"];
+    js> var {Geometry, Point} = require("geoscript/geom");
 
     js> var p = new Point([1, 2.0, 3e8]);
     js> p instanceof Point

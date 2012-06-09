@@ -1,8 +1,6 @@
 LineString basics:
 
-    js> defineClass(org.geoscript.js.geom.LineString);
-    js> var LineString = this["org.geoscript.js.geom.LineString"];
-    js> var Geometry = this["org.geoscript.js.geom.Geometry"];
+    js> var {Geometry, LineString} = require("geoscript/geom");
 
     js> var l = new LineString([[0, 2.0], [10.0, 2]]);
     js> l instanceof LineString

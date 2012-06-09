@@ -17,6 +17,11 @@ public class Polygon extends Geometry implements Wrapper {
     private static final long serialVersionUID = 2047700235863381036L;
 
     /**
+     * The most recently created prototype.
+     */
+    static Scriptable prototype;
+
+    /**
      * Prototype constructor.
      * @return 
      */
@@ -28,8 +33,10 @@ public class Polygon extends Geometry implements Wrapper {
      * @param geometry
      */
     public Polygon(Scriptable scope, com.vividsolutions.jts.geom.Polygon geometry) {
+        if (prototype == null) {
+            throw new RuntimeException("Prototype has not yet been set up by calling require('geoscript/geom') from a module");
+        }
         this.setParentScope(scope);
-        Scriptable prototype = getOrCreatePrototype(scope, getClass());
         this.setPrototype(prototype);
         setGeometry(geometry);
     }
@@ -59,7 +66,7 @@ public class Polygon extends Geometry implements Wrapper {
      * @param prototype
      */
     public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) {
-        prototype.setPrototype(getOrCreatePrototype(scope, Geometry.class));
+        Polygon.prototype = prototype;
     }
     
 

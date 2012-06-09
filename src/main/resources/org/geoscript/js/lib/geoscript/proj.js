@@ -14,7 +14,7 @@
  */
 
 /** api: classes[] = projection */
-defineClass(Packages.org.geoscript.js.proj.Projection);
+Packages.org.geoscript.js.proj.Module.init(this);
 var Projection = this["org.geoscript.js.proj.Projection"];
 
 /** api: method[transform]

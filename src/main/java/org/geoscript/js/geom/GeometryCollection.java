@@ -14,6 +14,9 @@ public class GeometryCollection extends Geometry implements Wrapper {
     /** serialVersionUID */
     private static final long serialVersionUID = 669981017408451671L;
     
+    /**
+     * The most recently created prototype.
+     */
     private static Scriptable prototype;
     
     public Class<?> restrictedType = null;
@@ -30,8 +33,11 @@ public class GeometryCollection extends Geometry implements Wrapper {
      * @param geometry
      */
     public GeometryCollection(Scriptable scope, com.vividsolutions.jts.geom.GeometryCollection geometry) {
+        if (prototype == null) {
+            throw new RuntimeException("Prototype has not yet been set up by calling require('geoscript/geom') from a module");
+        }
         this.setParentScope(scope);
-        this.setPrototype(GeometryCollection.prototype);
+        this.setPrototype(prototype);
         setGeometry(geometry);
     }
 
@@ -98,8 +104,7 @@ public class GeometryCollection extends Geometry implements Wrapper {
      * @param prototype
      */
     public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) {
-        prototype.setPrototype(getOrCreatePrototype(scope, Geometry.class));
-        GeometryCollection.prototype = prototype;
+        MultiPolygon.prototype = prototype;
     }
     
     /**

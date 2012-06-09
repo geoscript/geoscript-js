@@ -1,12 +1,7 @@
 MultiPoint basics:
 
-    js> defineClass(org.geoscript.js.geom.MultiPoint);
-    js> defineClass(org.geoscript.js.geom.Point);
-    js> var MultiPoint = this["org.geoscript.js.geom.MultiPoint"];
-    js> var GeometryCollection = this["org.geoscript.js.geom.GeometryCollection"];
-    js> var Geometry = this["org.geoscript.js.geom.Geometry"];
-    js> var Point = this["org.geoscript.js.geom.Point"];
-    
+    js> var {Geometry, GeometryCollection, MultiPoint, Point} = require("geoscript/geom");
+
     js> var g = new MultiPoint([[0, 0], [1, 1]]);
     js> g instanceof MultiPoint
     true

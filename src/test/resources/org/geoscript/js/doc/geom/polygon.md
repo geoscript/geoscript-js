@@ -1,8 +1,6 @@
 Polygon basics:
 
-    js> defineClass(org.geoscript.js.geom.Polygon);
-    js> var Polygon = this["org.geoscript.js.geom.Polygon"];
-    js> var Geometry = this["org.geoscript.js.geom.Geometry"];
+    js> var {Geometry, Polygon} = require("geoscript/geom");
 
     js> var g = new Polygon([[[0, 0], [10, 0], [10, 10], [0, 10], [0, 0]]]);
     js> g instanceof Polygon

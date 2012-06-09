@@ -23,7 +23,12 @@ public class Bounds extends GeoObject implements Wrapper {
 
     /** serialVersionUID */
     private static final long serialVersionUID = -4366124351995280764L;
-    
+
+    /**
+     * The most recently created prototype.
+     */
+    static Scriptable prototype;
+
     ReferencedEnvelope refEnv;
 
     /**
@@ -40,7 +45,7 @@ public class Bounds extends GeoObject implements Wrapper {
      */
     public Bounds(Scriptable scope, ReferencedEnvelope refEnv) {
         this.setParentScope(scope);
-        this.setPrototype(getOrCreatePrototype(scope, getClass()));
+        this.setPrototype(prototype);
         this.refEnv = refEnv;
     }
     
@@ -304,7 +309,7 @@ public class Bounds extends GeoObject implements Wrapper {
      * @param prototype
      */
     public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) {
-        prototype.setPrototype(getOrCreatePrototype(scope, GeoObject.class));
+        Bounds.prototype = prototype;
     }
 
     public ReferencedEnvelope unwrap() {

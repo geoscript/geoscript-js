@@ -15,6 +15,11 @@ public class MultiPolygon extends GeometryCollection implements Wrapper {
     /** serialVersionUID */
     private static final long serialVersionUID = 250567051943372945L;
 
+    /**
+     * The most recently created prototype.
+     */
+    static Scriptable prototype;
+
     public Class<?> restrictedType = Polygon.class;
 
     /**
@@ -29,8 +34,11 @@ public class MultiPolygon extends GeometryCollection implements Wrapper {
      * @param geometry
      */
     public MultiPolygon(Scriptable scope, com.vividsolutions.jts.geom.MultiPolygon geometry) {
+        if (prototype == null) {
+            throw new RuntimeException("Prototype has not yet been set up by calling require('geoscript/geom') from a module");
+        }
         this.setParentScope(scope);
-        this.setPrototype(getOrCreatePrototype(scope, getClass()));
+        this.setPrototype(prototype);
         setGeometry(geometry);
     }
 
@@ -58,7 +66,7 @@ public class MultiPolygon extends GeometryCollection implements Wrapper {
      * @param prototype
      */
     public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) {
-        prototype.setPrototype(getOrCreatePrototype(scope, GeometryCollection.class));
+        MultiPolygon.prototype = prototype;
     }
     
 

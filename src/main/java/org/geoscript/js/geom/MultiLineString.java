@@ -15,6 +15,11 @@ public class MultiLineString extends GeometryCollection implements Wrapper {
     /** serialVersionUID */
     private static final long serialVersionUID = -4988339189326884593L;
 
+    /**
+     * The most recently created prototype.
+     */
+    static Scriptable prototype;
+
     public Class<?> restrictedType = LineString.class;
 
     /**
@@ -29,8 +34,11 @@ public class MultiLineString extends GeometryCollection implements Wrapper {
      * @param geometry
      */
     public MultiLineString(Scriptable scope, com.vividsolutions.jts.geom.MultiLineString geometry) {
+        if (prototype == null) {
+            throw new RuntimeException("Prototype has not yet been set up by calling require('geoscript/geom') from a module");
+        }
         this.setParentScope(scope);
-        this.setPrototype(getOrCreatePrototype(scope, getClass()));
+        this.setPrototype(prototype);
         setGeometry(geometry);
     }
 
@@ -58,7 +66,7 @@ public class MultiLineString extends GeometryCollection implements Wrapper {
      * @param prototype
      */
     public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) {
-        prototype.setPrototype(getOrCreatePrototype(scope, GeometryCollection.class));
+        MultiLineString.prototype = prototype;
     }
     
 

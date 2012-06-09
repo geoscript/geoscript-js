@@ -18,6 +18,11 @@ public class Point extends Geometry implements Wrapper {
     private static final long serialVersionUID = 8771743870215086281L;
     
     /**
+     * The most recently created prototype.
+     */
+    static Scriptable prototype;
+    
+    /**
      * Prototype constructor.
      * @return 
      */
@@ -29,8 +34,11 @@ public class Point extends Geometry implements Wrapper {
      * @param geometry
      */
     public Point(Scriptable scope, com.vividsolutions.jts.geom.Point geometry) {
+        if (prototype == null) {
+            throw new RuntimeException("Prototype has not yet been set up by calling require('geoscript/geom') from a module");
+        }
         this.setParentScope(scope);
-        this.setPrototype(getOrCreatePrototype(scope, getClass()));
+        this.setPrototype(prototype);
         setGeometry(geometry);
     }
     
@@ -46,15 +54,14 @@ public class Point extends Geometry implements Wrapper {
     }
     
     /**
-     * Finishes JavaScript constructor initialization.  
-     * Sets up the prototype chain using superclass.
+     * Finishes JavaScript constructor initialization.
      * 
      * @param scope
      * @param ctor
      * @param prototype
      */
     public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) {
-        prototype.setPrototype(getOrCreatePrototype(scope, Geometry.class));
+        Point.prototype = prototype;
     }
     
     /**

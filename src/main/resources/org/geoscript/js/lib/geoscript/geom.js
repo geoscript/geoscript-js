@@ -1,10 +1,5 @@
-defineClass(org.geoscript.js.geom.Point);
-defineClass(org.geoscript.js.geom.LineString);
-defineClass(org.geoscript.js.geom.Polygon);
-defineClass(org.geoscript.js.geom.MultiPoint);
-defineClass(org.geoscript.js.geom.MultiLineString);
-defineClass(org.geoscript.js.geom.MultiPolygon);
-defineClass(org.geoscript.js.geom.Bounds);
+require("geoscript/proj"); // needs to be initialized first
+Packages.org.geoscript.js.geom.Module.init(this);
 
 /** private: classes[] = geometry */
 exports.Geometry = this["org.geoscript.js.geom.Geometry"];
