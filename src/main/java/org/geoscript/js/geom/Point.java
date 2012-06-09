@@ -4,6 +4,7 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.FunctionObject;
 import org.mozilla.javascript.NativeArray;
+import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.Wrapper;
@@ -52,7 +53,7 @@ public class Point extends Geometry implements Wrapper {
         Coordinate coord = arrayToCoord(array);
         setGeometry(factory.createPoint(coord));
     }
-    
+
     /**
      * Finishes JavaScript constructor initialization.
      * 
@@ -78,6 +79,13 @@ public class Point extends Geometry implements Wrapper {
         Object arg = args[0];
         if (arg instanceof NativeArray) {
             point = new Point((NativeArray) arg);
+        } else if (arg instanceof NativeObject) {
+            Object coordObj = ((NativeObject) arg).get("coordinates");
+            if (coordObj instanceof NativeArray) {
+                point = new Point((NativeArray) coordObj);
+            } else {
+                throw ScriptRuntime.constructError("Error", "Config must have coordinates member.");
+            }
         } else {
             throw ScriptRuntime.constructError("Error", "Requires an array of coordinate values.");
         }
@@ -91,6 +99,15 @@ public class Point extends Geometry implements Wrapper {
     @JSGetter
     public Object getX() {
         return ((com.vividsolutions.jts.geom.Point) getGeometry()).getX();
+    }
+
+    /**
+     * Getter for point[0]
+     * @return
+     */
+    @JSGetter
+    public Object get0() {
+        return getX();
     }
 
     /**

@@ -4,6 +4,8 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.FunctionObject;
 import org.mozilla.javascript.NativeArray;
+import org.mozilla.javascript.NativeObject;
+import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSConstructor;
@@ -86,6 +88,15 @@ public class LineString extends Geometry implements Wrapper {
         Object arg = args[0];
         if (arg instanceof NativeArray) {
             line = new LineString((NativeArray) arg);
+        } else if (arg instanceof NativeObject) {
+            Object coordObj = ((NativeObject) arg).get("coordinates");
+            if (coordObj instanceof NativeArray) {
+                line = new LineString((NativeArray) coordObj);
+            } else {
+                throw ScriptRuntime.constructError("Error", "Config must have coordinates member.");
+            }
+        } else {
+            throw ScriptRuntime.constructError("Error", "Invalid arguments");
         }
         return line;
     }

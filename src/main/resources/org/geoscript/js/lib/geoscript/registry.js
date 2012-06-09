@@ -20,6 +20,9 @@ var Registry = UTIL.extend(Object, {
                 if (candidate.type === config.type) {
                     factory = candidate;
                     break;
+                } else if (candidate.type && candidate.type.split(".").pop() === config.type) {
+                    factory = candidate;
+                    break;
                 }
                 if (!factory && candidate.handles(config)) {
                     factory = candidate;
