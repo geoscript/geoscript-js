@@ -21,6 +21,11 @@ MultiPoint basics:
     js> components[1] instanceof Point
     true
     
+    js> g.bounds.width
+    1
+    js> g.bounds.height
+    1
+    
     js> var p0 = new Point([0, 0]);
     js> var p1 = new Point([1, 1]);
     js> var g = new MultiPoint([p0, p1]);

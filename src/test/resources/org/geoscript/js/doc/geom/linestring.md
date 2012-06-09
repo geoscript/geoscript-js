@@ -1,6 +1,6 @@
 LineString basics:
 
-    js> var {Geometry, LineString} = require("geoscript/geom");
+    js> var {Geometry, LineString, Bounds} = require("geoscript/geom");
 
     js> var l = new LineString([[0, 2.0], [10.0, 2]]);
     js> l instanceof LineString
@@ -33,6 +33,14 @@ LineString basics:
     true
     js> l.isValid()
     true
+    
+    js> var bounds = l.bounds
+    js> bounds instanceof Bounds
+    true
+    js> bounds.width
+    10
+    js> bounds.height
+    0
 
     js> var jts = Packages.com.vividsolutions.jts;
     js> var wktReader = new jts.io.WKTReader();

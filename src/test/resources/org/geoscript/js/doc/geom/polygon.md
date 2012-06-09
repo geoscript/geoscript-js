@@ -42,6 +42,11 @@ Polygon basics:
     true
     js> g.isValid()
     true
+    
+    js> g.bounds.width
+    10
+    js> g.bounds.height
+    10
 
     js> var jts = Packages.com.vividsolutions.jts;
     js> var wktReader = new jts.io.WKTReader();

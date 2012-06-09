@@ -8,6 +8,7 @@ import java.util.List;
 import org.geoscript.js.GeoObject;
 import org.geoscript.js.proj.Projection;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.FunctionObject;
@@ -19,9 +20,11 @@ import org.mozilla.javascript.annotations.JSFunction;
 import org.mozilla.javascript.annotations.JSGetter;
 import org.mozilla.javascript.annotations.JSSetter;
 import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
 public class Geometry extends GeoObject implements Wrapper {
@@ -130,6 +133,17 @@ public class Geometry extends GeoObject implements Wrapper {
         }
 
         return nativeMethod;
+    }
+    
+    @JSGetter
+    public Bounds getBounds() {
+        Envelope env = geometry.getEnvelopeInternal();
+        CoordinateReferenceSystem crs = null;
+        if (projection != null) {
+            crs = projection.unwrap();
+        }
+        ReferencedEnvelope refEnv = new ReferencedEnvelope(env, crs);
+        return new Bounds(getParentScope(), refEnv);
     }
     
     @JSFunction

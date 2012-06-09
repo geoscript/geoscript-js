@@ -1,6 +1,6 @@
 Point basics:
 
-    js> var {Geometry, Point} = require("geoscript/geom");
+    js> var {Geometry, Point, Bounds} = require("geoscript/geom");
 
     js> var p = new Point([1, 2.0, 3e8]);
     js> p instanceof Point
@@ -32,6 +32,11 @@ Point basics:
     true
     js> p.isValid()
     true
+    
+    js> var bounds = p.bounds;
+    js> bounds instanceof Bounds
+    true
+    js> // bounds.empty // TODO: check why this is not true
 
     js> var p1 = new Point([1, 2])
     js> var p2 = new Point([2, 1])
