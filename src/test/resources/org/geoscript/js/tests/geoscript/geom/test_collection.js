@@ -3,7 +3,7 @@ var GEOM = require("geoscript/geom");
 
 exports["test: constructor"] = function() {
     
-    var geometry = new GEOM.GeometryCollection();
+    var geometry = new GEOM.GeometryCollection([]);
     ASSERT.ok(geometry instanceof GEOM.Geometry, "collection is geometry");
     ASSERT.ok(geometry instanceof GEOM.GeometryCollection, "correct type");
     
@@ -12,7 +12,7 @@ exports["test: constructor"] = function() {
 exports["test: isEmpty"] = function() {
     
     var geometry = new GEOM.GeometryCollection([]);
-    ASSERT.ok(geometry.empty, "empty collection");
+    ASSERT.strictEqual(geometry.isEmpty(), true, "empty collection");
     
 }
 

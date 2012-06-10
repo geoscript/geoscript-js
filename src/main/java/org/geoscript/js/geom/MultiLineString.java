@@ -11,6 +11,7 @@ import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSConstructor;
+import org.mozilla.javascript.annotations.JSGetter;
 
 public class MultiLineString extends GeometryCollection implements Wrapper {
 
@@ -100,6 +101,25 @@ public class MultiLineString extends GeometryCollection implements Wrapper {
             throw ScriptRuntime.constructError("Error", "Invalid arguments");
         }
         return collection;
+    }
+    
+    @JSGetter
+    public NativeArray getEndPoints() {
+        Context cx = Context.getCurrentContext();
+        if (cx == null) {
+            throw new RuntimeException("No context associated with current thread");
+        }
+        NativeArray components = getComponents();
+        int size = components.size();
+        Scriptable scope = getParentScope();
+        NativeArray array = (NativeArray) cx.newArray(scope, 2*size);
+        for (int i=0; i<size; ++i) {
+            com.vividsolutions.jts.geom.LineString geom = (com.vividsolutions.jts.geom.LineString) components.get(i);
+            LineString line = (LineString) GeometryWrapper.wrap(scope, geom);
+            array.put(2*i, array, line.getStartPoint());
+            array.put((2*i)+1, array, line.getEndPoint());
+        }
+        return array;
     }
 
     /**

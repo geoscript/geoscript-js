@@ -246,10 +246,10 @@ public class Geometry extends GeoObject implements Wrapper {
     }
     
     @JSFunction
-    public Geometry simplify(double tolerance) {
+    public ScriptableObject simplify(double tolerance) {
         com.vividsolutions.jts.geom.Geometry geom = DouglasPeuckerSimplifier.simplify(geometry, tolerance);
-        Geometry simplified = (Geometry) GeometryWrapper.wrap(getProjection(), geom);
-        simplified.projection = projection;
+        ScriptableObject simplified = GeometryWrapper.wrap(getParentScope(), geom);
+        ((Geometry) simplified).projection = projection;
         return simplified;
     }
 
