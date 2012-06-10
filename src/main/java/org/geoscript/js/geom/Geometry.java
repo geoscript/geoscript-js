@@ -252,6 +252,11 @@ public class Geometry extends GeoObject implements Wrapper {
         ((Geometry) simplified).projection = projection;
         return simplified;
     }
+    
+    @JSFunction
+    public String getGeometryType() {
+        return geometry.getGeometryType();
+    }
 
     @JSGetter
     public double getLength() {

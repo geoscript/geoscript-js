@@ -54,7 +54,7 @@ var getType = function(value) {
     var name;
     // deal with geometries
     if (value instanceof GEOM.Geometry) {
-        name = value._geometry.getGeometryType();
+        name = value.getGeometryType();
     } else if (value instanceof Date) {
         name = "Datetime";
     } else {
@@ -126,7 +126,7 @@ var Field = UTIL.extend(GeoObject, {
                 if (!(projection instanceof PROJ.Projection)) {
                     projection = new PROJ.Projection(projection);
                 }
-                builder.setCRS(projection._projection);
+                builder.setCRS(projection);
             }
             builder.setMinOccurs(config.minOccurs || 0);
             builder.setMaxOccurs(config.maxOccurs || 1);
