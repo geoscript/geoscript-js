@@ -9,6 +9,7 @@ import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSConstructor;
+import org.mozilla.javascript.annotations.JSFunction;
 import org.mozilla.javascript.annotations.JSGetter;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -56,6 +57,8 @@ public class LineString extends Geometry implements Wrapper {
             Object item = array.get(i);
             if (item instanceof NativeArray) {
                 coords[i] = arrayToCoord((NativeArray) item);
+            } else if (item instanceof com.vividsolutions.jts.geom.Point) {
+                coords[i] = ((com.vividsolutions.jts.geom.Point) item).getCoordinate();
             }
         }
         setGeometry(factory.createLineString(coords));
@@ -111,6 +114,32 @@ public class LineString extends Geometry implements Wrapper {
     @JSGetter
     public NativeArray getCoordinates() {
         return coordsToArray(getGeometry().getCoordinates());
+    }
+    
+    @JSGetter
+    public Point getEndPoint() {
+        com.vividsolutions.jts.geom.Point end = ((com.vividsolutions.jts.geom.LineString) getGeometry()).getEndPoint();
+        return new Point(getParentScope(), end);
+    }
+
+    @JSGetter
+    public Point getStartPoint() {
+        com.vividsolutions.jts.geom.Point start = ((com.vividsolutions.jts.geom.LineString) getGeometry()).getStartPoint();
+        return new Point(getParentScope(), start);
+    }
+
+    @JSGetter
+    public NativeArray getEndPoints() {
+        Context cx = Context.getCurrentContext();
+        if (cx == null) {
+            throw new RuntimeException("No context associated with current thread");
+        }
+        return (NativeArray) cx.newArray(getParentScope(), new Object[] {getStartPoint(), getEndPoint()});
+    }
+    
+    @JSFunction
+    public LineString reverse() {
+        return (LineString) GeometryWrapper.wrap(getParentScope(), getGeometry().reverse());
     }
 
     /**

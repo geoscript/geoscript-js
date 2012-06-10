@@ -154,6 +154,15 @@ public class Geometry extends GeoObject implements Wrapper {
         return new Bounds(getParentScope(), refEnv);
     }
     
+    @JSGetter
+    public Point getCentroid() {
+        Geometry geom = (Geometry) GeometryWrapper.wrap(getParentScope(), geometry.getCentroid());
+        if (projection != null) {
+            geom.projection = projection;
+        }
+        return (Point) geom;
+    }
+    
     @JSFunction
     public Geometry transform(Object projObj) {
         Projection fromProj = projection;
