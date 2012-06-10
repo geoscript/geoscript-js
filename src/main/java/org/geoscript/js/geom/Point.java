@@ -75,6 +75,9 @@ public class Point extends Geometry implements Wrapper {
      */
     @JSConstructor
     public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
+        if (!inNewExpr) {
+            throw ScriptRuntime.constructError("Error", "Call constructor with new keyword.");
+        }
         Point point = null;
         Object arg = args[0];
         if (arg instanceof NativeArray) {
@@ -126,6 +129,25 @@ public class Point extends Geometry implements Wrapper {
     @JSGetter
     public Object getZ() {
         return getGeometry().getCoordinate().z;
+    }
+    
+    @Override
+    public Object get(int index, Scriptable start) {
+        Object member;
+        switch (index) {
+        case 0:
+            member = getX();
+            break;
+        case 1:
+            member = getY();
+            break;
+        case 2:
+            member = getZ();
+            break;
+        default:
+            member = super.get(index, start);
+        }
+        return member;
     }
     
     /**

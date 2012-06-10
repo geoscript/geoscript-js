@@ -84,6 +84,9 @@ public class LineString extends Geometry implements Wrapper {
      */
     @JSConstructor
     public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
+        if (!inNewExpr) {
+            throw ScriptRuntime.constructError("Error", "Call constructor with new keyword.");
+        }
         LineString line = null;
         Object arg = args[0];
         if (arg instanceof NativeArray) {
