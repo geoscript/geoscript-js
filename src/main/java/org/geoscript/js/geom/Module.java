@@ -24,6 +24,7 @@ public class Module {
         ScriptableObject.defineClass(scope, Point.class, false, true);
         ScriptableObject.defineClass(scope, LineString.class, false, true);
         ScriptableObject.defineClass(scope, Polygon.class, false, true);
+        ScriptableObject.defineClass(scope, GeometryCollection.class, false, true);
         ScriptableObject.defineClass(scope, MultiPoint.class, false, true);
         ScriptableObject.defineClass(scope, MultiLineString.class, false, true);
         ScriptableObject.defineClass(scope, MultiPolygon.class, false, true);

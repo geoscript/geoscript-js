@@ -106,7 +106,7 @@ public class GeometryCollection extends Geometry implements Wrapper {
      * @param prototype
      */
     public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) {
-        MultiPolygon.prototype = prototype;
+        GeometryCollection.prototype = prototype;
     }
     
     /**
