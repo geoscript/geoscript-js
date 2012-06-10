@@ -54,7 +54,7 @@ public class Polygon extends Geometry implements Wrapper {
         int numHoles = array.size() - 1;
         LinearRing[] holes = new LinearRing[numHoles];
         for (int i=0; i<numHoles; ++i) {
-            holes[i] = factory.createLinearRing(arrayToCoords((NativeArray) array.get(i)));
+            holes[i] = factory.createLinearRing(arrayToCoords((NativeArray) array.get(i+1)));
         }
         setGeometry(factory.createPolygon(shell, holes));
     }

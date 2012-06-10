@@ -64,10 +64,10 @@ exports["test: simplify"] = function() {
 
 exports["test: valid"] = function() {
     var poly = new GEOM.Polygon([[[30,10], [10,20], [20,40], [40,40], [30,10]]]);
-    ASSERT.strictEqual(poly.valid, true, "valid");
+    ASSERT.strictEqual(poly.isValid(), true, "valid");
     
     poly = new GEOM.Polygon([[[1,1], [2,1], [1,0], [2,0], [1,1]]]);
-    ASSERT.strictEqual(poly.valid, false, "invalid");
+    ASSERT.strictEqual(poly.isValid(), false, "invalid");
 }
 
 exports["test: bounds"] = function() {
@@ -125,8 +125,9 @@ exports["test: clone"] = function() {
     ASSERT.ok(c instanceof GEOM.Polygon, "clone is polygon");
     ASSERT.ok(c.equals(p), "clone is equivalent to original");
     
+    ASSERT.strictEqual(p.projection, null, "original has no projection");
     c.projection = "EPSG:4326";
-    ASSERT.ok(p.projection === undefined, "modifying clone doesn't modify original");
+    ASSERT.strictEqual(p.projection, null, "modifying clone doesn't modify original");
     
 }
 

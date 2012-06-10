@@ -30,6 +30,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.operation.buffer.BufferOp;
 import com.vividsolutions.jts.operation.buffer.BufferParameters;
+import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 
 public class Geometry extends GeoObject implements Wrapper {
 
@@ -243,6 +244,14 @@ public class Geometry extends GeoObject implements Wrapper {
         }
         return area;
     }
+    
+    @JSFunction
+    public Geometry simplify(double tolerance) {
+        com.vividsolutions.jts.geom.Geometry geom = DouglasPeuckerSimplifier.simplify(geometry, tolerance);
+        Geometry simplified = (Geometry) GeometryWrapper.wrap(getProjection(), geom);
+        simplified.projection = projection;
+        return simplified;
+    }
 
     @JSGetter
     public double getLength() {
@@ -290,7 +299,14 @@ public class Geometry extends GeoObject implements Wrapper {
         int size = array.size();
         Coordinate[] coords = new Coordinate[size];
         for (int i=0; i<size; ++i) {
-            coords[i] = arrayToCoord((NativeArray) array.get(i));
+            Object item = array.get(i);
+            if (item instanceof NativeArray) {
+                coords[i] = arrayToCoord((NativeArray) item);
+            } else if (item instanceof com.vividsolutions.jts.geom.Point) {
+                coords[i] = ((com.vividsolutions.jts.geom.Point) item).getCoordinate();
+            } else {
+                throw new RuntimeException("Must provide array of numbers or array of points");
+            }
         }
         return coords;
     }

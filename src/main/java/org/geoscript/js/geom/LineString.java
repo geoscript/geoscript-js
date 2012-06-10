@@ -51,16 +51,7 @@ public class LineString extends Geometry implements Wrapper {
      * @param array
      */
     public LineString(NativeArray array) {
-        int size = array.size();
-        Coordinate[] coords = new Coordinate[size];
-        for (int i=0; i<size; ++i) {
-            Object item = array.get(i);
-            if (item instanceof NativeArray) {
-                coords[i] = arrayToCoord((NativeArray) item);
-            } else if (item instanceof com.vividsolutions.jts.geom.Point) {
-                coords[i] = ((com.vividsolutions.jts.geom.Point) item).getCoordinate();
-            }
-        }
+        Coordinate[] coords = arrayToCoords(array);
         setGeometry(factory.createLineString(coords));
     }
     
