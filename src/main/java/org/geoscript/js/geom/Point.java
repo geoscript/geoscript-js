@@ -105,15 +105,6 @@ public class Point extends Geometry implements Wrapper {
     }
 
     /**
-     * Getter for point[0]
-     * @return
-     */
-    @JSGetter
-    public Object get0() {
-        return getX();
-    }
-
-    /**
      * Getter for point.y
      * @return
      */
