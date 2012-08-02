@@ -12,6 +12,7 @@ Modules
     :maxdepth: 1
 
     geom
+    geom/io/json
     feature
     filter
     proj

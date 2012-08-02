@@ -2,7 +2,7 @@
 
 ## GeoScript in JavaScript
 
-Copyright (c) 2009-2011 Tim Schaub
+Copyright (c) 2009-2012 Tim Schaub
 
 Released under the MIT license.  Please see the license.txt for full detail.
 
