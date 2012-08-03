@@ -7,9 +7,6 @@ exports["test: constructor"] = function() {
     
     var field;
     
-    field = new FEATURE.Field();
-    ASSERT.ok(field instanceof FEATURE.Field, "correct instance");
-    
     ASSERT.throws(function() {
         field = new FEATURE.Field({name: "foo"});
     }, Error, "type is required");
@@ -19,7 +16,7 @@ exports["test: constructor"] = function() {
     }, Error, "name is required");
 
     ASSERT.throws(function() {
-        field = new FEATURE.Field({type: "foo"});
+        field = new FEATURE.Field({name: "foo", type: "bar"});
     }, Error, "unsupported type throws error");
     
     field = new FEATURE.Field({
@@ -39,19 +36,6 @@ exports["test: constructor"] = function() {
     
 };
 
-exports["test: binding"] = function() {
-    
-    var field;
-    
-    // feature type
-    field = new FEATURE.Field({
-        name: "places",
-        type: "FeatureCollection"
-    });
-    ASSERT.ok(field._field.getType().getBinding() == Packages.org.geotools.feature.FeatureCollection, "FeatureCollection");
-
-}
-
 exports["test: title"] = function() {
     
     var field = new FEATURE.Field({name: "foo", type: "String", title: "Foo"});
@@ -66,21 +50,22 @@ exports["test: description"] = function() {
     
 };
 
-exports["test: fromValue"] = function() {
+exports["test: getTypeName"] = function() {
     
-    var field;
+    var getTypeName = FEATURE.Field.getTypeName;
     
-    field = FEATURE.Field.fromValue("place", "Guatemala");
-    ASSERT.strictEqual(field.name, "place", "correct name");
-    ASSERT.strictEqual(field.type, "String", "correct type");
-
-    field = FEATURE.Field.fromValue("pop", 100);
-    ASSERT.strictEqual(field.name, "pop", "correct name");
-    ASSERT.strictEqual(field.type, "Double", "correct type");
-
-    field = FEATURE.Field.fromValue("loc", new GEOM.Point([1, 2]));
-    ASSERT.strictEqual(field.name, "loc", "correct name");
-    ASSERT.strictEqual(field.type, "Point", "correct type");
+    // valid type mapping
+    ASSERT.strictEqual(getTypeName("Guatemala"), "String", "String type");
+    ASSERT.strictEqual(getTypeName(100), "Integer", "Integer type");
+    ASSERT.strictEqual(getTypeName(1.0), "Double", "Double type");
+    ASSERT.strictEqual(getTypeName(new GEOM.Point([1, 2])), "Point", "point type");
+    
+    // no type mapping
+    ASSERT.strictEqual(getTypeName(null), null, "null");
+    ASSERT.strictEqual(getTypeName([]), null, "Array");
+    ASSERT.strictEqual(getTypeName({}), null, "Object");
+    ASSERT.strictEqual(getTypeName(), null, "undefined");
+    ASSERT.strictEqual(getTypeName(new Date()), null, "Date");
     
 };
 

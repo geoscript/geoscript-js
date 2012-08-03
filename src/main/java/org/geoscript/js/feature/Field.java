@@ -16,6 +16,7 @@ import org.mozilla.javascript.FunctionObject;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSConstructor;
 import org.mozilla.javascript.annotations.JSFunction;
@@ -247,6 +248,26 @@ public class Field extends GeoObject implements Wrapper {
      */
     public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) {
         Field.prototype = prototype;
+        // define any static methods on the constructor
+        ctor.defineFunctionProperties(
+                new String[] {"getTypeName"}, 
+                Field.class,
+                ScriptableObject.DONTENUM);
+    }
+    
+    /**
+     * Determine the string type for a given value.  Defined as a static method 
+     * on the JavaScript constructor.
+     */
+    public static String getTypeName(Object value) {
+        String typeName = null;
+        if (value != null) {
+            if (value instanceof Wrapper) {
+                value = ((Wrapper) value).unwrap();
+            }
+            typeName = Type.getName(value.getClass());
+        }
+        return typeName;
     }
 
 }
