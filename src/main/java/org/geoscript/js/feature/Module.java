@@ -21,7 +21,7 @@ public class Module {
         scope = ScriptableObject.getTopLevelScope(scope);
         
         ScriptableObject.defineClass(scope, Field.class, false, true);
-        
+        ScriptableObject.defineClass(scope, Schema.class, false, true);
     }
 
 

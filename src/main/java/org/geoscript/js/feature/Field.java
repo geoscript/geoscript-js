@@ -88,6 +88,27 @@ public class Field extends GeoObject implements Wrapper {
      */
     public Field() {
     }
+    /**
+     * Constructor from AttributeDescriptor.
+     * @param scope
+     * @param crs
+     */
+    public Field(Scriptable scope, AttributeDescriptor descriptor) {
+        this.setParentScope(scope);
+        this.setPrototype(prototype);
+        this.descriptor = descriptor;
+    }
+
+    /**
+     * Constructor from NativeObject (from Java).
+     * @param scope
+     * @param crs
+     */
+    public Field(Scriptable scope, NativeObject config) {
+        this(config);
+        this.setParentScope(scope);
+        this.setPrototype(prototype);
+    }
 
     private Field(NativeObject config) {
         Object nameObj = config.get("name");
@@ -106,17 +127,19 @@ public class Field extends GeoObject implements Wrapper {
         } catch (IllegalArgumentException e) {
             throw ScriptRuntime.constructError("Error", "Unsupported field type: " + typeName);
         }
+        AttributeTypeBuilder builder = new AttributeTypeBuilder();
+        builder.setName(name);
+        builder.setBinding(type.binding);
+
+        // optional properties
         Object titleObj = config.get("title");
-        if (titleObj instanceof String) {
+        if (nameObj instanceof String) {
             title = (String) titleObj;
         }
-        AttributeTypeBuilder builder = new AttributeTypeBuilder();
-        builder.setName(typeName);
         Object descObj = config.get("description");
         if (descObj instanceof String) {
             builder.setDescription((String) descObj);
         }
-        builder.setBinding(type.binding);
         Object projObj = config.get("projection");
         CoordinateReferenceSystem crs = null;
         if (projObj instanceof CoordinateReferenceSystem) {
