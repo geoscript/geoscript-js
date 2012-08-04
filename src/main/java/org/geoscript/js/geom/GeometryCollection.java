@@ -2,7 +2,6 @@ package org.geoscript.js.geom;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
-import org.mozilla.javascript.FunctionObject;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptRuntime;
@@ -15,11 +14,6 @@ public class GeometryCollection extends Geometry implements Wrapper {
 
     /** serialVersionUID */
     private static final long serialVersionUID = 669981017408451671L;
-    
-    /**
-     * The most recently created prototype.
-     */
-    private static Scriptable prototype;
     
     public Class<?> restrictedType = null;
 
@@ -35,11 +29,8 @@ public class GeometryCollection extends Geometry implements Wrapper {
      * @param geometry
      */
     public GeometryCollection(Scriptable scope, com.vividsolutions.jts.geom.GeometryCollection geometry) {
-        if (prototype == null) {
-            throw new RuntimeException("Prototype has not yet been set up by calling require('geoscript/geom') from a module");
-        }
         this.setParentScope(scope);
-        this.setPrototype(prototype);
+        this.setPrototype(Module.getClassPrototype(GeometryCollection.class));
         setGeometry(geometry);
     }
 
@@ -95,18 +86,6 @@ public class GeometryCollection extends Geometry implements Wrapper {
             obj = ((NativeArray) obj).get(0);
         }
         return dim;
-    }
-    
-    /**
-     * Finishes JavaScript constructor initialization.  
-     * Sets up the prototype chain using superclass.
-     * 
-     * @param scope
-     * @param ctor
-     * @param prototype
-     */
-    public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) {
-        GeometryCollection.prototype = prototype;
     }
     
     /**

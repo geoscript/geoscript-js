@@ -2,7 +2,6 @@ package org.geoscript.js.geom;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
-import org.mozilla.javascript.FunctionObject;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptRuntime;
@@ -19,11 +18,6 @@ public class Polygon extends Geometry implements Wrapper {
     private static final long serialVersionUID = 2047700235863381036L;
 
     /**
-     * The most recently created prototype.
-     */
-    static Scriptable prototype;
-
-    /**
      * Prototype constructor.
      * @return 
      */
@@ -35,11 +29,8 @@ public class Polygon extends Geometry implements Wrapper {
      * @param geometry
      */
     public Polygon(Scriptable scope, com.vividsolutions.jts.geom.Polygon geometry) {
-        if (prototype == null) {
-            throw new RuntimeException("Prototype has not yet been set up by calling require('geoscript/geom') from a module");
-        }
         this.setParentScope(scope);
-        this.setPrototype(prototype);
+        this.setPrototype(Module.getClassPrototype(Polygon.class));
         setGeometry(geometry);
     }
 
@@ -59,19 +50,6 @@ public class Polygon extends Geometry implements Wrapper {
         setGeometry(factory.createPolygon(shell, holes));
     }
     
-    /**
-     * Finishes JavaScript constructor initialization.  
-     * Sets up the prototype chain using superclass.
-     * 
-     * @param scope
-     * @param ctor
-     * @param prototype
-     */
-    public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) {
-        Polygon.prototype = prototype;
-    }
-    
-
     /**
      * JavaScript constructor.
      * @param cx

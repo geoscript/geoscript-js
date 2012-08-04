@@ -79,8 +79,6 @@ public class Field extends GeoObject implements Wrapper {
      */
     private String title;
 
-    static Scriptable prototype;
-
     private AttributeDescriptor descriptor;
     
     /**
@@ -95,7 +93,7 @@ public class Field extends GeoObject implements Wrapper {
      */
     public Field(Scriptable scope, AttributeDescriptor descriptor) {
         this.setParentScope(scope);
-        this.setPrototype(prototype);
+        this.setPrototype(Module.getClassPrototype(Field.class));
         this.descriptor = descriptor;
     }
 
@@ -107,7 +105,7 @@ public class Field extends GeoObject implements Wrapper {
     public Field(Scriptable scope, NativeObject config) {
         this(config);
         this.setParentScope(scope);
-        this.setPrototype(prototype);
+        this.setPrototype(Module.getClassPrototype(Field.class));
     }
 
     private Field(NativeObject config) {
@@ -270,7 +268,6 @@ public class Field extends GeoObject implements Wrapper {
      * @param prototype
      */
     public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) {
-        Field.prototype = prototype;
         // define any static methods on the constructor
         ctor.defineFunctionProperties(
                 new String[] {"getTypeName"}, 

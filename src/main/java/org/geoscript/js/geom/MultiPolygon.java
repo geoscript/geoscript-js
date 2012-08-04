@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
-import org.mozilla.javascript.FunctionObject;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptRuntime;
@@ -16,11 +15,6 @@ public class MultiPolygon extends GeometryCollection implements Wrapper {
 
     /** serialVersionUID */
     private static final long serialVersionUID = 250567051943372945L;
-
-    /**
-     * The most recently created prototype.
-     */
-    static Scriptable prototype;
 
     public Class<?> restrictedType = Polygon.class;
 
@@ -36,11 +30,8 @@ public class MultiPolygon extends GeometryCollection implements Wrapper {
      * @param geometry
      */
     public MultiPolygon(Scriptable scope, com.vividsolutions.jts.geom.MultiPolygon geometry) {
-        if (prototype == null) {
-            throw new RuntimeException("Prototype has not yet been set up by calling require('geoscript/geom') from a module");
-        }
         this.setParentScope(scope);
-        this.setPrototype(prototype);
+        this.setPrototype(Module.getClassPrototype(MultiPolygon.class));
         setGeometry(geometry);
     }
 
@@ -58,19 +49,6 @@ public class MultiPolygon extends GeometryCollection implements Wrapper {
         com.vividsolutions.jts.geom.Polygon[] polys = Arrays.copyOf(geometries, geometries.length, com.vividsolutions.jts.geom.Polygon[].class);
         return new com.vividsolutions.jts.geom.MultiPolygon(polys, factory);
     }
-
-    /**
-     * Finishes JavaScript constructor initialization.  
-     * Sets up the prototype chain using superclass.
-     * 
-     * @param scope
-     * @param ctor
-     * @param prototype
-     */
-    public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) {
-        MultiPolygon.prototype = prototype;
-    }
-    
 
     /**
      * JavaScript constructor.

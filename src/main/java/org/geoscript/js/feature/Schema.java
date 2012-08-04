@@ -7,7 +7,6 @@ import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
-import org.mozilla.javascript.FunctionObject;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptRuntime;
@@ -25,10 +24,7 @@ public class Schema extends GeoObject implements Wrapper {
 
     /** serialVersionUID */
     private static final long serialVersionUID = -1823488566532338763L;
-    
 
-    static Scriptable prototype;
-    
     private SimpleFeatureType featureType;
     
     /**
@@ -163,19 +159,6 @@ public class Schema extends GeoObject implements Wrapper {
 
     public Object unwrap() {
         return featureType;
-    }
-    
-
-    /**
-     * Finishes JavaScript constructor initialization.
-     * Sets up the prototype chain using superclass.
-     * 
-     * @param scope
-     * @param ctor
-     * @param prototype
-     */
-    public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) {
-        Schema.prototype = prototype;
     }
 
 }

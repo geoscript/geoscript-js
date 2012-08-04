@@ -37,6 +37,14 @@ Point basics:
     js> bounds instanceof Bounds
     true
     js> // bounds.empty // TODO: check why this is not true
+    
+    js> p.projection = "epsg:4326"
+    epsg:4326
+    js> var Projection = require("geoscript/proj").Projection;
+    js> p.projection instanceof Projection
+    true
+    js> p.projection.id
+    EPSG:4326
 
     js> var p1 = new Point([1, 2])
     js> var p2 = new Point([2, 1])

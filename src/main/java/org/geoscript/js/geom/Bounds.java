@@ -5,7 +5,6 @@ import org.geoscript.js.proj.Projection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
-import org.mozilla.javascript.FunctionObject;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptRuntime;
@@ -24,11 +23,6 @@ public class Bounds extends GeoObject implements Wrapper {
     /** serialVersionUID */
     private static final long serialVersionUID = -4366124351995280764L;
 
-    /**
-     * The most recently created prototype.
-     */
-    static Scriptable prototype;
-
     ReferencedEnvelope refEnv;
 
     /**
@@ -45,7 +39,7 @@ public class Bounds extends GeoObject implements Wrapper {
      */
     public Bounds(Scriptable scope, ReferencedEnvelope refEnv) {
         this.setParentScope(scope);
-        this.setPrototype(prototype);
+        this.setPrototype(Module.getClassPrototype(Bounds.class));
         this.refEnv = refEnv;
     }
     
@@ -304,19 +298,6 @@ public class Bounds extends GeoObject implements Wrapper {
             throw ScriptRuntime.constructError("Error", "Requires a object or array.");
         }
         return bounds;
-    }
-    
-
-    /**
-     * Finishes JavaScript constructor initialization.  
-     * Sets up the prototype chain using superclass.
-     * 
-     * @param scope
-     * @param ctor
-     * @param prototype
-     */
-    public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) {
-        Bounds.prototype = prototype;
     }
 
     public ReferencedEnvelope unwrap() {

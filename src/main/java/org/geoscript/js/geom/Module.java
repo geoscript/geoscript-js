@@ -1,11 +1,17 @@
 package org.geoscript.js.geom;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
+import org.geoscript.js.GeoObject;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 
 public class Module {
+
+    static HashMap<String, Scriptable> prototypes;
 
     /**
      * Define all geometry constructors in the given module scope.  If the 
@@ -19,17 +25,29 @@ public class Module {
     public static void init(Scriptable scope) throws IllegalAccessException, InstantiationException, InvocationTargetException {
         
         scope = ScriptableObject.getTopLevelScope(scope);
+
+        @SuppressWarnings("unchecked")
+        List<Class<? extends GeoObject>> classes = Arrays.asList(
+                Geometry.class, Point.class, LineString.class,
+                Polygon.class, GeometryCollection.class, MultiPoint.class,
+                MultiLineString.class, MultiPolygon.class, Bounds.class);
         
-        ScriptableObject.defineClass(scope, Geometry.class, false, true);
-        ScriptableObject.defineClass(scope, Point.class, false, true);
-        ScriptableObject.defineClass(scope, LineString.class, false, true);
-        ScriptableObject.defineClass(scope, Polygon.class, false, true);
-        ScriptableObject.defineClass(scope, GeometryCollection.class, false, true);
-        ScriptableObject.defineClass(scope, MultiPoint.class, false, true);
-        ScriptableObject.defineClass(scope, MultiLineString.class, false, true);
-        ScriptableObject.defineClass(scope, MultiPolygon.class, false, true);
-        ScriptableObject.defineClass(scope, Bounds.class, false, true);
-        
+        prototypes = new HashMap<String, Scriptable>();
+        for (Class<? extends GeoObject> cls : classes) {
+            String name = ScriptableObject.defineClass(scope, cls, false, true);
+            Scriptable prototype = ScriptableObject.getClassPrototype(scope, name);
+            prototypes.put(name, prototype);
+        }
+
+    }
+    
+    protected static Scriptable getClassPrototype(Class<? extends GeoObject> cls) {
+        String name = cls.getName();
+        if (prototypes == null || !prototypes.containsKey(name)) {
+            throw new RuntimeException(
+                    "Attempt to access prototype before requiring module: " + name);
+        }
+        return prototypes.get(name);
     }
 
 }

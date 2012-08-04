@@ -2,7 +2,6 @@ package org.geoscript.js.geom;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
-import org.mozilla.javascript.FunctionObject;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptRuntime;
@@ -20,11 +19,6 @@ public class LineString extends Geometry implements Wrapper {
     private static final long serialVersionUID = -5048539260091857410L;
 
     /**
-     * The most recently created prototype.
-     */
-    static Scriptable prototype;
-
-    /**
      * Prototype constructor.
      * @return 
      */
@@ -36,11 +30,8 @@ public class LineString extends Geometry implements Wrapper {
      * @param geometry
      */
     public LineString(Scriptable scope, com.vividsolutions.jts.geom.LineString geometry) {
-        if (prototype == null) {
-            throw new RuntimeException("Prototype has not yet been set up by calling require('geoscript/geom') from a module");
-        }
         this.setParentScope(scope);
-        this.setPrototype(prototype);
+        this.setPrototype(Module.getClassPrototype(LineString.class));
         setGeometry(geometry);
     }
 
@@ -55,19 +46,6 @@ public class LineString extends Geometry implements Wrapper {
         setGeometry(factory.createLineString(coords));
     }
     
-    /**
-     * Finishes JavaScript constructor initialization.  
-     * Sets up the prototype chain using superclass.
-     * 
-     * @param scope
-     * @param ctor
-     * @param prototype
-     */
-    public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) {
-        LineString.prototype = prototype;
-    }
-    
-
     /**
      * JavaScript constructor.
      * @param cx

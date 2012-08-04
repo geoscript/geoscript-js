@@ -8,7 +8,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
-import org.mozilla.javascript.FunctionObject;
 import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.Wrapper;
@@ -53,8 +52,6 @@ public class Projection extends GeoObject implements Wrapper {
      */
     String wkt;
 
-    static Scriptable prototype;
-
     /**
      * Prototype constructor
      */
@@ -67,11 +64,8 @@ public class Projection extends GeoObject implements Wrapper {
      * @param crs
      */
     public Projection(Scriptable scope, CoordinateReferenceSystem crs) {
-        if (prototype == null) {
-            throw new RuntimeException("Prototype has not yet been set up by calling require('geoscript/proj') from a module");
-        }
         this.setParentScope(scope);
-        this.setPrototype(prototype);
+        this.setPrototype(Module.getClassPrototype(Projection.class));
         this.crs = crs;
     }
     
@@ -89,11 +83,8 @@ public class Projection extends GeoObject implements Wrapper {
     
     public Projection(Scriptable scope, String id) {
         this(id);
-        if (prototype == null) {
-            throw new RuntimeException("Prototype has not yet been set up by calling require('geoscript/geom') from a module");
-        }
         this.setParentScope(scope);
-        this.setPrototype(prototype);
+        this.setPrototype(Module.getClassPrototype(Projection.class));
     }
     
     /**
@@ -158,18 +149,6 @@ public class Projection extends GeoObject implements Wrapper {
         Scriptable obj = super.getConfig();
         obj.put("id", obj, getId());
         return obj;
-    }
-    
-    /**
-     * Finishes JavaScript constructor initialization.  
-     * Sets up the prototype chain using superclass.
-     * 
-     * @param scope
-     * @param ctor
-     * @param prototype
-     */
-    public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) {
-        Projection.prototype = prototype;
     }
 
     public CoordinateReferenceSystem unwrap() {
