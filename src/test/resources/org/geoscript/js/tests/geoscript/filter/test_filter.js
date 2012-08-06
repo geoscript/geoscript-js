@@ -19,21 +19,21 @@ exports["test Filter.cql"] = function() {
 
 exports["test Filter.evaluate"] = function() {
     
-    var chicken = new Feature({values: {
+    var chicken = new Feature({properties: {
         type: "fowl",
         flies: 0,
         makes: "soup",
         price: 3
     }});
     
-    var dog = new Feature({values: {
+    var dog = new Feature({properties: {
         type: "pet",
         flies: 0,
         makes: "noise",
         cost: 50
     }});
     
-    var parakeet = new Feature({values: {
+    var parakeet = new Feature({properties: {
         type: "pet",
         flies: 1,
         makes: "noise",

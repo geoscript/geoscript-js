@@ -29,7 +29,7 @@ exports["test where"] = function() {
     var f = FILTER.where("name = 'foo'");
     ASSERT.ok(f instanceof FILTER.Filter);
     
-    var bar = new Feature({values: {name: "foo"}});
+    var bar = new Feature({properties: {name: "foo"}});
     ASSERT.isTrue(f.evaluate(bar), "bar passed");
     
     f = FILTER.where("WITHIN", "the_geom", "POINT(1 1)");
@@ -45,10 +45,10 @@ exports["test create"] = function() {
     var f = FILTER.create("name = 'foo'");
     ASSERT.ok(f instanceof FILTER.Filter);
     
-    var bar = new Feature({values: {name: "foo"}});
+    var bar = new Feature({properties: {name: "foo"}});
     ASSERT.isTrue(f.evaluate(bar), "bar passed");
     
-    var baz = new Feature({values: {name: "baz"}});
+    var baz = new Feature({properties: {name: "baz"}});
     ASSERT.isFalse(f.evaluate(baz), "baz didn't pass");
     
     ASSERT.throws(function() {

@@ -67,7 +67,7 @@ var Filter = exports.Filter = UTIL.extend(GeoObject, {
      *  Determine whether a feature matches the constraints of the filter.
      */
     evaluate: function(feature) {
-        return Boolean(this._filter.evaluate(feature._feature));
+        return Boolean(this._filter.evaluate(feature));
     },
     
     /** api: property[not]
