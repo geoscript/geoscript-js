@@ -65,7 +65,7 @@ exports["test: getTypeName"] = function() {
     ASSERT.strictEqual(getTypeName([]), null, "Array");
     ASSERT.strictEqual(getTypeName({}), null, "Object");
     ASSERT.strictEqual(getTypeName(), null, "undefined");
-    ASSERT.strictEqual(getTypeName(new Date()), null, "Date");
+    ASSERT.strictEqual(getTypeName(new Date()), "Datetime", "Date");
     
 };
 

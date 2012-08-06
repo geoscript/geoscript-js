@@ -7,6 +7,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 
 import org.geoscript.js.GeoObject;
+import org.geoscript.js.GeoScriptShell;
 import org.geoscript.js.proj.Projection;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.FeatureCollection;
@@ -131,7 +132,7 @@ public class Field extends GeoObject implements Wrapper {
 
         // optional properties
         Object titleObj = config.get("title");
-        if (nameObj instanceof String) {
+        if (titleObj instanceof String) {
             title = (String) titleObj;
         }
         Object descObj = config.get("description");
@@ -280,14 +281,13 @@ public class Field extends GeoObject implements Wrapper {
      * on the JavaScript constructor.
      */
     public static String getTypeName(Object value) {
+        value = GeoScriptShell.jsToJava(value);
         String typeName = null;
         if (value != null) {
-            if (value instanceof Wrapper) {
-                value = ((Wrapper) value).unwrap();
-            }
             typeName = Type.getName(value.getClass());
         }
         return typeName;
     }
+
 
 }
