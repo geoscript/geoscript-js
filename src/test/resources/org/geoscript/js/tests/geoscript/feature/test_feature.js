@@ -4,26 +4,26 @@ var FEATURE = require("geoscript/feature");
 
 exports["test: constructor"] = function() {
     
-    var values = {
+    var properties = {
         name: "Some Location",
         location: new GEOM.Point([1, 2]),
         population: 100
     };
     
-    var f = new FEATURE.Feature({values: values});
+    var f = new FEATURE.Feature({properties: properties});
     
     ASSERT.ok(f instanceof FEATURE.Feature, "feature created");
-    ASSERT.strictEqual(f.get("name"), values.name, "correct name value");
-    ASSERT.strictEqual(f.get("population"), values.population, "correct population value");    
-    ASSERT.strictEqual(f.get("location"), values.location, "correct location value using get");
-    ASSERT.strictEqual(f.geometry, values.location, "correct location value using geometry");
+    ASSERT.strictEqual(f.get("name"), properties.name, "correct name value");
+    ASSERT.strictEqual(f.get("population"), properties.population, "correct population value");    
+    ASSERT.strictEqual(f.get("location"), properties.location, "correct location value using get");
+    ASSERT.strictEqual(f.geometry, properties.location, "correct location value using geometry");
     
     ASSERT.throws(function() {
         var f = new FEATURE.Feature({
             schema: [{name: "foo", type: "String"}],
-            values: {bar: "bad field"}
+            properties: {bar: "bad field"}
         });
-    }, Error, "values mistmatch with schema");
+    }, Error, "property name mistmatch with schema");
     
 };
 
@@ -31,7 +31,7 @@ exports["test: get"] = function() {
 
     var now = new Date();
 
-    var values = {
+    var properties = {
         name: "Some Location",
         location: new GEOM.Point([1, 2]),
         population: 100,
@@ -39,16 +39,14 @@ exports["test: get"] = function() {
         legit: true
     };
     
-    var f = new FEATURE.Feature({values: values});
+    var f = new FEATURE.Feature({properties: properties});
     
     ASSERT.strictEqual(typeof f.get("name"), "string", "correct name type");
     ASSERT.strictEqual(f.get("name"), "Some Location", "correct name value");
     ASSERT.strictEqual(f.get("population"), 100, "correct population value");
     ASSERT.ok(f.get("time") instanceof Date, "time is date");
     ASSERT.strictEqual(f.get("time").getTime(), now.getTime(), "correct time");
-    var _value = f._feature.getAttribute("time");
-    ASSERT.ok(_value instanceof java.util.Date, "underlying time attribute is java.util.Date");
-    
+
     ASSERT.strictEqual(f.get("legit"), true, "correct legit value");
     
     f.set("population", 0);
@@ -65,7 +63,7 @@ exports["test: set"] = function() {
     
     var now = new Date();
 
-    var values = {
+    var properties = {
         name: "Some Location",
         location: new GEOM.Point([1, 2]),
         population: 100,
@@ -73,7 +71,7 @@ exports["test: set"] = function() {
         legit: false
     };
     
-    var f = new FEATURE.Feature({values: values});
+    var f = new FEATURE.Feature({properties: properties});
     
     f.set("name", "New Name");
     ASSERT.strictEqual(f.get("name"), "New Name", "correct new name value");
@@ -96,9 +94,6 @@ exports["test: set"] = function() {
     ASSERT.ok(f.get("time") instanceof Date, "time set to a date");
     ASSERT.strictEqual(f.get("time").getTime(), later.getTime(), "time set correctly");
     
-    var _value = f._feature.getAttribute("time");
-    ASSERT.ok(_value instanceof java.util.Date, "underlying time attribute is java.util.Date");
-    
     f.set("legit", true);
     ASSERT.strictEqual(f.get("legit"), true, "set legit true");
     f.set("legit", false);
@@ -120,7 +115,7 @@ exports["test: bounds"] = function() {
     
     // test no geometry
     f = new FEATURE.Feature({schema: schema});
-    ASSERT.strictEqual(f.bounds, undefined, "undefined for no geometry");
+    ASSERT.strictEqual(f.bounds, null, "null for no geometry");
     
     // test point
     g = new GEOM.Point([1, 2]);
@@ -136,13 +131,13 @@ exports["test: bounds"] = function() {
 
 exports["test: json"] = function() {
 
-    var values = {
+    var properties = {
         name: "Some Location",
         location: new GEOM.Point([1, 2]),
         population: 100
     };
     
-    var f = new FEATURE.Feature({values: values});
+    var f = new FEATURE.Feature({properties: properties});
     
     var json = f.json;
     var obj, msg;
@@ -154,8 +149,8 @@ exports["test: json"] = function() {
     if (obj) {
         ASSERT.strictEqual(obj.type, "Feature", "correct type");
         var props = {
-            name: values.name,
-            population: values.population
+            name: properties.name,
+            population: properties.population
         };
         ASSERT.deepEqual(obj.properties, props, "correct properties");
         var g = obj.geometry;
@@ -172,13 +167,13 @@ exports["test: clone"] = function() {
     var point = new GEOM.Point([1, 2]);
     point.projection = "EPSG:4326";
     
-    var values = {
+    var properties = {
         name: "Some Location",
         location: point,
         population: 100
     };
     
-    var f = new FEATURE.Feature({values: values});
+    var f = new FEATURE.Feature({properties: properties});
     var c = f.clone();
     
     ASSERT.ok(c instanceof FEATURE.Feature, "clone is feature");
@@ -189,7 +184,7 @@ exports["test: clone"] = function() {
     ASSERT.strictEqual(f.get("population"), 100, "original is unmodified");
     
     var c2 = f.clone({
-        values: {population: 200}
+        properties: {population: 200}
     });
     ASSERT.strictEqual(c2.get("population"), 200, "clone extended with value from config");
     
@@ -221,27 +216,16 @@ exports["test: schema"] = function() {
             ]
         }
     });
-    
-    function assertCorrectBinding(name, type) {
-        var field = f.schema.get(name);
-        ASSERT.strictEqual(field._field.getType().getBinding(), type, "binding for " + name);
-    }
-    
-    assertCorrectBinding("dateField", java.sql.Date);
-    assertCorrectBinding("timeField", java.sql.Time);
-    assertCorrectBinding("datetimeField", java.util.Date);
-    assertCorrectBinding("timestampField", java.sql.Timestamp);
-    assertCorrectBinding("bigDecField", java.math.BigDecimal);
-    assertCorrectBinding("uriField", java.net.URI);
+
     
     f.set("dateField", new Date());
-    ASSERT.ok(f._feature.getAttribute("dateField") instanceof java.sql.Date, "date cast to java.sql.Date");
+    ASSERT.ok(f.get("dateField") instanceof Date, "java.sql.Date");
     f.set("timeField", new Date());
-    ASSERT.ok(f._feature.getAttribute("timeField") instanceof java.sql.Time, "date cast to java.sql.Time");
+    ASSERT.ok(f.get("timeField") instanceof Date, "java.sql.Time");
     f.set("datetimeField", new Date());
-    ASSERT.ok(f._feature.getAttribute("datetimeField") instanceof java.util.Date, "date cast to java.util.Date");
+    ASSERT.ok(f.get("datetimeField") instanceof Date, "java.util.Date");
     f.set("timestampField", new Date());
-    ASSERT.ok(f._feature.getAttribute("timestampField") instanceof java.sql.Timestamp, "date cast to java.sql.Timestamp");
+    ASSERT.ok(f.get("timestampField") instanceof Date, "java.sql.Timestamp");
     
     function assertNull(name) {
         f.set(name, null);

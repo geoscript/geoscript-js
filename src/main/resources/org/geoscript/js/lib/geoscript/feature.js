@@ -1,4 +1,5 @@
-require("./proj"); // needs to be initialized first
+var Geometry = require("./geom").Geometry; // needs to be initialized first
+
 // define all feature classes
 Packages.org.geoscript.js.feature.Module.init(this);
 
@@ -18,7 +19,59 @@ Packages.org.geoscript.js.feature.Module.init(this);
  */
 
 /** api: classes[] = feature */
-exports.Feature = require("./feature/feature").Feature;
+var Feature = exports.Feature = this["org.geoscript.js.feature.Feature"];
+
+/** api: method[clone]
+ *  :returns: :class:`feature.Feature`
+ *
+ *  Create a clone of this feature.
+ */
+Feature.prototype.clone = function(config) {
+    config = config || {};
+
+    var schema;
+    if (config.schema) {
+        if (config.schema instanceof Schema) {
+            schema = config.schema;
+        } else {
+            schema = new Schema(config.schema);
+        }
+    } else {
+        schema = this.schema.clone();
+    }
+
+    var properties = {};
+    var names = schema.fieldNames;
+    if (config.properties) {
+        for (var name in config.properties) {
+            if (names.indexOf(name) > -1) {
+                properties[name] = config.properties[name];
+            }
+        }
+    }
+    for (var name in this.properties) {
+        if (!(name in properties) && names.indexOf(name) > -1) {
+            properties[name] = this.get(name);
+        }
+    }
+
+    var feature = new Feature({
+        schema: schema,
+        properties: properties
+    });
+
+    // ensure all geometries are clones
+    var value;
+    for (var name in feature.properties) {
+        value = feature.get(name);
+        if (value instanceof Geometry) {
+            feature.set(name, value.clone());
+        }
+    }
+
+    return feature;
+};
+
 
 /** api: classes[] = field */
 var Field = exports.Field = this["org.geoscript.js.feature.Field"];
