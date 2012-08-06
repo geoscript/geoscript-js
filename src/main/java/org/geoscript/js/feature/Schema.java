@@ -32,7 +32,22 @@ public class Schema extends GeoObject implements Wrapper {
      */
     public Schema() {
     }
+    
+    /**
+     * Constructor from NativeObject (from Java).
+     * @param scope
+     * @param config
+     */
+    public Schema(Scriptable scope, NativeObject config) {
+        this(config);
+        this.setParentScope(scope);
+        this.setPrototype(Module.getClassPrototype(Schema.class));
+    }
 
+    /**
+     * Constructor from NativeObject (from JavaScript).
+     * @param config
+     */
     private Schema(NativeObject config) {
         Object fieldsObj = config.get("fields");
         if (!(fieldsObj instanceof NativeArray)) {
@@ -159,6 +174,24 @@ public class Schema extends GeoObject implements Wrapper {
 
     public Object unwrap() {
         return featureType;
+    }
+    
+    public static Schema fromValues(Scriptable scope, NativeObject values) {
+        Context cx = Context.getCurrentContext();
+        Object[] names = values.getIds();
+        NativeObject schemaConfig = (NativeObject) cx.newObject(scope);
+        NativeArray fields = (NativeArray) cx.newArray(scope, names.length);
+        for (int i=0; i<names.length; ++i) {
+            String name = (String) names[i];
+            String typeName = Field.getTypeName(values.get(name));
+            NativeObject fieldConfig = (NativeObject) cx.newObject(scope);
+            fieldConfig.put("name", name);
+            fieldConfig.put("type", typeName);
+            Field field = new Field(scope, fieldConfig);
+            fields.add(i, field);
+        }
+        schemaConfig.put("fields", fields);
+        return new Schema(scope, schemaConfig);
     }
 
 }

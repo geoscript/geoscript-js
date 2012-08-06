@@ -100,7 +100,7 @@ public class Field extends GeoObject implements Wrapper {
     /**
      * Constructor from NativeObject (from Java).
      * @param scope
-     * @param crs
+     * @param config
      */
     public Field(Scriptable scope, NativeObject config) {
         this(config);
