@@ -226,12 +226,14 @@ public class Geometry extends GeoObject implements Wrapper {
     @JSSetter
     public void setProjection(Object projObj) {
         Projection projection = null;
-        if (projObj instanceof Projection) {
-            projection = (Projection) projObj;
-        } else if (projObj instanceof String) {
-            projection = new Projection(getParentScope(), (String) projObj);
-        } else {
-            throw new RuntimeException("Set projection with Projection object or string identifier.");
+        if (projObj != null) {
+            if (projObj instanceof Projection) {
+                projection = (Projection) projObj;
+            } else if (projObj instanceof String) {
+                projection = new Projection(getParentScope(), (String) projObj);
+            } else {
+                throw new RuntimeException("Set projection with Projection object or string identifier.");
+            }
         }
         this.projection = projection;
     }
