@@ -3,6 +3,7 @@ package org.geoscript.js.feature;
 import java.util.List;
 
 import org.geoscript.js.GeoObject;
+import org.geoscript.js.GeoScriptShell;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.mozilla.javascript.Context;
@@ -11,6 +12,7 @@ import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSConstructor;
 import org.mozilla.javascript.annotations.JSFunction;
@@ -34,12 +36,23 @@ public class Schema extends GeoObject implements Wrapper {
     }
     
     /**
-     * Constructor from NativeObject (from Java).
+     * Constructor from Scriptable (from Java).
      * @param scope
      * @param config
      */
-    public Schema(Scriptable scope, NativeObject config) {
-        this(config);
+    public Schema(Scriptable scope, Scriptable config) {
+        this(prepConfig(config));
+        this.setParentScope(scope);
+        this.setPrototype(Module.getClassPrototype(Schema.class));
+    }
+
+    /**
+     * Constructor from FeatureType (from Java).
+     * @param scope
+     * @param featureType
+     */
+    public Schema(Scriptable scope, SimpleFeatureType featureType) {
+        this.featureType = featureType;
         this.setParentScope(scope);
         this.setPrototype(Module.getClassPrototype(Schema.class));
     }
@@ -80,7 +93,22 @@ public class Schema extends GeoObject implements Wrapper {
         }
         featureType = builder.buildFeatureType();
     }
-    
+
+    @JSConstructor
+    public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
+        if (!inNewExpr) {
+            throw ScriptRuntime.constructError("Error", "Call constructor with new keyword.");
+        }
+        Schema schema = null;
+        Object arg = args[0];
+        if (arg instanceof NativeObject) {
+            schema = new Schema((NativeObject) arg);
+        } else if (arg instanceof NativeArray) {
+            schema = new Schema(prepConfig((NativeArray) arg));
+        }
+        return schema;
+    }
+
     @JSGetter
     public String getName() {
         return featureType.getName().getLocalPart();
@@ -159,39 +187,47 @@ public class Schema extends GeoObject implements Wrapper {
         return config;
     }
 
-    @JSConstructor
-    public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
-        if (!inNewExpr) {
-            throw ScriptRuntime.constructError("Error", "Call constructor with new keyword.");
-        }
-        Schema schema = null;
-        Object arg = args[0];
-        if (arg instanceof NativeObject) {
-            schema = new Schema((NativeObject) arg);
-        }
-        return schema;
-    }
-
     public Object unwrap() {
         return featureType;
     }
     
+    /**
+     * Create a config object from an arbitrary object.
+     * @param obj
+     */
+    static NativeObject prepConfig(Scriptable obj) {
+        Scriptable scope = ScriptableObject.getTopLevelScope(obj);
+        Context cx = Context.getCurrentContext();
+        NativeObject config = null;
+        if (obj instanceof NativeObject) {
+            config = (NativeObject) obj;
+        } else if (obj instanceof NativeArray) {
+            config = (NativeObject) cx.newObject(scope, "Object");
+            config.put("fields", config, (NativeArray) obj);
+        }
+        return config;
+    }
+
     public static Schema fromValues(Scriptable scope, NativeObject values) {
         Context cx = Context.getCurrentContext();
         Object[] names = values.getIds();
-        NativeObject schemaConfig = (NativeObject) cx.newObject(scope);
-        NativeArray fields = (NativeArray) cx.newArray(scope, names.length);
+        Scriptable schemaConfig = cx.newObject(scope);
+        Scriptable fields = cx.newArray(scope, names.length);
         for (int i=0; i<names.length; ++i) {
             String name = (String) names[i];
-            String typeName = Field.getTypeName(values.get(name));
-            NativeObject fieldConfig = (NativeObject) cx.newObject(scope);
-            fieldConfig.put("name", name);
-            fieldConfig.put("type", typeName);
-            Field field = new Field(scope, fieldConfig);
-            fields.add(i, field);
+            Object value = GeoScriptShell.jsToJava(values.get(name));
+            String typeName = Field.getTypeName(value);
+            if (typeName == null) {
+                throw ScriptRuntime.constructError("Error", "Unable to determine type for field: " + name);
+            }
+            Scriptable fieldConfig = cx.newObject(scope);
+            fieldConfig.put("name", fieldConfig, name);
+            fieldConfig.put("type", fieldConfig, typeName);
+            Field field = new Field(scope, (NativeObject) fieldConfig);
+            fields.put(i, fields, field);
         }
-        schemaConfig.put("fields", fields);
-        return new Schema(scope, schemaConfig);
+        schemaConfig.put("fields", schemaConfig, fields);
+        return new Schema(scope, (NativeObject) schemaConfig);
     }
 
 }
