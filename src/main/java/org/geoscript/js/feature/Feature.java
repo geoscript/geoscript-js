@@ -13,7 +13,6 @@ import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
-import org.mozilla.javascript.Undefined;
 import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSConstructor;
 import org.mozilla.javascript.annotations.JSFunction;
@@ -39,6 +38,17 @@ public class Feature extends GeoObject implements Wrapper {
      * Prototype constructor.
      */
     public Feature() {
+    }
+    
+    /**
+     * Constructor with SimpleFeature (from Java).
+     * @param scope
+     * @param feature
+     */
+    public Feature(Scriptable scope, SimpleFeature feature) {
+        this.feature = feature;
+        setParentScope(scope);
+        this.setPrototype(Module.getClassPrototype(Feature.class));
     }
 
     private Feature(NativeObject config) {
@@ -182,7 +192,7 @@ public class Feature extends GeoObject implements Wrapper {
     public Object get(String name) {
         Object value;
         if (feature.getFeatureType().getDescriptor(name) == null) {
-            value = Undefined.instance;
+            value = Context.getUndefinedValue();
         } else {
             value = GeoScriptShell.javaToJS(feature.getAttribute(name), getParentScope());
         }
