@@ -127,10 +127,7 @@ public class Schema extends GeoObject implements Wrapper {
     @JSGetter
     public NativeArray getFields() {
         Scriptable scope = getParentScope();
-        Context cx = Context.getCurrentContext();
-        if (cx == null) {
-            throw new RuntimeException("No context associated with current thread.");
-        }
+        Context cx = getCurrentContext();
         List<AttributeDescriptor> descriptors = featureType.getAttributeDescriptors();
         int length = descriptors.size();
         NativeArray array = (NativeArray) cx.newArray(scope, length);
@@ -143,10 +140,7 @@ public class Schema extends GeoObject implements Wrapper {
     @JSGetter
     public NativeArray getFieldNames() {
         Scriptable scope = getParentScope();
-        Context cx = Context.getCurrentContext();
-        if (cx == null) {
-            throw new RuntimeException("No context associated with current thread.");
-        }
+        Context cx = getCurrentContext();
         List<AttributeDescriptor> descriptors = featureType.getAttributeDescriptors();
         int length = descriptors.size();
         NativeArray array = (NativeArray) cx.newArray(scope, length);
@@ -170,10 +164,7 @@ public class Schema extends GeoObject implements Wrapper {
     public Scriptable getConfig() {
         Scriptable config = super.getConfig();
         Scriptable scope = getParentScope();
-        Context cx = Context.getCurrentContext();
-        if (cx == null) {
-            throw new RuntimeException("No context associated with current thread.");
-        }
+        Context cx = getCurrentContext();
         List<AttributeDescriptor> descriptors = featureType.getAttributeDescriptors();
         int length = descriptors.size();
         NativeArray array = (NativeArray) cx.newArray(scope, length);
@@ -197,7 +188,7 @@ public class Schema extends GeoObject implements Wrapper {
      */
     static NativeObject prepConfig(Scriptable obj) {
         Scriptable scope = ScriptableObject.getTopLevelScope(obj);
-        Context cx = Context.getCurrentContext();
+        Context cx = getCurrentContext();
         NativeObject config = null;
         if (obj instanceof NativeObject) {
             config = (NativeObject) obj;
@@ -209,7 +200,7 @@ public class Schema extends GeoObject implements Wrapper {
     }
 
     public static Schema fromValues(Scriptable scope, NativeObject values) {
-        Context cx = Context.getCurrentContext();
+        Context cx = getCurrentContext();
         Object[] names = values.getIds();
         Scriptable schemaConfig = cx.newObject(scope);
         Scriptable fields = cx.newArray(scope, names.length);

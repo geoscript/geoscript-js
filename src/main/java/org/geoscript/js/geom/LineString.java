@@ -99,10 +99,7 @@ public class LineString extends Geometry implements Wrapper {
 
     @JSGetter
     public NativeArray getEndPoints() {
-        Context cx = Context.getCurrentContext();
-        if (cx == null) {
-            throw new RuntimeException("No context associated with current thread");
-        }
+        Context cx = getCurrentContext();
         return (NativeArray) cx.newArray(getParentScope(), new Object[] {getStartPoint(), getEndPoint()});
     }
     

@@ -191,7 +191,7 @@ public class Feature extends GeoObject implements Wrapper {
     
     @JSGetter
     public Scriptable getProperties() {
-        Context cx = Context.getCurrentContext();
+        Context cx = getCurrentContext();
         Scriptable scope = getParentScope();
         Scriptable properties = cx.newObject(scope);
         for (Property property : feature.getProperties()) {
@@ -203,10 +203,7 @@ public class Feature extends GeoObject implements Wrapper {
     
     @JSGetter
     public Scriptable getConfig() {
-        Context cx = Context.getCurrentContext();
-        Scriptable scope = getParentScope();
-        Scriptable config = cx.newObject(scope);
-        config.put("type", config, "Feature");
+        Scriptable config = super.getConfig();
         
         // add schema
         Schema schema = getSchema();
@@ -222,6 +219,8 @@ public class Feature extends GeoObject implements Wrapper {
         config.put("geometry", config, geomConfig);
 
         // add all other properties
+        Context cx = getCurrentContext();
+        Scriptable scope = getParentScope();
         Scriptable properties = cx.newObject(scope);
         Scriptable values = getProperties();
         String geometryName = getGeometryName();

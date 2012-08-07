@@ -121,10 +121,7 @@ public class GeometryCollection extends Geometry implements Wrapper {
      */
     @JSGetter
     public NativeArray getCoordinates() {
-        Context cx = Context.getCurrentContext();
-        if (cx == null) {
-            throw new RuntimeException("No context associated with current thread.");
-        }
+        Context cx = getCurrentContext();
         Scriptable scope = getParentScope();
         com.vividsolutions.jts.geom.GeometryCollection geometry = (com.vividsolutions.jts.geom.GeometryCollection) getGeometry();
         int length = geometry.getNumGeometries();
@@ -138,10 +135,7 @@ public class GeometryCollection extends Geometry implements Wrapper {
     
     @JSGetter
     public NativeArray getComponents() {
-        Context cx = Context.getCurrentContext();
-        if (cx == null) {
-            throw new RuntimeException("No context associated with current thread.");
-        }
+        Context cx = getCurrentContext();
         Scriptable scope = getParentScope();
         com.vividsolutions.jts.geom.GeometryCollection geometry = (com.vividsolutions.jts.geom.GeometryCollection) getGeometry();
         int length = geometry.getNumGeometries();

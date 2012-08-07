@@ -356,10 +356,7 @@ public class Geometry extends GeoObject implements Wrapper {
      */
     protected NativeArray coordToArray(Coordinate coord) {
         Scriptable scope = getParentScope();
-        Context cx = Context.getCurrentContext();
-        if (cx == null) {
-            throw new RuntimeException("No context associated with current thread.");
-        }
+        Context cx = getCurrentContext();
         Object[] elements = new Object[] {
                 coord.x, coord.y
         };
@@ -379,10 +376,7 @@ public class Geometry extends GeoObject implements Wrapper {
      */
     protected NativeArray coordsToArray(Coordinate[] coords) {
         Scriptable scope = getParentScope();
-        Context cx = Context.getCurrentContext();
-        if (cx == null) {
-            throw new RuntimeException("No context associated with current thread.");
-        }
+        Context cx = getCurrentContext();
         int length = coords.length;
         NativeArray array = (NativeArray) cx.newArray(scope, length);
         for (int i=0; i<length; ++i) {

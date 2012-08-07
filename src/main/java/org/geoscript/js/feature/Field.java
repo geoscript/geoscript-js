@@ -244,7 +244,7 @@ public class Field extends GeoObject implements Wrapper {
     @JSGetter
     public Scriptable getConfig() {
         Scriptable config = super.getConfig();
-        Context cx = Context.getCurrentContext();
+        Context cx = getCurrentContext();
         Scriptable def = cx.newObject(getParentScope());
         def.put("name", def, getName());
         def.put("type", def, getType());

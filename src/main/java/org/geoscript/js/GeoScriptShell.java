@@ -65,7 +65,7 @@ public class GeoScriptShell extends Global {
         if (value instanceof java.util.Date) {
             java.util.Date date = (java.util.Date) value;
             Object[] args = { new Long(date.getTime()) };
-            Context cx = Context.getCurrentContext();
+            Context cx = GeoObject.getCurrentContext();
             value = cx.newObject(scope, "Date", args);
         }
         return Context.javaToJS(value, scope);

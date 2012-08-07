@@ -83,10 +83,7 @@ public class MultiLineString extends GeometryCollection implements Wrapper {
     
     @JSGetter
     public NativeArray getEndPoints() {
-        Context cx = Context.getCurrentContext();
-        if (cx == null) {
-            throw new RuntimeException("No context associated with current thread");
-        }
+        Context cx = getCurrentContext();
         NativeArray components = getComponents();
         int size = components.size();
         Scriptable scope = getParentScope();

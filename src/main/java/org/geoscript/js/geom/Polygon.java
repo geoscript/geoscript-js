@@ -86,10 +86,7 @@ public class Polygon extends Geometry implements Wrapper {
      */
     @JSGetter
     public NativeArray getCoordinates() {
-        Context cx = Context.getCurrentContext();
-        if (cx == null) {
-            throw new RuntimeException("No context associated with current thread.");
-        }
+        Context cx = getCurrentContext();
         Scriptable scope = getParentScope();
         com.vividsolutions.jts.geom.Polygon poly = (com.vividsolutions.jts.geom.Polygon) getGeometry();
         int length = 1 + poly.getNumInteriorRing();

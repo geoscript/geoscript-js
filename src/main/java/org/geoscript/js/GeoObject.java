@@ -15,10 +15,7 @@ public class GeoObject extends ScriptableObject implements Wrapper {
     @JSGetter
     public Scriptable getConfig() {
         Scriptable scope = getParentScope();
-        Context cx = Context.getCurrentContext();
-        if (cx == null) {
-            throw new RuntimeException("No context associated with current thread.");
-        }
+        Context cx = getCurrentContext();
         Scriptable obj = cx.newObject(scope);
         obj.put("type", obj, getClass().getSimpleName());
         return obj;
@@ -28,7 +25,7 @@ public class GeoObject extends ScriptableObject implements Wrapper {
     public Object getJson() {
         Scriptable config = getConfig();
         Scriptable scope = getParentScope();
-        Context cx = Context.getCurrentContext();
+        Context cx = getCurrentContext();
         Object json = NativeJSON.stringify(cx, scope, config, null, null);
         return json;
     }
@@ -41,5 +38,18 @@ public class GeoObject extends ScriptableObject implements Wrapper {
     public String getClassName() {
         return getClass().getName();
     }
+    
+    /**
+     * Get the context associated with the current thread.
+     * @return The current context.
+     */
+    protected static Context getCurrentContext() {
+        Context cx = Context.getCurrentContext();
+        if (cx == null) {
+            throw new RuntimeException("No context associated with current thread.");
+        }
+        return cx;
+    }
+
 
 }

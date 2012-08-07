@@ -242,7 +242,7 @@ public class Bounds extends GeoObject implements Wrapper {
     
     @JSFunction
     public NativeArray toArray() {
-        Context cx = Context.getCurrentContext();
+        Context cx = getCurrentContext();
         Scriptable scope = getParentScope();
         return (NativeArray) cx.newArray(scope, new Object[] {getMinX(), getMinY(), getMaxX(), getMaxY()});
     }
