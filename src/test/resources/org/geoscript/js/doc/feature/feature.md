@@ -32,3 +32,13 @@ Fetaure basics:
     js> feature.geometry.equals(new geom.Point([2, 3]));
     true
     
+    js> feature.properties = {
+      >     geom: new geom.Point([3, 4]),
+      >     place: "Vacation"
+      > };
+    [object Object]
+    js> feature.get("place")
+    Vacation
+    js> feature.get("geom").equals(new geom.Point([3, 4]))
+    true
+    

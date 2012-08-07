@@ -201,6 +201,15 @@ public class Feature extends GeoObject implements Wrapper {
         return properties;
     }
     
+    @JSSetter
+    public void setProperties(Scriptable properties) {
+        Object[] names = properties.getIds();
+        for (Object nameObj : names) {
+            String name = (String) nameObj;
+            set(name, properties.get(name, properties));
+        }
+    }
+    
     @JSGetter
     public Scriptable getConfig() {
         Scriptable config = super.getConfig();
