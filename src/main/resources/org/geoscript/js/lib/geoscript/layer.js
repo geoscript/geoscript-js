@@ -20,7 +20,7 @@ var Factory = require("./factory").Factory;
 var Feature = require("./feature").Feature;
 var FILTER = require("./filter");
 var Schema = require("./feature").Schema;
-var Cursor = require("./cursor").Cursor;
+var Collection = require("./feature").Collection;
 var WORKSPACE = require("./workspace");
 var PROJ = require("./proj");
 var GEOM = require("./geom");
@@ -93,7 +93,7 @@ var Layer = UTIL.extend(GeoObject, {
                 if (WORKSPACE.memory.names.indexOf(name) > -1) {
                     throw new Error("Temporary layer named '" + name + "' already exists.");
                 }
-                this.workspace._store.createSchema(schema._schema);
+                this.workspace._store.createSchema(schema);
             }
             this._source = this.workspace._store.getFeatureSource(name);
             var projection = config.projection;
@@ -118,6 +118,7 @@ var Layer = UTIL.extend(GeoObject, {
      *  Get a single feature using the feature id.
      */
     get: function(id) {
+        var feature = null;
         var filter;
         if (id instanceof FILTER.Filter) {
             filter = id;
@@ -128,9 +129,11 @@ var Layer = UTIL.extend(GeoObject, {
                 filter = FILTER.fids([id]);
             }
         }
-        var cursor = this.query(filter);
-        var feature = cursor.next();
-        cursor.close();
+        var collection = this.query(filter);
+        if (collection.hasNext()) {
+            feature = collection.next();
+            collection.close();
+        }
         return feature;
     },
 
@@ -148,9 +151,10 @@ var Layer = UTIL.extend(GeoObject, {
         }
         var schema = this.schema.clone({name: name});
         var layer = new Layer({schema: schema});
-        this.features.forEach(function(feature) {
-            layer.add(feature.clone());
-        });
+        var collection = this.features;
+        while (collection.hasNext()) {
+            layer.add(collection.next().clone());
+        }
         return layer;
     },
     
@@ -193,7 +197,7 @@ var Layer = UTIL.extend(GeoObject, {
      */
     get schema() {
         if (!this.cache.schema) {
-            this.cache.schema = Schema.from_(this._source.getSchema());
+            this.cache.schema = this._source.getSchema();
         }
         return this.cache.schema;
     },
@@ -281,10 +285,12 @@ var Layer = UTIL.extend(GeoObject, {
         var count = this._source.getCount(new DefaultQuery(this.name, filter._filter));
         if (count === -1) {
             // count manually for layers that don't support this query
+            var collection = this.query(filter);
             count = 0;
-            this.query(filter).forEach(function(feature) {
+            while (collection.hasNext()) {
+                collection.next();
                 ++count;
-            });
+            }
         }
         return count;
     },
@@ -312,13 +318,12 @@ var Layer = UTIL.extend(GeoObject, {
         } else {
             filter = FILTER.Filter.PASS;
         }
-        var bounds;
-        var _bounds = this._source.getBounds(new DefaultQuery(this.name, filter._filter));
-        if (_bounds) {
-            bounds = GEOM.Bounds.from_(_bounds);
-        } else {
+        var bounds = this._source.getBounds(new DefaultQuery(this.name, filter._filter));
+        if (!bounds) {
             // manually calculate bounds for layers that don't support getBounds with a filter
-            this.features.forEach(function(feature) {
+            var collection = this.features;
+            while (collection.hasNext()) {
+                var feature = collection.next();
                 if (filter.evaluate(feature)) {
                     if (!bounds) {
                         bounds = feature.bounds.clone();
@@ -326,9 +331,9 @@ var Layer = UTIL.extend(GeoObject, {
                         bounds.include(feature.bounds);
                     }
                 }
-            });
-            
+            }
         }
+        bounds.projection = this.projection;
         return bounds;
     },
     
@@ -342,7 +347,8 @@ var Layer = UTIL.extend(GeoObject, {
 
     /** api: method[query]
      *  :arg filter: ``filter.Filter or String`` A filter or a CQL string.
-     *  :returns: :class:`cursor.Cursor` A cursor for accessing queried features.
+     *  :returns: :class:`feature.Collection` An iterator for accessing queried 
+     *          features.
      *
      *  Query for features from the layer.  The return will be an object with
      *  ``forEach``, ``hasNext``, and ``next`` methods.  If no filter is
@@ -365,27 +371,14 @@ var Layer = UTIL.extend(GeoObject, {
                 filter = new FILTER.Filter(filter);
             }
         }
-        var _schema = this.schema._schema;
-        
-        var cursor = new Cursor({
-            open: function() {
-                var query = new DefaultQuery(this.name, filter._filter);
-                return this._source.dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT);
-            },
-            cast: function(_feature) {
-                var feature = Feature.from_(_feature, _schema);
-                feature.layer = this;
-                return feature;
-            },
-            scope: this
-        });
-        
-        return cursor;
+        var query = new DefaultQuery(this.name, filter._filter);
+        var _collection = this._source.getFeatures(query);
+        return new Collection(_collection);
     },
     
     /** api: property[features]
-     *  :class:`cursor.Cursor`
-     *  A cursor object for accessing all features on the layer.
+     *  :class:`feature.Collection`
+     *  An iterator for accessing all features on the layer.
      *
      *  Example use:
      *
@@ -422,8 +415,8 @@ var Layer = UTIL.extend(GeoObject, {
                 feature = feature.clone();
             }
         } else {
-            // has to be a values object
-            feature = new Feature({schema: this.schema, values: obj});
+            // has to be a properties object
+            feature = new Feature({schema: this.schema, properties: obj});
         }
         if (this.projection) {
             if (feature.projection) {
@@ -440,7 +433,7 @@ var Layer = UTIL.extend(GeoObject, {
         }
         this.workspace._onFeatureAdd(feature);
         var collection = FeatureCollections.newCollection();
-        collection.add(feature._feature);
+        collection.add(feature);
         this._source.addFeatures(collection);
         feature.layer = this;
     },
@@ -505,15 +498,12 @@ var Layer = UTIL.extend(GeoObject, {
             var results = this._source.dataStore.getFeatureWriter(this.name, _filter, Transaction.AUTO_COMMIT);
             try {
                 while (results.hasNext()) {
-                    var _feature = results.next();
-                    id = _feature.getIdentifier();
+                    var feature = results.next();
+                    id = feature.id;
                     var names = modified[id].names;
                     for (var name in names) {
                         // modify clean feature with dirty attributes
-                        _feature.setAttribute(
-                            name, 
-                            modified[id].feature._feature.getAttribute(name)
-                        );
+                        feature.set(name, modified[id].feature.get(name));
                     }
                     results.write();
                     delete modified[id];

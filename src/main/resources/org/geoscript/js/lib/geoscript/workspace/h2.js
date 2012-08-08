@@ -65,7 +65,8 @@ var H2 = UTIL.extend(Workspace, {
         // if (feature.geometry) {
         //     var projection = feature.projection;
         //     if (projection) {
-        //         feature.geometry._geometry.userData = projection._projection;
+        //         // TODO: add setter for userData if this is necessary
+        //         feature.geometry.userData = projection; 
         //     }
         // }
     },

@@ -94,12 +94,12 @@ var Workspace = UTIL.extend(GeoObject, {
     },
     
     /** private: method[_createSource]
-     *  :arg _schema:
+     *  :arg schema:
      *  :returns: ``FeatureSource``
      */
-    _createSource: function(_schema, type) {
-        this._store.createSchema(_schema);
-        return this._store.getFeatureSource(_schema.getName());
+    _createSource: function(schema, type) {
+        this._store.createSchema(schema);
+        return this._store.getFeatureSource(schema.name);
     },
     
     /** api: method[add]
@@ -147,31 +147,31 @@ var Workspace = UTIL.extend(GeoObject, {
             }]
         });
 
-        var _source = this._createSource(schema._schema);
+        var _source = this._createSource(schema);
 
         var query = new DefaultQuery(layer.name, filter._filter);
         if (projection) {
             if (layer.projection) {
-                query.setCoordinateSystem(layer.projection._projection);
+                query.setCoordinateSystem(layer.projection);
             }
-            query.setCoordinateSystemReproject(projection._projection); 
+            query.setCoordinateSystemReproject(projection); 
         }
 
         var reader = layer._source.getDataStore().getFeatureReader(query, Transaction.AUTO_COMMIT);
         var transaction = new DefaultTransaction();
-        var writer = _source.getDataStore().getFeatureWriterAppend(schema._schema.getName(), transaction);
+        var writer = _source.getDataStore().getFeatureWriterAppend(schema.name, transaction);
         var inFeature, outFeature, geom;
         
         try {
             while (reader.hasNext()) {
                 inFeature = reader.next();
                 outFeature = writer.next();
-                outFeature.setAttributes(inFeature.getAttributes());
+                outFeature.properties = inFeature.properties;
 
                 // mask empty geometry or PostGIS will complain
-                geom = outFeature.getDefaultGeometry();
+                geom = outFeature.geometry;
                 if (geom != null && geom.isEmpty()) {
-                    outFeature.setDefaultGeometry(null);
+                    outFeature.geometry = null;
                 }
 
                 writer.write();

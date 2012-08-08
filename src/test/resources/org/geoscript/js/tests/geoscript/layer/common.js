@@ -4,6 +4,8 @@ var Filter = require("geoscript/filter").Filter;
 var GEOM = require("geoscript/geom");
 var PROJ = require("geoscript/proj");
 
+var xxports = {};
+
 exports["test: features"] = function(getLayer) {
     return function() {
         var layer = getLayer();
@@ -24,8 +26,12 @@ exports["test: features"] = function(getLayer) {
         ASSERT.strictEqual(log[0].scope, testScope, "forEach calls block with correct scope");
     
         ASSERT.ok(!features.hasNext(), "after forEach, hasNext returns false");
-        ASSERT.strictEqual(features.next(), undefined, "if not hasNext, next returns undefined");
-    
+        
+        ASSERT.throws(function() {
+            features.next();
+        }, StopIteration, "throws error when exhausted");
+        
+
         // test some additional cursor properties
         features = layer.features;
         ASSERT.strictEqual(features.index, -1, "index is -1 to start");
@@ -63,7 +69,7 @@ exports["test: features"] = function(getLayer) {
     };
 };
 
-exports["test: update"] = function(getLayer) {
+xxports["test: update"] = function(getLayer) {
     return function() {
         var layer, cursor, feature;
         
@@ -118,7 +124,7 @@ exports["test: bounds"] = function(getLayer) {
             ASSERT.ok(projection.equals(layer.projection), "correct projection");
         }
         ASSERT.ok(
-            bounds.equals(GEOM.Bounds.fromArray([-124.73142200000001, 24.955967, -66.969849, 49.371735], layer.projection)),
+            bounds.equals(new GEOM.Bounds([-124.73142200000001, 24.955967, -66.969849, 49.371735, layer.projection])),
             "correct bounds for layer"
         );
     }
@@ -135,7 +141,7 @@ exports["test: getBounds"] = function(getLayer) {
             ASSERT.ok(projection.equals(layer.projection), "correct projection");
         }
         ASSERT.ok(
-            bounds.equals(GEOM.Bounds.fromArray([-116.0625, 44.35372899999999, -104.04258, 49], layer.projection)),
+            bounds.equals(new GEOM.Bounds([-116.0625, 44.35372899999999, -104.04258, 49, layer.projection])),
             "correct bounds for MT"
         );
     }
@@ -162,21 +168,21 @@ exports["test: query"] = function(getLayer) {
         
         var nearMT = new Filter("BBOX(the_geom, " + feature.geometry.bounds.toArray() + ")");
         
-        var cursor;
-        cursor = layer.query(nearMT);
-        features = cursor.get(20);
+        var collection;
+        collection = layer.query(nearMT);
+        features = collection.get(20);
         ASSERT.strictEqual(features.length, 5, "there are 5 features near MT");
-        ASSERT.isTrue(cursor.closed, "a) cursor closed");
+        ASSERT.isTrue(!collection.hasNext(), "a) cursor closed");
 
-        cursor = layer.query(nearMT);
-        features = cursor.get(3);
+        collection = layer.query(nearMT);
+        features = collection.get(3);
         ASSERT.strictEqual(features.length, 3, "got first 3 features near MT");
-        ASSERT.isTrue(cursor.closed, "b) cursor closed");
+        ASSERT.isTrue(!collection.hasNext(), "b) cursor closed");
 
-        cursor = layer.query(nearMT.and(isMT.not));
-        features = cursor.get(20);
+        collection = layer.query(nearMT.and(isMT.not));
+        features = collection.get(20);
         ASSERT.strictEqual(features.length, 4, "4 features near and not MT");
-        ASSERT.isTrue(cursor.closed, "c) cursor closed");
+        ASSERT.isTrue(!collection.hasNext(), "c) cursor closed");
 
         layer.workspace.close();        
     };
@@ -220,7 +226,7 @@ exports["test: remove"] = function(getLayer) {
         layer.remove(feature);
         ASSERT.strictEqual(layer.count, 47, "47 features after remove");
         
-        ASSERT.strictEqual(layer.get(isTX), undefined, "no more TX");
+        ASSERT.strictEqual(layer.get(isTX), null, "no more TX");
         
         layer.workspace.close();
     };

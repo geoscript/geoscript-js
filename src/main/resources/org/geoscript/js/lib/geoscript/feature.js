@@ -72,6 +72,8 @@ Feature.prototype.clone = function(config) {
     return feature;
 };
 
+/** api: classes[] = collection */
+var Collection = exports.Collection = this["org.geoscript.js.feature.Collection"];
 
 /** api: classes[] = field */
 var Field = exports.Field = this["org.geoscript.js.feature.Field"];
