@@ -3,6 +3,8 @@ MultiLineString basics:
     js> var {Geometry, GeometryCollection, MultiLineString, LineString} = require("geoscript/geom");
 
     js> var g = new MultiLineString([[[0, 0], [1, 1]], [[0, 0], [-1, -1]]]);
+    js> g
+    <MultiLineString [[[0, 0], [1, 1]], [[0, 0], [-1, -1]]]>
     js> g instanceof MultiLineString
     true
     js> g instanceof GeometryCollection

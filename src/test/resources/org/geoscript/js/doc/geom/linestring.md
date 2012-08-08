@@ -3,6 +3,8 @@ LineString basics:
     js> var {Geometry, LineString, Bounds} = require("geoscript/geom");
 
     js> var l = new LineString([[0, 2.0], [10.0, 2]]);
+    js> l
+    <LineString [[0, 2], [10, 2]]>
     js> l instanceof LineString
     true
     js> l instanceof Geometry

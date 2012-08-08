@@ -3,6 +3,8 @@ MultiPolygon basics:
     js> var {Geometry, GeometryCollection, MultiPolygon, Polygon} = require("geoscript/geom");
 
     js> var g = new MultiPolygon([[[[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]]]);
+    js> g
+    <MultiPolygon [[[[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]]]>
     js> g instanceof MultiPolygon
     true
     js> g instanceof GeometryCollection

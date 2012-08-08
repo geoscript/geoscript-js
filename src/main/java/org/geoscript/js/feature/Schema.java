@@ -219,5 +219,10 @@ public class Schema extends GeoObject implements Wrapper {
         schemaConfig.put("fields", schemaConfig, fields);
         return new Schema(scope, (NativeObject) schemaConfig);
     }
+    
+    public String toFullString() {
+        String names = arrayRepr(getFieldNames());
+        return "name: \"" + getName() + "\" fields: " + names;
+    }
 
 }

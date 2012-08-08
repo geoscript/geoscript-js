@@ -13,7 +13,7 @@ Fetaure basics:
     js> feature.get("place");
     Home
     js> feature.get("geom");
-    [object org.geoscript.js.geom.Point]
+    <Point [1, 2]>
     
     js> feature.geometry instanceof geom.Point
     true
@@ -21,12 +21,12 @@ Fetaure basics:
     true
     
     js> feature.set("place", "Work");
-    [object org.geoscript.js.feature.Feature]
+    <Feature place: "Work", geom: <Point>>
     js> feature.get("place");
     Work
     
     js> feature.set("geom", new geom.Point([2, 3]));
-    [object org.geoscript.js.feature.Feature]
+    <Feature place: "Work", geom: <Point>>
     js> feature.get("geom").equals(new geom.Point([2, 3]));
     true
     js> feature.geometry.equals(new geom.Point([2, 3]));

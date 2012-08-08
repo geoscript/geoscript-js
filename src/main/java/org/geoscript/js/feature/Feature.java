@@ -247,10 +247,10 @@ public class Feature extends GeoObject implements Wrapper {
 
     
     @JSGetter
-    public Scriptable getProperties() {
+    public NativeObject getProperties() {
         Context cx = getCurrentContext();
         Scriptable scope = getParentScope();
-        Scriptable properties = cx.newObject(scope);
+        NativeObject properties = (NativeObject) cx.newObject(scope);
         for (Property property : feature.getProperties()) {
             String name = property.getName().toString();
             properties.put(name, properties, get(name));
@@ -300,5 +300,29 @@ public class Feature extends GeoObject implements Wrapper {
         config.put("properties", config, properties);
         return config;
     }
+    
+    public String toFullString() {
+        NativeObject properties = getProperties();
+        Object[] names = properties.getIds();
+        String repr = "";
+        int length = names.length;
+        for (int i=0; i<length; ++i) {
+            String name = (String) names[i];
+            Object value = get(name);
+            if (value instanceof Geometry) {
+                value = "<" + value.getClass().getSimpleName() + ">";
+            } else if (value instanceof String) {
+                value = '"' + (String) value + '"';
+            } else {
+                value = Context.toString(value);
+            }
+            repr += name + ": " + value;
+            if (i < length - 1) {
+                repr += ", ";
+            }
+        }
+        return repr;
+    }
+
 
 }

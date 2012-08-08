@@ -535,5 +535,13 @@ public class Geometry extends GeoObject implements Wrapper {
         }
         return otherGeom;
     }
+    
+    /**
+     * Descriptive string representation of this object.
+     * @return
+     */
+    public String toFullString() {
+        return arrayRepr(getCoordinates());
+    }
 
 }

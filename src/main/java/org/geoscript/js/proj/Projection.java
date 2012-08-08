@@ -159,5 +159,9 @@ public class Projection extends GeoObject implements Wrapper {
     public String getClassName() {
         return getClass().getName();
     }
+    
+    public String toFullString() {
+        return getId();
+    }
 
 }

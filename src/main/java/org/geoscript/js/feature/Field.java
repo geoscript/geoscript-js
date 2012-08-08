@@ -281,6 +281,10 @@ public class Field extends GeoObject implements Wrapper {
         }
         return typeName;
     }
+    
+    public String toFullString() {
+        return "name: \"" + getName() + "\" type: " + getType();
+    }
 
 
 }

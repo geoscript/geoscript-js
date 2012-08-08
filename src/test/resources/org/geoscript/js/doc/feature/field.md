@@ -15,4 +15,4 @@ Field basics:
     js> field.type
     Polygon
     js> field.projection
-    [object org.geoscript.js.proj.Projection]
+    <Projection EPSG:4326>

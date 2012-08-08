@@ -299,6 +299,20 @@ public class Bounds extends GeoObject implements Wrapper {
         }
         return bounds;
     }
+    
+    /**
+     * Descriptive string representation of this object.
+     * @return
+     */
+    public String toFullString() {
+        String repr = "[" + getMinX().toString() + ", " + getMinY().toString() + 
+            ", " + getMaxX().toString() + ", " + getMaxY().toString() + "]";
+        Projection projection = getProjection();
+        if (projection != null) {
+            repr += " " + projection.getId();
+        }
+        return repr;
+    }
 
     public ReferencedEnvelope unwrap() {
         return refEnv;

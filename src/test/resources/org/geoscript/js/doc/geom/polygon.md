@@ -3,6 +3,8 @@ Polygon basics:
     js> var {Geometry, Polygon} = require("geoscript/geom");
 
     js> var g = new Polygon([[[0, 0], [10, 0], [10, 10], [0, 10], [0, 0]]]);
+    js> g
+    <Polygon [[[0, 0], [10, 0], [10, 10], [0, 10], [0, 0]]]>
     js> g instanceof Polygon
     true
     js> g instanceof Geometry

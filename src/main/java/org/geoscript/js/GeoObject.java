@@ -1,10 +1,12 @@
 package org.geoscript.js;
 
 import org.mozilla.javascript.Context;
+import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeJSON;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Wrapper;
+import org.mozilla.javascript.annotations.JSFunction;
 import org.mozilla.javascript.annotations.JSGetter;
 
 public class GeoObject extends ScriptableObject implements Wrapper {
@@ -37,6 +39,51 @@ public class GeoObject extends ScriptableObject implements Wrapper {
     @Override
     public String getClassName() {
         return getClass().getName();
+    }
+
+    /**
+     * String representation of an array.
+     * @param array
+     * @return
+     */
+    protected String arrayRepr(NativeArray array) {
+        String repr = "[";
+        int length = array.size();
+        for (int i=0; i<length; ++i) {
+            Object item = array.get(i);
+            if (item instanceof NativeArray) {
+                repr += arrayRepr((NativeArray) item);
+            } else if (item instanceof String) {
+                repr += '"' + (String) item + '"';
+            } else {
+                repr += Context.toString(item);
+            }
+            if (i < length -1) {
+                repr += ", ";
+            }
+        }
+        return repr + "]";
+    }
+
+    
+    @JSFunction
+    public String toString() {
+        String full = toFullString();
+        if (full.length() > 0) {
+            full = " " + full;
+        }
+        if (full.length() > 60) {
+            full = full.substring(0, 60) + " ...";
+        }
+        return "<" + getClass().getSimpleName() + full + ">";
+    }
+    
+    /**
+     * Descriptive string representation of this object.
+     * @return
+     */
+    public String toFullString() {
+        return "";
     }
     
     /**

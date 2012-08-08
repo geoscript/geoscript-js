@@ -3,6 +3,8 @@ Point basics:
     js> var {Geometry, Point, Bounds} = require("geoscript/geom");
 
     js> var p = new Point([1, 2.0, 3e8]);
+    js> p
+    <Point [1, 2, 300000000]>
     js> p instanceof Point
     true
     js> p instanceof Geometry

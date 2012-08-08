@@ -3,6 +3,8 @@ MultiPoint basics:
     js> var {Geometry, GeometryCollection, MultiPoint, Point} = require("geoscript/geom");
 
     js> var g = new MultiPoint([[0, 0], [1, 1]]);
+    js> g
+    <MultiPoint [[0, 0], [1, 1]]>
     js> g instanceof MultiPoint
     true
     js> g instanceof GeometryCollection
