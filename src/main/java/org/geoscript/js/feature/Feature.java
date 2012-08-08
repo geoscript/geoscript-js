@@ -136,8 +136,8 @@ public class Feature extends GeoObject implements Wrapper {
     
     @JSSetter
     public void setGeometry(Geometry geometry) {
-        setProjection(geometry.getProjection());
-        feature.setDefaultGeometry(geometry.unwrap());
+        String name = getGeometryName();
+        set(name, geometry);
     }
     
     @JSSetter
@@ -180,8 +180,12 @@ public class Feature extends GeoObject implements Wrapper {
         if (descriptor == null) {
             throw ScriptRuntime.constructError("Error", "Feature schema has no such field: " + name);
         }
-        if (value instanceof Wrapper) {
-            value = ((Wrapper) value).unwrap();
+        String geomName = getGeometryName();
+        if (geomName != null && geomName.equals(name)) {
+            if (!(value instanceof Geometry)) {
+                throw ScriptRuntime.constructError("Error", "Attempted to set geometry property to a non-geometry object: " + Context.toString(value));
+            }
+            setProjection(((Geometry) value).getProjection());
         }
         feature.setAttribute(name, GeoScriptShell.jsToJava(value));
         return this;
