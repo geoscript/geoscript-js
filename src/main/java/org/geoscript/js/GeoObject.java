@@ -73,7 +73,7 @@ public class GeoObject extends ScriptableObject implements Wrapper {
             full = " " + full;
         }
         if (full.length() > 60) {
-            full = full.substring(0, 60) + " ...";
+            full = full.substring(0, 61) + "...";
         }
         return "<" + getClass().getSimpleName() + full + ">";
     }
