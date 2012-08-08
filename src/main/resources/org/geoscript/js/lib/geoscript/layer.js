@@ -373,7 +373,9 @@ var Layer = UTIL.extend(GeoObject, {
         }
         var query = new DefaultQuery(this.name, filter._filter);
         var _collection = this._source.getFeatures(query);
-        return new Collection(_collection);
+        var collection = new Collection(_collection);
+        collection.layer = this;
+        return collection;
     },
     
     /** api: property[features]

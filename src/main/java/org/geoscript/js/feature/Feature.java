@@ -30,9 +30,21 @@ public class Feature extends GeoObject implements Wrapper {
     /** serialVersionUID */
     private static final long serialVersionUID = 4426338466323185386L;
     
+    /**
+     * The GeoTools feature backing this feature.
+     */
     private SimpleFeature feature;
 
+    /**
+     * Optional coordinate reference system for the feature.
+     */
     CoordinateReferenceSystem crs;
+    
+    /**
+     * Layer from which this feature was accessed.  Used to persist 
+     * modifications.
+     */
+    Scriptable layer;
 
     /**
      * Prototype constructor.
@@ -188,6 +200,18 @@ public class Feature extends GeoObject implements Wrapper {
             setProjection(((Geometry) value).getProjection());
         }
         feature.setAttribute(name, GeoScriptShell.jsToJava(value));
+        if (layer != null) {
+            // queue modifications
+            Object queueModifiedObj = ScriptableObject.getProperty(layer, "queueModified");
+            if (!(queueModifiedObj instanceof Function)) {
+                throw new RuntimeException("Unable to access queueModified method of layer.");
+            }
+            Function queueModified = (Function) queueModifiedObj;
+            Context cx = getCurrentContext();
+            Scriptable scope = getParentScope();
+            Object[] args = { this, name };
+            queueModified.call(cx, scope, layer, args);
+        }
         return this;
     }
 
@@ -201,6 +225,26 @@ public class Feature extends GeoObject implements Wrapper {
         }
         return value;
     }
+
+    /**
+     * Set the layer from which this feature was accessed.
+     * TODO: Remove this from the API when Layer is implemented as a wrapper.
+     * @param layer
+     * @return
+     */
+    @JSSetter
+    public void setLayer(Scriptable layer) {
+        if (this.layer != null) {
+            // TODO: clear queued modifications?
+        }
+        this.layer = layer;
+    }
+    
+    @JSGetter
+    public Scriptable getLayer() {
+        return layer;
+    }
+
     
     @JSGetter
     public Scriptable getProperties() {

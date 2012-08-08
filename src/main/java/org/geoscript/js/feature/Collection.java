@@ -14,6 +14,7 @@ import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSConstructor;
 import org.mozilla.javascript.annotations.JSFunction;
 import org.mozilla.javascript.annotations.JSGetter;
+import org.mozilla.javascript.annotations.JSSetter;
 import org.opengis.feature.simple.SimpleFeature;
 
 public class Collection extends GeoObject implements Wrapper {
@@ -26,6 +27,11 @@ public class Collection extends GeoObject implements Wrapper {
     private SimpleFeatureIterator iterator;
     
     private Feature current;
+    
+    /**
+     * JavaScript layer associated with this collection (if any).
+     */
+    private Scriptable layer;
     
     private int index = -1;
     
@@ -77,6 +83,20 @@ public class Collection extends GeoObject implements Wrapper {
         }
         return collection;
     }
+
+    /**
+     * Set the JavaScript layer associated with this collection.
+     * @param layer
+     */
+    @JSSetter
+    public void setLayer(Scriptable layer) {
+        this.layer = layer;
+    }
+    
+    @JSGetter
+    public Scriptable getLayer() {
+        return layer;
+    }
     
     @JSGetter
     public int getIndex() {
@@ -124,6 +144,9 @@ public class Collection extends GeoObject implements Wrapper {
         if (hasNext()) {
             SimpleFeature simpleFeature = iterator.next();
             feature = new Feature(getParentScope(), simpleFeature);
+            if (layer != null) {
+                feature.setLayer(layer);
+            }
             ++index;
             current = feature;
         } else {

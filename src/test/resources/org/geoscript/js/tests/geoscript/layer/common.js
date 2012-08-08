@@ -4,8 +4,6 @@ var Filter = require("geoscript/filter").Filter;
 var GEOM = require("geoscript/geom");
 var PROJ = require("geoscript/proj");
 
-var xxports = {};
-
 exports["test: features"] = function(getLayer) {
     return function() {
         var layer = getLayer();
@@ -69,7 +67,7 @@ exports["test: features"] = function(getLayer) {
     };
 };
 
-xxports["test: update"] = function(getLayer) {
+exports["test: update"] = function(getLayer) {
     return function() {
         var layer, cursor, feature;
         
@@ -184,7 +182,7 @@ exports["test: query"] = function(getLayer) {
         ASSERT.strictEqual(features.length, 4, "4 features near and not MT");
         ASSERT.isTrue(!collection.hasNext(), "c) cursor closed");
 
-        layer.workspace.close();        
+        layer.workspace.close();
     };
 };
 
