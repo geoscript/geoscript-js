@@ -226,6 +226,18 @@ public class Bounds extends GeoObject implements Wrapper {
     }
     
     @JSFunction
+    public Bounds expandBy(Object deltaX, Object deltaY) {
+        if (deltaY == Context.getUndefinedValue()) {
+            deltaY = deltaX;
+        }
+        if (!(deltaX instanceof Number) || !(deltaY instanceof Number)) {
+            throw ScriptRuntime.constructError("Error", "Provide numeric arguments");
+        }
+        refEnv.expandBy(((Number) deltaX).doubleValue(), ((Number) deltaY).doubleValue());
+        return this;
+    }
+    
+    @JSFunction
     public Bounds intersection(Bounds other) {
         Envelope intersection = refEnv.intersection(sameProjection(other).unwrap());
         CoordinateReferenceSystem crs = null;

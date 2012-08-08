@@ -1,11 +1,12 @@
-var Geometry = require("./geom").Geometry;
+var GEOM = require("./geom");
+var Geometry = GEOM.Geometry;
 var Feature = require("./feature").Feature;
 var Layer = require("./layer").Layer;
 var Map = require("./map").Map;
 var UTIL = require("./util");
 
 var JMapPane = Packages.org.geotools.swing.JMapPane;
-
+var jts = Packages.com.vividsolutions.jts;
 var bound = false;
 var cache = {};
 
@@ -29,11 +30,11 @@ var drawGeometries = function(geometries, options) {
     
     var len = geometries.length;
 
-    var _collection = Geometry._factory.createGeometryCollection(geometries);
+    var collection = new GEOM.GeometryCollection(geometries);
+    var bounds = collection.bounds;
     
-    var envelope = _collection.getEnvelopeInternal();
-    var shapeWidth = envelope.getWidth();
-    var shapeHeight = envelope.getHeight();
+    var shapeWidth = bounds.width;
+    var shapeHeight = bounds.height;
 
     var transform = new java.awt.geom.AffineTransform();
 
@@ -43,8 +44,8 @@ var drawGeometries = function(geometries, options) {
 
     // center the shape using scaled offsets
     transform.translate(
-        (options.buffer / scale) - envelope.getMinX() + (((width / scale) - shapeWidth) / 2), 
-        (-options.buffer / scale) - envelope.getMaxY() - (((height / scale) - shapeHeight) / 2)
+        (options.buffer / scale) - bounds.minX + (((width / scale) - shapeWidth) / 2), 
+        (-options.buffer / scale) - bounds.maxY - (((height / scale) - shapeHeight) / 2)
     );
 
     var LiteShape = Packages.org.geotools.geometry.jts.LiteShape;
@@ -88,8 +89,8 @@ function drawMap(map, options) {
     mapPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
     
     var bounds = context.getViewport().getBounds();
-    bounds.expandBy(bounds.getWidth() * 0.1);
-    if (bounds.getWidth() > 0) {
+    bounds.expandBy(bounds.width * 0.1);
+    if (bounds.width > 0) {
         mapPane.setDisplayArea(bounds);
     }
     render(mapPane, options.title);
