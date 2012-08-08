@@ -20,7 +20,6 @@ import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSConstructor;
-import org.mozilla.javascript.annotations.JSFunction;
 import org.mozilla.javascript.annotations.JSGetter;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -235,12 +234,6 @@ public class Field extends GeoObject implements Wrapper {
         return projection;
     }
 
-    @JSFunction
-    public boolean equals(Object other) {
-        // TODO: test this
-        return descriptor.equals(other);
-    }
-    
     @JSGetter
     public Scriptable getConfig() {
         Scriptable config = super.getConfig();
