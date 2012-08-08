@@ -68,10 +68,9 @@ public class Schema extends GeoObject implements Wrapper {
         }
         NativeArray fields = (NativeArray) fieldsObj;
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
-        Object nameObj = config.get("name");
         String name = "feature";
-        if (nameObj instanceof String) {
-            name = (String) nameObj;
+        if (config.has("name", config)) {
+            name = Context.toString(config.get("name", config));
         }
         builder.setName(new NameImpl(name));
         for (int i=0; i<fields.size(); ++i) {

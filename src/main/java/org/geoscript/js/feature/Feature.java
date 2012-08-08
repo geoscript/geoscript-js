@@ -83,10 +83,9 @@ public class Feature extends GeoObject implements Wrapper {
                 builder.set(name, value);
             }
         }
-        Object idObj = config.get("id");
         String id = null;
-        if (idObj instanceof String) {
-            id = (String) idObj;
+        if (config.has("id", config)) {
+            id = Context.toString(config.get("id", config));
         }
         feature = builder.buildFeature(id);
     }
