@@ -6,8 +6,8 @@ exports["test: filter"] = require("./geoscript/test_filter");
 exports["test: layer"] = require("./geoscript/test_layer");
 //exports["test: process"] = require("./geoscript/test_process");
 exports["test: workspace"] = require("./geoscript/test_workspace");
-//exports["test: style"] = require("./geoscript/test_style");
-//exports["test: map"] = require("./geoscript/test_map");
+exports["test: style"] = require("./geoscript/test_style");
+exports["test: map"] = require("./geoscript/test_map");
 exports["test: util"] = require("./geoscript/test_util");
 
 if (require.main == module.id) {

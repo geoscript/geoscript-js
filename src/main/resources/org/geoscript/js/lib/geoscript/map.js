@@ -166,7 +166,7 @@ var Map = UTIL.extend(GeoObject, {
             );
         });
         if (this.projection) {
-            _context.setCoordinateReferenceSystem(this.projection._projection);
+            _context.setCoordinateReferenceSystem(this.projection);
         }
         return [_renderer, _context];
     },
@@ -227,7 +227,7 @@ var Map = UTIL.extend(GeoObject, {
         _renderer.paint(
             _graphics, 
             new java.awt.Rectangle(0, 0, width, height), 
-            bounds._bounds
+            bounds
         );
         _context.dispose();
 
@@ -255,10 +255,10 @@ var Map = UTIL.extend(GeoObject, {
         var deltaX = width / scale - requestWidth;
         var deltaY = height / scale - requestHeight;
         return new Bounds({
-            minx: bounds.minx - deltaX / 2, 
-            miny: bounds.miny - deltaY / 2, 
-            maxx: bounds.maxx + deltaX / 2, 
-            maxy: bounds.maxy + deltaY / 2, 
+            minX: bounds.minX - deltaX / 2, 
+            minY: bounds.minY - deltaY / 2, 
+            maxX: bounds.maxX + deltaX / 2, 
+            maxY: bounds.maxY + deltaY / 2, 
             projection: bounds.projection
         });
     },

@@ -28,11 +28,8 @@ var drawGeometries = function(geometries, options) {
     var height = options.size[1];
     
     var len = geometries.length;
-    var _geometries = new Array(len);
-    for (var i=0; i<len; ++i) {
-        _geometries[i] = geometries[i]._geometry;
-    }
-    var _collection = Geometry._factory.createGeometryCollection(_geometries);
+
+    var _collection = Geometry._factory.createGeometryCollection(geometries);
     
     var envelope = _collection.getEnvelopeInternal();
     var shapeWidth = envelope.getWidth();
@@ -55,11 +52,11 @@ var drawGeometries = function(geometries, options) {
     var panel = new JavaAdapter(javax.swing.JPanel, {
         paintComponent: function(gc) {
             gc.setStroke(java.awt.BasicStroke(1));
-            var _geometry;
+            var geometry;
             for (var i=0; i<len; ++i) {
-                _geometry = _geometries[i];
-                var shp = new LiteShape(_geometry, transform, false);
-                if (_geometry.getDimension() > 1) {
+                geometry = geometries[i];
+                var shp = new LiteShape(geometry, transform, false);
+                if (geometry.dimension > 1) {
                     gc.setColor(new java.awt.Color(1.0, 1.0, 239/255));
                     gc.fill(shp);
                 }
