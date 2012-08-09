@@ -1,7 +1,7 @@
 var UTIL = require("../util");
 var GeoObject = require("../object").GeoObject;
 var WS_UTIL = require("./util");
-var Schema = require("../feature/schema").Schema;
+var Schema = require("../feature").Schema;
 var Filter = require("../filter").Filter;
 var Projection = require("../proj").Projection;
 
