@@ -1,8 +1,3 @@
-var Geometry = require("./geom").Geometry; // needs to be initialized first
-
-// define all feature classes
-Packages.org.geoscript.js.feature.Module.init(this);
-
 /** api: module = feature */
 
 /** api: synopsis
@@ -18,14 +13,13 @@ Packages.org.geoscript.js.feature.Module.init(this);
  *      js> var FEATURE = require("geoscript/feature");
  */
 
+var Geometry = require("./geom").Geometry; // needs to be initialized first
+// define all feature classes
+Packages.org.geoscript.js.feature.Module.init(this);
+
 /** api: classes[] = feature */
 var Feature = exports.Feature = this["org.geoscript.js.feature.Feature"];
 
-/** api: method[clone]
- *  :returns: :class:`feature.Feature`
- *
- *  Create a clone of this feature.
- */
 Feature.prototype.clone = function(config) {
     config = config || {};
 
@@ -81,12 +75,6 @@ var Field = exports.Field = this["org.geoscript.js.feature.Field"];
 /** api: classes[] = schema */
 var Schema = exports.Schema = this["org.geoscript.js.feature.Schema"];
 
-/** api: method[clone]
- *  :arg config: ``Object``
- *  :returns: :class:`feature.Schema`
- *
- *  Create a complete copy of this schema.
- */
 Schema.prototype.clone = function(config) {
     var fields = [];
     var configFields = config && config.fields || [];
@@ -133,10 +121,3 @@ Schema.fromValues = function(values) {
     return new Schema({fields: fields});
 };
 
-/** private: method[create]
- *  :arg config: ``Object`` Configuration object.
- *  :returns: :class:`feature.Feature` or :class`feature.Schema`
- *
- *  Create a feature or schema given a configuration object.
- */
-exports.create = require("./feature/util").create;

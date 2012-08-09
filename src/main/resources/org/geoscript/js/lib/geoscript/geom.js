@@ -1,6 +1,22 @@
+/** api: module = geom */
+
+/** api: synopsis
+ *  A collection of geometry types.
+ */
+
+/** api: summary
+ *  The :mod:`geom` module provides a provides constructors for point, line,
+ *  polygon and multi-part geometries.
+ *
+ *  .. code-block:: javascript
+ *  
+ *      js> var GEOM = require("geoscript/geom");
+ */
+
 require("./proj"); // needs to be initialized first
 // define all geometry classes
 Packages.org.geoscript.js.geom.Module.init(this);
+
 var Factory = require("./factory").Factory;
 var Registry = require("./registry").Registry;
 var UTIL = require("./util");
