@@ -1,4 +1,3 @@
-exports["test: cursor"] = require("./geoscript/test_cursor");
 exports["test: geom"] = require("./geoscript/test_geom");
 exports["test: proj"] = require("./geoscript/test_proj");
 exports["test: feature"] = require("./geoscript/test_feature");
