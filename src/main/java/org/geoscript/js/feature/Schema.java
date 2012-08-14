@@ -3,7 +3,6 @@ package org.geoscript.js.feature;
 import java.util.List;
 
 import org.geoscript.js.GeoObject;
-import org.geoscript.js.GeoScriptShell;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.mozilla.javascript.Context;
@@ -205,7 +204,7 @@ public class Schema extends GeoObject implements Wrapper {
         Scriptable fields = cx.newArray(scope, names.length);
         for (int i=0; i<names.length; ++i) {
             String name = (String) names[i];
-            Object value = GeoScriptShell.jsToJava(values.get(name));
+            Object value = jsToJava(values.get(name));
             String typeName = Field.getTypeName(value);
             if (typeName == null) {
                 throw ScriptRuntime.constructError("Error", "Unable to determine type for field: " + name);

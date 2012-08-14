@@ -1,7 +1,6 @@
 package org.geoscript.js.feature;
 
 import org.geoscript.js.GeoObject;
-import org.geoscript.js.GeoScriptShell;
 import org.geoscript.js.geom.Bounds;
 import org.geoscript.js.geom.Geometry;
 import org.geoscript.js.geom.GeometryWrapper;
@@ -199,7 +198,7 @@ public class Feature extends GeoObject implements Wrapper {
             }
             setProjection(((Geometry) value).getProjection());
         }
-        feature.setAttribute(name, GeoScriptShell.jsToJava(value));
+        feature.setAttribute(name, jsToJava(value));
         if (layer != null) {
             // queue modifications
             Object queueModifiedObj = ScriptableObject.getProperty(layer, "queueModified");
@@ -221,7 +220,7 @@ public class Feature extends GeoObject implements Wrapper {
         if (feature.getFeatureType().getDescriptor(name) == null) {
             value = Context.getUndefinedValue();
         } else {
-            value = GeoScriptShell.javaToJS(feature.getAttribute(name), getParentScope());
+            value = javaToJS(feature.getAttribute(name), getParentScope());
         }
         return value;
     }

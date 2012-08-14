@@ -22,7 +22,6 @@ import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.SecurityUtilities;
 import org.mozilla.javascript.WrappedException;
-import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.tools.ToolErrorReporter;
 import org.mozilla.javascript.tools.shell.Global;
 
@@ -39,38 +38,6 @@ public class GeoScriptShell extends Global {
     @Override
     public String getClassName() {
         return "global";
-    }
-
-    /**
-     * Convert a JavaScript object into the appropriate Java type.
-     * @param value
-     * @return
-     */
-    public static Object jsToJava(Object value) {
-        if (value instanceof Wrapper) {
-            value = ((Wrapper) value).unwrap();
-        } else if (value instanceof Scriptable) {
-            if (((Scriptable) value).getClassName().equals("Date")) {
-                value = Context.jsToJava(value, java.util.Date.class);
-            }
-        }
-        return value;
-    }
-
-    /**
-     * Convert a Java object into the appropriate JavaScript type.
-     * @param value
-     * @param scope
-     * @return
-     */
-    public static Object javaToJS(Object value, Scriptable scope) {
-        if (value instanceof java.util.Date) {
-            java.util.Date date = (java.util.Date) value;
-            Object[] args = { new Long(date.getTime()) };
-            Context cx = GeoObject.getCurrentContext();
-            value = cx.newObject(scope, "Date", args);
-        }
-        return Context.javaToJS(value, scope);
     }
 
     public static GeoScriptShell initShell(Context cx) {

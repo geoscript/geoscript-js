@@ -1,16 +1,8 @@
 package org.geoscript.js.feature;
 
-import java.math.BigDecimal;
-import java.net.URI;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
-
 import org.geoscript.js.GeoObject;
-import org.geoscript.js.GeoScriptShell;
 import org.geoscript.js.proj.Projection;
 import org.geotools.feature.AttributeTypeBuilder;
-import org.geotools.feature.FeatureCollection;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.FunctionObject;
@@ -29,50 +21,6 @@ public class Field extends GeoObject implements Wrapper {
 
     /** serialVersionUID */
     private static final long serialVersionUID = -45254255795575119L;
-    
-    private enum Type {
-
-        String(String.class),
-        Integer(Integer.class),
-        Short(Short.class),
-        Float(Float.class),
-        Long(Long.class),
-        Double(Double.class),
-        Boolean(Boolean.class),
-        Geometry(com.vividsolutions.jts.geom.Geometry.class),
-        Point(com.vividsolutions.jts.geom.Point.class),
-        LineString(com.vividsolutions.jts.geom.LineString.class),
-        Polygon(com.vividsolutions.jts.geom.Polygon.class),
-        GeometryCollection(com.vividsolutions.jts.geom.GeometryCollection.class),
-        MultiPoint(com.vividsolutions.jts.geom.MultiPoint.class),
-        MultiLineString(com.vividsolutions.jts.geom.MultiLineString.class),
-        MultiPolygon(com.vividsolutions.jts.geom.MultiPolygon.class),
-        FeatureCollection(FeatureCollection.class),
-        Date(Date.class),
-        Time(Time.class),
-        Datetime(java.util.Date.class),
-        Timestamp(Timestamp.class),
-        BigDecimal(BigDecimal.class),
-        URI(URI.class);
-
-        private Class<?> binding;
-        
-        Type(Class<?> binding) {
-            this.binding = binding;
-        }
-        
-        private static String getName(Class<?> binding) {
-            String name = null;
-            for (Type type : Type.values()) {
-                if (type.binding.equals(binding)) {
-                    name = type.name();
-                    break;
-                }
-            }
-            return name;
-        }
-        
-    }
     
     /**
      * Optional title.
@@ -127,7 +75,7 @@ public class Field extends GeoObject implements Wrapper {
         }
         AttributeTypeBuilder builder = new AttributeTypeBuilder();
         builder.setName(name);
-        builder.setBinding(type.binding);
+        builder.setBinding(type.getBinding());
 
         // optional properties
         Object titleObj = config.get("title");
@@ -274,7 +222,7 @@ public class Field extends GeoObject implements Wrapper {
      * on the JavaScript constructor.
      */
     public static String getTypeName(Object value) {
-        value = GeoScriptShell.jsToJava(value);
+        value = jsToJava(value);
         String typeName = null;
         if (value != null) {
             typeName = Type.getName(value.getClass());
