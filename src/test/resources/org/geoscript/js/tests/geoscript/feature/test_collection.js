@@ -14,7 +14,6 @@ var schema = new Schema({
 function createCollection() {
 
     var collection = new Collection({
-        schema: schema,
         features: function() {
             for (var i=0; i<size; ++i) {
                 yield new Feature({
@@ -78,7 +77,6 @@ exports["test: size (after next)"] = function() {
 exports["test: size (custom)"] = function() {
     
     var collection = new Collection({
-        schema: schema,
         size: function() {
             // though we have only one feature to yield, we'll pretend we have
             // more for the test
@@ -112,7 +110,6 @@ exports["test: bounds"] = function() {
 exports["test: bounds (custom)"] = function() {
     
     var collection = new Collection({
-        schema: schema,
         bounds: function() {
             // instead of iterating to determine bounds, provide it here
             return new GEOM.Bounds([-10, -20, 30, 40]);
@@ -160,7 +157,6 @@ exports["test: close (custom)"] = function() {
     var calls = 0;
     
     var collection = new Collection({
-        schema: schema,
         close: function() {
             // provide a custom close method
             // this will be called each time the generator is exhausted

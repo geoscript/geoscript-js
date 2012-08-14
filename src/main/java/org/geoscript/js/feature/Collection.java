@@ -266,19 +266,6 @@ public class Collection extends GeoObject implements Wrapper {
             scope = config.getParentScope();
             cx = getCurrentContext();
             
-            // required schema
-            if (config.has("schema", config)) {
-                Object schemaObj = config.get("schema", config);
-                if (schemaObj instanceof Schema) {
-                    featureType = (SimpleFeatureType) ((Schema) schemaObj).unwrap();
-                } else if (schemaObj instanceof Scriptable) {
-                    featureType = (SimpleFeatureType) (new Schema(scope, (Scriptable) schemaObj)).unwrap();
-                }
-            }
-            if (featureType == null) {
-                throw ScriptRuntime.constructError("Error", "The required schema member must be a Schema instance or config");
-            }
-            
             // required next function
             featuresFunc = (Function) getRequiredMember(config, "features", Function.class);
 
@@ -316,6 +303,14 @@ public class Collection extends GeoObject implements Wrapper {
 
         @Override
         protected SimpleFeatureType buildTargetFeatureType() {
+            if (featureType == null) {
+                JSFeatureIterator iterator = (JSFeatureIterator) features();
+                try {
+                    featureType = iterator.getFeatureType();
+                } finally {
+                    iterator.close();
+                }
+            }
             return featureType;
         }
 
@@ -343,6 +338,7 @@ public class Collection extends GeoObject implements Wrapper {
         
         NativeGenerator generator;
         SimpleFeature next;
+        SimpleFeatureType featureType;
         
         public JSFeatureIterator(Collection collection, Function featuresFunc, Function closeFunc) {
             scope = collection.getParentScope();
@@ -350,6 +346,26 @@ public class Collection extends GeoObject implements Wrapper {
             this.collection = collection;
             this.featuresFunc = featuresFunc;
             this.closeFunc = closeFunc;
+        }
+        
+        /**
+         * Get the feature type from the first feature created.
+         * @return
+         */
+        public SimpleFeatureType getFeatureType() {
+            if (featureType == null) {
+                try {
+                    createNextFeature();
+                } catch (Exception e) {
+                    throw ScriptRuntime.constructError("Error", 
+                            "Unable to get a feature from the collection");
+                }
+                if (next != null) {
+                    featureType = next.getFeatureType();
+                }
+            }
+            return featureType;
+            
         }
 
         public boolean hasNext() {
