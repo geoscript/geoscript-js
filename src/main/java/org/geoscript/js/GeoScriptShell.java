@@ -20,6 +20,8 @@ import org.mozilla.javascript.RhinoException;
 import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
+import org.mozilla.javascript.SecurityUtilities;
+import org.mozilla.javascript.WrappedException;
 import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.tools.ToolErrorReporter;
 import org.mozilla.javascript.tools.shell.Global;
@@ -155,6 +157,26 @@ public class GeoScriptShell extends Global {
             } 
             catch (EcmaError e) {
                 System.err.println(e.getMessage());
+            }
+            catch (WrappedException e) {
+                System.err.println(e.getMessage());
+                Throwable we = e.getWrappedException();
+                StringBuilder buffer = new StringBuilder();
+                String lineSeparator = SecurityUtilities.getSystemProperty("line.separator");
+                StackTraceElement[] stack = we.getStackTrace();
+                for (StackTraceElement elem : stack) {
+                    buffer.append("\tat ").append(elem.getFileName());
+                    int lineNumber = elem.getLineNumber();
+                    if (lineNumber > -1) {
+                        buffer.append(':').append(lineNumber);
+                    }
+                    String methodName = elem.getMethodName();
+                    if (methodName != null) {
+                        buffer.append(" (").append(methodName).append(')');
+                    }
+                    buffer.append(lineSeparator);
+                }
+                System.err.println(buffer.toString());
             }
             catch (RhinoException e) {
                 System.err.println(e.getMessage());
