@@ -4,7 +4,7 @@
     <groupId>org.geoscript</groupId>
     <artifactId>geoscript-js</artifactId>
     <packaging>jar</packaging>
-    <version>0.14</version>
+    <version>0.14-SNAPSHOT</version>
     <properties>
         <gt.version>8-SNAPSHOT</gt.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>org.mozilla</groupId>
             <artifactId>rhino</artifactId>
-            <version>1.7R4-SNAPSHOT</version>
+            <version>1.7R4</version>
         </dependency>
         <dependency>
             <groupId>jline</groupId>
@@ -55,6 +55,21 @@
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-main</artifactId>
+            <version>${gt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-process</artifactId>
+            <version>${gt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-process-geometry</artifactId>
+            <version>${gt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-process-feature</artifactId>
             <version>${gt.version}</version>
         </dependency>
         <dependency>
