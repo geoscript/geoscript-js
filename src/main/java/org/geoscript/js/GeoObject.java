@@ -3,6 +3,7 @@ package org.geoscript.js;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeJSON;
+import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Wrapper;
@@ -96,6 +97,42 @@ public class GeoObject extends ScriptableObject implements Wrapper {
             throw new RuntimeException("No context associated with current thread.");
         }
         return cx;
+    }
+    
+    /**
+     * Get an optional member.  If the member is present and the value is not
+     * null, the value must be an instance of the provided class.
+     */
+    protected static Object getOptionalMember(Scriptable obj, String name, Class<?> cls) {
+        Object result = getMember(obj, name);
+        if (result != null && !cls.isInstance(result)) {
+            throw ScriptRuntime.constructError("Error", 
+                    "The optional " + name + " member must be a " + cls.getSimpleName());
+        }
+        return result;
+    }
+    
+    protected static Object getRequiredMember(Scriptable obj, String name, Class<?> cls) {
+        Object result = getMember(obj, name);
+        if (result == null || !cls.isInstance(result)) {
+            throw ScriptRuntime.constructError("Error", 
+                    "The required " + name + " member must be a " + cls.getSimpleName());
+        }
+        return result;
+    }
+
+    /**
+     * Get an object member.  Returns null if the member is not present or if
+     * the value is null.
+     * @param obj
+     * @return
+     */
+    private static Object getMember(Scriptable obj, String name) {
+        Object result = null;
+        if (obj.has(name, obj)) {
+            result = obj.get(name, obj);
+        }
+        return result;
     }
 
 

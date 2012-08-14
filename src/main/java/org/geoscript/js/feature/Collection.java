@@ -1,21 +1,29 @@
 package org.geoscript.js.feature;
 
+import java.util.NoSuchElementException;
+
 import org.geoscript.js.GeoObject;
+import org.geoscript.js.geom.Bounds;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.process.feature.gs.SimpleProcessingCollection;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.JavaScriptException;
 import org.mozilla.javascript.NativeArray;
+import org.mozilla.javascript.NativeGenerator;
 import org.mozilla.javascript.NativeIterator;
 import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSConstructor;
 import org.mozilla.javascript.annotations.JSFunction;
 import org.mozilla.javascript.annotations.JSGetter;
 import org.mozilla.javascript.annotations.JSSetter;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 
 public class Collection extends GeoObject implements Wrapper {
 
@@ -54,7 +62,10 @@ public class Collection extends GeoObject implements Wrapper {
     
     private Collection(SimpleFeatureCollection collection) {
         this.collection = collection;
-        iterator = collection.features();
+    }
+    
+    private Collection(Scriptable config) {
+        collection = new JSFeatureCollection(this, config);
     }
     
     /**
@@ -77,9 +88,11 @@ public class Collection extends GeoObject implements Wrapper {
             if (arg instanceof SimpleFeatureCollection) {
                 collection = new Collection((SimpleFeatureCollection) arg);
             }
+        } else if (arg instanceof Scriptable) {
+            collection = new Collection((Scriptable) arg);
         }
         if (collection == null) {
-            throw ScriptRuntime.constructError("Error", "Collection must be constructed from a SimpleFeatureCollection.");
+            throw ScriptRuntime.constructError("Error", "Could not construct collection from given argument: " + arg);
         }
         return collection;
     }
@@ -108,6 +121,16 @@ public class Collection extends GeoObject implements Wrapper {
         return current;
     }
     
+    @JSGetter
+    public int getSize() {
+        return collection.size();
+    }
+    
+    @JSGetter
+    public Bounds getBounds() {
+        return new Bounds(getParentScope(), collection.getBounds());
+    }
+    
     @JSFunction
     public void forEach(Function function, Scriptable thisArg) {
         Context cx = getCurrentContext();
@@ -131,7 +154,10 @@ public class Collection extends GeoObject implements Wrapper {
 
     @JSFunction
     public Boolean hasNext() {
-        boolean has = (iterator != null && iterator.hasNext());
+        if (iterator == null) {
+            iterator = collection.features();
+        }
+        boolean has = iterator.hasNext();
         if (!has) {
             close();
         }
@@ -207,7 +233,6 @@ public class Collection extends GeoObject implements Wrapper {
     public void close() {
         if (iterator != null) {
             iterator.close();
-            iterator = null;
         }
         current = null;
     }
@@ -220,6 +245,179 @@ public class Collection extends GeoObject implements Wrapper {
 
     public Object unwrap() {
         return collection;
+    }
+    
+    static class JSFeatureCollection extends SimpleProcessingCollection {
+    
+        Collection collection;
+        Scriptable scope;
+        Context cx;
+
+        SimpleFeatureType featureType;
+        Function featuresFunc;
+        Function closeFunc;
+        Function sizeFunc;
+        Function boundsFunc;
+
+        public JSFeatureCollection(Collection collection, Scriptable config) {
+            super();
+            
+            this.collection = collection;
+            scope = config.getParentScope();
+            cx = getCurrentContext();
+            
+            // required schema
+            if (config.has("schema", config)) {
+                Object schemaObj = config.get("schema", config);
+                if (schemaObj instanceof Schema) {
+                    featureType = (SimpleFeatureType) ((Schema) schemaObj).unwrap();
+                } else if (schemaObj instanceof Scriptable) {
+                    featureType = (SimpleFeatureType) (new Schema(scope, (Scriptable) schemaObj)).unwrap();
+                }
+            }
+            if (featureType == null) {
+                throw ScriptRuntime.constructError("Error", "The required schema member must be a Schema instance or config");
+            }
+            
+            // required next function
+            featuresFunc = (Function) getRequiredMember(config, "features", Function.class);
+
+            // optional close function
+            closeFunc = (Function) getOptionalMember(config, "close", Function.class);
+
+            // optional size function
+            sizeFunc = (Function) getOptionalMember(config, "size", Function.class);
+
+            // optional bounds function
+            boundsFunc = (Function) getOptionalMember(config, "bounds", Function.class);
+
+        }
+
+        @Override
+        public SimpleFeatureIterator features() {
+            return new JSFeatureIterator(collection, featuresFunc, closeFunc);
+        }
+
+        @Override
+        public ReferencedEnvelope getBounds() {
+            ReferencedEnvelope refEnv;
+            if (boundsFunc != null) {
+                Object retObj = boundsFunc.call(cx, scope, collection, new Object[0]);
+                if (retObj instanceof Bounds) {
+                    refEnv = (ReferencedEnvelope) ((Bounds) retObj).unwrap();
+                } else {
+                    throw ScriptRuntime.constructError("Error", "The bounds function must return a bounds.  Got: " + Context.toString(retObj));
+                }
+            } else {
+                refEnv = getFeatureBounds();
+            }
+            return refEnv;
+        }
+
+        @Override
+        protected SimpleFeatureType buildTargetFeatureType() {
+            return featureType;
+        }
+
+        @Override
+        public int size() {
+            int size = 0;
+            if (sizeFunc != null) {
+                Object retObj = sizeFunc.call(cx, scope, collection, new Object[0]);
+                size = (int) Context.toNumber(retObj);
+            } else {
+                size = getFeatureCount();
+            }
+            return size;
+        }
+    
+    }
+    
+    static class JSFeatureIterator implements SimpleFeatureIterator {
+    
+        Scriptable scope;
+        Context context;
+        Collection collection;
+        Function featuresFunc;
+        Function closeFunc;
+        
+        NativeGenerator generator;
+        SimpleFeature next;
+        
+        public JSFeatureIterator(Collection collection, Function featuresFunc, Function closeFunc) {
+            scope = collection.getParentScope();
+            context = getCurrentContext();
+            this.collection = collection;
+            this.featuresFunc = featuresFunc;
+            this.closeFunc = closeFunc;
+        }
+
+        public boolean hasNext() {
+            createNextFeature();
+            return next != null;
+        }
+
+        /**
+         * Call the provided `next` function to create the next feature.
+         */
+        private void createNextFeature() {
+            if (generator == null) {
+                Object retObj = featuresFunc.call(context, scope, collection, new Object[0]);
+                if (retObj instanceof NativeGenerator) {
+                    generator = (NativeGenerator) retObj;
+                } else {
+                    throw ScriptRuntime.constructError("Error", 
+                            "Expected features method to return a Generator.  Got: " + Context.toString(retObj));
+                }
+            }
+            if (next == null) {
+                SimpleFeature feature = null;
+                Object retObj = null;
+                try {
+                    retObj = ScriptableObject.callMethod(context, generator, "next", new Object[0]);
+                } catch (JavaScriptException e) {
+                    // pass on StopIteration
+                    Object stopIteration = NativeIterator.getStopIterationObject(scope);
+                    if (!e.getValue().equals(stopIteration)) {
+                        throw e;
+                    }
+                }
+                if (retObj != null) {
+                    if (retObj instanceof Feature) {
+                        feature = (SimpleFeature) ((Feature) retObj).unwrap();
+                    } else {
+                        throw ScriptRuntime.constructError("Error", 
+                                "Expected a feature from next method.  Got: " + Context.toString(retObj));
+                    }
+                }
+                next = feature;
+            }
+        }
+
+        public SimpleFeature next() throws NoSuchElementException {
+            SimpleFeature feature;
+            if (hasNext()) {
+                createNextFeature();
+                feature = next;
+                next = null;
+            } else {
+                throw new NoSuchElementException("hasNext() returned false!");
+            }
+            if (feature == null) {
+                throw new NoSuchElementException("No more features to create");
+            }
+            return feature;
+        }
+
+        public void close() {
+            if (closeFunc != null) {
+                closeFunc.call(context, scope, collection, new Object[0]);
+            }
+            if (generator != null) {
+                ScriptableObject.callMethod(generator, "close", new Object[0]);
+            }
+        }
+    
     }
 
 }
