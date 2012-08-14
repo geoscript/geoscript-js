@@ -36,13 +36,6 @@ exports["test: constructor"] = function() {
     
 };
 
-exports["test: title"] = function() {
-    
-    var field = new FEATURE.Field({name: "foo", type: "String", title: "Foo"});
-    ASSERT.strictEqual(field.title, "Foo", "correct title");
-    
-};
-
 exports["test: description"] = function() {
     
     var field = new FEATURE.Field({name: "foo", type: "String", description: "bar"});

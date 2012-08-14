@@ -77,11 +77,6 @@ public class Field extends GeoObject implements Wrapper {
         builder.setName(name);
         builder.setBinding(type.getBinding());
 
-        // optional properties
-        Object titleObj = config.get("title");
-        if (titleObj instanceof String) {
-            title = (String) titleObj;
-        }
         Object descObj = config.get("description");
         if (descObj instanceof String) {
             builder.setDescription((String) descObj);
