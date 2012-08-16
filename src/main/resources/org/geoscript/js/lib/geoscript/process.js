@@ -1,3 +1,5 @@
+Packages.org.geoscript.js.process.Module.init(this);
+
 /** api: module = process */
 
 /** api: synopsis
@@ -12,14 +14,10 @@
  *      js> var PROCESS = require("geoscript/process");
  */
 
-var UTIL = require("./util");
-var GeoObject = require("./object").GeoObject;
-var Registry = require("./registry").Registry;
-var Factory = require("./factory").Factory;
-var Field = require("./feature").Field;
 
 /** api: class = Process */
-var Process = exports.Process = UTIL.extend(GeoObject, {
+var Process = exports.Process = this["org.geoscript.js.process.Process"];
+
 
     /** api: config[title]
      *  ``String``
@@ -29,7 +27,6 @@ var Process = exports.Process = UTIL.extend(GeoObject, {
      *  ``String``
      *  Title for the process.
      */
-    title: null,
 
     /** api: config[description]
      *  ``String``
@@ -39,7 +36,7 @@ var Process = exports.Process = UTIL.extend(GeoObject, {
      *  ``String``
      *  Full description of the process, including all input and output fields.
      */
-    description: null,
+
 
     /** api: config[inputs]
      *  ``Object``
@@ -49,7 +46,7 @@ var Process = exports.Process = UTIL.extend(GeoObject, {
      *  ``Object``
      *  Proces inputs.
      */
-    inputs: null,
+
 
     /** api: config[outputs]
      *  ``Object``
@@ -59,13 +56,11 @@ var Process = exports.Process = UTIL.extend(GeoObject, {
      *  ``Object``
      *  Proces outputs.
      */
-    outputs: null,
 
     /** api: config[run]
      *  ``Function``
      *  The function to be executed when running the process.
      */
-    run: null,
 
     /** api: constructor
      *  .. class:: Process
@@ -73,29 +68,4 @@ var Process = exports.Process = UTIL.extend(GeoObject, {
      *      :arg config: `Object` Process configuration.
      *
      */
-    constructor: function Process(config) {
-        if (config) {
-            // apply all config properties
-            UTIL.apply(this, config);
-            // configure inputs
-            var field;
-            for (var key in config.inputs) {
-                field = config.inputs[key];
-                if (typeof field === "string") {
-                    field = {type: field};
-                }
-                this.inputs[key] = (field instanceof Field) ? field : new Field(UTIL.apply(field, {name: key}));
-            };
-            // configure outputs
-            for (var key in config.outputs) {
-                field = config.outputs[key];
-                if (typeof field === "string") {
-                    field = {type: field};
-                }
-                this.outputs[key] = (field instanceof Field) ? field : new Field(UTIL.apply(field, {name: key}));
-            };
-        }        
-    }
-
-});
 

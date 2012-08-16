@@ -55,10 +55,26 @@ public class GeoObject extends ScriptableObject implements Wrapper {
         
         public static String getName(Class<?> binding) {
             String name = null;
+            if (binding.isEnum()) {
+                binding = String.class;
+            }
+            boolean primitive = binding.isPrimitive();
             for (Type type : Type.values()) {
-                if (type.getBinding().equals(binding)) {
-                    name = type.name();
-                    break;
+                if (!primitive) {
+                    if (type.getBinding().equals(binding)) {
+                        name = type.name();
+                        break;
+                    }
+                } else {
+                    try {
+                        Class<?> cls = (Class<?>) type.getBinding().getField("TYPE").get(null);
+                        if (cls.equals(binding)) {
+                            name = type.name();
+                            break;
+                        }
+                    } catch (Exception e) {
+                        // no type field on binding, keep looking
+                    }
                 }
             }
             return name;
@@ -161,21 +177,75 @@ public class GeoObject extends ScriptableObject implements Wrapper {
     /**
      * Get an optional member.  If the member is present and the value is not
      * null, the value must be an instance of the provided class.
+     * 
+     * @param obj
+     * @param name
+     * @param cls If provided, the member value must be an instance of this
+     * class.
+     * @return
      */
     protected static Object getOptionalMember(Scriptable obj, String name, Class<?> cls) {
+        return getOptionalMember(obj, name, cls, cls.getSimpleName());
+    }
+
+    /**
+     * Get an optional member.  If the member is present and the value is not
+     * null, the value must be an instance of the provided class.
+     * 
+     * @param obj
+     * @param name
+     * @param cls If provided, the member value must be an instance of this
+     * class.
+     * @param clsName The constructor name displayed to the user in the case
+     * of an error.
+     * @return
+     */
+    protected static Object getOptionalMember(Scriptable obj, String name, 
+            Class<?> cls, String clsName) {
         Object result = getMember(obj, name);
         if (result != null && !cls.isInstance(result)) {
             throw ScriptRuntime.constructError("Error", 
-                    "The optional " + name + " member must be a " + cls.getSimpleName());
+                    "The optional " + name + " member must be a " + clsName);
         }
         return result;
     }
+
     
+    /**
+     * Get a required member.  If the member is present and the value is not
+     * null, the value must be an instance of the provided class.
+     * 
+     * @param obj
+     * @param name
+     * @param cls The member value must be an instance of this class.
+     * @return
+     */
     protected static Object getRequiredMember(Scriptable obj, String name, Class<?> cls) {
+        return getRequiredMember(obj, name, cls, cls.getSimpleName());
+    }
+
+    /**
+     * Get a required member.  If the member is present and the value is not
+     * null, the value must be an instance of the provided class.
+     * 
+     * @param obj
+     * @param name
+     * @param cls The member value must be an instance of this class.
+     * @param clsName The constructor name displayed to the user in the case
+     * of an error.
+     * @return
+     */
+    protected static Object getRequiredMember(Scriptable obj, String name, 
+            Class<?> cls, String clsName) {
         Object result = getMember(obj, name);
-        if (result == null || !cls.isInstance(result)) {
+        if (result == null) {
             throw ScriptRuntime.constructError("Error", 
-                    "The required " + name + " member must be a " + cls.getSimpleName());
+                    "The required " + name + " member must be non-null");
+        }
+        if (!cls.isInstance(result)) {
+            throw ScriptRuntime.constructError("Error", 
+                    "Expected the '" + name + "' member to be a " + 
+                    cls.getSimpleName() + ". Got: " + Context.toString(result));
         }
         return result;
     }
