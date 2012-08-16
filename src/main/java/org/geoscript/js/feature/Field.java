@@ -5,14 +5,13 @@ import org.geoscript.js.proj.Projection;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
-import org.mozilla.javascript.FunctionObject;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSConstructor;
 import org.mozilla.javascript.annotations.JSGetter;
+import org.mozilla.javascript.annotations.JSStaticFunction;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -195,27 +194,12 @@ public class Field extends GeoObject implements Wrapper {
     public Object unwrap() {
         return descriptor;
     }
-
-    /**
-     * Finishes JavaScript constructor initialization.  
-     * Sets up the prototype chain using superclass.
-     * 
-     * @param scope
-     * @param ctor
-     * @param prototype
-     */
-    public static void finishInit(Scriptable scope, FunctionObject ctor, Scriptable prototype) {
-        // define any static methods on the constructor
-        ctor.defineFunctionProperties(
-                new String[] {"getTypeName"}, 
-                Field.class,
-                ScriptableObject.DONTENUM);
-    }
     
     /**
      * Determine the string type for a given value.  Defined as a static method 
      * on the JavaScript constructor.
      */
+    @JSStaticFunction
     public static String getTypeName(Object value) {
         value = jsToJava(value);
         String typeName = null;
