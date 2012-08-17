@@ -7,6 +7,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 
 import org.geotools.feature.FeatureCollection;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeJSON;
@@ -16,6 +17,7 @@ import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSFunction;
 import org.mozilla.javascript.annotations.JSGetter;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class GeoObject extends ScriptableObject implements Wrapper {
 
@@ -39,7 +41,10 @@ public class GeoObject extends ScriptableObject implements Wrapper {
         MultiPoint(com.vividsolutions.jts.geom.MultiPoint.class),
         MultiLineString(com.vividsolutions.jts.geom.MultiLineString.class),
         MultiPolygon(com.vividsolutions.jts.geom.MultiPolygon.class),
+        Bounds(ReferencedEnvelope.class),
         FeatureCollection(FeatureCollection.class),
+        Filter(org.opengis.filter.Filter.class),
+        Projection(CoordinateReferenceSystem.class),
         Date(Date.class),
         Time(Time.class),
         Datetime(java.util.Date.class),
