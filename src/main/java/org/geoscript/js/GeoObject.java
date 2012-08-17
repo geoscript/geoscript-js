@@ -58,10 +58,14 @@ public class GeoObject extends ScriptableObject implements Wrapper {
             if (binding.isEnum()) {
                 binding = String.class;
             }
-            boolean primitive = binding.isPrimitive();
             for (Type type : Type.values()) {
-                if (!primitive) {
-                    if (type.getBinding().equals(binding)) {
+                if (!binding.isPrimitive()) {
+                    if (!binding.isInterface()) {
+                        if (type.getBinding().equals(binding)) {
+                            name = type.name();
+                            break;
+                        }
+                    } else if (type.getBinding().isAssignableFrom(binding)) {
                         name = type.name();
                         break;
                     }
