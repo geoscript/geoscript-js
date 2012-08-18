@@ -1,6 +1,8 @@
 package org.geoscript.js.feature;
 
 import java.util.NoSuchElementException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geoscript.js.GeoObject;
 import org.geoscript.js.geom.Bounds;
@@ -8,6 +10,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.feature.gs.SimpleProcessingCollection;
+import org.geotools.util.logging.Logging;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.JavaScriptException;
@@ -30,6 +33,8 @@ public class Collection extends GeoObject implements Wrapper {
 
     /** serialVersionUID */
     private static final long serialVersionUID = 7771735276222136537L;
+
+    static Logger LOGGER = Logging.getLogger("org.geoserver.script.js");
 
     private SimpleFeatureCollection collection;
 
@@ -129,21 +134,22 @@ public class Collection extends GeoObject implements Wrapper {
     
     @JSFunction
     public void forEach(Function function, Scriptable thisArg) {
-        Context cx = getCurrentContext();
         Scriptable scope = getParentScope();
         if (thisArg == Context.getUndefinedValue()) {
             thisArg = scope;
         }
+        Context context = Context.enter();
         try {
             for (int i=0; hasNext(); ++i) {
                 Object[] args = { next(), i };
-                Object ret = function.call(cx, scope, thisArg, args);
+                Object ret = function.call(context, scope, thisArg, args);
                 if (ret.equals(false)) {
                     break;
                 }
             }
             close();
         } finally {
+            Context.exit();
             close();
         }
     }
@@ -261,7 +267,6 @@ public class Collection extends GeoObject implements Wrapper {
     
         Collection collection;
         Scriptable scope;
-        Context cx;
 
         SimpleFeatureType featureType;
         Function featuresFunc;
@@ -274,7 +279,6 @@ public class Collection extends GeoObject implements Wrapper {
             
             this.collection = collection;
             scope = config.getParentScope();
-            cx = getCurrentContext();
             
             // required next function
             featuresFunc = (Function) getRequiredMember(config, "features", Function.class);
@@ -299,7 +303,13 @@ public class Collection extends GeoObject implements Wrapper {
         public ReferencedEnvelope getBounds() {
             ReferencedEnvelope refEnv;
             if (boundsFunc != null) {
-                Object retObj = boundsFunc.call(cx, scope, collection, new Object[0]);
+                Context context = Context.enter();
+                Object retObj;
+                try {
+                    retObj = boundsFunc.call(context, scope, collection, new Object[0]);
+                } finally {
+                    Context.exit();
+                }
                 if (retObj instanceof Bounds) {
                     refEnv = (ReferencedEnvelope) ((Bounds) retObj).unwrap();
                 } else {
@@ -328,7 +338,13 @@ public class Collection extends GeoObject implements Wrapper {
         public int size() {
             int size = 0;
             if (sizeFunc != null) {
-                Object retObj = sizeFunc.call(cx, scope, collection, new Object[0]);
+                Context context = Context.enter();
+                Object retObj;
+                try {
+                    retObj = sizeFunc.call(context, scope, collection, new Object[0]);
+                } finally {
+                    Context.exit();
+                }
                 size = (int) Context.toNumber(retObj);
             } else {
                 size = getFeatureCount();
@@ -341,7 +357,6 @@ public class Collection extends GeoObject implements Wrapper {
     static class JSFeatureIterator implements SimpleFeatureIterator {
     
         Scriptable scope;
-        Context context;
         Collection collection;
         Function featuresFunc;
         Function closeFunc;
@@ -352,7 +367,6 @@ public class Collection extends GeoObject implements Wrapper {
         
         public JSFeatureIterator(Collection collection, Function featuresFunc, Function closeFunc) {
             scope = collection.getParentScope();
-            context = getCurrentContext();
             this.collection = collection;
             this.featuresFunc = featuresFunc;
             this.closeFunc = closeFunc;
@@ -367,6 +381,7 @@ public class Collection extends GeoObject implements Wrapper {
                 try {
                     createNextFeature();
                 } catch (Exception e) {
+                    LOGGER.log(Level.SEVERE, "Feature creation failed", e);
                     throw ScriptRuntime.constructError("Error", 
                             "Unable to get a feature from the collection");
                 }
@@ -388,17 +403,23 @@ public class Collection extends GeoObject implements Wrapper {
          */
         private void createNextFeature() {
             if (generator == null) {
-                Object retObj = featuresFunc.call(context, scope, collection, new Object[0]);
-                if (retObj instanceof NativeGenerator) {
-                    generator = (NativeGenerator) retObj;
-                } else {
-                    throw ScriptRuntime.constructError("Error", 
-                            "Expected features method to return a Generator.  Got: " + Context.toString(retObj));
+                Context context = Context.enter();
+                try {
+                    Object retObj = featuresFunc.call(context, scope, collection, new Object[0]);
+                    if (retObj instanceof NativeGenerator) {
+                        generator = (NativeGenerator) retObj;
+                    } else {
+                        throw ScriptRuntime.constructError("Error", 
+                                "Expected features method to return a Generator.  Got: " + Context.toString(retObj));
+                    }
+                } finally {
+                    Context.exit();
                 }
             }
             if (next == null) {
                 SimpleFeature feature = null;
                 Object retObj = null;
+                Context context = Context.enter();
                 try {
                     retObj = ScriptableObject.callMethod(context, generator, "next", new Object[0]);
                 } catch (JavaScriptException e) {
@@ -407,6 +428,8 @@ public class Collection extends GeoObject implements Wrapper {
                     if (!e.getValue().equals(stopIteration)) {
                         throw e;
                     }
+                } finally {
+                    Context.exit();
                 }
                 if (retObj != null) {
                     if (retObj instanceof Feature) {
@@ -437,7 +460,12 @@ public class Collection extends GeoObject implements Wrapper {
 
         public void close() {
             if (closeFunc != null) {
-                closeFunc.call(context, scope, collection, new Object[0]);
+                Context context = Context.enter();
+                try {
+                    closeFunc.call(context, scope, collection, new Object[0]);
+                } finally {
+                    Context.exit();
+                }
             }
             if (generator != null) {
                 ScriptableObject.callMethod(generator, "close", new Object[0]);
