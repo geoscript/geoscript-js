@@ -1,4 +1,4 @@
-var Geometry = require("../geometry").Geometry;
+var Geometry = require("../../geom").Geometry;
 
 var jts = Packages.com.vividsolutions.jts;
 var wktReader = new jts.io.WKTReader();
