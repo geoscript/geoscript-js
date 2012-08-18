@@ -6,10 +6,12 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 
+import org.geoscript.js.feature.Collection;
 import org.geoscript.js.feature.Feature;
 import org.geoscript.js.feature.Schema;
 import org.geoscript.js.geom.Bounds;
 import org.geoscript.js.geom.GeometryWrapper;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.mozilla.javascript.Context;
@@ -316,6 +318,8 @@ public class GeoObject extends ScriptableObject implements Wrapper {
             value = new Feature(scope, (SimpleFeature) value);
         } else if (value instanceof SimpleFeatureType) {
             value = new Schema(scope, (SimpleFeatureType) value);
+        } else if (value instanceof SimpleFeatureCollection) {
+            value = new Collection(scope, (SimpleFeatureCollection) value);
         }
         return Context.javaToJS(value, scope);
     }
