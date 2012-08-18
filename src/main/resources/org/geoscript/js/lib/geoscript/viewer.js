@@ -89,8 +89,8 @@ function drawMap(map, options) {
     mapPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
     
     var bounds = context.getViewport().getBounds();
-    bounds.expandBy(bounds.width * 0.1);
-    if (bounds.width > 0) {
+    bounds.expandBy(bounds.getWidth() * 0.1);
+    if (bounds.getWidth() > 0) {
         mapPane.setDisplayArea(bounds);
     }
     render(mapPane, options.title);

@@ -15,12 +15,14 @@ import org.mozilla.javascript.FunctionObject;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeJavaMethod;
 import org.mozilla.javascript.NativeObject;
+import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSFunction;
 import org.mozilla.javascript.annotations.JSGetter;
 import org.mozilla.javascript.annotations.JSSetter;
+import org.mozilla.javascript.annotations.JSStaticFunction;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
@@ -534,6 +536,21 @@ public class Geometry extends GeoObject implements Wrapper {
             }
         }
         return otherGeom;
+    }
+    
+    @JSStaticFunction
+    public static Geometry from_(Scriptable geometryObj) {
+        com.vividsolutions.jts.geom.Geometry geometry = null;
+        if (geometryObj instanceof Wrapper) {
+            Object obj = ((Wrapper) geometryObj).unwrap();
+            if (obj instanceof com.vividsolutions.jts.geom.Geometry) {
+                geometry = (com.vividsolutions.jts.geom.Geometry) obj;
+            }
+        }
+        if (geometry == null) {
+            throw ScriptRuntime.constructError("Error", "Cannot create geometry from " + Context.toString(geometryObj));
+        }
+        return (Geometry) GeometryWrapper.wrap(getTopLevelScope(geometryObj), geometry);
     }
     
     /**

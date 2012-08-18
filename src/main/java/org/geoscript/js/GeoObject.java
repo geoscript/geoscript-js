@@ -6,6 +6,10 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 
+import org.geoscript.js.feature.Feature;
+import org.geoscript.js.feature.Schema;
+import org.geoscript.js.geom.Bounds;
+import org.geoscript.js.geom.GeometryWrapper;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.mozilla.javascript.Context;
@@ -17,6 +21,8 @@ import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSFunction;
 import org.mozilla.javascript.annotations.JSGetter;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class GeoObject extends ScriptableObject implements Wrapper {
@@ -301,6 +307,15 @@ public class GeoObject extends ScriptableObject implements Wrapper {
             Object[] args = { new Long(date.getTime()) };
             Context cx = GeoObject.getCurrentContext();
             value = cx.newObject(scope, "Date", args);
+        }
+        if (value instanceof com.vividsolutions.jts.geom.Geometry) {
+            value = GeometryWrapper.wrap(scope, (com.vividsolutions.jts.geom.Geometry) value);
+        } else if (value instanceof ReferencedEnvelope) {
+            value = new Bounds(scope, (ReferencedEnvelope) value);
+        } else if (value instanceof SimpleFeature) {
+            value = new Feature(scope, (SimpleFeature) value);
+        } else if (value instanceof SimpleFeatureType) {
+            value = new Schema(scope, (SimpleFeatureType) value);
         }
         return Context.javaToJS(value, scope);
     }

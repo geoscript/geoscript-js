@@ -42,9 +42,6 @@ public class GeoScriptShell extends Global {
 
     public static GeoScriptShell initShell(Context cx) {
         cx.setLanguageVersion(180);
-        GeoScriptWrapFactory wrapFactory = new GeoScriptWrapFactory();
-        wrapFactory.setJavaPrimitiveWrap(false);
-        cx.setWrapFactory(wrapFactory);
 
         GeoScriptShell shell = new GeoScriptShell();
         cx.initStandardObjects(shell, true);

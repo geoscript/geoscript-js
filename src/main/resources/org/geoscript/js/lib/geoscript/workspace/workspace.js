@@ -166,12 +166,12 @@ var Workspace = UTIL.extend(GeoObject, {
             while (reader.hasNext()) {
                 inFeature = reader.next();
                 outFeature = writer.next();
-                outFeature.properties = inFeature.properties;
+                outFeature.setAttributes(inFeature.getAttributes());
 
                 // mask empty geometry or PostGIS will complain
-                geom = outFeature.geometry;
+                geom = outFeature.getDefaultGeometry();
                 if (geom != null && geom.isEmpty()) {
-                    outFeature.geometry = null;
+                    outFeature.setDefaultGeometry(null);
                 }
 
                 writer.write();

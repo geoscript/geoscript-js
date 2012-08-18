@@ -197,7 +197,8 @@ var Layer = UTIL.extend(GeoObject, {
      */
     get schema() {
         if (!this.cache.schema) {
-            this.cache.schema = this._source.getSchema();
+            var _schema = this._source.getSchema();
+            this.cache.schema = Schema.from_(_schema);
         }
         return this.cache.schema;
     },
@@ -205,7 +206,7 @@ var Layer = UTIL.extend(GeoObject, {
     /** api: property[projection]
      *  :class:`proj.Projection`
      *  Optional projection for the layer.  If set, any features added to the
-     *  layer will be tranformed to this projection if they are in a different
+     *  layer will be transformed to this projection if they are in a different
      *  projection.  This must be set before features are added to the layer.
      */
     get projection() {
@@ -318,8 +319,11 @@ var Layer = UTIL.extend(GeoObject, {
         } else {
             filter = FILTER.Filter.PASS;
         }
-        var bounds = this._source.getBounds(new DefaultQuery(this.name, filter._filter));
-        if (!bounds) {
+        var bounds = null;
+        var _bounds = this._source.getBounds(new DefaultQuery(this.name, filter._filter));
+        if (_bounds) {
+            bounds = GEOM.Bounds.from_(_bounds);
+        } else {
             // manually calculate bounds for layers that don't support getBounds with a filter
             var collection = this.features;
             while (collection.hasNext()) {
@@ -373,7 +377,7 @@ var Layer = UTIL.extend(GeoObject, {
         }
         var query = new DefaultQuery(this.name, filter._filter);
         var _collection = this._source.getFeatures(query);
-        var collection = new Collection(_collection);
+        var collection = Collection.from_(_collection);
         collection.layer = this;
         return collection;
     },
@@ -500,7 +504,7 @@ var Layer = UTIL.extend(GeoObject, {
             var results = this._source.dataStore.getFeatureWriter(this.name, _filter, Transaction.AUTO_COMMIT);
             try {
                 while (results.hasNext()) {
-                    var feature = results.next();
+                    var feature = Feature.from_(results.next());
                     id = feature.id;
                     var names = modified[id].names;
                     for (var name in names) {

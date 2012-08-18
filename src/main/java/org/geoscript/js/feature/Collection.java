@@ -22,6 +22,7 @@ import org.mozilla.javascript.annotations.JSConstructor;
 import org.mozilla.javascript.annotations.JSFunction;
 import org.mozilla.javascript.annotations.JSGetter;
 import org.mozilla.javascript.annotations.JSSetter;
+import org.mozilla.javascript.annotations.JSStaticFunction;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -55,13 +56,9 @@ public class Collection extends GeoObject implements Wrapper {
      * @param collection
      */
     public Collection(Scriptable scope, SimpleFeatureCollection collection) {
-        this(collection);
+        this.collection = collection;
         setParentScope(scope);
         this.setPrototype(Module.getClassPrototype(Collection.class));
-    }
-    
-    private Collection(SimpleFeatureCollection collection) {
-        this.collection = collection;
     }
     
     private Collection(Scriptable config) {
@@ -83,15 +80,9 @@ public class Collection extends GeoObject implements Wrapper {
         }
         Collection collection = null;
         Object arg = args[0];
-        if (arg instanceof Wrapper) {
-            arg = ((Wrapper) arg).unwrap();
-            if (arg instanceof SimpleFeatureCollection) {
-                collection = new Collection((SimpleFeatureCollection) arg);
-            }
-        } else if (arg instanceof Scriptable) {
+        if (arg instanceof Scriptable) {
             collection = new Collection((Scriptable) arg);
-        }
-        if (collection == null) {
+        } else {
             throw ScriptRuntime.constructError("Error", "Could not construct collection from given argument: " + arg);
         }
         return collection;
@@ -242,6 +233,20 @@ public class Collection extends GeoObject implements Wrapper {
         return this;
     }
 
+    @JSStaticFunction
+    public static Collection from_(Scriptable collectionObj) {
+        SimpleFeatureCollection collection = null;
+        if (collectionObj instanceof Wrapper) {
+            Object obj = ((Wrapper) collectionObj).unwrap();
+            if (obj instanceof SimpleFeatureCollection) {
+                collection = (SimpleFeatureCollection) obj;
+            }
+        }
+        if (collection == null) {
+            throw ScriptRuntime.constructError("Error", "Cannot create collection from " + Context.toString(collectionObj));
+        }
+        return new Collection(getTopLevelScope(collectionObj), collection);
+    }
 
     public Object unwrap() {
         return collection;

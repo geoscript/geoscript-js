@@ -52,11 +52,11 @@ Polygon basics:
 
     js> var jts = Packages.com.vividsolutions.jts;
     js> var wktReader = new jts.io.WKTReader();
-    js> var jtsGeom = wktReader.read("POLYGON((0 0, 10 0, 10 10, 0 10, 0 0))");
-    js> jtsGeom instanceof Polygon
+    js> var g = Geometry.from_(wktReader.read("POLYGON((0 0, 10 0, 10 10, 0 10, 0 0))"));
+    js> g instanceof Polygon
     true
-    js> jtsGeom instanceof Polygon
+    js> g instanceof Polygon
     true
-    js> jtsGeom.equals(g)
+    js> g.equals(g)
     true
  

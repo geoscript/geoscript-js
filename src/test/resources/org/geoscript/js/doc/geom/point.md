@@ -58,11 +58,11 @@ Point basics:
     
     js> var jts = Packages.com.vividsolutions.jts;
     js> var wktReader = new jts.io.WKTReader();
-    js> var jtsPoint = wktReader.read("POINT(1 2)");
-    js> jtsPoint instanceof Point
+    js> var g = Geometry.from_(wktReader.read("POINT(1 2)"));
+    js> g instanceof Point
     true
-    js> jtsPoint instanceof Geometry
+    js> g instanceof Geometry
     true
-    js> jtsPoint.equals(new Point([1, 2]))
+    js> g.equals(new Point([1, 2]))
     true
     

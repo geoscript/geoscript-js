@@ -17,6 +17,7 @@ import org.mozilla.javascript.annotations.JSConstructor;
 import org.mozilla.javascript.annotations.JSFunction;
 import org.mozilla.javascript.annotations.JSGetter;
 import org.mozilla.javascript.annotations.JSSetter;
+import org.mozilla.javascript.annotations.JSStaticFunction;
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
@@ -299,7 +300,22 @@ public class Feature extends GeoObject implements Wrapper {
         config.put("properties", config, properties);
         return config;
     }
-    
+
+    @JSStaticFunction
+    public static Feature from_(Scriptable featureObj) {
+        SimpleFeature feature = null;
+        if (featureObj instanceof Wrapper) {
+            Object obj = ((Wrapper) featureObj).unwrap();
+            if (obj instanceof SimpleFeature) {
+                feature = (SimpleFeature) obj;
+            }
+        }
+        if (feature == null) {
+            throw ScriptRuntime.constructError("Error", "Cannot create feature from " + Context.toString(featureObj));
+        }
+        return new Feature(getTopLevelScope(featureObj), feature);
+    }
+
     public String toFullString() {
         NativeObject properties = getProperties();
         Object[] names = properties.getIds();

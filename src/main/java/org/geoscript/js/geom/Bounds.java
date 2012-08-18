@@ -14,6 +14,7 @@ import org.mozilla.javascript.annotations.JSConstructor;
 import org.mozilla.javascript.annotations.JSFunction;
 import org.mozilla.javascript.annotations.JSGetter;
 import org.mozilla.javascript.annotations.JSSetter;
+import org.mozilla.javascript.annotations.JSStaticFunction;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -310,6 +311,21 @@ public class Bounds extends GeoObject implements Wrapper {
             throw ScriptRuntime.constructError("Error", "Requires a object or array.");
         }
         return bounds;
+    }
+    
+    @JSStaticFunction
+    public static Bounds from_(Scriptable refEnvObj) {
+        ReferencedEnvelope refEnv = null;
+        if (refEnvObj instanceof Wrapper) {
+            Object obj = ((Wrapper) refEnvObj).unwrap();
+            if (obj instanceof ReferencedEnvelope) {
+                refEnv = (ReferencedEnvelope) obj;
+            }
+        }
+        if (refEnv == null) {
+            throw ScriptRuntime.constructError("Error", "Cannot create bounds from " + Context.toString(refEnvObj));
+        }
+        return new Bounds(getTopLevelScope(refEnvObj), refEnv);
     }
     
     /**

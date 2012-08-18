@@ -46,11 +46,11 @@ LineString basics:
 
     js> var jts = Packages.com.vividsolutions.jts;
     js> var wktReader = new jts.io.WKTReader();
-    js> var jtsLine = wktReader.read("LINESTRING(0 0, 1 1)");
-    js> jtsLine instanceof LineString
+    js> var g = Geometry.from_(wktReader.read("LINESTRING(0 0, 1 1)"));
+    js> g instanceof LineString
     true
-    js> jtsLine instanceof Geometry
+    js> g instanceof Geometry
     true
-    js> jtsLine.equals(new LineString([[0, 0], [1, 1]]))
+    js> g.equals(new LineString([[0, 0], [1, 1]]))
     true
  

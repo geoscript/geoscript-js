@@ -16,6 +16,7 @@ import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSConstructor;
 import org.mozilla.javascript.annotations.JSFunction;
 import org.mozilla.javascript.annotations.JSGetter;
+import org.mozilla.javascript.annotations.JSStaticFunction;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -217,6 +218,21 @@ public class Schema extends GeoObject implements Wrapper {
         }
         schemaConfig.put("fields", schemaConfig, fields);
         return new Schema(scope, (NativeObject) schemaConfig);
+    }
+    
+    @JSStaticFunction
+    public static Schema from_(Scriptable featureTypeObj) {
+        SimpleFeatureType featureType = null;
+        if (featureTypeObj instanceof Wrapper) {
+            Object obj = ((Wrapper) featureTypeObj).unwrap();
+            if (obj instanceof SimpleFeatureType) {
+                featureType = (SimpleFeatureType) obj;
+            }
+        }
+        if (featureType == null) {
+            throw ScriptRuntime.constructError("Error", "Cannot create schema from " + Context.toString(featureTypeObj));
+        }
+        return new Schema(getTopLevelScope(featureTypeObj), featureType);
     }
     
     public String toFullString() {
