@@ -122,6 +122,11 @@ public class Collection extends GeoObject implements Wrapper {
         return new Bounds(getParentScope(), collection.getBounds());
     }
     
+    @JSGetter
+    public Schema getSchema() {
+        return new Schema(getParentScope(), collection.getSchema());
+    }
+    
     @JSFunction
     public void forEach(Function function, Scriptable thisArg) {
         Context cx = getCurrentContext();

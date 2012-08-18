@@ -39,6 +39,19 @@ exports["test: constructor"] = function() {
     
 };
 
+exports["test: schema"] = function() {
+    
+    var collection = createCollection();
+    var schema = collection.schema;
+    ASSERT.ok(schema instanceof Schema, "schema instance");
+    
+    ASSERT.strictEqual(schema.fields.length, 2, "2 fields");
+    
+    ASSERT.strictEqual(schema.geometry.name, "geom", "geometry name");
+    ASSERT.strictEqual(schema.geometry.type, "Point", "geometry type");
+    
+}
+
 exports["test: iterator"] = function() {
     
     var count = 0;
