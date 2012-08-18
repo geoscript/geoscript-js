@@ -56,6 +56,11 @@ Point basics:
     js> p1.equals(p3)
     true
     
+    js> p1.distance(p2).toFixed(3)
+    1.414
+    js> p1.distance(p3)
+    0
+    
     js> var jts = Packages.com.vividsolutions.jts;
     js> var wktReader = new jts.io.WKTReader();
     js> var g = Geometry.from_(wktReader.read("POINT(1 2)"));

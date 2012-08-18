@@ -195,6 +195,12 @@ public class Geometry extends GeoObject implements Wrapper {
         return (Geometry) GeometryWrapper.wrap(getParentScope(), transGeom);
     }
     
+    @JSFunction 
+    public double distance(Geometry other) {
+        other = sameProjection(this, other);
+        return geometry.distance((com.vividsolutions.jts.geom.Geometry) other.unwrap());
+    }
+    
     @JSFunction
     public Geometry buffer(double distance, NativeObject options) {
         BufferParameters params = new BufferParameters();
