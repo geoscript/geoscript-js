@@ -73,6 +73,11 @@ public class Schema extends GeoObject implements Wrapper {
             name = Context.toString(config.get("name", config));
         }
         builder.setName(new NameImpl(name));
+        String namespaceUri = (String) getOptionalMember(config, "uri", String.class);
+        if (namespaceUri == null) {
+            namespaceUri = "http://geoscript.org/#schema";
+        }
+        builder.setNamespaceURI(namespaceUri);
         for (int i=0; i<fields.size(); ++i) {
             Object fieldObj = fields.get(i);
             AttributeDescriptor descriptor = null;
