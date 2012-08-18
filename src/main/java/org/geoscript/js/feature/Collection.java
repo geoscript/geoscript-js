@@ -425,7 +425,7 @@ public class Collection extends GeoObject implements Wrapper {
                 } catch (JavaScriptException e) {
                     // pass on StopIteration
                     Object stopIteration = NativeIterator.getStopIterationObject(scope);
-                    if (!e.getValue().equals(stopIteration)) {
+                    if (!e.getValue().getClass().equals(stopIteration.getClass())) {
                         throw e;
                     }
                 } finally {
