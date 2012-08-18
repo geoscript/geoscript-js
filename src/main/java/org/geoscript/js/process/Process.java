@@ -124,13 +124,13 @@ public class Process extends GeoObject implements Wrapper {
         }
         
         Object minOccursObj = paramObj.get("minOccurs", paramObj);
-        int minOccurs = -1;
+        int minOccurs = 1; // TODO: determine why -1 doesn't work here
         if (minOccursObj instanceof Number) {
             minOccurs = (Integer) minOccursObj;
         }
 
         Object maxOccursObj = paramObj.get("maxOccurs", paramObj);
-        int maxOccurs = -1;
+        int maxOccurs = 1; // TODO: determine why -1 doesn't work here
         if (maxOccursObj instanceof Number) {
             maxOccurs = (Integer) maxOccursObj;
         }
