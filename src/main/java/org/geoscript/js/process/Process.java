@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geoscript.js.GeoObject;
 import org.geotools.data.Parameter;
@@ -14,12 +16,14 @@ import org.geotools.process.ProcessFactory;
 import org.geotools.process.Processors;
 import org.geotools.util.NullProgressListener;
 import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.logging.Logging;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSConstructor;
 import org.mozilla.javascript.annotations.JSFunction;
 import org.mozilla.javascript.annotations.JSGetter;
@@ -28,7 +32,9 @@ import org.opengis.feature.type.Name;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
 
-public class Process extends GeoObject {
+public class Process extends GeoObject implements Wrapper {
+
+    static Logger LOGGER = Logging.getLogger("org.geoserver.script.js");
 
     /** serialVersionUID */
     private static final long serialVersionUID = 6359663951846232066L;
@@ -284,6 +290,11 @@ public class Process extends GeoObject {
         return jsProcess;
     }
 
+    public Object unwrap() {
+        return new MetaProcess(process, title, description, inputs, outputs);
+    }
+
+    
     private class JSProcess implements org.geotools.process.Process {
     
         private Process process;
@@ -300,17 +311,23 @@ public class Process extends GeoObject {
                 monitor = new NullProgressListener();
             }
             Scriptable outputsObj;
+            Map<String, Object> outputs = null;
+            Context cx = Context.enter();
             try {
                 Scriptable inputsObj = mapToJSObject(inputs);
-                outputsObj = (Scriptable) runFunc.call(getCurrentContext(), 
-                        getParentScope(), process, new Object[] {inputsObj});
+                outputsObj = (Scriptable) runFunc.call(cx, getParentScope(), 
+                        process, new Object[] {inputsObj});
+                outputs = jsObjectToMap(outputsObj);
             } catch (Exception e) {
+                LOGGER.log(Level.SEVERE, "Failed to execute process", e);
                 monitor.exceptionOccurred(e);
                 return null;
             } finally {
+                Context.exit();
                 monitor.dispose();
             }
-            return jsObjectToMap(outputsObj);
+            return outputs;
         }
     }
+    
 }

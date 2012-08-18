@@ -1,3 +1,5 @@
+require("./feature"); // initialize all modules for values that may be wrapped
+
 Packages.org.geoscript.js.process.Module.init(this);
 
 /** api: module = process */
