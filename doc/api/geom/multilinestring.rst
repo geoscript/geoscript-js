@@ -140,6 +140,7 @@ Methods
     :arg options: ``Object`` Options for the buffer operation.
     
     Options:
+
     * ``segs`` ``Number`` Integer number of quadrant segments for circular
         arcs.  Default is 8.
     * ``caps`` ``Number`` One of :data:`BUFFER_CAP_ROUND`,

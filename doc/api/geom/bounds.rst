@@ -1,8 +1,4 @@
-
 .. currentmodule:: geom
-
-
-
 
 :class:`geom.Bounds`
 ================================================================================
@@ -11,9 +7,6 @@
 
     Create a new bounds given minx, miny, maxx, maxy, and an optional
     projection.
-
-
-
 
 
 Example Use
@@ -48,9 +41,6 @@ Sample code to create a new bounds from an array of [minx, miny, maxx, maxy] val
     js> var bounds = GEOM.Bounds.fromArray([-180, -90, 180, 90]);
 
     
-
-
-
 
 Properties
 ----------

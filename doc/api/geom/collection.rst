@@ -1,8 +1,4 @@
-
 .. currentmodule:: geom
-
-
-
 
 :class:`geom.GeometryCollection`
 ================================================================================
@@ -15,17 +11,8 @@
     in the coords array may be geometry coordinates or :class:`geom.Geometry`
     objects.
 
-
-
-
-    
-
-
-
-
 Properties
 ----------
-
 
 .. attribute:: GeometryCollection.area
 
@@ -115,6 +102,7 @@ Methods
     :arg options: ``Object`` Options for the buffer operation.
     
     Options:
+
     * ``segs`` ``Number`` Integer number of quadrant segments for circular
         arcs.  Default is 8.
     * ``caps`` ``Number`` One of :data:`BUFFER_CAP_ROUND`,

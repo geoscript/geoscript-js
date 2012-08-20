@@ -1,0 +1,104 @@
+
+.. currentmodule:: workspace
+
+
+
+
+:class:`workspace.H2`
+================================================================================
+
+.. class:: H2
+
+    :arg config: ``Object`` Configuration object.
+
+    Create a workspace from an H2 database.
+
+
+
+
+
+Example Use
+-----------
+
+Sample code create a new workspace for accessing data in a H2 database:
+
+.. code-block:: javascript
+
+    js> var h2 = new WORKSPACE.H2({database: "data/h2/geoscript"});
+    js> h2
+    <H2 ["states"]>
+    js> var states = h2.get("states");
+    js> states
+    <Layer name: states, count: 49>
+
+    
+
+
+Config Properties
+-----------------
+
+
+.. describe:: database
+
+    ``String``
+    Path to the database (required).
+
+
+
+
+Properties
+----------
+
+
+.. attribute:: H2.layers
+
+    ``Array``
+    The available layers in the workspace.
+
+.. attribute:: H2.names
+
+    ``Array``
+    The available layer names in the workspace.
+
+
+
+
+Methods
+-------
+
+
+.. method:: H2.add
+
+    :arg layer: :class:`layer.Layer` The layer to be added.
+    :arg options: ``Object`` Options for adding the layer.
+    
+    Options:
+     * `name`: ``String`` Name for the new layer.
+     * `filter`: :class:`filter.Filter` Filter to apply to features before adding.
+     * `projection: :class:`proj.Projection` Destination projection for the layer.
+    
+    :returns: :class:`layer.Layer`
+    
+    Create a new layer in this workspace with the features from an existing
+    layer.  If a layer with the same name already exists in this workspace,
+    you must provide a new name for the layer.
+
+.. method:: H2.close
+
+    Close the workspace.  This discards any existing connection to the
+    underlying data store and discards the reference to the store.
+
+.. method:: H2.get
+
+    :arg name: ``String`` Layer name.
+    :returns: :class:`layer.Layer`
+    
+    Get a layer by name.  Returns ``undefined`` if name doesn't correspond
+    to a layer source in the workspace.
+
+
+
+
+
+
+

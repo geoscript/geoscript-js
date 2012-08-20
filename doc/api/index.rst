@@ -9,10 +9,10 @@ Modules
 -------
 
 .. toctree::
+    :glob:
     :maxdepth: 1
 
     geom
-    geom/io/json
     feature
     filter
     proj
@@ -20,4 +20,6 @@ Modules
     workspace
     style
     map
+    process
+    io/*
 
