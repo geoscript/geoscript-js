@@ -50,6 +50,45 @@ exports["test inputs"] = function() {
     ASSERT.strictEqual(p.inputs.bar.type, "String", "bar parameter String type");
 };
 
+exports["test inputs (invalid)"] = function() {
+    
+    var inputs = {
+        foo: {type: "String"}
+    };
+    
+    var outputs = {
+        bar: {type: "String"}
+    };
+    
+    var run = function(inputs) {
+        return {bar: inputs.foo};
+    };
+    
+    var err = null;
+    try {
+        var p = new Process({
+            inputs: inputs,
+            outputs: outputs,
+            run: run
+        });
+    } catch (e) {
+        err = e;
+    }
+    ASSERT.strictEqual(err, null, "valid inputs");
+
+    // now try with invalid inputs
+    inputs.foo.type = "invalid";
+
+    ASSERT.throws(function() {
+        var p = new Process({
+            inputs: inputs,
+            outputs: outputs,
+            run: run
+        });
+    }, Error, "invalid output type");
+    
+};
+
 exports["test outputs"] = function() {
     var p = new Process({
         inputs: {
@@ -78,7 +117,79 @@ exports["test outputs"] = function() {
     ASSERT.strictEqual(p.outputs.bar.type, "String", "bar field String type");
 };
 
-exports["test outputs"] = function() {
+exports["test outputs (invalid)"] = function() {
+    
+    var inputs = {
+        foo: {type: "String"}
+    };
+    
+    var outputs = {
+        bar: {type: "String"}
+    };
+    
+    var run = function(inputs) {
+        return {bar: inputs.foo};
+    };
+    
+    var err = null;
+    try {
+        var p = new Process({
+            inputs: inputs,
+            outputs: outputs,
+            run: run
+        });
+    } catch (e) {
+        err = e;
+    }
+    ASSERT.strictEqual(err, null, "valid inputs");
+
+    // now try with invalid outputs
+    outputs.bar.type = "invalid";
+
+    ASSERT.throws(function() {
+        var p = new Process({
+            inputs: inputs,
+            outputs: outputs,
+            run: run
+        });
+    }, Error, "invalid output type");
+    
+};
+
+exports["test parameter binding to java.lang.Class"] = function() {
+    var process;
+    
+    var inputs = {
+        foo: {type: "String"}
+    };
+    var outputs = {
+        bar: {type: "String"}
+    };
+    var run = function(inputs) {
+        return {bar: inputs.foo};
+    };
+    
+    // already mapped to string
+    inputs.mapped = {type: java.lang.Integer};
+    process = new Process({
+        inputs: inputs,
+        outputs: outputs,
+        run: run
+    });
+    ASSERT.strictEqual(process.inputs.mapped.type, "Integer", "class mapped to string");
+
+    // class not already in type map
+    inputs.notMapped = {type: Packages.org.geotools.process.jts.GeometryFunctions.BufferCapStyle};
+    process = new Process({
+        inputs: inputs,
+        outputs: outputs,
+        run: run
+    });
+    ASSERT.ok(process.inputs.notMapped.type == Packages.org.geotools.process.jts.GeometryFunctions.BufferCapStyle, "class not mapped to string");
+
+}
+
+exports["test run"] = function() {
     var add = new Process({
         title: "Add process",
         description: "Adds two numbers",
@@ -122,7 +233,7 @@ exports["test: Process.getNames"] = function() {
     
 }
 
-exports["test: Process.get"] = function() {
+exports["test: Process.get('JTS:buffer')"] = function() {
     
     var buffer = Process.get("JTS:buffer");
     var inputs = buffer.inputs;
@@ -132,7 +243,8 @@ exports["test: Process.get"] = function() {
     ASSERT.strictEqual(inputs.geom.type, "Geometry", "geom type");
     
     // TODO: deal with enumerated values
-    ASSERT.strictEqual(inputs.capStyle.type, "String", "capStyle type");
+    var capStyle = inputs.capStyle.type;
+    ASSERT.ok(capStyle == Packages.org.geotools.process.jts.GeometryFunctions.BufferCapStyle, "capStyle type");
     
     var geom = require("geoscript/geom");
     var point = new geom.Point([1, 2]);

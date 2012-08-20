@@ -103,13 +103,29 @@ public class Process extends GeoObject implements Wrapper {
 
     private Parameter<?> createParameter(String name, Scriptable paramObj) {
         
-        String typeName = (String) getRequiredMember(paramObj, "type", String.class);
-        Type type;
-        try {
-            type = Type.valueOf(typeName);
-        } catch (IllegalArgumentException e) {
-            throw ScriptRuntime.constructError("Error", "Unsupported parameter type: " + typeName);
-        }        
+        if (!paramObj.has("type", paramObj)) {
+            throw ScriptRuntime.constructError("Error", "Missing required type member");
+        }
+        Object typeObj = paramObj.get("type", paramObj);
+        Class<?> binding = null;
+        if (typeObj instanceof String) {
+            String typeName = (String) typeObj;
+            Type type;
+            try {
+                type = Type.valueOf(typeName);
+            } catch (IllegalArgumentException e) {
+                throw ScriptRuntime.constructError("Error", "Unsupported parameter type: " + typeName);
+            }
+            binding = type.getBinding();
+        } else if (typeObj instanceof Wrapper) {
+            typeObj = ((Wrapper) typeObj).unwrap();
+            if (typeObj instanceof Class<?>) {
+                binding = (Class<?>) typeObj;
+            }
+        }
+        if (binding == null) {
+            throw ScriptRuntime.constructError("Error", "Unable to create parameter binding for type: " + Context.toString(typeObj));
+        }
         
         String title = (String) getOptionalMember(paramObj, "title", String.class);
         InternationalString i18nTitle = null;
@@ -137,7 +153,7 @@ public class Process extends GeoObject implements Wrapper {
 
         @SuppressWarnings({ "rawtypes", "unchecked" })
         Parameter<?> parameter = new Parameter(
-                name, type.getBinding(), i18nTitle, i18nDesc, true, minOccurs, maxOccurs, 
+                name, binding, i18nTitle, i18nDesc, true, minOccurs, maxOccurs, 
                 null, null);
         
         return parameter;
@@ -175,11 +191,13 @@ public class Process extends GeoObject implements Wrapper {
     private Object createJSParameter(Parameter<?> param) {
         NativeObject obj = (NativeObject) getCurrentContext().newObject(getParentScope());
         
-        String typeName = Type.getName(param.getType());
-        if (typeName == null) {
-            throw ScriptRuntime.constructError("Error", "Unsupported parameter type: " + Context.toString(param.getType()));
+        Class<?> binding = param.getType();
+        String typeName = Type.getName(binding);
+        if (typeName != null) {
+            obj.put("type", obj, typeName);
+        } else {
+            obj.put("type", obj, Context.javaToJS(binding, getParentScope()));
         }
-        obj.put("type", obj, typeName);
         
         obj.put("name", obj, param.getName());
         
