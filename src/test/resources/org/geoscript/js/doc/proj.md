@@ -8,3 +8,9 @@ Projection basics:
     EPSG:4326
     js> p.json
     {"type":"Projection","id":"EPSG:4326"}
+    
+    js> var p = proj.Projection("epsg:4326");
+    js> p instanceof proj.Projection
+    true
+    js> p
+    <Projection EPSG:4326>

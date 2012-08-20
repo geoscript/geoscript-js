@@ -5,7 +5,6 @@ import java.util.Arrays;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.NativeArray;
-import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.Wrapper;
@@ -26,6 +25,27 @@ public class MultiPoint extends GeometryCollection implements Wrapper {
     }
 
     /**
+     * Constructor for coordinate array.
+     * @param context
+     * @param scope
+     * @param array
+     */
+    public MultiPoint(NativeArray array) {
+        super(array);
+    }
+
+    /**
+     * Constructor for coordinate array (without new keyword).
+     * @param scope
+     * @param array
+     */
+    public MultiPoint(Scriptable scope, NativeArray array) {
+        this(array);
+        this.setParentScope(scope);
+        this.setPrototype(Module.getClassPrototype(MultiPoint.class));
+    }
+
+    /**
      * Constructor from JTS geometry.
      * @param geometry
      */
@@ -35,15 +55,6 @@ public class MultiPoint extends GeometryCollection implements Wrapper {
         setGeometry(geometry);
     }
 
-    /**
-     * Constructor for coordinate array.
-     * @param context
-     * @param scope
-     * @param array
-     */
-    public MultiPoint(NativeArray array) {
-        super(array);
-    }
 
     public com.vividsolutions.jts.geom.MultiPoint createCollection(com.vividsolutions.jts.geom.Geometry[] geometries) {
         com.vividsolutions.jts.geom.Point[] points = Arrays.copyOf(geometries, geometries.length, com.vividsolutions.jts.geom.Point[].class);
@@ -60,22 +71,15 @@ public class MultiPoint extends GeometryCollection implements Wrapper {
      */
     @JSConstructor
     public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
-        if (!inNewExpr) {
-            throw ScriptRuntime.constructError("Error", "Call constructor with new keyword.");
+        if (args.length != 1) {
+            throw ScriptRuntime.constructError("Error", "Constructor takes a single argument");
         }
+        NativeArray array = getCoordinatesArray(args[0]);
         MultiPoint collection = null;
-        Object arg = args[0];
-        if (arg instanceof NativeArray) {
-            collection = new MultiPoint((NativeArray) arg);
-        } else if (arg instanceof NativeObject) {
-            Object coordObj = ((NativeObject) arg).get("coordinates");
-            if (coordObj instanceof NativeArray) {
-                collection = new MultiPoint((NativeArray) coordObj);
-            } else {
-                throw ScriptRuntime.constructError("Error", "Config must have coordinates member.");
-            }
+        if (inNewExpr) {
+            collection = new MultiPoint(array);
         } else {
-            throw ScriptRuntime.constructError("Error", "Invalid arguments");
+            collection = new MultiPoint(array.getParentScope(), array);
         }
         return collection;
     }

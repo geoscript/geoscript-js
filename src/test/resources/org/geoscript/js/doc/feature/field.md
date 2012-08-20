@@ -13,3 +13,15 @@ Field basics:
     Polygon
     js> field.projection
     <Projection EPSG:4326>
+    
+    js> var f = Field({
+      >     description: "This is a polygon field.", 
+      >     type: "Polygon", 
+      >     name: "poly", 
+      >     projection: "EPSG:4326"
+      > });
+    js> f instanceof Field
+    true
+    js> f
+    <Field name: "poly" type: Polygon>
+    

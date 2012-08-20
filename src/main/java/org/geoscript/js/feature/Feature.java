@@ -63,6 +63,10 @@ public class Feature extends GeoObject implements Wrapper {
         this.setPrototype(Module.getClassPrototype(Feature.class));
     }
 
+    /**
+     * Constructor from config object.
+     * @param config
+     */
     private Feature(NativeObject config) {
         Schema schema;
         Object schemaObj = config.get("schema");
@@ -101,16 +105,34 @@ public class Feature extends GeoObject implements Wrapper {
         }
         feature = builder.buildFeature(id);
     }
+    
+    /**
+     * Constructor from config object (without new keyword).
+     * @param scope
+     * @param config
+     */
+    private Feature(Scriptable scope, NativeObject config) {
+        this(config);
+        setParentScope(scope);
+        this.setPrototype(Module.getClassPrototype(Feature.class));
+    }
 
     @JSConstructor
     public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
-        if (!inNewExpr) {
-            throw ScriptRuntime.constructError("Error", "Call constructor with new keyword.");
+        if (args.length != 1) {
+            throw ScriptRuntime.constructError("Error", "Constructor takes a single argument");
         }
         Feature feature = null;
         Object arg = args[0];
         if (arg instanceof NativeObject) {
-            feature = new Feature((NativeObject) arg);
+            NativeObject config = (NativeObject) arg;
+            if (inNewExpr) {
+                feature = new Feature(config);
+            } else {
+                feature = new Feature(config.getParentScope(), config);
+            }
+        } else {
+            throw ScriptRuntime.constructError("Error", "Could not create feature from argument: " + Context.toString(arg));
         }
         return feature;
     }

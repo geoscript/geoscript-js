@@ -61,6 +61,12 @@ Point basics:
     js> p1.distance(p3)
     0
     
+    js> var newPoint = Point([1, 2]);
+    js> newPoint instanceof Point
+    true
+    js> newPoint
+    <Point [1, 2]>
+    
     js> var jts = Packages.com.vividsolutions.jts;
     js> var wktReader = new jts.io.WKTReader();
     js> var g = Geometry.from_(wktReader.read("POINT(1 2)"));

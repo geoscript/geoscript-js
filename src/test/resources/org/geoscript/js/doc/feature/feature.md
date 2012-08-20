@@ -42,3 +42,12 @@ Fetaure basics:
     js> feature.get("geom").equals(new geom.Point([3, 4]))
     true
     
+    js> var f = Feature({
+      >     properties: {place: "Home", geom: geom.Point([1, 2])}, 
+      >     id: "foo"
+      > });
+    js> f instanceof Feature
+    true
+    js> f
+    <Feature place: "Home", geom: <Point>>
+    

@@ -5,7 +5,6 @@ import java.util.Arrays;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.NativeArray;
-import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.Wrapper;
@@ -27,16 +26,6 @@ public class MultiLineString extends GeometryCollection implements Wrapper {
     }
 
     /**
-     * Constructor from JTS geometry.
-     * @param geometry
-     */
-    public MultiLineString(Scriptable scope, com.vividsolutions.jts.geom.MultiLineString geometry) {
-        this.setParentScope(scope);
-        this.setPrototype(Module.getClassPrototype(MultiLineString.class));
-        setGeometry(geometry);
-    }
-
-    /**
      * Constructor for coordinate array.
      * @param context
      * @param scope
@@ -44,6 +33,28 @@ public class MultiLineString extends GeometryCollection implements Wrapper {
      */
     public MultiLineString(NativeArray array) {
         super(array);
+    }
+    
+
+    /**
+     * Constructor for coordinate array (without new keyword).
+     * @param scope
+     * @param array
+     */
+    public MultiLineString(Scriptable scope, NativeArray array) {
+        this(array);
+        this.setParentScope(scope);
+        this.setPrototype(Module.getClassPrototype(MultiLineString.class));
+    }
+
+    /**
+     * Constructor from JTS geometry.
+     * @param geometry
+     */
+    public MultiLineString(Scriptable scope, com.vividsolutions.jts.geom.MultiLineString geometry) {
+        this.setParentScope(scope);
+        this.setPrototype(Module.getClassPrototype(MultiLineString.class));
+        setGeometry(geometry);
     }
 
     public com.vividsolutions.jts.geom.MultiLineString createCollection(com.vividsolutions.jts.geom.Geometry[] geometries) {
@@ -61,22 +72,15 @@ public class MultiLineString extends GeometryCollection implements Wrapper {
      */
     @JSConstructor
     public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
-        if (!inNewExpr) {
-            throw ScriptRuntime.constructError("Error", "Call constructor with new keyword.");
+        if (args.length != 1) {
+            throw ScriptRuntime.constructError("Error", "Constructor takes a single argument");
         }
         MultiLineString collection = null;
-        Object arg = args[0];
-        if (arg instanceof NativeArray) {
-            collection = new MultiLineString((NativeArray) arg);
-        } else if (arg instanceof NativeObject) {
-            Object coordObj = ((NativeObject) arg).get("coordinates");
-            if (coordObj instanceof NativeArray) {
-                collection = new MultiLineString((NativeArray) coordObj);
-            } else {
-                throw ScriptRuntime.constructError("Error", "Config must have coordinates member.");
-            }
+        NativeArray array = getCoordinatesArray(args[0]);
+        if (inNewExpr) {
+            collection = new MultiLineString(array);
         } else {
-            throw ScriptRuntime.constructError("Error", "Invalid arguments");
+            collection = new MultiLineString(array.getParentScope(), array);
         }
         return collection;
     }

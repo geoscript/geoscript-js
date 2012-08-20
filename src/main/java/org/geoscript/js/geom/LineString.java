@@ -26,6 +26,28 @@ public class LineString extends Geometry implements Wrapper {
     }
 
     /**
+     * Constructor for config object.
+     * @param config
+     */
+    public LineString(NativeObject config) {
+        NativeArray array = (NativeArray) config.get("coordinates", config);
+        Coordinate[] coords = arrayToCoords(array);
+        setGeometry(factory.createLineString(coords));
+    }
+
+
+    /**
+     * Constructor for config object (without new keyword).
+     * @param scope
+     * @param config
+     */
+    public LineString(Scriptable scope, NativeObject config) {
+        this(config);
+        this.setParentScope(scope);
+        this.setPrototype(Module.getClassPrototype(LineString.class));
+    }
+
+    /**
      * Constructor from JTS geometry.
      * @param geometry
      */
@@ -36,17 +58,6 @@ public class LineString extends Geometry implements Wrapper {
     }
 
     /**
-     * Constructor for coordinate array.
-     * @param context
-     * @param scope
-     * @param array
-     */
-    public LineString(NativeArray array) {
-        Coordinate[] coords = arrayToCoords(array);
-        setGeometry(factory.createLineString(coords));
-    }
-    
-    /**
      * JavaScript constructor.
      * @param cx
      * @param args
@@ -56,22 +67,15 @@ public class LineString extends Geometry implements Wrapper {
      */
     @JSConstructor
     public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
-        if (!inNewExpr) {
-            throw ScriptRuntime.constructError("Error", "Call constructor with new keyword.");
+        if (args.length != 1) {
+            throw ScriptRuntime.constructError("Error", "Constructor takes a single argument");
         }
+        NativeObject config = prepConfig(cx, (Scriptable) args[0]);
         LineString line = null;
-        Object arg = args[0];
-        if (arg instanceof NativeArray) {
-            line = new LineString((NativeArray) arg);
-        } else if (arg instanceof NativeObject) {
-            Object coordObj = ((NativeObject) arg).get("coordinates");
-            if (coordObj instanceof NativeArray) {
-                line = new LineString((NativeArray) coordObj);
-            } else {
-                throw ScriptRuntime.constructError("Error", "Config must have coordinates member.");
-            }
+        if (inNewExpr) {
+            line = new LineString(config);
         } else {
-            throw ScriptRuntime.constructError("Error", "Invalid arguments");
+            line = new LineString(config.getParentScope(), config);
         }
         return line;
     }

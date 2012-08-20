@@ -3,7 +3,6 @@ package org.geoscript.js.geom;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.NativeArray;
-import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.Wrapper;
@@ -25,16 +24,6 @@ public class GeometryCollection extends Geometry implements Wrapper {
     }
 
     /**
-     * Constructor from JTS geometry.
-     * @param geometry
-     */
-    public GeometryCollection(Scriptable scope, com.vividsolutions.jts.geom.GeometryCollection geometry) {
-        this.setParentScope(scope);
-        this.setPrototype(Module.getClassPrototype(GeometryCollection.class));
-        setGeometry(geometry);
-    }
-
-    /**
      * Constructor for coordinate array.
      * @param context
      * @param scope
@@ -48,19 +37,21 @@ public class GeometryCollection extends Geometry implements Wrapper {
             if (obj instanceof com.vividsolutions.jts.geom.Geometry) {
                 geometries[i] = (com.vividsolutions.jts.geom.Geometry) obj;
             } else if (obj instanceof NativeArray) {
+                Scriptable scope = array.getParentScope();
+                Context context = getCurrentContext();
                 int dim = getArrayDimension((NativeArray) obj);
                 if (dim < 0 || dim > 2) {
                     throw new RuntimeException("Coordinate array must contain point, line, or polygon coordinate values");
                 }
                 switch (dim) {
                 case 0:
-                    geometries[i] = new Point((NativeArray) obj).unwrap();
+                    geometries[i] = new Point(scope, prepConfig(context, (Scriptable) obj)).unwrap();
                     break;
                 case 1:
-                    geometries[i] = new LineString((NativeArray) obj).unwrap();
+                    geometries[i] = new LineString(scope, prepConfig(context, (Scriptable) obj)).unwrap();
                     break;
                 case 2:
-                    geometries[i] = new Polygon((NativeArray) obj).unwrap();
+                    geometries[i] = new Polygon(scope, prepConfig(context, (Scriptable) obj)).unwrap();
                     break;
                 }
             }
@@ -73,7 +64,28 @@ public class GeometryCollection extends Geometry implements Wrapper {
         com.vividsolutions.jts.geom.GeometryCollection collection = createCollection(geometries);
         setGeometry(collection);
     }
-    
+
+    /**
+     * Constructor from array (without new keyword).
+     * @param scope
+     * @param array
+     */
+    public GeometryCollection(Scriptable scope, NativeArray array) {
+        this(array);
+        this.setParentScope(scope);
+        this.setPrototype(Module.getClassPrototype(GeometryCollection.class));
+    }
+
+    /**
+     * Constructor from JTS geometry.
+     * @param geometry
+     */
+    public GeometryCollection(Scriptable scope, com.vividsolutions.jts.geom.GeometryCollection geometry) {
+        this.setParentScope(scope);
+        this.setPrototype(Module.getClassPrototype(GeometryCollection.class));
+        setGeometry(geometry);
+    }
+
     public com.vividsolutions.jts.geom.GeometryCollection createCollection(com.vividsolutions.jts.geom.Geometry[] geometries) {
         return new com.vividsolutions.jts.geom.GeometryCollection(geometries, factory);
     }
@@ -98,21 +110,29 @@ public class GeometryCollection extends Geometry implements Wrapper {
      */
     @JSConstructor
     public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
+        if (args.length != 1) {
+            throw ScriptRuntime.constructError("Error", "Constructor takes a single argument");
+        }
+        NativeArray array = getCoordinatesArray(args[0]);
         GeometryCollection collection = null;
-        Object arg = args[0];
+        if (inNewExpr) {
+            collection = new GeometryCollection(array);
+        } else {
+            collection = new GeometryCollection(array.getParentScope(), array);
+        }
+        return collection;
+    }
+    
+    protected static NativeArray getCoordinatesArray(Object arg) {
+        NativeArray array;
         if (arg instanceof NativeArray) {
-            collection = new GeometryCollection((NativeArray) arg);
-        } else if (arg instanceof NativeObject) {
-            Object coordObj = ((NativeObject) arg).get("coordinates");
-            if (coordObj instanceof NativeArray) {
-                collection = new GeometryCollection((NativeArray) coordObj);
-            } else {
-                throw ScriptRuntime.constructError("Error", "Config must have coordinates member.");
-            }
+            array = (NativeArray) arg;
+        } else if (arg instanceof Scriptable) {
+            array = (NativeArray) getRequiredMember((Scriptable) arg, "coordinates", NativeArray.class, "Array");
         } else {
             throw ScriptRuntime.constructError("Error", "Invalid arguments");
         }
-        return collection;
+        return array;
     }
 
     /**

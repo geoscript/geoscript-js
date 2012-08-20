@@ -100,15 +100,20 @@ public class Schema extends GeoObject implements Wrapper {
 
     @JSConstructor
     public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
-        if (!inNewExpr) {
-            throw ScriptRuntime.constructError("Error", "Call constructor with new keyword.");
+        if (args.length != 1) {
+            throw ScriptRuntime.constructError("Error", "Constructor takes a single argument");
         }
         Schema schema = null;
         Object arg = args[0];
-        if (arg instanceof NativeObject) {
-            schema = new Schema((NativeObject) arg);
-        } else if (arg instanceof NativeArray) {
-            schema = new Schema(prepConfig((NativeArray) arg));
+        if (arg instanceof Scriptable) {
+            NativeObject config = prepConfig((Scriptable) arg);
+            if (inNewExpr) {
+                schema = new Schema(config);
+            } else {
+                schema = new Schema(config.getParentScope(), config);
+            }
+        } else {
+            throw ScriptRuntime.constructError("Error", "Could not create schema from argument: " + Context.toString(arg));
         }
         return schema;
     }
@@ -199,6 +204,8 @@ public class Schema extends GeoObject implements Wrapper {
         } else if (obj instanceof NativeArray) {
             config = (NativeObject) cx.newObject(scope, "Object");
             config.put("fields", config, (NativeArray) obj);
+        } else {
+            throw ScriptRuntime.constructError("Error", "Could not create config from argument: " + Context.toString(obj));
         }
         return config;
     }

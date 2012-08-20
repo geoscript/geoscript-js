@@ -5,7 +5,6 @@ import java.util.Arrays;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.NativeArray;
-import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.Wrapper;
@@ -26,16 +25,6 @@ public class MultiPolygon extends GeometryCollection implements Wrapper {
     }
 
     /**
-     * Constructor from JTS geometry.
-     * @param geometry
-     */
-    public MultiPolygon(Scriptable scope, com.vividsolutions.jts.geom.MultiPolygon geometry) {
-        this.setParentScope(scope);
-        this.setPrototype(Module.getClassPrototype(MultiPolygon.class));
-        setGeometry(geometry);
-    }
-
-    /**
      * Constructor for coordinate array.
      * @param context
      * @param scope
@@ -43,6 +32,27 @@ public class MultiPolygon extends GeometryCollection implements Wrapper {
      */
     public MultiPolygon(NativeArray array) {
         super(array);
+    }
+    
+    /**
+     * Constructor for coordinate array (without new keyword).
+     * @param scope
+     * @param array
+     */
+    public MultiPolygon(Scriptable scope, NativeArray array) {
+        this(array);
+        this.setParentScope(scope);
+        this.setPrototype(Module.getClassPrototype(MultiPolygon.class));
+    }
+
+    /**
+     * Constructor from JTS geometry.
+     * @param geometry
+     */
+    public MultiPolygon(Scriptable scope, com.vividsolutions.jts.geom.MultiPolygon geometry) {
+        this.setParentScope(scope);
+        this.setPrototype(Module.getClassPrototype(MultiPolygon.class));
+        setGeometry(geometry);
     }
 
     public com.vividsolutions.jts.geom.MultiPolygon createCollection(com.vividsolutions.jts.geom.Geometry[] geometries) {
@@ -60,22 +70,15 @@ public class MultiPolygon extends GeometryCollection implements Wrapper {
      */
     @JSConstructor
     public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
-        if (!inNewExpr) {
-            throw ScriptRuntime.constructError("Error", "Call constructor with new keyword.");
+        if (args.length != 1) {
+            throw ScriptRuntime.constructError("Error", "Constructor takes a single argument");
         }
         MultiPolygon collection = null;
-        Object arg = args[0];
-        if (arg instanceof NativeArray) {
-            collection = new MultiPolygon((NativeArray) arg);
-        } else if (arg instanceof NativeObject) {
-            Object coordObj = ((NativeObject) arg).get("coordinates");
-            if (coordObj instanceof NativeArray) {
-                collection = new MultiPolygon((NativeArray) coordObj);
-            } else {
-                throw ScriptRuntime.constructError("Error", "Config must have coordinates member.");
-            }
+        NativeArray array = getCoordinatesArray(args[0]);
+        if (inNewExpr) {
+            collection = new MultiPolygon(array);
         } else {
-            throw ScriptRuntime.constructError("Error", "Invalid arguments");
+            collection = new MultiPolygon(array.getParentScope(), array);
         }
         return collection;
     }

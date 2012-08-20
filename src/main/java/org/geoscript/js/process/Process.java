@@ -53,7 +53,11 @@ public class Process extends GeoObject implements Wrapper {
     public Process() {
     }
 
-    public Process(Scriptable config) {
+    /**
+     * Constructor from config object.
+     * @param config
+     */
+    private Process(Scriptable config) {
         
         title = (String) getOptionalMember(config, "title", String.class);
         description = (String) getOptionalMember(config, "description", String.class);
@@ -67,7 +71,27 @@ public class Process extends GeoObject implements Wrapper {
         Function runFunc = (Function) getRequiredMember(config, "run", Function.class);
         process = new JSProcess(this, runFunc);
     }
+
+    /**
+     * Constructor from config object (without new keyword).
+     * @param scope
+     * @param config
+     */
+    private Process(Scriptable scope, Scriptable config) {
+        this(config);
+        setParentScope(scope);
+        this.setPrototype(Module.getClassPrototype(Process.class));
+    }
     
+    /**
+     * Constructor from metadata args.
+     * @param scope
+     * @param title
+     * @param description
+     * @param inputs
+     * @param outputs
+     * @param process
+     */
     public Process(Scriptable scope, InternationalString title, 
             InternationalString description, Map<String, 
             Parameter<?>> inputs, Map<String, Parameter<?>> outputs, 
@@ -239,18 +263,19 @@ public class Process extends GeoObject implements Wrapper {
      */
     @JSConstructor
     public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
-        if (!inNewExpr) {
-            throw ScriptRuntime.constructError("Error", "Call constructor with new keyword.");
-        }
         if (args.length != 1) {
             throw ScriptRuntime.constructError("Error", "Constructor takes a single config argument.");
         }
         Process process = null;
         Object arg = args[0];
         if (arg instanceof Scriptable) {
-            process = new Process((Scriptable) arg);
-        }
-        if (process == null) {
+            Scriptable config = (Scriptable) arg;
+            if (inNewExpr) {
+                process = new Process(config);
+            } else {
+                process = new Process(config.getParentScope(), config);
+            }
+        } else {
             throw ScriptRuntime.constructError("Error", "Could not construct process from given argument: " + arg);
         }
         return process;

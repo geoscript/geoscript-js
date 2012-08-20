@@ -114,13 +114,20 @@ public class Field extends GeoObject implements Wrapper {
     
     @JSConstructor
     public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
-        if (!inNewExpr) {
-            throw ScriptRuntime.constructError("Error", "Call constructor with new keyword.");
+        if (args.length != 1) {
+            throw ScriptRuntime.constructError("Error", "Constructor takes a single argument");
         }
         Field field = null;
         Object arg = args[0];
         if (arg instanceof NativeObject) {
-            field = new Field((NativeObject) arg);
+            NativeObject config = (NativeObject) arg;
+            if (inNewExpr) {
+                field = new Field(config);
+            } else {
+                field = new Field(config.getParentScope(), config);
+            }
+        } else {
+            throw ScriptRuntime.constructError("Error", "Could not create field from argument: " + Context.toString(arg));
         }
         return field;
     }

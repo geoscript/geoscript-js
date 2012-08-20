@@ -25,6 +25,27 @@ public class Point extends Geometry implements Wrapper {
     }
     
     /**
+     * Constructor for config object.
+     * @param prepConfig
+     */
+    public Point(NativeObject config) {
+        NativeArray array = (NativeArray) config.get("coordinates", config);
+        Coordinate coord = arrayToCoord(array);
+        setGeometry(factory.createPoint(coord));
+    }
+
+    /**
+     * Constructor for config object (without new keyword).
+     * @param scope
+     * @param config
+     */
+    public Point(Scriptable scope, NativeObject config) {
+        this(config);
+        this.setParentScope(scope);
+        this.setPrototype(Module.getClassPrototype(Point.class));
+    }
+
+    /**
      * Constructor from JTS geometry.
      * @param geometry
      */
@@ -32,17 +53,6 @@ public class Point extends Geometry implements Wrapper {
         this.setParentScope(scope);
         this.setPrototype(Module.getClassPrototype(Point.class));
         setGeometry(geometry);
-    }
-    
-    /**
-     * Constructor for coordinate array.
-     * @param context
-     * @param scope
-     * @param array
-     */
-    public Point(NativeArray array) {
-        Coordinate coord = arrayToCoord(array);
-        setGeometry(factory.createPoint(coord));
     }
 
     /**
@@ -55,22 +65,15 @@ public class Point extends Geometry implements Wrapper {
      */
     @JSConstructor
     public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
-        if (!inNewExpr) {
-            throw ScriptRuntime.constructError("Error", "Call constructor with new keyword.");
+        if (args.length != 1) {
+            throw ScriptRuntime.constructError("Error", "Constructor takes a single argument");
         }
+        NativeObject config = prepConfig(cx, (Scriptable) args[0]);
         Point point = null;
-        Object arg = args[0];
-        if (arg instanceof NativeArray) {
-            point = new Point((NativeArray) arg);
-        } else if (arg instanceof NativeObject) {
-            Object coordObj = ((NativeObject) arg).get("coordinates");
-            if (coordObj instanceof NativeArray) {
-                point = new Point((NativeArray) coordObj);
-            } else {
-                throw ScriptRuntime.constructError("Error", "Config must have coordinates member.");
-            }
+        if (inNewExpr) {
+            point = new Point(config);
         } else {
-            throw ScriptRuntime.constructError("Error", "Requires an array of coordinate values.");
+            point = new Point(config.getParentScope(), config);
         }
         return point;
     }

@@ -97,10 +97,18 @@ public class Projection extends GeoObject implements Wrapper {
      */
     @JSConstructor
     public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
+        if (args.length != 1) {
+            throw ScriptRuntime.constructError("Error", "Constructor takes a single argument");
+        }
         Projection projection = null;
         Object arg = args[0];
         if (arg instanceof String) {
-            projection = new Projection((String) arg);
+            String id = (String) arg;
+            if (inNewExpr) {
+                projection = new Projection(id);
+            } else {
+                projection = new Projection(ctorObj.getParentScope(), id);
+            }
         } else {
             throw ScriptRuntime.constructError("Error", "Requires a string with CRS id or WKT.");
         }

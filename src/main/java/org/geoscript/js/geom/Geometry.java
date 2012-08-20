@@ -71,6 +71,30 @@ public class Geometry extends GeoObject implements Wrapper {
         return member;
     }
     
+
+    /**
+     * Convert the provided object into an acceptable geometry config object.
+     * @param context
+     * @param configObj
+     * @return
+     */
+    protected static NativeObject prepConfig(Context context, Scriptable configObj) {
+        Scriptable scope = configObj.getParentScope();
+        NativeObject config = null;
+        if (configObj instanceof NativeObject) {
+            getRequiredMember(configObj, "coordinates", NativeArray.class, "Array");
+            config = (NativeObject) configObj;
+        } else if (configObj instanceof NativeArray) {
+            NativeArray array = (NativeArray) configObj;
+            config = (NativeObject) context.newObject(scope);
+            config.put("coordinates", config, array);
+        } else {
+            throw ScriptRuntime.constructError("Error", 
+                    "Geometry config must be an array or an object with a coordinates member");
+        }
+        return config;
+    }
+    
     /**
      * Create a JavaScript method from an underlying JTS Geometry method where
      * possible.

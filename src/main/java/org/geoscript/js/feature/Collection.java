@@ -50,6 +50,25 @@ public class Collection extends GeoObject implements Wrapper {
     }
 
     /**
+     * Constructor from config object.
+     * @param config
+     */
+    private Collection(Scriptable config) {
+        collection = new JSFeatureCollection(this, config);
+    }
+    
+    /**
+     * Constructor from config object (without new keyword).
+     * @param scope
+     * @param config
+     */
+    private Collection(Scriptable scope, Scriptable config) {
+        this(config);
+        setParentScope(scope);
+        this.setPrototype(Module.getClassPrototype(Collection.class));
+    }
+
+    /**
      * Constructor with SimpleFeatureCollection (from Java).
      * @param scope
      * @param collection
@@ -59,11 +78,7 @@ public class Collection extends GeoObject implements Wrapper {
         setParentScope(scope);
         this.setPrototype(Module.getClassPrototype(Collection.class));
     }
-    
-    private Collection(Scriptable config) {
-        collection = new JSFeatureCollection(this, config);
-    }
-    
+
     /**
      * JavaScript constructor.
      * @param cx
@@ -74,15 +89,20 @@ public class Collection extends GeoObject implements Wrapper {
      */
     @JSConstructor
     public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
-        if (!inNewExpr) {
-            throw ScriptRuntime.constructError("Error", "Call constructor with new keyword.");
+        if (args.length != 1) {
+            throw ScriptRuntime.constructError("Error", "Constructor takes a single argument");
         }
         Collection collection = null;
         Object arg = args[0];
         if (arg instanceof Scriptable) {
-            collection = new Collection((Scriptable) arg);
+            Scriptable config = (Scriptable) arg;
+            if (inNewExpr) {
+                collection = new Collection(config);
+            } else {
+                collection = new Collection(config.getParentScope(), config);
+            }
         } else {
-            throw ScriptRuntime.constructError("Error", "Could not construct collection from given argument: " + arg);
+            throw ScriptRuntime.constructError("Error", "Could not create collection from argument: " + Context.toString(arg));
         }
         return collection;
     }

@@ -34,16 +34,9 @@ public class Bounds extends GeoObject implements Wrapper {
     }
 
     /**
-     * Constructor from ReferencedEnvelope.
-     * @param scope
-     * @param crs
+     * Constructor from config object.
+     * @param obj
      */
-    public Bounds(Scriptable scope, ReferencedEnvelope refEnv) {
-        this.setParentScope(scope);
-        this.setPrototype(Module.getClassPrototype(Bounds.class));
-        this.refEnv = refEnv;
-    }
-    
     public Bounds(NativeObject obj) {
         double minX = Double.NaN;
         double minY = Double.NaN;
@@ -78,6 +71,10 @@ public class Bounds extends GeoObject implements Wrapper {
         refEnv = new ReferencedEnvelope(minX, maxX, minY, maxY, crs);
     }
     
+    /**
+     * Constructor from array.
+     * @param array
+     */
     public Bounds(NativeArray array) {
         if (array.size() != 4 && array.size() != 5) {
             throw new RuntimeException("Array must have 4 or 5 elements.");
@@ -119,7 +116,41 @@ public class Bounds extends GeoObject implements Wrapper {
         }
         refEnv = new ReferencedEnvelope(minX, maxX, minY, maxY, crs);
     }
+
+    /**
+     * Constructor from config object (without new keyword).
+     * @param scope
+     * @param obj
+     */
+    public Bounds(Scriptable scope, NativeObject obj) {
+        this(obj);
+        this.setParentScope(scope);
+        this.setPrototype(Module.getClassPrototype(Bounds.class));
+    }
     
+    /**
+     * Constructor from array (without new keyword).
+     * @param scope
+     * @param array
+     */
+    public Bounds(Scriptable scope, NativeArray array) {
+        this(array);
+        this.setParentScope(scope);
+        this.setPrototype(Module.getClassPrototype(Bounds.class));
+    }
+
+    /**
+     * Constructor from ReferencedEnvelope.
+     * @param scope
+     * @param crs
+     */
+    public Bounds(Scriptable scope, ReferencedEnvelope refEnv) {
+        this.setParentScope(scope);
+        this.setPrototype(Module.getClassPrototype(Bounds.class));
+        this.refEnv = refEnv;
+    }
+    
+
     @JSGetter
     public Object getMinX() {
         return refEnv.getMinX();
@@ -301,12 +332,25 @@ public class Bounds extends GeoObject implements Wrapper {
      */
     @JSConstructor
     public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
+        if (args.length != 1) {
+            throw ScriptRuntime.constructError("Error", "Constructor takes a single argument");
+        }
         Bounds bounds = null;
         Object arg = args[0];
         if (arg instanceof NativeObject) {
-            bounds = new Bounds((NativeObject) arg);
+            NativeObject config = (NativeObject) arg;
+            if (inNewExpr) {
+                bounds = new Bounds(config);
+            } else {
+                bounds = new Bounds(config.getParentScope(), config);
+            }
         } else if (arg instanceof NativeArray) {
-            bounds = new Bounds((NativeArray) arg);
+            NativeArray array = (NativeArray) arg;
+            if (inNewExpr) {
+                bounds = new Bounds(array);
+            } else {
+                bounds = new Bounds(array.getParentScope(), array);
+            }
         } else {
             throw ScriptRuntime.constructError("Error", "Requires a object or array.");
         }
