@@ -129,10 +129,9 @@ var Layer = UTIL.extend(GeoObject, {
                 filter = FILTER.fids([id]);
             }
         }
-        var collection = this.query(filter);
-        if (collection.hasNext()) {
-            feature = collection.next();
-            collection.close();
+        var features = this.query(filter).get(1);
+        if (features.length > 0) {
+            feature = features[0];
         }
         return feature;
     },
@@ -152,8 +151,8 @@ var Layer = UTIL.extend(GeoObject, {
         var schema = this.schema.clone({name: name});
         var layer = new Layer({schema: schema});
         var collection = this.features;
-        while (collection.hasNext()) {
-            layer.add(collection.next().clone());
+        for (var feature in this.features) {
+            layer.add(feature.clone())
         }
         return layer;
     },
@@ -325,9 +324,7 @@ var Layer = UTIL.extend(GeoObject, {
             bounds = GEOM.Bounds.from_(_bounds);
         } else {
             // manually calculate bounds for layers that don't support getBounds with a filter
-            var collection = this.features;
-            while (collection.hasNext()) {
-                var feature = collection.next();
+            for (var feature in this.features) {
                 if (filter.evaluate(feature)) {
                     if (!bounds) {
                         bounds = feature.bounds.clone();

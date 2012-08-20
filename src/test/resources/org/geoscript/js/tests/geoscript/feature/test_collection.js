@@ -62,6 +62,13 @@ exports["test: iterator"] = function() {
         ASSERT.strictEqual(feature.get("place"), "place_" + (count-1), "place " + count);
     }
     ASSERT.strictEqual(count, size, "iterated through all");
+    
+    count = 0;
+    for (feature in collection) {
+        ++count;
+    }
+    ASSERT.strictEqual(count, size, "iterated through all a second time");
+
 }
 
 exports["test: size"] = function() {
@@ -71,19 +78,16 @@ exports["test: size"] = function() {
     
 };
 
-exports["test: size (after next)"] = function() {
+exports["test: size (during iteration)"] = function() {
     
     var collection = createCollection();
-    
-    var first = collection.next();
-    ASSERT.ok(first instanceof Feature, "first feature");
-    ASSERT.strictEqual(first.get("place"), "place_0", "first place");
-    
-    ASSERT.strictEqual(collection.size, size, "size");
 
-    var second = collection.next();
-    ASSERT.ok(second instanceof Feature, "second feature");
-    ASSERT.strictEqual(second.get("place"), "place_1", "second place");
+    var i = 0;
+    for (var feature in collection) {
+        ASSERT.strictEqual(collection.size, size, i + ": size");
+        ++i;
+    }
+    ASSERT.strictEqual(i, size, "iterated through all");
 
 }
 
@@ -142,29 +146,6 @@ exports["test: bounds (custom)"] = function() {
     
 };
 
-exports["test: close"] = function() {
-    
-    var collection = createCollection();
-    
-    var first = collection.next();
-    ASSERT.ok(first instanceof Feature, "first feature");
-    ASSERT.strictEqual(first.get("place"), "place_0", "first place");
-    
-    ASSERT.strictEqual(collection.size, size, "size before close");
-
-    var second = collection.next();
-    ASSERT.ok(second instanceof Feature, "second feature");
-    ASSERT.strictEqual(second.get("place"), "place_1", "second place");
-    
-    collection.close();
-    ASSERT.throws(function() {
-        collection.next();
-    }, StopIteration, "StopIteration thrown on next after close");
-    
-    ASSERT.strictEqual(collection.size, size, "size after close");
-
-}
-
 exports["test: close (custom)"] = function() {
     
     var calls = 0;
@@ -188,27 +169,33 @@ exports["test: close (custom)"] = function() {
         }
     });
     
-    var first = collection.next();
-    ASSERT.strictEqual(calls, 0, "close not called with first next");
-    
     calls = 0;
     ASSERT.strictEqual(collection.size, 2, "size check");
     ASSERT.strictEqual(calls, 1, "close called with size check");
     
     calls = 0;
-    var second = collection.next();
-    ASSERT.strictEqual(calls, 0, "close not called with second next");
+    var i = 0;
+    for (var feature in collection) {
+        ASSERT.strictEqual(calls, 0, i + ": iteration");
+        ++i;
+    }
+    ASSERT.strictEqual(calls, 1, "close called after iteration");
     
     calls = 0;
-    ASSERT.throws(function() {
-        collection.next();
-    }, StopIteration, "Throws StopIteration after exhausted.");
+    collection.forEach(function(feature, i) {
+        ASSERT.strictEqual(calls, 0, i + ": forEach");
+    });
+    ASSERT.strictEqual(calls, 1, "close called after forEach");
     
-    ASSERT.strictEqual(calls, 1, "close called after exhaustion");
-    
+    // break out of forEach early
     calls = 0;
-    collection.close();
-    ASSERT.strictEqual(calls, 1, "close called once");
+    var count = 0;
+    collection.forEach(function(feature, i) {
+        ++count;
+        return false;
+    });
+    ASSERT.strictEqual(count, 1, "forEach cancelled early");
+    ASSERT.strictEqual(calls, 1, "close called after forEach cancelled");
     
 }
 

@@ -13,8 +13,6 @@ exports["test: features"] = function(getLayer) {
         features = layer.features;
         count = layer.count;
 
-        ASSERT.ok(features.hasNext(), "hasNext returns true");
-    
         var log = [];
         var testScope = {};
         features.forEach(function() {log.push({args: arguments, scope: this})}, testScope);
@@ -23,44 +21,14 @@ exports["test: features"] = function(getLayer) {
         ASSERT.ok(log[0].args[0] instanceof Feature, "forEach calls block with feature");
         ASSERT.strictEqual(log[0].scope, testScope, "forEach calls block with correct scope");
     
-        ASSERT.ok(!features.hasNext(), "after forEach, hasNext returns false");
-        
-        ASSERT.throws(function() {
-            features.next();
-        }, StopIteration, "throws error when exhausted");
-        
-
-        // test some additional cursor properties
-        features = layer.features;
-        ASSERT.strictEqual(features.index, -1, "index is -1 to start");
-        ASSERT.strictEqual(features.current, null, "current is null before read");
+        // read 3
+        var list = features.get(3);
+        ASSERT.strictEqual(list.length, 3, "read 3 returns 3");
+        ASSERT.ok(list[0] instanceof Feature, "list contains features");
     
-        // read 1 - index: 0
-        feature = features.next();
-        ASSERT.ok(feature instanceof Feature, "0: next reads a feature");
-        ASSERT.strictEqual(features.index, 0, "0: index is 0 after 1 read");
-        ASSERT.ok(feature === features.current, "0: current feature set to most recently read");
-    
-        // skip 3 - index: 3
-        features.skip(3);
-        ASSERT.strictEqual(features.index, 3, "3: index is 3 after skip");
-        ASSERT.ok(feature === features.current, "3: current feature is still last read");
-    
-        // read 3 - index: 6
-        var list = features.read(3);
-        ASSERT.strictEqual(list.length, 3, "6: read 3 returns 3");
-        ASSERT.ok(list[0] instanceof Feature, "6: list contains features");
-        ASSERT.ok(list[2] === features.current, "6: current is most recetly read");
-    
-        // skip 40 - index: 46
-        features.skip(40);
-        ASSERT.strictEqual(features.index, 46, "46: index is 46 after skip");
-    
-        // read 10 - index: 48 (only 49 features)
-        list = features.read(10);
-        ASSERT.strictEqual(features.index, 48, "48: index is 48 after exhausting cursor");
-        ASSERT.strictEqual(list.length, 2, "48: 2 features read");
-        ASSERT.strictEqual(features.current, null, "48: current is null after closing cursor");
+        // read 60 (only 49 features)
+        list = features.get(60);
+        ASSERT.strictEqual(list.length, 49, "49 features read");
         
         layer.workspace.close();
     
@@ -69,13 +37,13 @@ exports["test: features"] = function(getLayer) {
 
 exports["test: update"] = function(getLayer) {
     return function() {
-        var layer, cursor, feature;
+        var layer, features, feature;
         
         layer = getLayer();
         
-        cursor = layer.query("STATE_ABBR = 'MT'");
-        feature = cursor.next();
-        cursor.close();
+        features = layer.query("STATE_ABBR = 'MT'");
+        ASSERT.strictEqual(features.size, 1, "got a collection of 1");
+        feature = features.get(1)[0];
 
         // modify feature but do not persist changes
         ASSERT.strictEqual(feature.get("STATE_NAME"), "Montana", "original name");
@@ -83,9 +51,9 @@ exports["test: update"] = function(getLayer) {
         
         // re-read layer
         layer = getLayer();
-        cursor = layer.query("STATE_ABBR = 'MT'");
-        feature = cursor.next();
-        cursor.close();
+        features = layer.query("STATE_ABBR = 'MT'");
+        ASSERT.strictEqual(features.size, 1, "got a collection of 1 (again)");
+        feature = features.get(1)[0];
 
         // confirm that original name is still set
         ASSERT.strictEqual(feature.get("STATE_NAME"), "Montana", "same old name");
@@ -100,9 +68,9 @@ exports["test: update"] = function(getLayer) {
         
         // finally, confirm that changes stuck
         layer = getLayer();
-        cursor = layer.query("STATE_ABBR = 'MT'");
-        feature = cursor.next();
-        cursor.close();
+        features = layer.query("STATE_ABBR = 'MT'");
+        ASSERT.strictEqual(features.size, 1, "got a collection of 1 (again x2)");
+        feature = features.get(1)[0];
         ASSERT.strictEqual(feature.get("STATE_NAME"), "Montucky", "new name");
         ASSERT.ok(feature.geometry.area > big, "bigger");
         
@@ -152,14 +120,11 @@ exports["test: query"] = function(getLayer) {
 
         // query with a filter
         features = layer.query("STATE_ABBR EQ 'TX'");
-        ASSERT.ok(features.hasNext(), "hasNext returns true");
+        ASSERT.strictEqual(features.size, 1, "one TX");
     
-        feature = features.next();
+        feature = features.get(1)[0];
         ASSERT.strictEqual(feature.get("STATE_ABBR"), "TX", "got feature with expected STATE_ABBR");
     
-        ASSERT.isFalse(features.hasNext(), "only one feature in query results");
-        
-        
         var isMT = new Filter("STATE_ABBR = 'MT'");
         feature = layer.get(isMT);
         ASSERT.ok(feature instanceof Feature, "one feature is MT")
@@ -170,17 +135,14 @@ exports["test: query"] = function(getLayer) {
         collection = layer.query(nearMT);
         features = collection.get(20);
         ASSERT.strictEqual(features.length, 5, "there are 5 features near MT");
-        ASSERT.isTrue(!collection.hasNext(), "a) cursor closed");
 
         collection = layer.query(nearMT);
         features = collection.get(3);
         ASSERT.strictEqual(features.length, 3, "got first 3 features near MT");
-        ASSERT.isTrue(!collection.hasNext(), "b) cursor closed");
 
         collection = layer.query(nearMT.and(isMT.not));
         features = collection.get(20);
         ASSERT.strictEqual(features.length, 4, "4 features near and not MT");
-        ASSERT.isTrue(!collection.hasNext(), "c) cursor closed");
 
         layer.workspace.close();
     };

@@ -38,16 +38,10 @@ public class Collection extends GeoObject implements Wrapper {
 
     private SimpleFeatureCollection collection;
 
-    private SimpleFeatureIterator iterator;
-    
-    private Feature current;
-    
     /**
      * JavaScript layer associated with this collection (if any).
      */
     private Scriptable layer;
-    
-    private int index = -1;
     
     /**
      * Prototype constructor.
@@ -108,16 +102,6 @@ public class Collection extends GeoObject implements Wrapper {
     }
     
     @JSGetter
-    public int getIndex() {
-        return index;
-    }
-    
-    @JSGetter
-    public Feature getCurrent() {
-        return current;
-    }
-    
-    @JSGetter
     public int getSize() {
         return collection.size();
     }
@@ -138,110 +122,50 @@ public class Collection extends GeoObject implements Wrapper {
         if (thisArg == Context.getUndefinedValue()) {
             thisArg = scope;
         }
+        Iterator iterator = (Iterator) __iterator__(true);
         Context context = Context.enter();
+        int i = 0;
         try {
-            for (int i=0; hasNext(); ++i) {
-                Object[] args = { next(), i };
+            while (iterator.hasNext()) {
+                Object[] args = { iterator.next() , i };
                 Object ret = function.call(context, scope, thisArg, args);
                 if (ret.equals(false)) {
                     break;
                 }
+                ++i;
             }
-            close();
         } finally {
+            iterator.close();
             Context.exit();
-            close();
         }
     }
 
-    @JSFunction
-    public Boolean hasNext() {
-        if (iterator == null) {
-            iterator = collection.features();
-        }
-        boolean has = iterator.hasNext();
-        if (!has) {
-            close();
-        }
-        return has;
-    }
-    
-    @JSFunction
-    public Feature next() {
-        Feature feature = null;
-        if (hasNext()) {
-            SimpleFeature simpleFeature = iterator.next();
-            feature = new Feature(getParentScope(), simpleFeature);
-            if (layer != null) {
-                feature.setLayer(layer);
-            }
-            ++index;
-            current = feature;
-        } else {
-            throw new JavaScriptException(
-                    NativeIterator.getStopIterationObject(getParentScope()), null, 0);
-        }
-        return feature;
-    }
-    
     @JSFunction 
-    public NativeArray read(int length) {
-        Context cx = getCurrentContext();
-        Scriptable scope = getParentScope();
-        NativeArray results = (NativeArray) cx.newArray(scope, length);
-        int i;
-        for (i=0; i<length; ++i) {
-            if (hasNext()) {
-                results.put(i, results, next());
-            } else {
-                break;
-            }
-        }
-        results.put("length", results, i);
-        return results;
-    }
-    
-    @JSFunction 
-    public Object get(Scriptable lengthObj) {
+    public NativeArray get(Scriptable lengthObj) {
         int length = 1;
         if (lengthObj != Context.getUndefinedValue()) {
             length = (int) Context.toNumber(lengthObj);
         }
-        NativeArray results = read(length);
-        close();
-        Object features;
-        if (length == 1) {
-            features = results.get(0);
-        } else {
-            features = results;
+        Context cx = getCurrentContext();
+        Scriptable scope = getParentScope();
+        NativeArray features = (NativeArray) cx.newArray(scope, length);
+        Iterator iterator = (Iterator) __iterator__(true);
+        int i=0;
+        while (i<length && iterator.hasNext()) {
+            features.put(i, features, iterator.next());
+            ++i;
         }
+        features.put("length", features, i);
         return features;
     }
     
     @JSFunction
-    public Collection skip(int length) {
-        for (int i=0; i<length; ++i) {
-            if (hasNext()) {
-                iterator.next();
-                ++index;
-            } else {
-                break;
-            }
-        }
-        return this;
-    }
-
-    @JSFunction
-    public void close() {
-        if (iterator != null) {
-            iterator.close();
-        }
-        current = null;
-    }
-
-    @JSFunction
     public Object __iterator__(boolean b) {
-        return this;
+        Iterator iterator = new Iterator(getParentScope(), collection.features());
+        if (layer != null) {
+            iterator.setLayer(layer);
+        }
+        return iterator;
     }
 
     @JSStaticFunction
@@ -365,6 +289,8 @@ public class Collection extends GeoObject implements Wrapper {
         SimpleFeature next;
         SimpleFeatureType featureType;
         
+        boolean closed = false;
+        
         public JSFeatureIterator(Collection collection, Function featuresFunc, Function closeFunc) {
             scope = collection.getParentScope();
             this.collection = collection;
@@ -459,17 +385,20 @@ public class Collection extends GeoObject implements Wrapper {
         }
 
         public void close() {
-            if (closeFunc != null) {
-                Context context = Context.enter();
-                try {
-                    closeFunc.call(context, scope, collection, new Object[0]);
-                } finally {
-                    Context.exit();
+            if (!closed) {
+                if (closeFunc != null) {
+                    Context context = Context.enter();
+                    try {
+                        closeFunc.call(context, scope, collection, new Object[0]);
+                    } finally {
+                        Context.exit();
+                    }
+                }
+                if (generator != null) {
+                    ScriptableObject.callMethod(generator, "close", new Object[0]);
                 }
             }
-            if (generator != null) {
-                ScriptableObject.callMethod(generator, "close", new Object[0]);
-            }
+            closed = true;
         }
     
     }

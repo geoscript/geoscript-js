@@ -18,7 +18,7 @@ exports["test: add"] = function() {
     
     ASSERT.strictEqual(mem.count, 1, "one item added");
     
-    var f = mem.features.next();
+    var f = mem.features.get(1)[0];
     
     ASSERT.ok(p.equalsExact(f.geometry), "first feature has correct geometry");
     

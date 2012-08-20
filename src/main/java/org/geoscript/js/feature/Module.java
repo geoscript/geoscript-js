@@ -27,7 +27,7 @@ public class Module {
         
         @SuppressWarnings("unchecked")
         List<Class<? extends GeoObject>> classes = Arrays.asList(
-                Field.class, Schema.class, Feature.class, Collection.class);
+                Field.class, Schema.class, Feature.class, Collection.class, Iterator.class);
         
         prototypes = new HashMap<String, Scriptable>();
         for (Class<? extends GeoObject> cls : classes) {
