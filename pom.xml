@@ -4,7 +4,7 @@
     <groupId>org.geoscript</groupId>
     <artifactId>geoscript-js</artifactId>
     <packaging>jar</packaging>
-    <version>0.16</version>
+    <version>0.16-SNAPSHOT</version>
     <properties>
         <gt.version>8-SNAPSHOT</gt.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
