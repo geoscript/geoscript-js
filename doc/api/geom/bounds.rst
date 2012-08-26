@@ -16,6 +16,7 @@ Sample code to create a new bounds:
 
 .. code-block:: javascript
 
+    js> var GEOM = require("geoscript/geom");
     js> var bounds = new GEOM.Bounds({
       >     minX: -180, maxX: 180, minY: -90, maxY: 90
       > });
@@ -38,7 +39,7 @@ Sample code to create a new bounds from an array of [minX, minY, maxX, maxY] val
 
 .. code-block:: javascript
 
-    js> var bounds = GEOM.Bounds.fromArray([-180, -90, 180, 90]);
+    js> var bounds = new GEOM.Bounds([-180, -90, 180, 90]);
 
 
 
@@ -163,20 +164,4 @@ Methods
     Generate the bounds of the geometry that results from transforming this
     bounds to another projection.  This bounds must have a :attr:`projection`
     set before calling this method.
-
-
-
-
-Static Methods
---------------
-
-
-.. method:: Bounds.fromArray
-
-    :arg bbox: ``Array``
-    :arg projection: ``proj.Projection`` Optional projection for the bounds.
-    :returns: :class:`geom.Bounds`
-    
-    Create a bounds given an array of [minX, minY, maxX, maxY] values.
-
 

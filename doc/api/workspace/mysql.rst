@@ -1,8 +1,4 @@
-
 .. currentmodule:: workspace
-
-
-
 
 :class:`workspace.MySQL`
 ================================================================================
@@ -12,27 +8,6 @@
     :arg config: ``Object`` Configuration object.
 
     Create a workspace from a MySQL database.
-
-
-
-
-
-Example Use
------------
-
-Sample code create a new workspace for accessing data in a MySQL database:
-
-.. code-block:: javascript
-
-    js> var mysql = new WORKSPACE.MySQL({database: "geoscript"});
-    js> mysql
-    <MySQL ["states"]>
-    js> var states = mysql.get("states");
-    js> states
-    <Layer name: states, count: 49>
-
-    
-
 
 Config Properties
 -----------------

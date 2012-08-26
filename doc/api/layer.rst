@@ -30,13 +30,13 @@ Sample code to create a temporary layer:
     js> var layer = new LAYER.Layer({name: "temp"});
 
     js> var layer = new LAYER.Layer({
-      >     name: "temp",
+      >     name: "temp2",
       >     fields: [{name: "geom", type: "Geometry"}]
       > });
 
     js> var FEATURE = require("geoscript/feature");
     js> var schema = new FEATURE.Schema({
-      >     name: "temp",
+      >     name: "temp3",
       >     fields: [{name: "geom", type: "Geometry"}]
       > });
     js> var layer = new LAYER.Layer({schema: schema});

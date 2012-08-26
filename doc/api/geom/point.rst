@@ -1,6 +1,5 @@
 .. currentmodule:: geom
 
-
 :class:`geom.Point`
 ================================================================================
 
@@ -10,8 +9,6 @@
 
     Create a new point.
 
-
-
 Example Use
 -----------
 
@@ -19,12 +16,12 @@ Sample code to create a new point:
 
 .. code-block:: javascript
 
-    js> var point = new GEOM.Point([-180, 90]);
+    js> var Point = require("geoscript/geom").Point;
+    js> var point = new Point([-180, 90]);
     js> point.x;
     -180
     js> point.y;
     90
-
 
 
 Properties

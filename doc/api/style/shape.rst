@@ -1,8 +1,4 @@
-
 .. currentmodule:: style
-
-
-
 
 :class:`style.Shape`
 ================================================================================
@@ -10,11 +6,6 @@
 .. class:: Shape
 
     A symbolizer that renders points using a named shape.
-
-
-
-
-    
 
 
 Config Properties
@@ -30,7 +21,8 @@ Config Properties
     Example use:
     
     .. code-block:: javascript
-    
+
+        js> var Shape = require("geoscript/style").Shape;    
         js> var shape = new Shape({name: "circle", fill: "blue"});
 
 .. describe:: name

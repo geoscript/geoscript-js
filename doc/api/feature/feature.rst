@@ -1,8 +1,4 @@
-
 .. currentmodule:: feature
-
-
-
 
 :class:`feature.Feature`
 ================================================================================
@@ -14,9 +10,6 @@
     Create a new feature.
 
 
-
-
-
 Example Use
 -----------
 
@@ -24,9 +17,11 @@ Sample code to create a new feature:
 
 .. code-block:: javascript
 
-    js> var city = new FEATURE.Feature({
-      >     values: {
-      >         location: new GEOM.Point([-110, 45]),
+    js> var Feature = require("geoscript/feature").Feature;
+    js> var Point = require("geoscript/geom").Point;
+    js> var city = new Feature({
+      >     properties: {
+      >         location: new Point([-110, 45]),
       >         name: "Metropolis"
       >     }
       > });
@@ -36,12 +31,9 @@ Sample code to create a new feature:
     js> city.get("location");
     <Point [-110, 45]>
 
-    
-
 
 Config Properties
 -----------------
-
 
 .. describe:: schema
 
@@ -53,7 +45,6 @@ Config Properties
 
     ``Object``
     An object with all the feature property names and values.
-
 
 
 

@@ -181,6 +181,30 @@
                     <descriptor>src/main/assembly/all.xml</descriptor>
                 </configuration>
             </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>1.7</version>
+                    <executions>
+                        <execution>
+                            <id>add-test-resource</id>
+                            <phase>generate-test-sources</phase>
+                            <goals>
+                                <goal>add-test-resource</goal>
+                            </goals>
+                            <configuration>
+                                <resources>
+                                    <resource>
+                                        <directory>doc</directory>
+                                        <includes>
+                                            <include>**/*.rst</include>
+                                        </includes>
+                                    </resource>
+                                </resources>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
         </plugins>
         <extensions>
             <extension>

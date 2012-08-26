@@ -1,9 +1,6 @@
 
 .. currentmodule:: workspace
 
-
-
-
 :class:`workspace.PostGIS`
 ================================================================================
 
@@ -12,26 +9,6 @@
     :arg config: ``Object`` Configuration object.
 
     Create a workspace from a PostGIS enabled database.
-
-
-
-
-
-Example Use
------------
-
-Sample code create a new workspace for accessing data in a PostGIS database:
-
-.. code-block:: javascript
-
-    js> var pg = new WORKSPACE.PostGIS({database: "geoscript"});
-    js> pg
-    <PostGIS ["states"]>
-    js> var states = pg.get("states");
-    js> states
-    <Layer name: states, count: 49>
-
-    
 
 
 Config Properties

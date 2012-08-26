@@ -1,8 +1,4 @@
-
 .. currentmodule:: feature
-
-
-
 
 :class:`feature.Schema`
 ================================================================================
@@ -14,9 +10,6 @@
     Create a new schema.
 
 
-
-
-
 Example Use
 -----------
 
@@ -24,6 +17,7 @@ Sample code to create a new schema:
 
 .. code-block:: javascript
 
+    js> var FEATURE = require("geoscript/feature");
     js> var cities = new FEATURE.Schema({
       >     name: "cities",
       >     fields: [{

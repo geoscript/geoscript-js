@@ -1,7 +1,4 @@
-
 .. currentmodule:: feature
-
-
 
 
 :class:`feature.Field`
@@ -14,9 +11,6 @@
     Create a new field.
 
 
-
-
-
 Example Use
 -----------
 
@@ -24,6 +18,7 @@ Sample code to create a new field:
 
 .. code-block:: javascript
 
+    js> var FEATURE = require("geoscript/feature");
     js> var field = new FEATURE.Field({
       >     name: "age",
       >     type: "Double"

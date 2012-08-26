@@ -20,6 +20,7 @@ Sample code to new multi-point:
 
 .. code-block:: javascript
 
+    js> var GEOM = require("geoscript/geom");
     js> var p1 = new GEOM.Point([-180, 90]);
     js> var p2 = new GEOM.Point([-45, 45]);
     js> var mp = new GEOM.MultiPoint([p1, p2]);

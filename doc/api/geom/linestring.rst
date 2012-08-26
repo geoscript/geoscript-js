@@ -17,6 +17,7 @@ Sample code to new linestring:
 
 .. code-block:: javascript
 
+    js> var GEOM = require("geoscript/geom");
     js> var line = new GEOM.LineString([[-180, -90], [0, 0], [180, 90]]);
     js> line.coordinates.length
     3

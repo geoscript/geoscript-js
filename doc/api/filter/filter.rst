@@ -21,6 +21,7 @@ Examples of filters that represent various simple constraints:
 
 .. code-block:: javascript
 
+    js> var FILTER = require("geoscript/filter");
     js> var namedFoo = new FILTER.Filter("name = 'foo'");
     js> var oneThing = new FILTER.Filter("thing = 1");
     js> var few = new FILTER.Filter("count < 4");

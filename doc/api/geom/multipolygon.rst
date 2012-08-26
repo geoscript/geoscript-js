@@ -18,6 +18,7 @@ Sample code to new multi-polygon:
 
 .. code-block:: javascript
 
+    js> var GEOM = require("geoscript/geom");
     js> var p1 = new GEOM.Polygon([
       >     [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],
       >     [ [-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45] ]

@@ -17,6 +17,7 @@ Sample code to new polygon:
 
 .. code-block:: javascript
 
+    js> var GEOM = require("geoscript/geom");
     js> var poly = new GEOM.Polygon([
       >     [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],
       >     [ [-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45] ]

@@ -1,8 +1,4 @@
-
 .. currentmodule:: workspace
-
-
-
 
 :class:`workspace.H2`
 ================================================================================
@@ -14,41 +10,16 @@
     Create a workspace from an H2 database.
 
 
-
-
-
-Example Use
------------
-
-Sample code create a new workspace for accessing data in a H2 database:
-
-.. code-block:: javascript
-
-    js> var h2 = new WORKSPACE.H2({database: "data/h2/geoscript"});
-    js> h2
-    <H2 ["states"]>
-    js> var states = h2.get("states");
-    js> states
-    <Layer name: states, count: 49>
-
-    
-
-
 Config Properties
 -----------------
-
 
 .. describe:: database
 
     ``String``
     Path to the database (required).
 
-
-
-
 Properties
 ----------
-
 
 .. attribute:: H2.layers
 
@@ -59,8 +30,6 @@ Properties
 
     ``Array``
     The available layer names in the workspace.
-
-
 
 
 Methods

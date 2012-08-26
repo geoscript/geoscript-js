@@ -1,8 +1,4 @@
-
 .. currentmodule:: workspace
-
-
-
 
 :class:`workspace.Directory`
 ================================================================================
@@ -14,31 +10,8 @@
     Create a workspace from a directory.
 
 
-
-
-
-Example Use
------------
-
-Sample code create a new workspace for accessing data on the filesystem:
-
-.. code-block:: javascript
-
-    js> var dir = new WORKSPACE.Directory("data/shp");
-    js> dir
-    <Directory ["states"]>
-    js> var states = dir.get("states");
-    js> states
-    <Layer name: states, count: 49>
-
-    
-
-
-
-
 Properties
 ----------
-
 
 .. attribute:: Directory.layers
 
