@@ -5,7 +5,7 @@
 
 .. class:: Bounds
 
-    Create a new bounds given minx, miny, maxx, maxy, and an optional
+    Create a new bounds given minX, minY, maxX, maxY, and an optional
     projection.
 
 
@@ -17,7 +17,7 @@ Sample code to create a new bounds:
 .. code-block:: javascript
 
     js> var bounds = new GEOM.Bounds({
-      >     minx: -180, maxx: 180, miny: -90, maxy: 90
+      >     minX: -180, maxX: 180, minY: -90, maxY: 90
       > });
     js> bounds.width
     360
@@ -29,18 +29,18 @@ Sample code to create a new bounds with a projection:
 .. code-block:: javascript
 
     js> var bounds = new GEOM.Bounds({
-      >     minx: -180, maxx: 180, miny: -90, maxy: 90, projection: "epsg:4326"
+      >     minX: -180, maxX: 180, minY: -90, maxY: 90, projection: "epsg:4326"
       > });
     js> bounds.projection
     <Projection EPSG:4326>
 
-Sample code to create a new bounds from an array of [minx, miny, maxx, maxy] values:
+Sample code to create a new bounds from an array of [minX, minY, maxX, maxY] values:
 
 .. code-block:: javascript
 
     js> var bounds = GEOM.Bounds.fromArray([-180, -90, 180, 90]);
 
-    
+
 
 Properties
 ----------
@@ -61,22 +61,22 @@ Properties
     ``Number``
     The difference between the maximum and minimum x values.
 
-.. attribute:: Bounds.maxx
+.. attribute:: Bounds.maxX
 
     ``Number``
     The maximum value in the first (x) dimension for this bounds.
 
-.. attribute:: Bounds.maxy
+.. attribute:: Bounds.maxY
 
     ``Number``
     The maximum value in the second (y) dimension for this bounds.
 
-.. attribute:: Bounds.minx
+.. attribute:: Bounds.minX
 
     ``Number``
     The minimum value in the first (x) dimension for this bounds.
 
-.. attribute:: Bounds.miny
+.. attribute:: Bounds.minY
 
     ``Number``
     The minimum value in the second (y) dimension for this bounds.
@@ -142,22 +142,11 @@ Methods
     geometry is given, intersection will be determined as if this bounds
     were a polygon.
 
-.. method:: Bounds.quadTree
-
-    :arg start: ``Number`` Starting level
-    :arg stop: ``Number`` Stopping level (non-inclusive)
-    :returns: ``Iterator``
-    
-    Returns an iterator of bounds objects for stepping through nodes in a
-    tree of quads based on this bounds.  Level 0 is the current bounds.
-    Level 1 is the four quadrants of current bounds.  Level 2 is the 16
-    quadrants of the four level 1 quadrants.  Etc.
-
 .. method:: Bounds.toArray
 
     :returns: ``Array``
     
-    Return an array containing [minx, miny, maxx, maxy] values for this
+    Return an array containing [minX, minY, maxX, maxY] values for this
     bounds.
 
 .. method:: Bounds.toPolygon
@@ -188,9 +177,6 @@ Static Methods
     :arg projection: ``proj.Projection`` Optional projection for the bounds.
     :returns: :class:`geom.Bounds`
     
-    Create a bounds given an array of [minx, miny, maxx, maxy] values.
-
-
-
+    Create a bounds given an array of [minX, minY, maxX, maxY] values.
 
 

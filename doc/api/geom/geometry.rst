@@ -1,7 +1,4 @@
-
 .. currentmodule:: geom
-
-
 
 
 :class:`geom.Geometry`
@@ -9,20 +6,12 @@
 
 .. class:: Geometry
 
-    A Geometry instance should not be created directly.
-    Create an instance of a Geometry subclass instead.
+    All geometry subclasses extend from the base Geometry class.  The base
+    Geometry constructor is not used, but properties and method documented here
+    are shared by all geometry types. 
 
-
-
-
-    
-
-
-
-
-Properties
-----------
-
+Common Geometry Properties
+--------------------------
 
 .. attribute:: Geometry.area
 
@@ -64,11 +53,6 @@ Properties
     ``Number``
     The geometry length.
 
-.. attribute:: Geometry.prepared
-
-    ``Boolean``
-    This is a prepared geometry.  See :meth:`prepare`.
-
 .. attribute:: Geometry.projection
 
     :class:`proj.Projection`
@@ -95,9 +79,8 @@ Properties
 
 
 
-Methods
--------
-
+Common Geometry Methods
+-----------------------
 
 .. method:: Geometry.buffer
 
@@ -233,15 +216,6 @@ Methods
     :returns: ``Boolean``
     
     Tests if this geometry overlaps the other geometry.
-
-.. method:: Geometry.prepare
-
-    :returns: :class:`geom.Geometry`
-    
-    Prepare a geometry for multiple spatial operations.  Preparing optimizes
-    the geometry for multiple calls to :meth:`contains`, :meth:`coveredBy`,
-    :meth:`covers`, :meth:`crosses`, :meth:`disjoint`, :meth:`intersects`,
-    :meth:`overlaps`, :meth:`touches`, and :meth:`within`.
 
 .. method:: Geometry.simplify
 
