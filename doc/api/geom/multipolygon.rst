@@ -46,13 +46,13 @@ Properties
 ----------
 
 
-Multi-polygon geometries have the properties common to all :class:`Geometry` 
-subclasses. 
+Multi-polygon geometries have the properties common to all
+:class:`GeometryCollection` subclasses. 
 
 
 Methods
 -------
 
-Multi-polygon geometries have the methods common to all :class:`Geometry` 
-subclasses. 
+Multi-polygon geometries have the methods common to all 
+:class:`GeometryCollection` subclasses. 
 

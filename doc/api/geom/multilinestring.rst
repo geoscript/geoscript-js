@@ -37,16 +37,14 @@ Alternate method to create the same geometry as above:
 Properties
 ----------
 
-Multi-linestring geometries have the properties common to all :class:`Geometry` 
-subclasses. 
+Multi-polygon geometries have the properties common to all
+:class:`GeometryCollection` subclasses. 
 
 
 Methods
 -------
 
-Multi-linestring geometries have the methods common to all :class:`Geometry` 
-subclasses. 
-
-
+Multi-polygon geometries have the methods common to all 
+:class:`GeometryCollection` subclasses. 
 
 

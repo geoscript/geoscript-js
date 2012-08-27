@@ -10,7 +10,7 @@ polygon and multi-part geometries.
 
 .. code-block:: javascript
 
-    js> var GEOM = require("geoscript/geom");
+    js> var geom = require("geoscript/geom");
 
 
 Constructors
@@ -20,11 +20,20 @@ Constructors
     :glob:
     :maxdepth: 1    
     
-    geom/*
+    geom/point
+    geom/linestring
+    geom/polygon
+    geom/multipoint
+    geom/multilinestring
+    geom/multipolygon
+    geom/bounds
 
 
 Module Data
 -----------
+
+The following constants are used in the :meth:`Geometry.buffer` method to
+specify the buffer cap style.
 
 .. data:: BUFFER_CAP_BUTT
 
