@@ -1,16 +1,13 @@
-.. currentmodule:: style
-
 :class:`style.Shape`
-================================================================================
+====================
 
-.. class:: Shape
+.. class:: style.Shape
 
     A symbolizer that renders points using a named shape.
 
 
 Config Properties
 -----------------
-
 
 .. describe:: fill
 
@@ -104,36 +101,27 @@ Properties
     The stroke used for this shape.
 
 
-
-
 Methods
 -------
 
+.. function:: Shape.and
 
-.. method:: Shape.and
-
-    :arg symbolizer: :class:`Symbolizer`
+    :arg symbolizer: :class:`style.Symbolizer`
     :returns: :class:`style.Style`
     
     Generate a composite style from this symbolizer and the provided
     symbolizer.
 
-.. method:: Shape.range
+.. function:: Shape.range
 
     :arg config: ``Object`` An object with optional ``min`` and ``max``
         properties specifying the minimum and maximum scale denominators
         for applying this symbolizer.
-    :returns: :class:`Symbolizer` This symbolizer.
+    :returns: :class:`style.Symbolizer` This symbolizer.
 
-.. method:: Shape.where
+.. function:: Shape.where
 
     :arg filter: :class:`filter.Filter` or ``String`` A filter or CQL string that
         limits where this symbolizer applies.
-    :returns: :class:`Symbolizer` This symbolizer.
-
-
-
-
-
-
+    :returns: :class:`style.Symbolizer` This symbolizer.
 

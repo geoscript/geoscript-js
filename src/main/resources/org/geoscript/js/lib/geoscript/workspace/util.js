@@ -4,7 +4,7 @@ var registry = new Registry();
 
 /** private: method[create]
  *  :arg config: ``Object`` Configuration object.
- *  :returns: :class:`workspace.Workspace`
+ *  :returns: :class:`Workspace`
  *
  *  Create a workspace given a configuration object.
  */

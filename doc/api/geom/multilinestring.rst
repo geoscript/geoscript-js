@@ -1,15 +1,12 @@
-.. currentmodule:: geom
-
-
 :class:`geom.MultiLineString`
-================================================================================
+=============================
 
-.. class:: MultiLineString
+.. class:: geom.MultiLineString(coords)
 
-    :arg coords: ``Array`` Coordinates array.
+    :arg Array coords: Coordinates array.
 
     Create a new multi-linestring geometry.  The items in the coords array
-    may be linestring coordinates or :class:`LineString` objects.
+    may be linestring coordinates or :class:`geom.LineString` objects.
 
 
 Example Use
@@ -19,16 +16,16 @@ Sample code to new multi-linestring:
 
 .. code-block:: javascript
 
-    js> var GEOM = require("geoscript/geom");
-    js> var l1 = new GEOM.LineString([[-180, -90], [0, 0], [180, 90]]);
-    js> var l2 = new GEOM.LineString([[180, -90], [0, 0], [-180, 90]]);
-    js> var ml = new GEOM.MultiLineString([l1, l2]);
+    js> var {MultiLineString, LineString} = require("geoscript/geom");
+    js> var l1 = new LineString([[-180, -90], [0, 0], [180, 90]]);
+    js> var l2 = new LineString([[180, -90], [0, 0], [-180, 90]]);
+    js> var ml = new MultiLineString([l1, l2]);
 
 Alternate method to create the same geometry as above:
 
 .. code-block:: javascript
 
-    js> var ml = new GEOM.MultiLineString([
+    js> var ml = new MultiLineString([
       >     [[-180, -90], [0, 0], [180, 90]],
       >     [[180, -90], [0, 0], [-180, 90]]
       > ]);
@@ -38,13 +35,13 @@ Properties
 ----------
 
 Multi-polygon geometries have the properties common to all
-:class:`GeometryCollection` subclasses. 
+:class:`geom.GeometryCollection` subclasses. 
 
 
 Methods
 -------
 
 Multi-polygon geometries have the methods common to all 
-:class:`GeometryCollection` subclasses. 
+:class:`geom.GeometryCollection` subclasses. 
 
 

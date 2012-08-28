@@ -1,15 +1,13 @@
-.. currentmodule:: filter
-
 :class:`filter.Filter`
-================================================================================
+======================
 
-.. class:: Filter
+.. class:: filter.Filter
 
     :arg cql: `String` A CQL string representing filter constraints.
 
     Create a new filter to express constraints.  Filters are typically
     used when querying features from a layer.  A feature will be
-    returned in a query if the filter's :meth:`evaluate` method returns
+    returned in a query if the filter's :func:`~Filter.evaluate` method returns
     `true` for the given feature.
 
     Filters are created using Common Query Language (CQL).
@@ -57,7 +55,7 @@ Properties
 Methods
 -------
 
-.. method:: Filter.and
+.. function:: Filter.and
 
     :arg filter: :class:`filter.Filter` Input filter.
     :returns: :class:`filter.Filter`
@@ -65,14 +63,14 @@ Methods
     Returns a new filter that is the logical AND of this filter and the
     input filter.  Provide multiple arguments to AND multiple filters.
 
-.. method:: Filter.evaluate
+.. function:: Filter.evaluate
 
     :arg feature: :class:`feature.Feature` A feature.
     :returns: ``Boolean``  The feature matches the filter.
     
     Determine whether a feature matches the constraints of the filter.
 
-.. method:: Filter.or
+.. function:: Filter.or
 
     :arg filter: :class:`filter.Filter` Input filter.
     :returns: :class:`filter.Filter`

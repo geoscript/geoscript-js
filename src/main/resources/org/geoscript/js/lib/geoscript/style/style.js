@@ -61,7 +61,7 @@ var Style = exports.Style = UTIL.extend(Symbolizer, {
     },
     
     /** api: method[and]
-     *  :arg symbolizer: :class:`Symbolizer`
+     *  :arg symbolizer: :class:`style.Symbolizer`
      *  :returns: :class:`style.Style`
      *
      *  Generate a composite symbolizer from this symbolizer and the provided

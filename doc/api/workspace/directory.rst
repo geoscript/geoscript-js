@@ -1,9 +1,7 @@
-.. currentmodule:: workspace
-
 :class:`workspace.Directory`
-================================================================================
+============================
 
-.. class:: Directory
+.. class:: workspace.Directory(config)
 
     :arg path: ``String`` Path to the directory.
 
@@ -35,15 +33,16 @@ Methods
 -------
 
 
-.. method:: Directory.add
+.. function:: Directory.add
 
     :arg layer: :class:`layer.Layer` The layer to be added.
     :arg options: ``Object`` Options for adding the layer.
     
     Options:
+    
      * `name`: ``String`` Name for the new layer.
      * `filter`: :class:`filter.Filter` Filter to apply to features before adding.
-     * `projection: :class:`proj.Projection` Destination projection for the layer.
+     * `projection`: :class:`proj.Projection` Destination projection for the layer.
     
     :returns: :class:`layer.Layer`
     
@@ -51,12 +50,12 @@ Methods
     layer.  If a layer with the same name already exists in this workspace,
     you must provide a new name for the layer.
 
-.. method:: Directory.close
+.. function:: Directory.close
 
     Close the workspace.  This discards any existing connection to the
     underlying data store and discards the reference to the store.
 
-.. method:: Directory.get
+.. function:: Directory.get
 
     :arg name: ``String`` Layer name.
     :returns: :class:`layer.Layer`

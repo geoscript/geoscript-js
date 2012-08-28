@@ -1,19 +1,9 @@
-
-.. currentmodule:: style
-
-
-
-
 :class:`style.Label`
-================================================================================
+====================
 
-.. class:: Label
+.. class:: style.Label
 
     A symbolizer for labeling features.
-
-
-
-
 
 Example Use
 -----------
@@ -27,13 +17,8 @@ Sample code to create a fill:
      >     expression: "property"
      > });
 
-
-    
-
-
 Config Properties
 -----------------
-
 
 .. describe:: expression
 
@@ -94,36 +79,27 @@ Properties
     ``String``
 
 
-
-
 Methods
 -------
 
+.. function:: Label.and
 
-.. method:: Label.and
-
-    :arg symbolizer: :class:`Symbolizer`
+    :arg symbolizer: :class:`style.Symbolizer`
     :returns: :class:`style.Style`
     
     Generate a composite style from this symbolizer and the provided
     symbolizer.
 
-.. method:: Label.range
+.. function:: Label.range
 
     :arg config: ``Object`` An object with optional ``min`` and ``max``
         properties specifying the minimum and maximum scale denominators
         for applying this symbolizer.
-    :returns: :class:`Symbolizer` This symbolizer.
+    :returns: :class:`style.Symbolizer` This symbolizer.
 
-.. method:: Label.where
+.. function:: Label.where
 
     :arg filter: :class:`filter.Filter` or ``String`` A filter or CQL string that
         limits where this symbolizer applies.
-    :returns: :class:`Symbolizer` This symbolizer.
-
-
-
-
-
-
+    :returns: :class:`style.Symbolizer` This symbolizer.
 

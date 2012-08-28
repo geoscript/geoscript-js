@@ -1,19 +1,16 @@
-.. module:: layer
-    :synopsis: Layer related functionality.
+The layer module
+~~~~~~~~~~~~~~~~
 
-The :mod:`layer` module
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The :mod:`layer` module provides a constructor for Layer objects.
+The :doc:`layer <layer>` module provides a constructor for Layer objects.
 
 .. code-block:: javascript
 
     js> var LAYER = require("geoscript/layer");
 
 :class:`layer.Layer`
-================================================================================
+====================
 
-.. class:: Layer
+.. class:: layer.Layer(config)
 
     Create a new layer.  If a workspace is not provided, a temporary
     layer will be created.  If a layer is created without a schema, a
@@ -124,9 +121,9 @@ Properties
 Methods
 -------
 
-.. method:: Layer.add
+.. function:: Layer.add(feature)
 
-    :arg obj: ``Object`` A :class:`feature.Feature` or a feature attribute
+    :arg feature: ``Object`` A :class:`feature.Feature` or a feature attribute
         values object.
     
     Add a feature to a layer.  Optionally, an object with feature attribute
@@ -140,7 +137,7 @@ Methods
         js> layer.add({geom: new GEOM.Point([0, 1])});
     
 
-.. method:: Layer.clone
+.. function:: Layer.clone(name)
 
     :arg name: ``String`` New layer name.  If not provided, one will be
         generated.
@@ -148,16 +145,16 @@ Methods
     
     Create a temporary copy of this layer.
 
-.. method:: Layer.get
+.. function:: Layer.get(id)
 
-    :arg id: ``String || Filter`` Feature identifier.  Alternatively you can
-        provide an arbitrary filter.  In the case of a filter, only the
-        first feature in the resulting query will be returned.
+    :arg id: ``String`` or :class:`feature:Filter` Feature identifier.  
+        Alternatively you can provide an arbitrary filter.  In the case of a 
+        filter, only the first feature in the resulting query will be returned.
     :returns: :class:`feature.Feature`
     
     Get a single feature using the feature id.
 
-.. method:: Layer.getBounds
+.. function:: Layer.getBounds(filter)
 
     :arg filter: :class:`filter.Filter` Optional filter or CQL string.
     :returns: :class:`geom.Bounds`
@@ -165,14 +162,14 @@ Methods
     Get the bounds for all features on the layer.  Optionally, the bounds
     can be generated for all features that match the given filter.
 
-.. method:: Layer.getCount
+.. function:: Layer.getCount(filter)
 
     :arg filter: :class:`filter.Filter` Optional filter or CQL string.
     :returns: ``Number``
     
     Get the number of features on the layer matching the given filter.
 
-.. method:: Layer.query
+.. function:: Layer.query(filter)
 
     :arg filter: ``filter.Filter or String`` A filter or a CQL string.
     :returns: :class:`feature.Collection` An iterator for accessing queried
@@ -190,7 +187,7 @@ Methods
           >     print(feature.toString());
           > });
 
-.. method:: Layer.remove
+.. function:: Layer.remove(filter)
 
     :arg filter: :class:`filter.Filter` or ``String`` or
         :class:`feature.Feature`
@@ -208,14 +205,9 @@ Methods
         js> layer.remove("INTERSECTS(geom, POINT(1 2))");
     
 
-.. method:: Layer.update
+.. function:: Layer.update
 
     Update any features that have been modified since the last update.  This
     persists feature changes.
-
-
-
-
-
 
 

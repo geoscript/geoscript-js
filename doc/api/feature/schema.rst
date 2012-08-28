@@ -1,11 +1,9 @@
-.. currentmodule:: feature
-
 :class:`feature.Schema`
-================================================================================
+=======================
 
-.. class:: Schema
+.. class:: feature.Schema(config)
 
-    :arg config: ``Object`` Configuration object.
+    :arg Object config: Configuration object.
 
     Create a new schema.
 
@@ -17,8 +15,8 @@ Sample code to create a new schema:
 
 .. code-block:: javascript
 
-    js> var FEATURE = require("geoscript/feature");
-    js> var cities = new FEATURE.Schema({
+    js> var Schema = require("geoscript/feature").Schema;
+    js> var cities = new Schema({
       >     name: "cities",
       >     fields: [{
       >         name: "the_geom",
@@ -39,12 +37,8 @@ Sample code to create a new schema:
     js> cities.get("the_geom").projection
     <Projection EPSG:4326>
 
-    
-
-
 Config Properties
 -----------------
-
 
 .. describe:: fields
 
@@ -57,8 +51,6 @@ Config Properties
     ``String``
     The schema name.  Default is ``"feature"``.  The schema name typically
     matches the layer name within a workspace.
-
-
 
 
 Properties
@@ -90,20 +82,17 @@ Properties
     The schema name.
 
 
-
-
 Methods
 -------
 
-
-.. method:: Schema.clone
+.. function:: Schema.clone
 
     :arg config: ``Object``
     :returns: :class:`feature.Schema`
     
     Create a complete copy of this schema.
 
-.. method:: Schema.get
+.. function:: Schema.get
 
     :arg name: ``String`` A field name.
     :returns: :class:`feature.Field` A field definition.
@@ -112,10 +101,5 @@ Methods
     ``name`` and ``type`` properties.  Geometry field definitions may have
     a ``projection`` property.  Returns ``undefined`` if no field is found
     with the given name.
-
-
-
-
-
 
 

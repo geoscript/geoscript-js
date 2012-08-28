@@ -1,9 +1,7 @@
-.. currentmodule:: geom
-
 :class:`geom.Bounds`
-================================================================================
+====================
 
-.. class:: Bounds
+.. class:: geom.Bounds(config)
 
     Create a new bounds given minX, minY, maxX, maxY, and an optional
     projection.
@@ -16,8 +14,8 @@ Sample code to create a new bounds:
 
 .. code-block:: javascript
 
-    js> var GEOM = require("geoscript/geom");
-    js> var bounds = new GEOM.Bounds({
+    js> var Bounds = require("geoscript/geom").Bounds;
+    js> var bounds = new Bounds({
       >     minX: -180, maxX: 180, minY: -90, maxY: 90
       > });
     js> bounds.width
@@ -29,7 +27,7 @@ Sample code to create a new bounds with a projection:
 
 .. code-block:: javascript
 
-    js> var bounds = new GEOM.Bounds({
+    js> var bounds = new Bounds({
       >     minX: -180, maxX: 180, minY: -90, maxY: 90, projection: "epsg:4326"
       > });
     js> bounds.projection
@@ -39,7 +37,7 @@ Sample code to create a new bounds from an array of [minX, minY, maxX, maxY] val
 
 .. code-block:: javascript
 
-    js> var bounds = new GEOM.Bounds([-180, -90, 180, 90]);
+    js> var bounds = new Bounds([-180, -90, 180, 90]);
 
 
 
@@ -87,7 +85,7 @@ Properties
     :class:`proj.Projection`
     The coordinate reference system for the bounds (if specified).  Setting
     this value will not transform coordinates of the bounds.  To transform
-    a bounds from one projection to another, use the :meth:`transform`
+    a bounds from one projection to another, use the :func:`transform`
     method.
 
 
@@ -97,13 +95,13 @@ Methods
 -------
 
 
-.. method:: Bounds.clone
+.. function:: Bounds.clone
 
     :returns: :class:`geom.Bounds`
     
     Generate a copy of this bounds.
 
-.. method:: Bounds.contains
+.. function:: Bounds.contains
 
     :arg other: :class:`geom.Bounds` or :class:`geom.Geometry`
     :returns: ``Boolean``
@@ -111,22 +109,22 @@ Methods
     Determine if the given point or geometry lies in the interior or on the
     boundary of this bounds.
 
-.. method:: Bounds.equals
+.. function:: Bounds.equals
 
     :arg other: :class:`geom.Bounds`
     :returns: ``Boolean``
     
     Determine if two bounds are equivalent.
 
-.. method:: Bounds.include
+.. function:: Bounds.include
 
     :arg other: :class:`geom.Bounds` or :class:`geom.Geometry`
-    :returns: :class:`Bounds` This bounds.
+    :returns: :class:`geom.Bounds` This bounds.
     
     Extends this bounds as necessary to include the given bounds or geometry.
     Modifies this bounds.
 
-.. method:: Bounds.intersection
+.. function:: Bounds.intersection
 
     :arg other: :class:`geom.Bounds`
     :returns: :class:`geom.Bounds`
@@ -134,7 +132,7 @@ Methods
     Generate a bounds that is the intersection of this bounds with the given
     bounds.
 
-.. method:: Bounds.intersects
+.. function:: Bounds.intersects
 
     :arg other: :class:`geom.Bounds` or :class:`geom.Geometry`
     :returns: ``Boolean``
@@ -143,20 +141,20 @@ Methods
     geometry is given, intersection will be determined as if this bounds
     were a polygon.
 
-.. method:: Bounds.toArray
+.. function:: Bounds.toArray
 
     :returns: ``Array``
     
     Return an array containing [minX, minY, maxX, maxY] values for this
     bounds.
 
-.. method:: Bounds.toPolygon
+.. function:: Bounds.toPolygon
 
     :returns: :class:`geom.Polygon`
     
     Generate a polygon with the corner coordinates of this bounds.
 
-.. method:: Bounds.transform
+.. function:: Bounds.transform
 
     :arg projection: :class:`proj.Projection`
     :returns: :class:`geom.Bounds`

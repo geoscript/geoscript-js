@@ -1,11 +1,9 @@
-.. currentmodule:: geom
-
 :class:`geom.Point`
-================================================================================
+===================
 
-.. class:: Point
+.. class:: geom.Point(coords)
 
-    :arg coords: ``Array`` Coordinates array.
+    :arg Array coords: Coordinates array.
 
     Create a new point.
 
@@ -27,7 +25,7 @@ Sample code to create a new point:
 Properties
 ----------
 
-In addition to the properties common to all :class:`Geometry` subclasses, point
+In addition to the properties common to all :class:`geom.Geometry` subclasses, point
 geometries have the properties documented below.
 
 .. attribute:: Point.x
@@ -51,5 +49,5 @@ geometries have the properties documented below.
 Methods
 -------
 
-Point geometries have the methods common to all :class:`Geometry` subclasses. 
+Point geometries have the methods common to all :class:`geom.Geometry` subclasses. 
 

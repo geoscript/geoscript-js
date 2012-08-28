@@ -1,10 +1,7 @@
-.. module:: proj
-    :synopsis: Projection related functionality.
+The proj module
+===============
 
-The :mod:`proj` module
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The :mod:`proj` module exports a Projection constructor and methods for
+The :doc:`proj <proj>` module exports a Projection constructor and methods for
 transforming geometries between coordinate reference systems.
 
 .. code-block:: javascript

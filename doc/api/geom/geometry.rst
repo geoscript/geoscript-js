@@ -1,10 +1,7 @@
-.. currentmodule:: geom
-
-
 :class:`geom.Geometry`
-================================================================================
+======================
 
-.. class:: Geometry
+.. class:: geom.Geometry
 
     All geometry subclasses extend from the base Geometry class.  The base
     Geometry constructor is not used, but properties and method documented here
@@ -58,7 +55,7 @@ Common Geometry Properties
     :class:`proj.Projection`
     Optional projection for the geometry.  If this is set, it is assumed
     that the geometry coordinates are in the corresponding coordinate
-    reference system.  Use the :meth:`transform` method to transform a
+    reference system.  Use the :func:`transform` method to transform a
     geometry from one coordinate reference system to another.
 
 .. attribute:: Geometry.rectangle
@@ -82,7 +79,7 @@ Common Geometry Properties
 Common Geometry Methods
 -----------------------
 
-.. method:: Geometry.buffer
+.. function:: Geometry.buffer
 
     :arg dist: ``Number`` Width of buffer.  May be positive, negative, or
         zero.
@@ -102,13 +99,13 @@ Common Geometry Methods
     
     Construct a geometry that buffers this geometry by the given width.
 
-.. method:: Geometry.clone
+.. function:: Geometry.clone
 
     :returns: :class:`geom.Geometry`
     
     Creates a complete copy of this geometry.
 
-.. method:: Geometry.contains
+.. function:: Geometry.contains
 
     :arg other: :class:`geom.Geometry`
     :returns: ``Boolean``
@@ -116,35 +113,35 @@ Common Geometry Methods
     Tests if this geometry contains the other geometry (without boundaries
     touching).
 
-.. method:: Geometry.convexHull
+.. function:: Geometry.convexHull
 
     :returns: :class:`geom.Geometry`
     
-    Computes the smallest convex :class:`Polygon` that contains this
+    Computes the smallest convex :class:`geom.Polygon` that contains this
     geometry.
 
-.. method:: Geometry.coveredBy
+.. function:: Geometry.coveredBy
 
     :arg other: :class:`geom.Geometry`
     :returns: ``Boolean``
     
     Tests if this geometry is covered by other geometry.
 
-.. method:: Geometry.covers
+.. function:: Geometry.covers
 
     :arg other: :class:`geom.Geometry`
     :returns: ``Boolean``
     
     Tests if this geometry covers the other geometry.
 
-.. method:: Geometry.crosses
+.. function:: Geometry.crosses
 
     :arg other: :class:`geom.Geometry`
     :returns: ``Boolean``
     
     Tests if this geometry crosses the other geometry.
 
-.. method:: Geometry.difference
+.. function:: Geometry.difference
 
     :arg other: :class:`geom.Geometry`
     :returns: :class:`geom.Geometry`
@@ -152,21 +149,21 @@ Common Geometry Methods
     Creates a geometry made up of all the points in this geometry that are
     not in the other geometry.
 
-.. method:: Geometry.disjoint
+.. function:: Geometry.disjoint
 
     :arg other: :class:`geom.Geometry`
     :returns: ``Boolean``
     
     Tests if this geometry is disjoint to the other geometry.
 
-.. method:: Geometry.distance
+.. function:: Geometry.distance
 
     :arg geometry: :class:`geom.Geometry`
     :returns: ``Number``
     
     Returns the minimum distance between this and the supplied geometry.
 
-.. method:: Geometry.equals
+.. function:: Geometry.equals
 
     :arg other: :class:`geom.Geometry`
     :returns: ``Boolean``
@@ -175,27 +172,27 @@ Common Geometry Methods
     common and if no point of either geometry lies in the exterior of the
     other.
 
-.. method:: Geometry.equalsExact
+.. function:: Geometry.equalsExact
 
     :arg other: :class:`geom.Geometry`
     :returns: ``Boolean``
     
     Tests if this geometry is exactly equal to the other geometry.
 
-.. method:: Geometry.getBoundary
+.. function:: Geometry.getBoundary
 
     :returns: :class:`geom.Geometry`
     
     Returns the boundary, or an empty geometry of appropriate dimension if
     this geometry is empty.
 
-.. method:: Geometry.getEnvelope
+.. function:: Geometry.getEnvelope
 
     :returns: :class:`geom.Geometry`
     
     Returns this geometry's bounding box.
 
-.. method:: Geometry.intersection
+.. function:: Geometry.intersection
 
     :arg other: :class:`geom.Geometry`
     :returns: :class:`geom.Geometry`
@@ -203,21 +200,21 @@ Common Geometry Methods
     Creates a geometry representing all the points shared by this geometry
     and the other.
 
-.. method:: Geometry.intersects
+.. function:: Geometry.intersects
 
     :arg other: :class:`geom.Geometry`
     :returns: ``Boolean``
     
     Tests if this geometry intersects the other geometry.
 
-.. method:: Geometry.overlaps
+.. function:: Geometry.overlaps
 
     :arg other: :class:`geom.Geometry`
     :returns: ``Boolean``
     
     Tests if this geometry overlaps the other geometry.
 
-.. method:: Geometry.simplify
+.. function:: Geometry.simplify
 
     :arg tolerance: ``Number`` The distance tolerance for the simplification.
         All vertices in the simplified geometry will be within this distance
@@ -227,7 +224,7 @@ Common Geometry Methods
     Simplify the geometry using the standard Douglas-Peucker algorithm.
     Returns a new geometry.
 
-.. method:: Geometry.symDifference
+.. function:: Geometry.symDifference
 
     :arg other: :class:`geom.Geometry`
     :returns: :class:`geom.Geometry`
@@ -235,14 +232,14 @@ Common Geometry Methods
     Creates a geometry representing all the points in this geometry but not
     in the other plus all the points in the other but not in this geometry.
 
-.. method:: Geometry.touches
+.. function:: Geometry.touches
 
     :arg other: :class:`geom.Geometry`
     :returns: ``Boolean``
     
     Tests if this geometry `only` touches the other geometry.
 
-.. method:: Geometry.transform
+.. function:: Geometry.transform
 
     :arg to: :class:`proj.Projection`
     :returns: :class:`geom.Geometry`
@@ -251,13 +248,13 @@ Common Geometry Methods
     :attr:`projection` of this geometry must be set before calling this
     method.  Returns a new geometry.
 
-.. method:: Geometry.within
+.. function:: Geometry.within
 
     :arg other: :class:`geom.Geometry`
     :returns: ``Boolean``
     
     Tests if this geometry is within the other geometry.  This is the
-    inverse of :meth:`contains`.
+    inverse of :func:`contains`.
 
 
 

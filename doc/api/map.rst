@@ -1,10 +1,7 @@
-.. module:: map
-    :synopsis: Map rendering functionality.
+The map module
+~~~~~~~~~~~~~~
 
-The :mod:`map` module
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The :mod:`map` module provides map rendering functionality.
+The :doc:`map <map>` module provides map rendering functionality.
 
 .. code-block:: javascript
 
@@ -14,7 +11,7 @@ The :mod:`map` module provides map rendering functionality.
 :class:`map.Map`
 ================
 
-.. class:: Map
+.. class:: map.Map(config)
 
     :arg config: ``Object`` Configuration object.
 
@@ -33,7 +30,7 @@ Config Properties
 .. describe:: projection
 
     :class:`proj.Projection`
-    Optional projection for the map.  If set, calls to :meth:`render` will
+    Optional projection for the map.  If set, calls to :func:`render` will
     result in a map image in this projection.  If not set, the projection
     of the first layer will be used.
 
@@ -50,13 +47,13 @@ Properties
 Methods
 -------
 
-.. method:: Map.add
+.. function:: Map.add
 
     :arg layer: :class:`layer.Layer`
     
     Add a layer to the map.
 
-.. method:: Map.render
+.. function:: Map.render
 
     Render the map's collection of layers as an image.
     

@@ -15,7 +15,7 @@
 
 /** private: method[create]
  *  :arg config: ``Object`` Configuration object.
- *  :returns: :class:`workspace.Workspace`
+ *  :returns: :class:`Workspace`
  *
  *  Create a workspace given a configuration object.
  */
@@ -43,7 +43,7 @@ exports.MySQL = require("./workspace/mysql").MySQL;
 exports.SpatiaLite = require("./workspace/spatialite").SpatiaLite;
 
 /** api: property[memory]
- *  :class:`workspace.Memory`
+ *  :class:`Memory`
  *  A memory workspace that will be used to collect all temporary layers
  *  created without a specific workspace.
  */

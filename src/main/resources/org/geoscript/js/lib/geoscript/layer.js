@@ -348,7 +348,7 @@ var Layer = UTIL.extend(GeoObject, {
 
     /** api: method[query]
      *  :arg filter: ``filter.Filter or String`` A filter or a CQL string.
-     *  :returns: :class:`feature.Collection` An iterator for accessing queried 
+     *  :returns: :class:`Collection` An iterator for accessing queried 
      *          features.
      *
      *  Query for features from the layer.  The return will be an object with
@@ -380,7 +380,7 @@ var Layer = UTIL.extend(GeoObject, {
     },
     
     /** api: property[features]
-     *  :class:`feature.Collection`
+     *  :class:`Collection`
      *  An iterator for accessing all features on the layer.
      *
      *  Example use:

@@ -1,11 +1,8 @@
-.. module:: feature
-    :synopsis: Feature related functionality.
+The feature module
+==================
 
-The :mod:`feature` module
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The :mod:`feature` module provides a provides constructors for features
-and feature schema.
+The :doc:`feature <feature>` module provides a provides constructors for 
+features, feature collections, and feature schema.
 
 .. code-block:: javascript
 

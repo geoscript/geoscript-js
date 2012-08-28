@@ -1,28 +1,14 @@
-
-.. currentmodule:: workspace
-
-
-
-
 :class:`workspace.Workspace`
-================================================================================
+============================
 
-.. class:: Workspace
+.. class:: workspace.Workspace
 
     A Workspace instance should not be created directly.
     Create an instance of a Workspace subclass instead.
 
 
-
-
-    
-
-
-
-
 Properties
 ----------
-
 
 .. attribute:: Workspace.layers
 
@@ -35,21 +21,20 @@ Properties
     The available layer names in the workspace.
 
 
-
-
 Methods
 -------
 
 
-.. method:: Workspace.add
+.. function:: Workspace.add
 
     :arg layer: :class:`layer.Layer` The layer to be added.
     :arg options: ``Object`` Options for adding the layer.
     
     Options:
+    
      * `name`: ``String`` Name for the new layer.
      * `filter`: :class:`filter.Filter` Filter to apply to features before adding.
-     * `projection: :class:`proj.Projection` Destination projection for the layer.
+     * `projection`: :class:`proj.Projection` Destination projection for the layer.
     
     :returns: :class:`layer.Layer`
     
@@ -57,12 +42,12 @@ Methods
     layer.  If a layer with the same name already exists in this workspace,
     you must provide a new name for the layer.
 
-.. method:: Workspace.close
+.. function:: Workspace.close
 
     Close the workspace.  This discards any existing connection to the
     underlying data store and discards the reference to the store.
 
-.. method:: Workspace.get
+.. function:: Workspace.get
 
     :arg name: ``String`` Layer name.
     :returns: :class:`layer.Layer`

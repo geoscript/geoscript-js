@@ -1,11 +1,9 @@
-.. currentmodule:: geom
-
 :class:`geom.Polygon`
-================================================================================
+=====================
 
-.. class:: Polygon
+.. class:: geom.Polygon(coords)
 
-    :arg coords: ``Array`` Coordinates array.
+    :arg Array coords: Coordinates array.
 
     Create a new polygon.
 
@@ -27,7 +25,7 @@ Sample code to new polygon:
 Properties
 ----------
 
-In addition to the properties common to all :class:`Geometry` subclasses, 
+In addition to the properties common to all :class:`geom.Geometry` subclasses, 
 polygon geometries have the properties documented below.
 
 .. attribute:: Polygon.rectangle
@@ -40,5 +38,5 @@ polygon geometries have the properties documented below.
 Methods
 -------
 
-Polygon geometries have the methods common to all :class:`Geometry` 
+Polygon geometries have the methods common to all :class:`geom.Geometry` 
 subclasses. 

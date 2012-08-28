@@ -1,11 +1,8 @@
-.. module:: style
-    :synopsis: A collection of style types.
+The style module
+================
 
-The :mod:`style` module
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The :mod:`style` module provides a provides constructors for creating rule
-based styles for rendering layers in a map.
+The :doc:`style <style>` module provides a provides constructors for creating 
+rule based styles for rendering layers in a map.
 
 .. code-block:: javascript
 

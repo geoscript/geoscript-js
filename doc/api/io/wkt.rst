@@ -1,8 +1,5 @@
-.. module:: io/wkt
-    :synopsis: Reading and writing well-known text for geometries.
-
-The :mod:`io/wkt` module
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The io/wkt module
+=================
 
 .. code-block:: javascript
 
@@ -12,7 +9,7 @@ Methods
 -------
 
 
-.. method:: read
+.. function:: read
 
     :arg wkt: ``String`` The Well-Known Text representation of a geometry.
     :returns: :class:`geom.Geometry`
@@ -30,7 +27,7 @@ Methods
         js> point instanceof GEOM.Point
         true
 
-.. method:: write
+.. function:: write
 
     :arg geometry: :class:`geom.Geometry` A geometry.
     :returns: ``String`` The Well-Known Text representation of a geometry.

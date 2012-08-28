@@ -1,11 +1,9 @@
-.. currentmodule:: feature
-
 :class:`feature.Feature`
-================================================================================
+========================
 
-.. class:: Feature
+.. class:: feature.Feature(config)
 
-    :arg config: ``Object`` Configuration object.
+    :arg Object config: Configuration object.
 
     Create a new feature.
 
@@ -39,9 +37,9 @@ Config Properties
 
     :class:`feature.Schema`
     The feature schema.  If not provided, a schema will be derived from
-    the provided ``values`` in the configuration.
+    the provided ``properties`` in the configuration.
 
-.. describe:: values
+.. describe:: properties
 
     ``Object``
     An object with all the feature property names and values.
@@ -91,11 +89,11 @@ Properties
     :class:`feature.Schema`
     The feature schema (read-only).
 
-.. attribute:: Feature.values
+.. attribute:: Feature.properties
 
     ``Object``
     An object with all the feature property names and values.  Used for
-    property access only.  Use :meth:`set` to set property values.
+    property access only.  Use :func:`~Feature.set` to set property values.
 
 
 
@@ -104,19 +102,19 @@ Methods
 -------
 
 
-.. method:: Feature.clone
+.. function:: Feature.clone
 
     :returns: :class:`feature.Feature`
     
     Create a clone of this feature.
 
-.. method:: Feature.get
+.. function:: Feature.get
 
     :arg name: ``String`` Attribute name.
     
     Get an attribute value.
 
-.. method:: Feature.set
+.. function:: Feature.set
 
     :arg name: ``String`` Attribute name.
     :arg value: ``String`` Attribute value.

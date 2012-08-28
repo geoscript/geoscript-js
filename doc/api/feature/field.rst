@@ -1,15 +1,11 @@
-.. currentmodule:: feature
-
-
 :class:`feature.Field`
-================================================================================
+======================
 
-.. class:: Field
+.. class:: feature.Field(config)
 
-    :arg config: ``Object`` Configuration object.
+    :arg Object config: Configuration object.
 
     Create a new field.
-
 
 Example Use
 -----------
@@ -18,24 +14,20 @@ Sample code to create a new field:
 
 .. code-block:: javascript
 
-    js> var FEATURE = require("geoscript/feature");
-    js> var field = new FEATURE.Field({
+    js> var Field = require("geoscript/feature").Field;
+    js> var field = new Field({
       >     name: "age",
       >     type: "Double"
       > });
 
-    js> var field = new FEATURE.Field({
+    js> var field = new Field({
       >     name: "location",
       >     type: "Point",
       >     projection: "EPSG:4326"
       > });
 
-    
-
-
 Config Properties
 -----------------
-
 
 .. describe:: description
 
@@ -73,11 +65,8 @@ Config Properties
     The field type (required).
 
 
-
-
 Properties
 ----------
-
 
 .. attribute:: Field.description
 
@@ -120,22 +109,13 @@ Properties
     The field type (read-only).
 
 
-
-
 Methods
 -------
 
+.. function:: Field.equals
 
-.. method:: Field.equals
-
-    :arg field: :class:`Field`
+    :arg field: :class:`feature.Field`
     :returns: ``Boolean`` The two fields are equivalent.
     
     Determine if another field is equivalent to this one.
-
-
-
-
-
-
 

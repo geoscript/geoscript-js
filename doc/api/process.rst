@@ -1,10 +1,7 @@
-.. module:: process
-    :synopsis: Process related functionality.
+The process module
+~~~~~~~~~~~~~~~~~~
 
-The :mod:`process` module
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The :mod:`process` module provides a constructor for Process objects.
+The :doc:`process <process>` module provides a constructor for Process objects.
 
 .. code-block:: javascript
 
@@ -14,15 +11,12 @@ The :mod:`process` module provides a constructor for Process objects.
 :class:`process.Process`
 ========================
 
-.. class:: Process
+.. class:: process.Process(config)
 
     :arg config: `Object` Process configuration.
 
-
-
 Config Properties
 -----------------
-
 
 .. describe:: description
 

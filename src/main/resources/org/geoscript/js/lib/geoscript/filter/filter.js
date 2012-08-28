@@ -36,7 +36,7 @@ var Filter = exports.Filter = UTIL.extend(GeoObject, {
      *
      *      Create a new filter to express constraints.  Filters are typically
      *      used when querying features from a layer.  A feature will be
-     *      returned in a query if the filter's :meth:`evaluate` method returns
+     *      returned in a query if the filter's :func:`evaluate` method returns
      *      `true` for the given feature.
      *
      *      Filters are created using Common Query Language (CQL).

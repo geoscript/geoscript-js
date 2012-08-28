@@ -67,7 +67,7 @@ var Map = UTIL.extend(GeoObject, {
     
     /** api: config[projection]
      *  :class:`proj.Projection`
-     *  Optional projection for the map.  If set, calls to :meth:`render` will
+     *  Optional projection for the map.  If set, calls to :func:`render` will
      *  result in a map image in this projection.  If not set, the projection
      *  of the first layer will be used.
      */

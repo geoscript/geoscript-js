@@ -1,27 +1,12 @@
-
-.. currentmodule:: style
-
-
-
-
 :class:`style.Color`
-================================================================================
+====================
 
-.. class:: Color
+.. class:: style.Color
 
     A brush that renders with a solid color.
 
-
-
-
-    
-
-
-
-
 Properties
 ----------
-
 
 .. attribute:: Color.value
 

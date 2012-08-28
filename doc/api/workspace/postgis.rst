@@ -1,10 +1,7 @@
-
-.. currentmodule:: workspace
-
 :class:`workspace.PostGIS`
-================================================================================
+==========================
 
-.. class:: PostGIS
+.. class:: workspace.PostGIS(config)
 
     :arg config: ``Object`` Configuration object.
 
@@ -70,15 +67,16 @@ Methods
 -------
 
 
-.. method:: PostGIS.add
+.. function:: PostGIS.add
 
     :arg layer: :class:`layer.Layer` The layer to be added.
     :arg options: ``Object`` Options for adding the layer.
     
     Options:
+
      * `name`: ``String`` Name for the new layer.
      * `filter`: :class:`filter.Filter` Filter to apply to features before adding.
-     * `projection: :class:`proj.Projection` Destination projection for the layer.
+     * `projection`: :class:`proj.Projection` Destination projection for the layer.
     
     :returns: :class:`layer.Layer`
     
@@ -86,12 +84,12 @@ Methods
     layer.  If a layer with the same name already exists in this workspace,
     you must provide a new name for the layer.
 
-.. method:: PostGIS.close
+.. function:: PostGIS.close
 
     Close the workspace.  This discards any existing connection to the
     underlying data store and discards the reference to the store.
 
-.. method:: PostGIS.get
+.. function:: PostGIS.get
 
     :arg name: ``String`` Layer name.
     :returns: :class:`layer.Layer`

@@ -1,8 +1,5 @@
-.. currentmodule:: object
-
-:class:`object.GeoObject`
-=========================
-
+:class:`GeoObject`
+==================
 
 Properties
 ----------

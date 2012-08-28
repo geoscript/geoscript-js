@@ -1,15 +1,12 @@
-.. currentmodule:: proj
-
 :class:`proj.Projection`
-================================================================================
+========================
 
-.. class:: Projection
+.. class:: proj.Projection(id)
 
     :arg id: ``String`` Coordinate reference system identifier or
         well-known text for the projection.
 
     Create a new projection object.
-
 
 Example Use
 -----------
@@ -36,7 +33,6 @@ Sample code to create a new projection object:
 Properties
 ----------
 
-
 .. attribute:: Projection.id
 
     ``String``
@@ -48,13 +44,10 @@ Properties
     The well-known text representation of the coordinate reference system.
 
 
-
-
 Methods
 -------
 
-
-.. method:: Projection.equals
+.. function:: Projection.equals
 
     :arg projection: :class:`proj.Projection`
     :returns: ``Boolean`` The two projections are equivalent.

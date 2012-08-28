@@ -1,11 +1,9 @@
-.. currentmodule:: geom
-
 :class:`geom.LineString`
-================================================================================
+========================
 
-.. class:: LineString
+.. class:: geom.LineString(coords)
 
-    :arg coords: ``Array`` Coordinates array.
+    :arg Array coords: Coordinates array.
 
     Create a new linestring.
 
@@ -17,8 +15,8 @@ Sample code to new linestring:
 
 .. code-block:: javascript
 
-    js> var GEOM = require("geoscript/geom");
-    js> var line = new GEOM.LineString([[-180, -90], [0, 0], [180, 90]]);
+    js> var LineString = require("geoscript/geom").LineString;
+    js> var line = new LineString([[-180, -90], [0, 0], [180, 90]]);
     js> line.coordinates.length
     3
     js> line.length
@@ -28,13 +26,13 @@ Sample code to new linestring:
 Properties
 ----------
 
-In addition to the properties common to all :class:`Geometry` subclasses, 
+In addition to the properties common to all :class:`geom.Geometry` subclasses, 
 linestring geometries have the properties documented below.
 
 
 .. attribute:: LineString.endPoint
 
-    :class`geom.Point`
+    :class:`geom.Point`
     The last point in the linestring.
 
 .. attribute:: LineString.endPoints
@@ -45,7 +43,7 @@ linestring geometries have the properties documented below.
 
 .. attribute:: LineString.startPoint
 
-    :class`geom.Point`
+    :class:`geom.Point`
     The first point in the linestring.
 
 
@@ -53,5 +51,5 @@ linestring geometries have the properties documented below.
 Methods
 -------
 
-Linestring geometries have the methods common to all :class:`Geometry` 
+Linestring geometries have the methods common to all :class:`geom.Geometry` 
 subclasses. 

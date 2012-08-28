@@ -1,11 +1,9 @@
-.. currentmodule:: geom
-
 :class:`geom.GeometryCollection`
-================================================================================
+================================
 
-.. class:: GeometryCollection
+.. class:: geom.GeometryCollection(coords)
 
-    :arg coords: ``Array`` Coordinates array.
+    :arg Array coords: Coordinates array.
 
     Create a multipart geometry with mixed geometry types.  The items
     in the coords array may be geometry coordinates or :class:`geom.Geometry`
@@ -14,7 +12,7 @@
 Properties
 ----------
 
-In addition to the properties common to all :class:`Geometry` subclasses, 
+In addition to the properties common to all :class:`geom.Geometry` subclasses, 
 GeometryCollection geometries have the properties documented below.
 
 .. attribute:: GeometryCollection.components
@@ -26,5 +24,5 @@ GeometryCollection geometries have the properties documented below.
 Methods
 -------
 
-GeometryCollection geometries have the methods common to all :class:`Geometry` 
+GeometryCollection geometries have the methods common to all :class:`geom.Geometry` 
 subclasses. 
