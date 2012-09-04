@@ -96,6 +96,14 @@ exports["test: bounds"] = function(getLayer) {
     }
 }
 
+exports["test: getCount"] = function(getLayer) {
+    return function() {
+        var layer = getLayer();
+        var count = layer.getCount("STATE_NAME LIKE 'M%'");
+        ASSERT.strictEqual(count, 8, "states starting with 'M'");
+    }
+};
+
 exports["test: getBounds"] = function(getLayer) {
     return function() {
         var layer = getLayer();

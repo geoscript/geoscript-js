@@ -287,8 +287,7 @@ var Layer = UTIL.extend(GeoObject, {
             // count manually for layers that don't support this query
             var collection = this.query(filter);
             count = 0;
-            while (collection.hasNext()) {
-                collection.next();
+            for (var feature in collection) {
                 ++count;
             }
         }
