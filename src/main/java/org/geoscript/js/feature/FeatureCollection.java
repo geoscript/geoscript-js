@@ -29,7 +29,7 @@ import org.mozilla.javascript.annotations.JSStaticFunction;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-public class Collection extends GeoObject implements Wrapper {
+public class FeatureCollection extends GeoObject implements Wrapper {
 
     /** serialVersionUID */
     private static final long serialVersionUID = 7771735276222136537L;
@@ -46,14 +46,14 @@ public class Collection extends GeoObject implements Wrapper {
     /**
      * Prototype constructor.
      */
-    public Collection() {
+    public FeatureCollection() {
     }
 
     /**
      * Constructor from config object.
      * @param config
      */
-    private Collection(Scriptable config) {
+    private FeatureCollection(Scriptable config) {
         collection = new JSFeatureCollection(this, config);
     }
     
@@ -62,10 +62,10 @@ public class Collection extends GeoObject implements Wrapper {
      * @param scope
      * @param config
      */
-    private Collection(Scriptable scope, Scriptable config) {
+    private FeatureCollection(Scriptable scope, Scriptable config) {
         this(config);
         setParentScope(scope);
-        this.setPrototype(Module.getClassPrototype(Collection.class));
+        this.setPrototype(Module.getClassPrototype(FeatureCollection.class));
     }
 
     /**
@@ -73,10 +73,10 @@ public class Collection extends GeoObject implements Wrapper {
      * @param scope
      * @param collection
      */
-    public Collection(Scriptable scope, SimpleFeatureCollection collection) {
+    public FeatureCollection(Scriptable scope, SimpleFeatureCollection collection) {
         this.collection = collection;
         setParentScope(scope);
-        this.setPrototype(Module.getClassPrototype(Collection.class));
+        this.setPrototype(Module.getClassPrototype(FeatureCollection.class));
     }
 
     /**
@@ -92,14 +92,14 @@ public class Collection extends GeoObject implements Wrapper {
         if (args.length != 1) {
             throw ScriptRuntime.constructError("Error", "Constructor takes a single argument");
         }
-        Collection collection = null;
+        FeatureCollection collection = null;
         Object arg = args[0];
         if (arg instanceof Scriptable) {
             Scriptable config = (Scriptable) arg;
             if (inNewExpr) {
-                collection = new Collection(config);
+                collection = new FeatureCollection(config);
             } else {
-                collection = new Collection(config.getParentScope(), config);
+                collection = new FeatureCollection(config.getParentScope(), config);
             }
         } else {
             throw ScriptRuntime.constructError("Error", "Could not create collection from argument: " + Context.toString(arg));
@@ -189,7 +189,7 @@ public class Collection extends GeoObject implements Wrapper {
     }
 
     @JSStaticFunction
-    public static Collection from_(Scriptable collectionObj) {
+    public static FeatureCollection from_(Scriptable collectionObj) {
         SimpleFeatureCollection collection = null;
         if (collectionObj instanceof Wrapper) {
             Object obj = ((Wrapper) collectionObj).unwrap();
@@ -200,7 +200,7 @@ public class Collection extends GeoObject implements Wrapper {
         if (collection == null) {
             throw ScriptRuntime.constructError("Error", "Cannot create collection from " + Context.toString(collectionObj));
         }
-        return new Collection(getTopLevelScope(collectionObj), collection);
+        return new FeatureCollection(getTopLevelScope(collectionObj), collection);
     }
 
     public Object unwrap() {
@@ -209,7 +209,7 @@ public class Collection extends GeoObject implements Wrapper {
     
     static class JSFeatureCollection extends SimpleProcessingCollection {
     
-        Collection collection;
+        FeatureCollection collection;
         Scriptable scope;
 
         SimpleFeatureType featureType;
@@ -218,7 +218,7 @@ public class Collection extends GeoObject implements Wrapper {
         Function sizeFunc;
         Function boundsFunc;
 
-        public JSFeatureCollection(Collection collection, Scriptable config) {
+        public JSFeatureCollection(FeatureCollection collection, Scriptable config) {
             super();
             
             this.collection = collection;
@@ -301,7 +301,7 @@ public class Collection extends GeoObject implements Wrapper {
     static class JSFeatureIterator implements SimpleFeatureIterator {
     
         Scriptable scope;
-        Collection collection;
+        FeatureCollection collection;
         Function featuresFunc;
         Function closeFunc;
         
@@ -311,7 +311,7 @@ public class Collection extends GeoObject implements Wrapper {
         
         boolean closed = false;
         
-        public JSFeatureIterator(Collection collection, Function featuresFunc, Function closeFunc) {
+        public JSFeatureIterator(FeatureCollection collection, Function featuresFunc, Function closeFunc) {
             scope = collection.getParentScope();
             this.collection = collection;
             this.featuresFunc = featuresFunc;

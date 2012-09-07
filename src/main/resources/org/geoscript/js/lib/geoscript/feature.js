@@ -66,13 +66,10 @@ Feature.prototype.clone = function(config) {
     return feature;
 };
 
-/** api: classes[] = collection */
-var Collection = exports.Collection = this["org.geoscript.js.feature.Collection"];
+var FeatureCollection = exports.FeatureCollection = this["org.geoscript.js.feature.FeatureCollection"];
 
-/** api: classes[] = field */
 var Field = exports.Field = this["org.geoscript.js.feature.Field"];
 
-/** api: classes[] = schema */
 var Schema = exports.Schema = this["org.geoscript.js.feature.Schema"];
 
 Schema.prototype.clone = function(config) {

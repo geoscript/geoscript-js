@@ -6,13 +6,12 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 
-import org.geoscript.js.feature.Collection;
+import org.geoscript.js.feature.FeatureCollection;
 import org.geoscript.js.feature.Feature;
 import org.geoscript.js.feature.Schema;
 import org.geoscript.js.geom.Bounds;
 import org.geoscript.js.geom.GeometryWrapper;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.NativeArray;
@@ -51,7 +50,7 @@ public class GeoObject extends ScriptableObject implements Wrapper {
         MultiLineString(com.vividsolutions.jts.geom.MultiLineString.class),
         MultiPolygon(com.vividsolutions.jts.geom.MultiPolygon.class),
         Bounds(ReferencedEnvelope.class),
-        FeatureCollection(FeatureCollection.class),
+        FeatureCollection(org.geotools.feature.FeatureCollection.class),
         Filter(org.opengis.filter.Filter.class),
         Projection(CoordinateReferenceSystem.class),
         Date(Date.class),
@@ -317,7 +316,7 @@ public class GeoObject extends ScriptableObject implements Wrapper {
         } else if (value instanceof SimpleFeatureType) {
             value = new Schema(scope, (SimpleFeatureType) value);
         } else if (value instanceof SimpleFeatureCollection) {
-            value = new Collection(scope, (SimpleFeatureCollection) value);
+            value = new FeatureCollection(scope, (SimpleFeatureCollection) value);
         }
         return Context.javaToJS(value, scope);
     }

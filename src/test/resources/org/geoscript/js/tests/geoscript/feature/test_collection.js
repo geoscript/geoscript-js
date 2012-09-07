@@ -1,6 +1,6 @@
 var ASSERT = require("assert");
 var GEOM = require("geoscript/geom");
-var {Feature, Schema, Collection} = require("geoscript/feature");
+var {Feature, Schema, FeatureCollection} = require("geoscript/feature");
 
 var size = 10;
 var schema = new Schema({
@@ -13,7 +13,7 @@ var schema = new Schema({
 
 function createCollection() {
 
-    var collection = new Collection({
+    var collection = new FeatureCollection({
         features: function() {
             for (var i=0; i<size; ++i) {
                 yield new Feature({
@@ -35,7 +35,7 @@ function createCollection() {
 exports["test: constructor"] = function() {
     
     var collection = createCollection();
-    ASSERT.ok(collection instanceof Collection, "instance");
+    ASSERT.ok(collection instanceof FeatureCollection, "instance");
     
 };
 
@@ -93,7 +93,7 @@ exports["test: size (during iteration)"] = function() {
 
 exports["test: size (custom)"] = function() {
     
-    var collection = new Collection({
+    var collection = new FeatureCollection({
         size: function() {
             // though we have only one feature to yield, we'll pretend we have
             // more for the test
@@ -126,7 +126,7 @@ exports["test: bounds"] = function() {
 
 exports["test: bounds (custom)"] = function() {
     
-    var collection = new Collection({
+    var collection = new FeatureCollection({
         bounds: function() {
             // instead of iterating to determine bounds, provide it here
             return new GEOM.Bounds([-10, -20, 30, 40]);
@@ -150,7 +150,7 @@ exports["test: close (custom)"] = function() {
     
     var calls = 0;
     
-    var collection = new Collection({
+    var collection = new FeatureCollection({
         close: function() {
             // provide a custom close method
             // this will be called each time the generator is exhausted
