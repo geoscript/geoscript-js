@@ -26,6 +26,9 @@ Sample code to create a new field:
       >     projection: "EPSG:4326"
       > });
 
+For detail on the supported ``type`` values, see the section on 
+:ref:`type_mapping`.
+
 Config Properties
 -----------------
 
@@ -62,7 +65,9 @@ Config Properties
 .. describe:: type
 
     ``String``
-    The field type (required).
+    The field type (required).  For detail on the supported ``type`` values, see 
+    the section on :ref:`type_mapping`.
+
 
 
 Properties
@@ -106,7 +111,9 @@ Properties
 .. attribute:: Field.type
 
     ``String``
-    The field type (read-only).
+    The field type (read-only).  For detail on the supported ``type`` values, 
+    see the section on :ref:`type_mapping`.
+
 
 
 Methods

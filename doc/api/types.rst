@@ -4,7 +4,7 @@ Type Mapping
 ============
 
 When creating some GeoScript objects (e.g. :class:`process.Process` and 
-:class:`field.Field` objects), it is necessary to provide type information for 
+:class:`feature.Field` objects), it is necessary to provide type information for 
 converting values between Java and JavaScript.  The list below describes the 
 mapping between JavaScript types and the corresponding Java types.
 
