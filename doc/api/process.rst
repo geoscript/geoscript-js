@@ -16,19 +16,19 @@ The following constructs a process that performs some simple arithmetic.
       >     description: "Adds two numbers",
       >     inputs: {
       >         a: {
-      >             type: "Double",
+      >             type: "Number",
       >             title: "First",
       >             description: "The first number"
       >         },
       >         b: {
-      >             type: "Double",
+      >             type: "Number",
       >             title: "Second",
       >             description: "The second number"
       >         }
       >     }, 
       >     outputs: {
       >         result: {
-      >             type: "Double",
+      >             type: "Number",
       >             title: "Sum",
       >             description: "The sum of the two input numbers"
       >         }

@@ -31,7 +31,7 @@ public class GeoObject extends ScriptableObject implements Wrapper {
 
     /** serialVersionUID */
     private static final long serialVersionUID = 5069578216502688712L;
-
+    
     protected enum Type {
 
         String(String.class),
@@ -39,6 +39,7 @@ public class GeoObject extends ScriptableObject implements Wrapper {
         Short(Short.class),
         Float(Float.class),
         Long(Long.class),
+        Number(Double.class),
         Double(Double.class),
         Boolean(Boolean.class),
         Geometry(com.vividsolutions.jts.geom.Geometry.class),

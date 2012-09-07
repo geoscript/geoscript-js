@@ -50,7 +50,7 @@ exports["test: getTypeName"] = function() {
     // valid type mapping
     ASSERT.strictEqual(getTypeName("Guatemala"), "String", "String type");
     ASSERT.strictEqual(getTypeName(100), "Integer", "Integer type");
-    ASSERT.strictEqual(getTypeName(1.0), "Double", "Double type");
+    ASSERT.strictEqual(getTypeName(1.0), "Number", "Number type");
     ASSERT.strictEqual(getTypeName(new GEOM.Point([1, 2])), "Point", "point type");
     
     // no type mapping

@@ -239,7 +239,7 @@ exports["test: Process.get('JTS:buffer')"] = function() {
     var inputs = buffer.inputs;
     
     ASSERT.strictEqual(typeof inputs, "object", "inputs object");
-    ASSERT.strictEqual(inputs.distance.type, "Double", "distance type");
+    ASSERT.strictEqual(inputs.distance.type, "Number", "distance type");
     ASSERT.strictEqual(inputs.geom.type, "Geometry", "geom type");
     
     // TODO: deal with enumerated values
