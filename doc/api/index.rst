@@ -23,3 +23,9 @@ Modules
     process
     io/*
 
+
+.. toctree::
+    :hidden:
+
+    object
+    types
