@@ -189,6 +189,88 @@ exports["test parameter binding to java.lang.Class"] = function() {
 
 }
 
+exports["test minOccurs"] = function() {
+    
+    var process = new Process({
+        inputs: {
+            required: {type: "String", minOccurs: 1},
+            require2: {type: "String", minOccurs: 2},
+            optional: {type: "String", minOccurs: 0},
+            unspecified: {type: "String"}
+        },
+        outputs: {
+            result: {type: "Boolean"}
+        },
+        run: function(inputs) {
+            return {result: true};
+        }
+    });
+    
+    ASSERT.strictEqual(process.inputs.required.minOccurs, 1);
+    ASSERT.strictEqual(process.inputs.require2.minOccurs, 2);
+    ASSERT.strictEqual(process.inputs.optional.minOccurs, 0);
+    ASSERT.strictEqual(process.inputs.unspecified.minOccurs, 1);
+    
+    var inputs;
+
+    // valid inputs
+    inputs = {
+        required: "pass",
+        require2: ["one", "two"],
+        optional: "here",
+        unspecified: "here"
+    };
+    
+    ASSERT.strictEqual(process.run(inputs).result, true, "minimums");
+    
+    // missing required input
+    inputs = {
+        require2: ["one", "two"],
+        optional: "here",
+        unspecified: "here"
+    };
+
+    ASSERT.throws(function() {
+        process.run(inputs);
+    }, Error, "missing required input");
+
+    // not enough require2 input
+    inputs = {
+        required: "pass",
+        require2: "one",
+        optional: "here",
+        unspecified: "here"
+    };
+
+    ASSERT.throws(function() {
+        process.run(inputs);
+    }, Error, "too few require2 input");
+
+    // not enough require2 input (again)
+    inputs = {
+        required: "pass",
+        require2: ["one"],
+        optional: "here",
+        unspecified: "here"
+    };
+
+    ASSERT.throws(function() {
+        process.run(inputs);
+    }, Error, "too few require2 input (again)");
+    
+    // missing unspecified input
+    inputs = {
+        required: "pass",
+        require2: ["one", "two"],
+        optional: "here"
+    };
+    ASSERT.throws(function() {
+        process.run(inputs);
+    }, Error, "missing unspecified input");
+
+
+}
+
 exports["test run"] = function() {
     var add = new Process({
         title: "Add process",
@@ -254,6 +336,27 @@ exports["test: Process.get('JTS:buffer')"] = function() {
     ASSERT.strictEqual(outputs.result.area.toFixed(3), "312.145", "correct area");
     
 }
+
+exports["test: Process.get('JTS:union')"] = function() {
+    
+    var union = Process.get("JTS:union");
+    var inputs = union.inputs;
+    
+    ASSERT.strictEqual(typeof inputs, "object", "inputs object");
+    ASSERT.strictEqual(inputs.geom.type, "Geometry", "geom type");
+    ASSERT.strictEqual(inputs.geom.minOccurs, 2, "geom minOccurs");
+    
+    var geom = require("geoscript/geom");
+    var poly1 = new geom.Point([0, 0]).buffer(1);
+    var poly2 = new geom.Point([0, 1]).buffer(1);
+    
+    var outputs = union.run({geom: [poly1, poly2]});
+    
+    ASSERT.ok(outputs.result instanceof geom.Polygon, "result polygon");
+    ASSERT.strictEqual(outputs.result.area.toFixed(3), "5.028", "correct area");
+    
+}
+
 
 if (require.main == module.id) {
     system.exit(require("test").run(exports));

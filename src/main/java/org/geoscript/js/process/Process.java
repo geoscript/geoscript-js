@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -109,7 +110,31 @@ public class Process extends GeoObject implements Wrapper {
     @JSFunction
     public Scriptable run(Scriptable inputsObj) {
         Map<String, Object> inputsMap = jsObjectToMap(inputsObj);
+
+        // validate inputs
+        for (Entry<String, Parameter<?>> entry : inputs.entrySet()) {
+            String key = entry.getKey();
+            Parameter<?> param = entry.getValue();
+            if (param.minOccurs > 0) {
+                if (!inputsMap.containsKey(key)) {
+                    throw ScriptRuntime.constructError("Error", "Missing required input: " + key);
+                }
+                if (param.minOccurs > 1) {
+                    Object value = inputsMap.get(key);
+                    if (!(value instanceof NativeArray)) {
+                        throw ScriptRuntime.constructError("Error", "Expected an array of values for input: " + key);
+                    } else {
+                        int size = ((NativeArray) value).size();
+                        if (size < param.minOccurs) {
+                            throw ScriptRuntime.constructError("Error", "Not enough values for input: " + key);
+                        }
+                    }
+                }
+            }
+        }
+        
         Map<String, Object> outputsMap = process.execute(inputsMap, null);
+        
         Scriptable outputsObj = mapToJSObject(outputsMap);
         return outputsObj;
     }
@@ -164,15 +189,17 @@ public class Process extends GeoObject implements Wrapper {
         }
         
         Object minOccursObj = paramObj.get("minOccurs", paramObj);
-        int minOccurs = 1; // TODO: determine why -1 doesn't work here
+        int minOccurs = 1;
         if (minOccursObj instanceof Number) {
-            minOccurs = (Integer) minOccursObj;
+            minOccurs = ((Number) minOccursObj).intValue();
+            minOccurs = minOccurs > -1 ? minOccurs : 0;
         }
 
         Object maxOccursObj = paramObj.get("maxOccurs", paramObj);
-        int maxOccurs = 1; // TODO: determine why -1 doesn't work here
+        int maxOccurs = minOccurs > 0 ? minOccurs : 1;
         if (maxOccursObj instanceof Number) {
-            maxOccurs = (Integer) maxOccursObj;
+            maxOccurs = ((Number) maxOccursObj).intValue();
+            maxOccurs = maxOccurs >= minOccurs ? maxOccurs : Integer.MAX_VALUE;
         }
 
         @SuppressWarnings({ "rawtypes", "unchecked" })
