@@ -1,32 +1,32 @@
 var ASSERT = require("assert");
 var GEOM = require("geoscript/geom");
 var PROJ = require("geoscript/proj");
-var FEATURE = require("geoscript/feature");
+var Field = require("geoscript/feature").Field;
 
 exports["test: constructor"] = function() {
     
     var field;
     
     ASSERT.throws(function() {
-        field = new FEATURE.Field({name: "foo"});
+        field = new Field({name: "foo"});
     }, Error, "type is required");
 
     ASSERT.throws(function() {
-        field = new FEATURE.Field({type: "String"});
+        field = new Field({type: "String"});
     }, Error, "name is required");
 
     ASSERT.throws(function() {
-        field = new FEATURE.Field({name: "foo", type: "bar"});
+        field = new Field({name: "foo", type: "bar"});
     }, Error, "unsupported type throws error");
     
-    field = new FEATURE.Field({
+    field = new Field({
         name: "place",
         type: "String"
     });
     ASSERT.strictEqual(field.name, "place", "correct name");
     ASSERT.strictEqual(field.type, "String", "correct type");
     
-    field = new FEATURE.Field({
+    field = new Field({
         name: "place",
         type: "Point",
         projection: "EPSG:4326"
@@ -38,14 +38,143 @@ exports["test: constructor"] = function() {
 
 exports["test: description"] = function() {
     
-    var field = new FEATURE.Field({name: "foo", type: "String", description: "bar"});
+    var field = new Field({name: "foo", type: "String", description: "bar"});
     ASSERT.strictEqual(field.description, "bar", "correct description");
     
 };
 
+exports["test: minOccurs"] = function() {
+    
+    var field;
+    
+    // minOccurs 0
+    field = new Field({
+        name: "foo",
+        type: "String",
+        minOccurs: 0
+    });
+    ASSERT.strictEqual(field.minOccurs, 0);
+    ASSERT.strictEqual(field.maxOccurs, 1);
+
+    // minOccurs 1
+    field = new Field({
+        name: "foo",
+        type: "String",
+        minOccurs: 1
+    });
+    ASSERT.strictEqual(field.minOccurs, 1);
+    ASSERT.strictEqual(field.maxOccurs, 1);
+
+    // minOccurs 2
+    field = new Field({
+        name: "foo",
+        type: "String",
+        minOccurs: 2
+    });
+    ASSERT.strictEqual(field.minOccurs, 2);
+    ASSERT.strictEqual(field.maxOccurs, 2);
+
+    // minOccurs 2, maxOccurs 3
+    field = new Field({
+        name: "foo",
+        type: "String",
+        minOccurs: 2,
+        maxOccurs: 3
+    });
+    ASSERT.strictEqual(field.minOccurs, 2);
+    ASSERT.strictEqual(field.maxOccurs, 3);
+
+    // minOccurs unspecified
+    field = new Field({
+        name: "foo",
+        type: "String"
+    });
+    ASSERT.strictEqual(field.minOccurs, 0);
+
+};
+
+exports["test: minOccurs (invalid)"] = function() {
+    
+    var field;
+    
+    ASSERT.throws(function() {
+        field = new Field({
+            name: "foo",
+            type: "String",
+            minOccurs: -2
+        });
+    }, Error, "minOccurs < -1");
+
+    ASSERT.throws(function() {
+        field = new Field({
+            name: "foo",
+            type: "String",
+            minOccurs: 10,
+            maxOccurs: 5
+        });
+    }, Error, "minOccurs > maxOccurs");
+
+};
+
+
+exports["test: maxOccurs"] = function() {
+    
+    var field;
+    
+    // maxOccurs 1
+    field = new Field({
+        name: "foo",
+        type: "String",
+        maxOccurs: 1
+    });
+    ASSERT.strictEqual(field.minOccurs, 0)
+    ASSERT.strictEqual(field.maxOccurs, 1);
+
+    // maxOccurs 2
+    field = new Field({
+        name: "foo",
+        type: "String",
+        maxOccurs: 2
+    });
+    ASSERT.strictEqual(field.minOccurs, 0)
+    ASSERT.strictEqual(field.maxOccurs, 2);
+
+    // maxOccurs unspecified
+    field = new Field({
+        name: "foo",
+        type: "String"
+    });
+    ASSERT.strictEqual(field.maxOccurs, 1);
+
+};
+
+exports["test: maxOccurs (invalid)"] = function() {
+    
+    var field;
+    
+    ASSERT.throws(function() {
+        field = new Field({
+            name: "foo",
+            type: "String",
+            maxOccurs: -2
+        });
+    }, Error, "maxOccurs < -1");
+
+    ASSERT.throws(function() {
+        field = new Field({
+            name: "foo",
+            type: "String",
+            minOccurs: 10,
+            maxOccurs: 5
+        });
+    }, Error, "minOccurs > maxOccurs");
+
+};
+
+
 exports["test: getTypeName"] = function() {
     
-    var getTypeName = FEATURE.Field.getTypeName;
+    var getTypeName = Field.getTypeName;
     
     // valid type mapping
     ASSERT.strictEqual(getTypeName("Guatemala"), "String", "String type");

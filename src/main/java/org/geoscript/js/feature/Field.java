@@ -93,13 +93,27 @@ public class Field extends GeoObject implements Wrapper {
             builder.setCRS(crs);
         }
         Object minOccursObj = config.get("minOccurs");
-        if (minOccursObj instanceof Integer) {
-            builder.setMinOccurs((Integer) minOccursObj);
+        int minOccurs = -1;
+        if (minOccursObj instanceof Number) {
+            minOccurs = ((Number) minOccursObj).intValue();
+            if (minOccurs < -1) {
+                throw ScriptRuntime.constructError("Error", "Invalid minOccurs value: " + Context.toString(minOccursObj));
+            }
+            builder.setMinOccurs(minOccurs);
         }
         Object maxOccursObj = config.get("maxOccurs");
-        if (maxOccursObj instanceof Integer) {
-            builder.setMaxOccurs((Integer) maxOccursObj);
+        int maxOccurs = -1;
+        if (maxOccursObj instanceof Number) {
+            maxOccurs = ((Number) maxOccursObj).intValue();
+            if (maxOccurs < minOccurs || maxOccurs == 0) {
+                throw ScriptRuntime.constructError("Error", "Invalid maxOccurs value: " + Context.toString(maxOccursObj));
+            }
+            builder.setMaxOccurs(maxOccurs);
+        } else if (minOccurs > -1) {
+            maxOccurs = minOccurs == 0 ? 1 : minOccurs;
+            builder.setMaxOccurs(maxOccurs);
         }
+
         Object isNillableObj = config.get("isNillable");
         if (isNillableObj instanceof Boolean) {
             builder.setNillable((Boolean) isNillableObj);
