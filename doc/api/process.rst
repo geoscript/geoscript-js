@@ -94,7 +94,7 @@ Config Properties
     For a description and list of supported ``type`` values, see the 
     :ref:`type_mapping` section.  If you need to reference a type for which 
     there is not a mapping, you can supply the class directly instead of 
-    providing a string (e.g. ``Packages.com.example.SomeType.class``).
+    providing a string (e.g. ``Packages.com.example.SomeClass``).
 
 .. describe:: outputs
 
@@ -117,7 +117,7 @@ Config Properties
     For a description and list of supported ``type`` values, see the 
     :ref:`type_mapping` section.  If you need to reference a type for which 
     there is not a mapping, you can supply the class directly instead of 
-    providing a string (e.g. ``Packages.com.example.SomeType.class``).
+    providing a string (e.g. ``Packages.com.example.SomeClass``).
 
 
 .. describe:: run
