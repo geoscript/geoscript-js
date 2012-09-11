@@ -24,6 +24,7 @@ import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSConstructor;
 import org.mozilla.javascript.annotations.JSFunction;
@@ -108,7 +109,10 @@ public class Process extends GeoObject implements Wrapper {
     }
     
     @JSFunction
-    public Scriptable run(Scriptable inputsObj) {
+    public NativeObject run(Scriptable inputsObj) {
+        if (!(inputsObj instanceof NativeObject)) {
+            throw ScriptRuntime.constructError("Error", "The run method takes an inputs object as argument");
+        }
         Map<String, Object> inputsMap = jsObjectToMap(inputsObj);
 
         // validate inputs
@@ -134,9 +138,11 @@ public class Process extends GeoObject implements Wrapper {
         }
         
         Map<String, Object> outputsMap = process.execute(inputsMap, null);
-        
-        Scriptable outputsObj = mapToJSObject(outputsMap);
-        return outputsObj;
+        Object obj = javaToJS(outputsMap, getParentScope());
+        if (!(obj instanceof NativeObject)) {
+            throw ScriptRuntime.constructError("Error", "Unable to parse process outputs");
+        }
+        return (NativeObject) obj;
     }
 
     private Map<String, Parameter<?>> createParameterMap(Scriptable obj) {
@@ -308,27 +314,6 @@ public class Process extends GeoObject implements Wrapper {
         return process;
     }
 
-    private Scriptable mapToJSObject(Map<String, Object> map) {
-        Context context = getCurrentContext();
-        Scriptable scope = getParentScope();
-        Scriptable inputsObj = context.newObject(scope);
-        for (String id  : map.keySet()) {
-            Object value = javaToJS(map.get(id), scope);
-            inputsObj.put(id, inputsObj, value);
-        }
-        return inputsObj;
-    }
-
-    private Map<String, Object> jsObjectToMap(Scriptable obj) {
-        HashMap<String, Object> outputsMap = new HashMap<String, Object>();
-        Object[] ids = obj.getIds();
-        for (Object id : ids) {
-            String name = (String) id;
-            outputsMap.put(name, jsToJava(obj.get(name, obj)));
-        }
-        return outputsMap;
-    }
-    
     @JSStaticFunction
     public static NativeArray getNames() {
         List<String> processNames = new ArrayList<String>();
@@ -345,14 +330,14 @@ public class Process extends GeoObject implements Wrapper {
     }
     
     @JSStaticFunction
-    public static Process get(String processName) {
+    public static Process get(Scriptable processNameObj) {
         Process jsProcess = null;
-        String[] parts = processName.split(":");
+        String[] parts = processNameObj.toString().split(":");
         Name name = new NameImpl(parts[0], parts[1]);
         ProcessFactory factory = Processors.createProcessFactory(name);
         if (factory != null) {
             org.geotools.process.Process process = factory.create(name);
-            Scriptable scope = ScriptRuntime.getTopCallScope(getCurrentContext());
+            Scriptable scope = ScriptableObject.getTopLevelScope(processNameObj);
             jsProcess = new Process(scope, factory.getTitle(name), 
                     factory.getDescription(name), factory.getParameterInfo(name), 
                     factory.getResultInfo(name, null), process);
@@ -383,9 +368,10 @@ public class Process extends GeoObject implements Wrapper {
             Scriptable outputsObj;
             Map<String, Object> outputs = null;
             Context cx = Context.enter();
+            Scriptable scope = runFunc.getParentScope();
             try {
-                Scriptable inputsObj = mapToJSObject(inputs);
-                outputsObj = (Scriptable) runFunc.call(cx, getParentScope(), 
+                Object inputsObj = javaToJS(inputs, scope);
+                outputsObj = (Scriptable) runFunc.call(cx, scope, 
                         process, new Object[] {inputsObj});
                 outputs = jsObjectToMap(outputsObj);
             } catch (Exception e) {

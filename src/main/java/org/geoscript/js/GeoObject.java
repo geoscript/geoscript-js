@@ -5,6 +5,9 @@ import java.net.URI;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.geoscript.js.feature.FeatureCollection;
 import org.geoscript.js.feature.Feature;
@@ -16,6 +19,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeJSON;
+import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
@@ -287,11 +291,28 @@ public class GeoObject extends ScriptableObject implements Wrapper {
         if (value instanceof Wrapper) {
             value = ((Wrapper) value).unwrap();
         } else if (value instanceof Scriptable) {
-            if (((Scriptable) value).getClassName().equals("Date")) {
+            if (value instanceof NativeObject) {
+                value = jsObjectToMap((Scriptable) value);
+            } else if (((Scriptable) value).getClassName().equals("Date")) {
                 value = Context.jsToJava(value, java.util.Date.class);
             }
         }
         return value;
+    }
+    
+    /**
+     * Convert a JavaScript object into a Java map.
+     * @param obj
+     * @return
+     */
+    public static Map<String, Object> jsObjectToMap(Scriptable obj) {
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        Object[] ids = obj.getIds();
+        for (Object id : ids) {
+            String name = (String) id;
+            map.put(name, jsToJava(obj.get(name, obj)));
+        }
+        return map;
     }
 
     /**
@@ -301,13 +322,16 @@ public class GeoObject extends ScriptableObject implements Wrapper {
      * @return
      */
     public static Object javaToJS(Object value, Scriptable scope) {
-        if (value instanceof java.util.Date) {
+        if (value instanceof Map) {
+            value = mapToJSObject((Map<?, ?>) value, scope);
+        } else if (value instanceof List) {
+            value = listToJSArray((List<?>) value, scope);
+        } else if (value instanceof java.util.Date) {
             java.util.Date date = (java.util.Date) value;
             Object[] args = { new Long(date.getTime()) };
-            Context cx = GeoObject.getCurrentContext();
+            Context cx = getCurrentContext();
             value = cx.newObject(scope, "Date", args);
-        }
-        if (value instanceof com.vividsolutions.jts.geom.Geometry) {
+        } else if (value instanceof com.vividsolutions.jts.geom.Geometry) {
             value = GeometryWrapper.wrap(scope, (com.vividsolutions.jts.geom.Geometry) value);
         } else if (value instanceof ReferencedEnvelope) {
             value = new Bounds(scope, (ReferencedEnvelope) value);
@@ -319,6 +343,37 @@ public class GeoObject extends ScriptableObject implements Wrapper {
             value = new FeatureCollection(scope, (SimpleFeatureCollection) value);
         }
         return Context.javaToJS(value, scope);
+    }
+    
+    /**
+     * Convert a Java list to a JavaScript array.
+     * @param value
+     * @param scope
+     * @return
+     */
+    private static NativeArray listToJSArray(List<?> list, Scriptable scope) {
+        int length = list.size();
+        Context cx = getCurrentContext();
+        NativeArray array = (NativeArray) cx.newArray(scope, length);
+        for (int i=0; i<length; ++i) {
+            array.put(i, array, javaToJS(list.get(i), scope));
+        }
+        return array;
+    }
+
+    /**
+     * Convert a Java map into a JavaScript object.
+     * @param map
+     * @param scope
+     * @return
+     */
+    public static NativeObject mapToJSObject(Map<?, ?> map, Scriptable scope) {
+        Context context = getCurrentContext();
+        NativeObject obj = (NativeObject) context.newObject(scope);
+        for (Object id  : map.keySet()) {
+            obj.put(id.toString(), obj, javaToJS(map.get(id), scope));
+        }
+        return obj;
     }
 
 }
