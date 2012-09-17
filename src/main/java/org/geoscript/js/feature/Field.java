@@ -192,7 +192,9 @@ public class Field extends GeoObject implements Wrapper {
         Projection projection = null;
         if (descriptor instanceof GeometryDescriptor) {
             CoordinateReferenceSystem crs = ((GeometryDescriptor) descriptor).getCoordinateReferenceSystem();
-            projection = new Projection(getParentScope(), crs);
+            if (crs != null) {
+                projection = new Projection(getParentScope(), crs);
+            }
         }
         return projection;
     }

@@ -1,6 +1,7 @@
 var ASSERT = require("assert");
 var GEOM = require("geoscript/geom");
 var FEATURE = require("geoscript/feature");
+var Projection = require("geoscript/proj").Projection;
 
 exports["test: constructor"] = function() {
     
@@ -83,9 +84,9 @@ exports["test: set"] = function() {
     f.set("location", point);
     ASSERT.ok(point.equals(f.get("location")), "correct new location value using get");
     ASSERT.ok(point.equals(f.geometry), "correct new location value using geometry");
+    ASSERT.strictEqual(f.projection, null, "null projection");
     
     point = new GEOM.Point([3, 4]);
-    point.projection = "EPSG:4326";
     f.geometry = point;
     ASSERT.ok(point.equals(f.geometry), "geometry correctly set");
     
@@ -102,6 +103,63 @@ exports["test: set"] = function() {
     ASSERT.throws(function() {
         f.set("bogusname", "some value");
     }, Error, "bogus field name");
+    
+};
+
+exports["test: projection handling"] = function() {
+    var feature;
+    var point0 = new GEOM.Point([1, 2]);
+    var point1 = point0.clone();
+    point1.projection = "epsg:4326";
+    
+    // feature without a projection
+    feature = new FEATURE.Feature({
+        properties: {geom: point0}
+    });
+    ASSERT.strictEqual(feature.projection, null, "null feature projection");
+    ASSERT.strictEqual(feature.geometry.projection, null, "null geometry projection");
+    ASSERT.strictEqual(feature.schema.geometry.projection, null, "null schema geometry projection");
+    
+    ASSERT.throws(function() {
+        f.geometry = point1;
+    }, Error, "cant add geometry with projection to feature without");
+    
+    // feature with a projection
+    feature = new FEATURE.Feature({
+        properties: {geom: point1}
+    });
+    var projection = feature.projection;
+    ASSERT.ok(projection instanceof Projection, "feature projection");
+    ASSERT.strictEqual(projection.id, "EPSG:4326");
+    ASSERT.ok(projection.equals(feature.geometry.projection), "correct geom projection");
+    
+    var schema = new FEATURE.Schema({
+        name: "test-schema",
+        fields: [{
+            name: "geom", type: "Point", projection: "EPSG:3857"
+        }]
+    });
+    
+    feature = new FEATURE.Feature({
+        schema: schema
+    });
+    
+    projection = feature.projection;
+    ASSERT.ok(projection instanceof Projection, "feature projection");
+    ASSERT.strictEqual(projection.id, "EPSG:3857");
+    
+    feature.geometry = point0;
+    projection = feature.geometry.projection;
+    ASSERT.ok(projection instanceof Projection, "geometry projection");
+    ASSERT.strictEqual(projection.id, "EPSG:3857");
+    
+    feature.geometry = point1;
+    var geometry = feature.geometry;
+    projection = geometry.projection;
+    ASSERT.ok(projection instanceof Projection, "geometry projection");
+    ASSERT.strictEqual(projection.id, "EPSG:3857");
+    
+    ASSERT.ok(geometry.equals(point1.transform("EPSG:3857")));
     
 };
 

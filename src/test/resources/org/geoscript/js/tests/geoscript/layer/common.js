@@ -199,3 +199,26 @@ exports["test: remove"] = function(getLayer) {
         layer.workspace.close();
     };
 };
+
+exports["test: projection"] = function(getLayer) {
+    return function() {
+        var projection;
+        var layer = getLayer();
+        
+        projection = layer.projection;
+        ASSERT.ok(projection instanceof PROJ.Projection, "layer projection");
+        ASSERT.strictEqual(projection.id, "EPSG:4326");
+        
+        var feature = layer.get("STATE_ABBR = 'MT'");
+        ASSERT.ok(feature instanceof Feature, "got feature");
+        projection = feature.projection;
+        ASSERT.ok(projection instanceof PROJ.Projection, "feature projection");
+        ASSERT.strictEqual(projection.id, "EPSG:4326");
+        
+        var geometry = feature.geometry;
+        ASSERT.ok(geometry instanceof GEOM.Geometry, "got geometry");
+        projection = geometry.projection;
+        ASSERT.ok(projection instanceof PROJ.Projection, "geometry projection");
+        ASSERT.strictEqual(projection.id, "EPSG:4326");
+    }
+}

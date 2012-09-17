@@ -1,5 +1,6 @@
 var ASSERT = require("assert");
 var GEOM = require("geoscript/geom");
+var Projection = require("geoscript/proj").Projection;
 
 exports["test: constructor"] = function() {
     
@@ -123,6 +124,37 @@ exports["test: clone"] = function() {
     ASSERT.ok(!!c.projection, "clone gets a projection");
     
 }
+
+exports["test: projection"] = function() {
+    
+    var projection;
+
+    var p = new GEOM.Point([-110, 45]);
+    projection = p.projection;
+    ASSERT.strictEqual(projection, null, "null projection by default");
+    
+    p.projection = "EPSG:4326";
+    projection = p.projection;
+    ASSERT.ok(projection instanceof Projection, "assigned projection");
+    ASSERT.strictEqual(projection.id, "EPSG:4326");
+    
+    ASSERT.throws(function() {
+        p.projection = "EPSG:900913";
+    }, Error, "cannot reset geometry projection");
+};
+
+exports["test: transform"] = function() {
+    var p = new GEOM.Point([-110, 45]);
+    p.projection = "EPSG:4326";
+    
+    var p2 = p.transform("EPSG:3857");
+    ASSERT.ok(p2 instanceof GEOM.Point);
+    var projection = p2.projection;
+    ASSERT.ok(projection instanceof Projection, "assigned projection");
+    ASSERT.strictEqual(p2.x.toFixed(3), "-12245143.987");
+    ASSERT.strictEqual(p2.y.toFixed(3), "5621521.486");
+};
+
 
 if (require.main == module.id) {
     system.exit(require("test").run(exports));

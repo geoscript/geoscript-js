@@ -3,7 +3,6 @@ package org.geoscript.js.feature;
 import org.geoscript.js.GeoObject;
 import org.geoscript.js.geom.Bounds;
 import org.geoscript.js.geom.Geometry;
-import org.geoscript.js.geom.GeometryWrapper;
 import org.geoscript.js.proj.Projection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.mozilla.javascript.Context;
@@ -23,6 +22,7 @@ import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class Feature extends GeoObject implements Wrapper {
@@ -35,11 +35,6 @@ public class Feature extends GeoObject implements Wrapper {
      */
     private SimpleFeature feature;
 
-    /**
-     * Optional coordinate reference system for the feature.
-     */
-    CoordinateReferenceSystem crs;
-    
     /**
      * Layer from which this feature was accessed.  Used to persist 
      * modifications.
@@ -158,36 +153,29 @@ public class Feature extends GeoObject implements Wrapper {
     
     @JSGetter
     public Geometry getGeometry() {
-        Geometry jsGeom = null;
-        com.vividsolutions.jts.geom.Geometry geometry = 
-            (com.vividsolutions.jts.geom.Geometry) feature.getDefaultGeometry();
-        if (geometry != null) {
-            jsGeom = (Geometry) GeometryWrapper.wrap(getParentScope(), geometry);
-            jsGeom.setProjection(getProjection());
-        }
-        return jsGeom;
+        String name = getGeometryName();
+        return (Geometry) get(name);
     }
     
     @JSSetter
     public void setGeometry(Geometry geometry) {
         String name = getGeometryName();
+        if (name == null) {
+            throw ScriptRuntime.constructError("Error", "Feature schema has no geometry field");
+        }
         set(name, geometry);
     }
     
-    @JSSetter
-    public void setProjection(Projection projection) {
-        CoordinateReferenceSystem crs = null;
-        if (projection != null) {
-            crs = projection.unwrap();
-        }
-        this.crs = crs;
-    }
-
     @JSGetter
     public Projection getProjection() {
         Projection projection = null;
-        if (crs != null) {
-            projection = new Projection(getParentScope(), crs);
+        SimpleFeatureType featureType = feature.getFeatureType();
+        GeometryDescriptor descriptor = featureType.getGeometryDescriptor();
+        if (descriptor != null) {
+            CoordinateReferenceSystem crs = descriptor.getCoordinateReferenceSystem();
+            if (crs != null) {
+                projection = new Projection(getParentScope(), crs);
+            }
         }
         return projection;
     }
@@ -219,7 +207,18 @@ public class Feature extends GeoObject implements Wrapper {
             if (!(value instanceof Geometry)) {
                 throw ScriptRuntime.constructError("Error", "Attempted to set geometry property to a non-geometry object: " + Context.toString(value));
             }
-            setProjection(((Geometry) value).getProjection());
+            Projection featureProj = getProjection();
+            Geometry geometry = (Geometry) value;
+            Projection geomProj = geometry.getProjection();
+            if (featureProj != null) {
+                if (geomProj != null) {
+                    if (!featureProj.equals(geometry.getProjection())) {
+                        value = geometry.transform(featureProj);
+                    }
+                }
+            } else if (geomProj != null) {
+                throw ScriptRuntime.constructError("Error", "Cannot add a geometry with a projection to a feature without a projection");
+            }
         }
         feature.setAttribute(name, jsToJava(value));
         if (layer != null) {
@@ -244,6 +243,9 @@ public class Feature extends GeoObject implements Wrapper {
             value = Context.getUndefinedValue();
         } else {
             value = javaToJS(feature.getAttribute(name), getParentScope());
+            if (value instanceof Geometry) {
+                ((Geometry) value).setProjection(getProjection());
+            }
         }
         return value;
     }

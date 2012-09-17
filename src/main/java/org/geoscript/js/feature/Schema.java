@@ -3,6 +3,8 @@ package org.geoscript.js.feature;
 import java.util.List;
 
 import org.geoscript.js.GeoObject;
+import org.geoscript.js.geom.Geometry;
+import org.geoscript.js.proj.Projection;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.mozilla.javascript.Context;
@@ -217,7 +219,8 @@ public class Schema extends GeoObject implements Wrapper {
         Scriptable fields = cx.newArray(scope, names.length);
         for (int i=0; i<names.length; ++i) {
             String name = (String) names[i];
-            Object value = jsToJava(values.get(name));
+            Object jsValue = values.get(name, values);
+            Object value = jsToJava(jsValue);
             String typeName = Field.getTypeName(value);
             if (typeName == null) {
                 throw ScriptRuntime.constructError("Error", "Unable to determine type for field: " + name);
@@ -225,6 +228,12 @@ public class Schema extends GeoObject implements Wrapper {
             Scriptable fieldConfig = cx.newObject(scope);
             fieldConfig.put("name", fieldConfig, name);
             fieldConfig.put("type", fieldConfig, typeName);
+            if (jsValue instanceof Geometry) {
+                Projection projection = ((Geometry) jsValue).getProjection();
+                if (projection != null) {
+                    fieldConfig.put("projection", fieldConfig, projection.getId());
+                }
+            }
             Field field = new Field(scope, (NativeObject) fieldConfig);
             fields.put(i, fields, field);
         }

@@ -216,7 +216,9 @@ public class Geometry extends GeoObject implements Wrapper {
         } catch (TransformException e) {
             throw new RuntimeException("Failed to transform.", e);
         }
-        return (Geometry) GeometryWrapper.wrap(getParentScope(), transGeom);
+        Geometry transformed = (Geometry) GeometryWrapper.wrap(getParentScope(), transGeom);
+        transformed.projection = toProj;
+        return transformed;
     }
     
     @JSFunction 
@@ -264,7 +266,10 @@ public class Geometry extends GeoObject implements Wrapper {
             } else if (projObj instanceof String) {
                 projection = new Projection(getParentScope(), (String) projObj);
             } else {
-                throw new RuntimeException("Set projection with Projection object or string identifier.");
+                throw ScriptRuntime.constructError("Error", "Set projection with Projection object or string identifier.");
+            }
+            if (this.projection != null && !projection.equals(this.projection)) {
+                throw ScriptRuntime.constructError("Error", "Geometry projection already set.  Use the transform method to transform coordinates.");
             }
         }
         this.projection = projection;

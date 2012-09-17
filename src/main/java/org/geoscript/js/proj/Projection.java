@@ -76,7 +76,7 @@ public class Projection extends GeoObject implements Wrapper {
             try {
                 crs = CRS.parseWKT(id);
             } catch (Exception e2) {
-                throw new RuntimeException("Trouble creating projection", e2);
+                throw ScriptRuntime.constructError("Error", "Trouble creating projection: " + id);
             }
         }
     }
