@@ -1,5 +1,7 @@
 var ASSERT = require("assert");
 var Process = require("geoscript/process").Process;
+var GEOM = require("geoscript/geom");
+var {Schema, Feature, FeatureCollection} = require("geoscript/feature");
 
 exports["test Process.constructor"] = function() {
     
@@ -356,6 +358,50 @@ exports["test: Process.get('JTS:union')"] = function() {
     ASSERT.strictEqual(outputs.result.area.toFixed(3), "5.028", "correct area");
     
 }
+
+
+exports["test: Process.get('gs.BufferFeatureCollection"] = function() {
+    var buffer = Process.get("gs:BufferFeatureCollection");
+    
+    ASSERT.strictEqual(buffer.inputs.features.type, "FeatureCollection");
+    ASSERT.strictEqual(buffer.outputs.result.type, "FeatureCollection");
+    
+    var collection = new FeatureCollection({
+        features: function() {
+            for (var i=0; i<3; ++i) {
+                yield new Feature({
+                    properties: {
+                        geom: new GEOM.Point([i*10, i*10])
+                    }
+                });
+            }
+        }
+    });
+    
+    var result = buffer.run({features: collection, distance: 2}).result;
+    
+    ASSERT.ok(result instanceof FeatureCollection, "result collection");
+    ASSERT.strictEqual(result.size, 3, "3 items");
+    
+    var count = 0;
+    var schema, geometry, centroid;
+    for (var feature in result) {
+        ASSERT.ok(feature instanceof Feature, "feature " + count);
+        schema = feature.schema;
+        ASSERT.ok(schema instanceof Schema, "schema " + count);
+        ASSERT.strictEqual(schema.fields.length, 1, "fields length " + count);
+        ASSERT.strictEqual(schema.geometry.name, "geom", "geom field " + count);
+        ASSERT.strictEqual(schema.geometry.type, "MultiPolygon", "geom type " + count);
+        geometry = feature.geometry;
+        ASSERT.ok(geometry instanceof GEOM.MultiPolygon, "multi-polygon " + count);
+        centroid = geometry.centroid;
+        ASSERT.ok(centroid.distance(new GEOM.Point([count*10, count*10])) < 10e-10, "centroid " + count);
+        ASSERT.strictEqual(geometry.area.toFixed(3), "12.486", "area " + count);
+        ++count;
+    }
+    
+    ASSERT.strictEqual(count, 3, "iterated over three features");
+};
 
 
 if (require.main == module.id) {
