@@ -231,15 +231,15 @@ public class Geometry extends GeoObject implements Wrapper {
     public Geometry buffer(double distance, NativeObject options) {
         BufferParameters params = new BufferParameters();
         if (options != null) {
-            Object segsObj = options.get("segs");
+            Object segsObj = options.get("segs", options);
             if (segsObj instanceof Integer) {
                 params.setQuadrantSegments((Integer) segsObj);
             }
-            Object singleObj = options.get("single");
+            Object singleObj = options.get("single", options);
             if (singleObj instanceof Boolean) {
                 params.setSingleSided((Boolean) singleObj);
             }
-            Object capsObj = options.get("caps");
+            Object capsObj = options.get("caps", options);
             if (capsObj instanceof Integer) {
                 params.setEndCapStyle((Integer) capsObj);
             }

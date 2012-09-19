@@ -64,7 +64,7 @@ public class Schema extends GeoObject implements Wrapper {
      * @param config
      */
     private Schema(NativeObject config) {
-        Object fieldsObj = config.get("fields");
+        Object fieldsObj = config.get("fields", config);
         if (!(fieldsObj instanceof NativeArray)) {
             throw ScriptRuntime.constructError("Error", "Schema config must have a fields array.");
         }

@@ -42,32 +42,33 @@ public class Bounds extends GeoObject implements Wrapper {
         double minY = Double.NaN;
         double maxX = Double.NaN;
         double maxY = Double.NaN;
-        Object minXObj = obj.get("minX");
+        Object minXObj = obj.get("minX", obj);
         if (minXObj instanceof Number) {
             minX = ((Number) minXObj).doubleValue();
         }
-        Object minYObj = obj.get("minY");
+        Object minYObj = obj.get("minY", obj);
         if (minYObj instanceof Number) {
             minY = ((Number) minYObj).doubleValue();
         }
-        Object maxXObj = obj.get("maxX");
+        Object maxXObj = obj.get("maxX", obj);
         if (maxXObj instanceof Number) {
             maxX = ((Number) maxXObj).doubleValue();
         }
-        Object maxYObj = obj.get("maxY");
+        Object maxYObj = obj.get("maxY", obj);
         if (maxYObj instanceof Number) {
             maxY = ((Number) maxYObj).doubleValue();
         }
         if (Double.isNaN(minX) || Double.isNaN(minY) || Double.isNaN(maxX) || Double.isNaN(maxY)) {
             throw new RuntimeException("Config must include minX, minY, maxX, and maxY values.");
         }
-        CoordinateReferenceSystem crs = null;
-        Object crsObj = obj.get("projection");
-        if (crsObj instanceof CoordinateReferenceSystem) {
-            crs = (CoordinateReferenceSystem) crsObj;
-        } else if (crsObj instanceof String) {
-            crs = (new Projection((String) crsObj)).unwrap();
+        Projection projection = null;
+        Object projectionObj = obj.get("projection", obj);
+        if (projectionObj instanceof Projection) {
+            projection = (Projection) projectionObj;
+        } else if (projectionObj instanceof String) {
+            projection = new Projection((String) projectionObj);
         }
+        CoordinateReferenceSystem crs = projection != null ? projection.unwrap() : null;
         refEnv = new ReferencedEnvelope(minX, maxX, minY, maxY, crs);
     }
     

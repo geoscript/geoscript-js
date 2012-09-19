@@ -63,26 +63,35 @@ public class Feature extends GeoObject implements Wrapper {
      * @param config
      */
     private Feature(NativeObject config) {
-        Schema schema;
-        Object schemaObj = config.get("schema");
-        Object propertiesObj = config.get("properties");
+        Scriptable scope = ScriptableObject.getTopLevelScope(config);
+        Schema schema = null;
+        if (config.has("schema", config)) {
+            Object schemaObj = config.get("schema", config);
+            if (schemaObj instanceof Schema) {
+                schema = (Schema) schemaObj;
+            } else if (schemaObj instanceof Scriptable) {
+                schema = new Schema(scope, (Scriptable) schemaObj);
+            } else {
+                throw ScriptRuntime.constructError("Error", "Cannot create schema from provided value: " + Context.toString(schemaObj));
+            }
+        }
+
+        Object propertiesObj = getOptionalMember(config, "properties", NativeObject.class, "Object");
         NativeObject properties = null;
-        if (propertiesObj instanceof NativeObject) {
+        if (propertiesObj != null) {
             properties = (NativeObject) propertiesObj;
         }
-        Scriptable scope = ScriptableObject.getTopLevelScope(config);
-        if (schemaObj instanceof SimpleFeatureType) {
-            schema = new Schema(scope, (SimpleFeatureType) schemaObj);
-        } else if (schemaObj instanceof Scriptable) {
-            schema = new Schema(scope, (Scriptable) schemaObj);
-        } else {
+
+        if (schema == null) {
             if (properties != null) {
                 schema = Schema.fromValues(scope, properties);
             } else {
                 throw ScriptRuntime.constructError("Error", "Feature config must include schema or properties.");
             }
         }
+
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder((SimpleFeatureType) schema.unwrap());
+
         if (properties != null) {
             Object[] names = properties.getIds();
             for (Object nameObj : names) {
@@ -90,14 +99,16 @@ public class Feature extends GeoObject implements Wrapper {
                 if (schema.get(name) == null) {
                     throw ScriptRuntime.constructError("Error", "Feature schema has no field with the given name: " + name);
                 }
-                Object value = properties.get(name);
-                builder.set(name, value);
+                Object value = properties.get(name, properties);
+                builder.set(name, jsToJava(value));
             }
         }
+        
         String id = null;
         if (config.has("id", config)) {
             id = Context.toString(config.get("id", config));
         }
+
         feature = builder.buildFeature(id);
     }
     

@@ -56,16 +56,8 @@ public class Field extends GeoObject implements Wrapper {
     }
 
     private Field(NativeObject config) {
-        Object nameObj = config.get("name");
-        if (!(nameObj instanceof String)) {
-            throw ScriptRuntime.constructError("Error", "Field config must have name property.");
-        }
-        String name = (String) nameObj;
-        Object typeObj = config.get("type");
-        if (!(typeObj instanceof String)) {
-            throw ScriptRuntime.constructError("Error", "Field config must have type property.");
-        }
-        String typeName = (String) typeObj;
+        String name = (String) getRequiredMember(config, "name", String.class);
+        String typeName = (String) getRequiredMember(config, "type", String.class);
         Type type;
         try {
             type = Type.valueOf(typeName);
@@ -76,32 +68,37 @@ public class Field extends GeoObject implements Wrapper {
         builder.setName(name);
         builder.setBinding(type.getBinding());
 
-        Object descObj = config.get("description");
-        if (descObj instanceof String) {
+        Object descObj = getOptionalMember(config, "description", String.class);
+        if (descObj != null) {
             builder.setDescription((String) descObj);
         }
-        Object projObj = config.get("projection");
+
         CoordinateReferenceSystem crs = null;
-        if (projObj instanceof CoordinateReferenceSystem) {
-            crs = (CoordinateReferenceSystem) projObj;
-        } else if (projObj instanceof String) {
-            crs = new Projection(getParentScope(), (String) projObj).unwrap();
-        } else if (projObj != null){
-            throw ScriptRuntime.constructError("Error", "Invalid projection object.");
+        if (config.has("projection", config)) {
+            Object projObj = config.get("projection", config);
+            if (projObj instanceof Projection) {
+                crs = ((Projection) projObj).unwrap();
+            } else if (projObj instanceof String) {
+                crs = new Projection(getParentScope(), (String) projObj).unwrap();
+            } else if (projObj != null){
+                throw ScriptRuntime.constructError("Error", "Invalid projection object.");
+            }
         }
         if (crs != null) {
             builder.setCRS(crs);
         }
-        Object minOccursObj = config.get("minOccurs");
+
+        Object minOccursObj = getOptionalMember(config, "minOccurs", Number.class);
         int minOccurs = -1;
-        if (minOccursObj instanceof Number) {
+        if (minOccursObj != null) {
             minOccurs = ((Number) minOccursObj).intValue();
             if (minOccurs < -1) {
                 throw ScriptRuntime.constructError("Error", "Invalid minOccurs value: " + Context.toString(minOccursObj));
             }
             builder.setMinOccurs(minOccurs);
         }
-        Object maxOccursObj = config.get("maxOccurs");
+
+        Object maxOccursObj = getOptionalMember(config, "maxOccurs", Number.class);
         int maxOccurs = -1;
         if (maxOccursObj instanceof Number) {
             maxOccurs = ((Number) maxOccursObj).intValue();
@@ -114,15 +111,18 @@ public class Field extends GeoObject implements Wrapper {
             builder.setMaxOccurs(maxOccurs);
         }
 
-        Object isNillableObj = config.get("isNillable");
-        if (isNillableObj instanceof Boolean) {
+        Object isNillableObj = getOptionalMember(config, "isNillable", Boolean.class);
+        if (isNillableObj != null) {
             builder.setNillable((Boolean) isNillableObj);
         }
-        Object defaultValue = config.get("defaultValue");
-        // TODO check undefined here instead
-        if (defaultValue != null) {
-            builder.setDefaultValue(defaultValue);
+
+        if (config.has("defaultValue", config)) {
+            Object defaultValue = config.get("defaultValue", config);
+            if (defaultValue != null) {
+                builder.setDefaultValue(jsToJava(defaultValue));
+            }
         }
+
         descriptor = builder.buildDescriptor(name);
     }
     
