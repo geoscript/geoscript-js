@@ -9,6 +9,7 @@ import org.geoscript.js.geom.GeometryCollection;
 import org.geoscript.js.geom.MultiPoint;
 import org.geoscript.js.geom.MultiLineString;
 import org.geoscript.js.geom.MultiPolygon;
+import org.geoscript.js.feature.Feature;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
@@ -28,7 +29,8 @@ public class JSON {
         GeometryCollection(GeometryCollection.class),
         MultiPoint(MultiPoint.class),
         MultiLineString(MultiLineString.class),
-        MultiPolygon(MultiPolygon.class);
+        MultiPolygon(MultiPolygon.class),
+        Feature(Feature.class);
         
         private Class<?> cls;
 
@@ -41,13 +43,13 @@ public class JSON {
             try {
                 ctor = cls.getDeclaredConstructor(Scriptable.class, NativeObject.class);
             } catch (Exception e) {
-                throw new RuntimeException("Failed to get constructor for object: " + Context.toString(object));
+                throw new RuntimeException("Failed to get constructor for object: " + Context.toString(object), e);
             }
             Object result;
             try {
                 result = ctor.newInstance(scope, object);
             } catch (Exception e) {
-                throw new RuntimeException("Failed to parse object: " + Context.toString(object));
+                throw new RuntimeException("Failed to parse object: " + Context.toString(object), e);
             }
             return result;
         }
@@ -95,6 +97,23 @@ public class JSON {
             }
         } else {
             throw ScriptRuntime.constructError("Error", "Expected a string representing a JSON object, got " + Context.toString(parsed));
+        }
+        return result;
+    }
+
+    /**
+     * Given an object parsed from a GeoJSON string, create a GeoScript object.
+     * @param obj
+     * @return
+     */
+    public static Object readObj(NativeObject obj) {
+        Scriptable scope = obj.getParentScope();
+        Object typeObj = obj.get("type", obj);
+        String typeName;
+        if (typeObj instanceof String) {
+            typeName = (String) typeObj;
+        } else {
+            throw ScriptRuntime.constructError("Error", "The GeoJSON type member must be a string");
         }
         Type type = Type.valueOf(typeName);
         return type.create(scope, obj);

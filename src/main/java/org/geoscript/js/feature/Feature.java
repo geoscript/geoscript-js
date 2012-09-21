@@ -3,6 +3,7 @@ package org.geoscript.js.feature;
 import org.geoscript.js.GeoObject;
 import org.geoscript.js.geom.Bounds;
 import org.geoscript.js.geom.Geometry;
+import org.geoscript.js.io.JSON;
 import org.geoscript.js.proj.Projection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.mozilla.javascript.Context;
@@ -64,6 +65,7 @@ public class Feature extends GeoObject implements Wrapper {
      */
     private Feature(NativeObject config) {
         Scriptable scope = ScriptableObject.getTopLevelScope(config);
+        config = prepConfig(config);
         Schema schema = null;
         if (config.has("schema", config)) {
             Object schemaObj = config.get("schema", config);
@@ -113,11 +115,55 @@ public class Feature extends GeoObject implements Wrapper {
     }
     
     /**
+     * Translate a GeoJSON config into a Feature config.
+     * @param config
+     * @return
+     */
+    private NativeObject prepConfig(NativeObject config) {
+        Scriptable scope = config.getParentScope();
+        Object propertiesObj = getOptionalMember(config, "properties", NativeObject.class, "Object");
+        NativeObject properties = null;
+        if (propertiesObj != null) {
+            properties = (NativeObject) propertiesObj;
+        }
+
+        Geometry geometry = null;
+        if (config.has("geometry", config)) {
+            // GeoJSON config
+            Object geometryObj = config.get("geometry", config);
+            if (!(geometryObj instanceof NativeObject)) {
+                throw ScriptRuntime.constructError("Error", 
+                        "Expected geometry member to be an object, got: " + Context.toString(geometryObj));
+            }
+            geometryObj = JSON.readObj((NativeObject) geometryObj);
+            if (!(geometryObj instanceof Geometry)) {
+                throw ScriptRuntime.constructError("Error", "Expected geometry memeber to be a valid geometry, got: " + Context.toString(geometryObj));
+            }
+            geometry = (Geometry) geometryObj;
+            config.delete("geometry");
+            // allow passing a geometry only with no other properties
+            if (properties == null) {
+                Context cx = Context.enter();
+                try {
+                    properties = (NativeObject) cx.newObject(scope);
+                } finally {
+                    Context.exit();
+                }
+                config.put("properties", config, properties);
+            }
+        }
+        if (geometry != null && properties != null) {
+            properties.put("geometry", properties, geometry);
+        }
+        return config;
+    }
+
+    /**
      * Constructor from config object (without new keyword).
      * @param scope
      * @param config
      */
-    private Feature(Scriptable scope, NativeObject config) {
+    public Feature(Scriptable scope, NativeObject config) {
         this(config);
         setParentScope(scope);
         this.setPrototype(Module.getClassPrototype(Feature.class));
