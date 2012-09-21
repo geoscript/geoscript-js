@@ -2,6 +2,7 @@ package org.geoscript.js.io;
 
 import java.lang.reflect.Constructor;
 
+import org.geoscript.js.GeoObject;
 import org.geoscript.js.geom.Point;
 import org.geoscript.js.geom.LineString;
 import org.geoscript.js.geom.Polygon;
@@ -77,7 +78,7 @@ public class JSON {
             throw ScriptRuntime.constructError("Error", 
                     "The read function expects a single string argument");
         }
-        Scriptable scope = thisObj.getParentScope();
+        Scriptable scope = funObj.getParentScope();
         JsonParser parser = new JsonParser(cx, scope);
         Object parsed;
         try {
@@ -85,16 +86,10 @@ public class JSON {
         } catch (ParseException e) {
             throw ScriptRuntime.constructError("Error", e.getMessage());
         }
-        String typeName;
-        NativeObject obj;
+        Object result;
         if (parsed instanceof NativeObject) {
-            obj = (NativeObject) parsed;
-            Object typeObj = obj.get("type", obj);
-            if (typeObj instanceof String) {
-                typeName = (String) typeObj;
-            } else {
-                throw ScriptRuntime.constructError("Error", "The GeoJSON type member must be a string");
-            }
+            NativeObject obj = (NativeObject) parsed;
+            result = readObj(obj);
         } else {
             throw ScriptRuntime.constructError("Error", "Expected a string representing a JSON object, got " + Context.toString(parsed));
         }
@@ -120,6 +115,30 @@ public class JSON {
     }
 
     /**
+     * Serialize a GeoScript object as a JSON string.
+     * @param cx
+     * @param thisObj
+     * @param args
+     * @param funObj
+     * @return
+     */
+    public static Object write(Context cx, Scriptable thisObj,
+            Object[] args, Function funObj) {
+        GeoObject geo = null;
+        if (args.length == 1) {
+            Object geoObj = args[0];
+            if (geoObj instanceof GeoObject) {
+                geo = (GeoObject) geoObj;
+            }
+        }
+        if (geo == null) {
+            throw ScriptRuntime.constructError("Error", 
+                    "The write function expects a single object argument");
+        }
+        return geo.getJson();
+    }
+
+    /**
      * Create object with read/write methods.
      * @param scope
      * @return
@@ -132,7 +151,7 @@ public class JSON {
                     "No context associated with current thread");
         }
         NativeObject json = (NativeObject) context.newObject(scope);
-        json.defineFunctionProperties(new String[] { "read" },  // , "write" }, 
+        json.defineFunctionProperties(new String[] { "read", "write" }, 
                 JSON.class, ScriptableObject.PERMANENT);
         return json;
     }
