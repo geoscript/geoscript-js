@@ -8,7 +8,7 @@
  *  The :mod:`layer` module provides a constructor for Layer objects.
  *
  *  .. code-block:: javascript
- *  
+ *
  *      js> var LAYER = require("geoscript/layer");
  */
 
@@ -36,11 +36,11 @@ var FilterFactory2 = geotools.factory.CommonFactoryFinder.getFilterFactory2(geot
 
 
 // TODO: remove when changed in GeoTools
-// supress info about "Building quadtree spatial index with depth 3 for file" 
+// supress info about "Building quadtree spatial index with depth 3 for file"
 var logger = geotools.util.logging.Logging.getLogger(
     "org.geotools.data.shapefile"
 );
-logger.setLevel(java.util.logging.Level.WARNING); 
+logger.setLevel(java.util.logging.Level.WARNING);
 
 var getTempName = function() {
     var count = WORKSPACE.memory.names.length;
@@ -54,7 +54,7 @@ var getTempName = function() {
 
 /** api: class = Layer */
 var Layer = UTIL.extend(GeoObject, {
-    
+
     /** private: property[cache]
      *  ``Object``
      */
@@ -108,10 +108,10 @@ var Layer = UTIL.extend(GeoObject, {
             }
         }
     },
-    
+
     /** api: method[get]
      *  :arg id: ``String || Filter`` Feature identifier.  Alternatively you can
-     *      provide an arbitrary filter.  In the case of a filter, only the 
+     *      provide an arbitrary filter.  In the case of a filter, only the
      *      first feature in the resulting query will be returned.
      *  :returns: :class:`feature.Feature`
      *
@@ -156,7 +156,7 @@ var Layer = UTIL.extend(GeoObject, {
         }
         return layer;
     },
-    
+
     /** api: config[style]
      *  :class:`style.Style`
      *  Optional style to be used when rendering this layer as part of a map.
@@ -189,7 +189,7 @@ var Layer = UTIL.extend(GeoObject, {
         }
         return this.cache.style;
     },
-    
+
     /** api: property[schema]
      *  :class:`feature.Schema`
      *  The schema for this layer (read-only).
@@ -201,7 +201,7 @@ var Layer = UTIL.extend(GeoObject, {
         }
         return this.cache.schema;
     },
-    
+
     /** api: property[projection]
      *  :class:`proj.Projection`
      *  Optional projection for the layer.  If set, any features added to the
@@ -228,7 +228,7 @@ var Layer = UTIL.extend(GeoObject, {
         }
         this.cache.projection = projection;
     },
-    
+
     /** api: property[temporary]
      *  ``Boolean``
      *  The layer has not been persisted to a workspace (read-only).
@@ -236,7 +236,7 @@ var Layer = UTIL.extend(GeoObject, {
     get temporary() {
         return (this.workspace instanceof WORKSPACE.Memory);
     },
-    
+
     /** api: property[name]
      *  ``String``
      *  The layer name.
@@ -248,7 +248,7 @@ var Layer = UTIL.extend(GeoObject, {
     get name() {
         return String(this._source.getName().getLocalPart());
     },
-    
+
     /** api: config[title]
      *  ``String``
      *  Optional title for the layer.
@@ -267,7 +267,7 @@ var Layer = UTIL.extend(GeoObject, {
         }
         return title;
     },
-    
+
     /** api: method[getCount]
      *  :arg filter: :class:`filter.Filter` Optional filter or CQL string.
      *  :returns: ``Number``
@@ -293,7 +293,7 @@ var Layer = UTIL.extend(GeoObject, {
         }
         return count;
     },
-    
+
     /** api: property[count]
      *  ``Number``
      *  The number of features contained in the layer.
@@ -301,7 +301,7 @@ var Layer = UTIL.extend(GeoObject, {
     get count() {
         return this._source.getCount(Query.ALL);
     },
-    
+
     /** api: method[getBounds]
      *  :arg filter: :class:`filter.Filter` Optional filter or CQL string.
      *  :returns: :class:`geom.Bounds`
@@ -336,7 +336,7 @@ var Layer = UTIL.extend(GeoObject, {
         bounds.projection = this.projection;
         return bounds;
     },
-    
+
     /** api: property[bounds]
      *  :class:`geom.Bounds`
      *  The bounds for all features on this layer.
@@ -347,7 +347,7 @@ var Layer = UTIL.extend(GeoObject, {
 
     /** api: method[query]
      *  :arg filter: ``filter.Filter or String`` A filter or a CQL string.
-     *  :returns: :class:`Collection` An iterator for accessing queried 
+     *  :returns: :class:`Collection` An iterator for accessing queried
      *          features.
      *
      *  Query for features from the layer.  The return will be an object with
@@ -377,7 +377,7 @@ var Layer = UTIL.extend(GeoObject, {
         collection.layer = this;
         return collection;
     },
-    
+
     /** api: property[features]
      *  :class:`Collection`
      *  An iterator for accessing all features on the layer.
@@ -439,9 +439,9 @@ var Layer = UTIL.extend(GeoObject, {
         this._source.addFeatures(collection);
         feature.layer = this;
     },
-    
+
     /** api: method[remove]
-     *  :arg filter: :class:`filter.Filter` or ``String`` or 
+     *  :arg filter: :class:`filter.Filter` or ``String`` or
      *      :class:`feature.Feature`
      *
      *  Remove features from a layer that match the given filter or CQL string.
@@ -455,7 +455,7 @@ var Layer = UTIL.extend(GeoObject, {
      *      js> var GEOM = require("geoscript/geom");
      *      js> layer.add({geom: new GEOM.Point([1, 2])});
      *      js> layer.remove("INTERSECTS(geom, POINT(1 2))");
-     *  
+     *
      */
     remove: function(filter) {
         if (!filter) {
@@ -531,19 +531,19 @@ var Layer = UTIL.extend(GeoObject, {
         }
         return config;
     },
-    
+
     /** api: property[json]
      *  ``String``
      *  The JSON representation of this layer.  This representation does not
      *  include members for each feature in the layer.
      */
-    
+
     /** private: method[toFullString]
      */
     toFullString: function() {
         return "name: " + this.name + ", count: " + this.count;
     }
-    
+
 });
 
 Layer.from_ = function(_source, workspace) {
@@ -555,9 +555,9 @@ Layer.from_ = function(_source, workspace) {
 
 /** api: example
  *  Sample code to create a temporary layer:
- * 
+ *
  *  .. code-block:: javascript
- * 
+ *
  *      js> var layer = new LAYER.Layer({name: "temp"});
  *
  *      js> var layer = new LAYER.Layer({

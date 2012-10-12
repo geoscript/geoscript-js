@@ -26,7 +26,7 @@ var prepConfig = function(config) {
  *  workspace/workspace.js
  */
 var H2 = UTIL.extend(Workspace, {
-    
+
     /** api: config[database]
      *  ``String``
      *  Path to the database (required).
@@ -34,7 +34,7 @@ var H2 = UTIL.extend(Workspace, {
 
     /** api: constructor
      *  .. class:: H2
-     *  
+     *
      *      :arg config: ``Object`` Configuration object.
      *
      *      Create a workspace from an H2 database.
@@ -42,7 +42,7 @@ var H2 = UTIL.extend(Workspace, {
     constructor: function H2(config) {
         Workspace.prototype.constructor.apply(this, [prepConfig(config)]);
     },
-    
+
     /** private: method[_create]
      *  :arg config: ``Object``
      *  :returns: ``org.geotools.jdbc.JDBCDataStore``
@@ -79,12 +79,12 @@ var H2 = UTIL.extend(Workspace, {
             database: this.database
         };
     }
-        
+
 });
 
 /** api: example
  *  Sample code create a new workspace for accessing data in a H2 database:
- * 
+ *
  *  .. code-block:: javascript
  *
  *      js> var h2 = new WORKSPACE.H2({database: "data/h2/geoscript"});
@@ -107,7 +107,7 @@ register(new Factory(H2, {
                 capable = true;
             } catch (err) {
                 // pass
-            }            
+            }
         }
         return capable;
     }

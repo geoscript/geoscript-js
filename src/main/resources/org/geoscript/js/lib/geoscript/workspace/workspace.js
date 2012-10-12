@@ -15,11 +15,11 @@ var DefaultTransaction = geotools.data.DefaultTransaction;
  *  class = Workspace
  */
 var Workspace = UTIL.extend(GeoObject, {
-    
+
     /** api: constructor
      *  .. class:: Workspace
      *
-     *      A Workspace instance should not be created directly.  
+     *      A Workspace instance should not be created directly.
      *      Create an instance of a Workspace subclass instead.
      */
     constructor: function Workspace(config) {
@@ -28,7 +28,7 @@ var Workspace = UTIL.extend(GeoObject, {
             this._store = this._create(config);
         }
     },
-    
+
     /** private: method[_create]
      *  :arg config: ``Object``
      *  :returns: ``org.geotools.data.AbstractDataStore?``
@@ -38,7 +38,7 @@ var Workspace = UTIL.extend(GeoObject, {
     _create: function(config) {
         throw new Error("Workspace subclasses must implement _create.");
     },
-    
+
     /** api: property[names]
      *  ``Array``
      *  The available layer names in the workspace.
@@ -52,14 +52,14 @@ var Workspace = UTIL.extend(GeoObject, {
         }
         return names;
     },
-    
+
     /** api: method[get]
      *  :arg name: ``String`` Layer name.
      *  :returns: :class:`layer.Layer`
      *
      *  Get a layer by name.  Returns ``undefined`` if name doesn't correspond
      *  to a layer source in the workspace.
-     */ 
+     */
     get: function(name) {
         var layer;
         if (this.names.indexOf(name) >= 0) {
@@ -92,7 +92,7 @@ var Workspace = UTIL.extend(GeoObject, {
         }, this);
         return layers;
     },
-    
+
     /** private: method[_createSource]
      *  :arg schema:
      *  :returns: ``FeatureSource``
@@ -101,7 +101,7 @@ var Workspace = UTIL.extend(GeoObject, {
         this._store.createSchema(schema);
         return this._store.getFeatureSource(schema.name);
     },
-    
+
     /** api: method[add]
      *  :arg layer: :class:`layer.Layer` The layer to be added.
      *  :arg options: ``Object`` Options for adding the layer.
@@ -120,12 +120,12 @@ var Workspace = UTIL.extend(GeoObject, {
     add: function(layer, options) {
         var Layer = require("../layer").Layer;
         options = options || {};
-        
+
         var filter = options.filter || Filter.PASS;
         if (!(filter instanceof Filter)) {
             filter = new Filter(filter);
         }
-        
+
         var name = options.name || layer.name;
         if (this.get(name)) {
             throw new Error("A layer named '" + name + "' already exists in the workspace.");
@@ -135,14 +135,14 @@ var Workspace = UTIL.extend(GeoObject, {
         if (projection && !(projection instanceof Projection)) {
             projection = new Projection(projection);
         }
-        
+
         // clone the schema, optionally changing geometry projection
         var geomField = layer.schema.geometry;
         var schema = layer.schema.clone({
             name: options.name,
             fields: [{
-                name: geomField.name, 
-                type: geomField.type, 
+                name: geomField.name,
+                type: geomField.type,
                 projection: projection || geomField.projection
             }]
         });
@@ -154,14 +154,14 @@ var Workspace = UTIL.extend(GeoObject, {
             if (layer.projection) {
                 query.setCoordinateSystem(layer.projection);
             }
-            query.setCoordinateSystemReproject(projection); 
+            query.setCoordinateSystemReproject(projection);
         }
 
         var reader = layer._source.getDataStore().getFeatureReader(query, Transaction.AUTO_COMMIT);
         var transaction = new DefaultTransaction();
         var writer = _source.getDataStore().getFeatureWriterAppend(schema.name, transaction);
         var inFeature, outFeature, geom;
-        
+
         try {
             while (reader.hasNext()) {
                 inFeature = reader.next();
@@ -201,10 +201,10 @@ var Workspace = UTIL.extend(GeoObject, {
             type: this.constructor.name
         };
     },
-        
+
     /** api: method[close]
-     *  
-     *  Close the workspace.  This discards any existing connection to the 
+     *
+     *  Close the workspace.  This discards any existing connection to the
      *  underlying data store and discards the reference to the store.
      */
     close: function() {
@@ -213,13 +213,13 @@ var Workspace = UTIL.extend(GeoObject, {
             delete this._store;
         }
     },
-    
+
     /** private: method[toFullString]
      */
     toFullString: function() {
         return '["' + this.names.join('", "') + '"]';
-    }    
-    
+    }
+
 });
 
 /** private: staticmethod[from_]
