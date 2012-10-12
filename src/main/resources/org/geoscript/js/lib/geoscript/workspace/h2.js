@@ -55,22 +55,6 @@ var H2 = UTIL.extend(Workspace, {
         return factory.createDataStore(config);
     },
 
-    /** private: method[_onFeatureAdd]
-     *  :arg feature: :class:`feature.Feature`
-     *
-     *  Do any specific processing on a feature before it is added to a layer.
-     */
-    _onFeatureAdd: function(feature) {
-        // TODO: update when CRS is persisted in H2
-        // if (feature.geometry) {
-        //     var projection = feature.projection;
-        //     if (projection) {
-        //         // TODO: add setter for userData if this is necessary
-        //         feature.geometry.userData = projection; 
-        //     }
-        // }
-    },
-    
     /** private: property[config]
      */
     get config() {

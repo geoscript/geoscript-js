@@ -184,16 +184,7 @@ var Workspace = UTIL.extend(GeoObject, {
 
         return Layer.from_(_source, this);
     },
-    
-    /** private: method[_onFeatureAdd]
-     *  :arg feature: :class:`feature.Feature`
-     *
-     *  Do any specific processing on a feature before it is added to a layer.
-     */
-    _onFeatureAdd: function(feature) {
-        // pass
-    },
-    
+
     /** private: property[config]
      */
     get config() {

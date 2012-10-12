@@ -393,13 +393,13 @@ var Layer = UTIL.extend(GeoObject, {
     get features() {
         return this.query();
     },
-    
+
     /** api: method[add]
-     *  :arg obj: ``Object`` A :class:`feature.Feature` or a feature attribute 
-     *      values object.
+     *  :arg obj: ``Object`` A :class:`feature.FeatureCollection` or
+     *      :class:`feature.Feature`.
      *
-     *  Add a feature to a layer.  Optionally, an object with feature attribute
-     *  values may be provided.
+     *  Add a feature colleciton or single feature to a layer.  Optionally, an
+     *  object with feature property values may be provided.
      *
      *  Example use:
      *
@@ -407,37 +407,41 @@ var Layer = UTIL.extend(GeoObject, {
      *
      *      js> var GEOM = require("geoscript/geom");
      *      js> layer.add({geom: new GEOM.Point([0, 1])});
-     *      
+     *
      */
     add: function(obj) {
-        var feature;
-        if (obj instanceof Feature) {
-            feature = obj;
-            if (feature.layer) {
-                feature = feature.clone();
-            }
+        var collection;
+        if (obj instanceof Collection) {
+            collection = obj;
         } else {
-            // has to be a properties object
-            feature = new Feature({schema: this.schema, properties: obj});
-        }
-        if (this.projection) {
-            if (feature.projection) {
-                if (!this.projection.equals(feature.projection)) {
-                    feature.geometry = PROJ.transform(
-                        feature.geometry,
-                        feature.projection,
-                        this.projection
-                    );
+            var feature;
+            if (obj instanceof Feature) {
+                feature = obj;
+                if (feature.layer) {
+                    feature = feature.clone();
                 }
             } else {
-                feature.projection = this.projection;
+                // has to be a properties object
+                feature = new Feature({schema: this.schema, properties: obj});
             }
+            if (this.projection) {
+                if (feature.projection) {
+                    if (!this.projection.equals(feature.projection)) {
+                        feature.geometry = PROJ.transform(
+                            feature.geometry,
+                            feature.projection,
+                            this.projection
+                        );
+                    }
+                } else {
+                    feature.projection = this.projection;
+                }
+            }
+            collection = FeatureCollections.newCollection();
+            collection.add(feature);
+            feature.layer = this;
         }
-        this.workspace._onFeatureAdd(feature);
-        var collection = FeatureCollections.newCollection();
-        collection.add(feature);
         this._source.addFeatures(collection);
-        feature.layer = this;
     },
 
     /** api: method[remove]
