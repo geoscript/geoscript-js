@@ -181,13 +181,13 @@ exports["test parameter binding to java.lang.Class"] = function() {
     ASSERT.strictEqual(process.inputs.mapped.type, "Integer", "class mapped to string");
 
     // class not already in type map
-    inputs.notMapped = {type: Packages.org.geotools.process.jts.GeometryFunctions.BufferCapStyle};
+    inputs.notMapped = {type: Packages.org.geotools.process.geometry.GeometryFunctions.BufferCapStyle};
     process = new Process({
         inputs: inputs,
         outputs: outputs,
         run: run
     });
-    ASSERT.ok(process.inputs.notMapped.type == Packages.org.geotools.process.jts.GeometryFunctions.BufferCapStyle, "class not mapped to string");
+    ASSERT.ok(process.inputs.notMapped.type == Packages.org.geotools.process.geometry.GeometryFunctions.BufferCapStyle, "class not mapped to string");
 
 }
 
@@ -317,9 +317,9 @@ exports["test: Process.getNames"] = function() {
     
 }
 
-exports["test: Process.get('JTS:buffer')"] = function() {
+exports["test: Process.get('geo:buffer')"] = function() {
     
-    var buffer = Process.get("JTS:buffer");
+    var buffer = Process.get("geo:buffer");
     var inputs = buffer.inputs;
     
     ASSERT.strictEqual(typeof inputs, "object", "inputs object");
@@ -328,7 +328,7 @@ exports["test: Process.get('JTS:buffer')"] = function() {
     
     // TODO: deal with enumerated values
     var capStyle = inputs.capStyle.type;
-    ASSERT.ok(capStyle == Packages.org.geotools.process.jts.GeometryFunctions.BufferCapStyle, "capStyle type");
+    ASSERT.ok(capStyle == Packages.org.geotools.process.geometry.GeometryFunctions.BufferCapStyle, "capStyle type");
     
     var geom = require("geoscript/geom");
     var point = new geom.Point([1, 2]);
@@ -339,9 +339,9 @@ exports["test: Process.get('JTS:buffer')"] = function() {
     
 }
 
-exports["test: Process.get('JTS:union')"] = function() {
+exports["test: Process.get('geo:union')"] = function() {
     
-    var union = Process.get("JTS:union");
+    var union = Process.get("geo:union");
     var inputs = union.inputs;
     
     ASSERT.strictEqual(typeof inputs, "object", "inputs object");
@@ -360,8 +360,8 @@ exports["test: Process.get('JTS:union')"] = function() {
 }
 
 
-exports["test: Process.get('gs.BufferFeatureCollection"] = function() {
-    var buffer = Process.get("gs:BufferFeatureCollection");
+exports["test: Process.get('vec:BufferFeatureCollection')"] = function() {
+    var buffer = Process.get("vec:BufferFeatureCollection");
     
     ASSERT.strictEqual(buffer.inputs.features.type, "FeatureCollection");
     ASSERT.strictEqual(buffer.outputs.result.type, "FeatureCollection");

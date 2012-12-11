@@ -176,14 +176,14 @@ Static Methods
 
 .. function:: Process.get(id)
 
-    :arg id: ``String`` Process identifier (e.g. "JTS:buffer")
+    :arg id: ``String`` Process identifier (e.g. "geo:buffer")
     :returns: ``Process``
 
     Get a registered process.  Returns ``null`` if no process was found from
     the provided identifier.
 
     The example below uses the static :func:`Process.get` method to access and 
-    run the ``JTS:buffer`` process.  (Note this is a contrived example as all 
+    run the ``geo:buffer`` process.  (Note this is a contrived example as all 
     geometries already have a :func:`Geometry.buffer` method that accomplishes 
     the same.)
 
@@ -192,7 +192,7 @@ Static Methods
         js> var Process = require("geoscript/process").Process
         js> var Point = require("geoscript/geom").Point;
 
-        js> var buffer = Process.get("JTS:buffer");
+        js> var buffer = Process.get("geo:buffer");
         js> Object.keys(buffer.inputs)
         geom,distance,quadrantSegments,capStyle
         js> Object.keys(buffer.outputs)

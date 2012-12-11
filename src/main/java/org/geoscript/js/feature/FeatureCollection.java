@@ -9,7 +9,7 @@ import org.geoscript.js.geom.Bounds;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.process.feature.gs.SimpleProcessingCollection;
+import org.geotools.process.vector.SimpleProcessingCollection;
 import org.geotools.util.logging.Logging;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
