@@ -48,7 +48,7 @@ public class DoctestsTest {
         return new String(buf);
     }
 
-    @Parameters
+    @Parameters(name="{0} {2}")
     public static Collection<Object[]> doctestValues() throws IOException {
         File[] doctests = getDoctestFiles();
         List<Object[]> result = new ArrayList<Object[]>();
