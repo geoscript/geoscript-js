@@ -202,6 +202,7 @@
                 <version>2.2-beta-2</version>
                 <configuration>
                     <descriptor>src/main/assembly/all.xml</descriptor>
+                    <finalName>geoscript-js-shell-${project.version}</finalName>
                 </configuration>
             </plugin>
                 <plugin>
