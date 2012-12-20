@@ -5,7 +5,7 @@ The :doc:`map <map>` module provides map rendering functionality.
 
 .. code-block:: javascript
 
-    js> var MAP = require("geoscript/map");
+    >> var MAP = require("geoscript/map");
 
 
 :class:`map.Map`

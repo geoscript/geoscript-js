@@ -16,28 +16,28 @@ Sample code to new multi-polygon:
 
 .. code-block:: javascript
 
-    js> var {Polygon, MultiPolygon} = require("geoscript/geom");
-    js> var p1 = new Polygon([
-      >     [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],
-      >     [ [-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45] ]
-      > ]);
-    js> var p2 = new Polygon([
-      >     [ [-60, -30], [-60, 30], [60, 30], [60, -30], [-60, -30] ]
-      > ]);
-    js> var mp = new MultiPolygon([p1, p2]);
+    >> var {Polygon, MultiPolygon} = require("geoscript/geom");
+    >> var p1 = new Polygon([
+    ..     [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],
+    ..     [ [-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45] ]
+    .. ]);
+    >> var p2 = new Polygon([
+    ..     [ [-60, -30], [-60, 30], [60, 30], [60, -30], [-60, -30] ]
+    .. ]);
+    >> var mp = new MultiPolygon([p1, p2]);
 
 Alternate method to create the same geometry as above:
 
 .. code-block:: javascript
 
-    js> var mp = new MultiPolygon([
-      >     [
-      >         [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],
-      >         [ [-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45] ]
-      >     ], [
-      >         [ [-60, -30], [-60, 30], [60, 30], [60, -30], [-60, -30] ]
-      >     ]
-      > ]);
+    >> var mp = new MultiPolygon([
+    ..     [
+    ..         [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],
+    ..         [ [-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45] ]
+    ..     ], [
+    ..         [ [-60, -30], [-60, 30], [60, 30], [60, -30], [-60, -30] ]
+    ..     ]
+    .. ]);
 
 
 Properties

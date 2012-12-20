@@ -7,7 +7,7 @@ polygon and multi-part geometries.
 
 .. code-block:: javascript
 
-    js> var geom = require("geoscript/geom");
+    >> var geom = require("geoscript/geom");
 
 
 Constructors

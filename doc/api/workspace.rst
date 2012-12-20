@@ -6,7 +6,7 @@ different workspace types.
 
 .. code-block:: javascript
 
-    js> var WORKSPACE = require("geoscript/workspace");
+    >> var WORKSPACE = require("geoscript/workspace");
 
 
 Constructors

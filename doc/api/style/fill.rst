@@ -12,11 +12,11 @@ Sample code to create a fill:
 
 .. code-block:: javascript
 
-    js> var STYLE = require("geoscript/style");
-    js> var fill = new STYLE.Fill({
-     >     brush: "red",
-     >     opacity: 0.5
-     > });
+    >> var STYLE = require("geoscript/style");
+    >> var fill = new STYLE.Fill({
+    ..     brush: "red",
+    ..     opacity: 0.5
+    .. });
 
 
 Config Properties

@@ -14,17 +14,17 @@ Sample code to create a new field:
 
 .. code-block:: javascript
 
-    js> var Field = require("geoscript/feature").Field;
-    js> var field = new Field({
-      >     name: "age",
-      >     type: "Double"
-      > });
+    >> var Field = require("geoscript/feature").Field;
+    >> var field = new Field({
+    ..     name: "age",
+    ..     type: "Double"
+    .. });
 
-    js> var field = new Field({
-      >     name: "location",
-      >     type: "Point",
-      >     projection: "EPSG:4326"
-      > });
+    >> var field = new Field({
+    ..     name: "location",
+    ..     type: "Point",
+    ..     projection: "EPSG:4326"
+    .. });
 
 For detail on the supported ``type`` values, see the section on 
 :ref:`type_mapping`.

@@ -19,8 +19,8 @@ Config Properties
     
     .. code-block:: javascript
 
-        js> var Shape = require("geoscript/style").Shape;    
-        js> var shape = new Shape({name: "circle", fill: "blue"});
+        >> var Shape = require("geoscript/style").Shape;    
+        >> var shape = new Shape({name: "circle", fill: "blue"});
 
 .. describe:: name
 
@@ -49,7 +49,7 @@ Config Properties
     
     .. code-block:: javascript
     
-        js> var shape = new Shape({name: "circle", stroke: "red"});
+        >> var shape = new Shape({name: "circle", stroke: "red"});
 
 .. describe:: zIndex
 

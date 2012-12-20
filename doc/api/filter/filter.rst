@@ -19,21 +19,21 @@ Examples of filters that represent various simple constraints:
 
 .. code-block:: javascript
 
-    js> var FILTER = require("geoscript/filter");
-    js> var namedFoo = new FILTER.Filter("name = 'foo'");
-    js> var oneThing = new FILTER.Filter("thing = 1");
-    js> var few = new FILTER.Filter("count < 4");
-    js> var many = new FILTER.Filter("count > 36");
-    js> var teens = new FILTER.Filter("age BETWEEN 13 AND 19");
+    >> var FILTER = require("geoscript/filter");
+    >> var namedFoo = new FILTER.Filter("name = 'foo'");
+    >> var oneThing = new FILTER.Filter("thing = 1");
+    >> var few = new FILTER.Filter("count < 4");
+    >> var many = new FILTER.Filter("count > 36");
+    >> var teens = new FILTER.Filter("age BETWEEN 13 AND 19");
 
 Examples of filters representing spatial constraints:
 
 .. code-block:: javascript
 
-    js> var box = new FILTER.Filter("BBOX(the_geom, -10, -10, 10, 10)");
-    js> var close = new FILTER.Filter("DWITHIN(the_geom, POINT(1 0), 3, kilometers)");
-    js> var has = new FILTER.Filter("CONTAINS(the_geom, POINT(1 0))");
-    js> var hit = new FILTER.Filter("INTERSECTS(the_geom, LINESTRING(0 0, 1 1))");
+    >> var box = new FILTER.Filter("BBOX(the_geom, -10, -10, 10, 10)");
+    >> var close = new FILTER.Filter("DWITHIN(the_geom, POINT(1 0), 3, kilometers)");
+    >> var has = new FILTER.Filter("CONTAINS(the_geom, POINT(1 0))");
+    >> var hit = new FILTER.Filter("INTERSECTS(the_geom, LINESTRING(0 0, 1 1))");
 
 
 Properties

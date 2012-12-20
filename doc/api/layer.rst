@@ -5,7 +5,7 @@ The :doc:`layer <layer>` module provides a constructor for Layer objects.
 
 .. code-block:: javascript
 
-    js> var LAYER = require("geoscript/layer");
+    >> var LAYER = require("geoscript/layer");
 
 :class:`layer.Layer`
 ====================
@@ -24,19 +24,19 @@ Sample code to create a temporary layer:
 
 .. code-block:: javascript
 
-    js> var layer = new LAYER.Layer({name: "temp"});
+    >> var layer = new LAYER.Layer({name: "temp"});
 
-    js> var layer = new LAYER.Layer({
-      >     name: "temp2",
-      >     fields: [{name: "geom", type: "Geometry"}]
-      > });
+    >> var layer = new LAYER.Layer({
+    ..     name: "temp2",
+    ..     fields: [{name: "geom", type: "Geometry"}]
+    .. });
 
-    js> var FEATURE = require("geoscript/feature");
-    js> var schema = new FEATURE.Schema({
-      >     name: "temp3",
-      >     fields: [{name: "geom", type: "Geometry"}]
-      > });
-    js> var layer = new LAYER.Layer({schema: schema});
+    >> var FEATURE = require("geoscript/feature");
+    >> var schema = new FEATURE.Schema({
+    ..     name: "temp3",
+    ..     fields: [{name: "geom", type: "Geometry"}]
+    .. });
+    >> var layer = new LAYER.Layer({schema: schema});
 
 Config Properties
 -----------------
@@ -75,9 +75,9 @@ Properties
     
     .. code-block:: javascript
     
-        js> layer.features.forEach(function(feature) {
-          >     print(feature.toString());
-          > });
+        >> layer.features.forEach(function(feature) {
+        ..     print(feature.toString());
+        .. });
 
 .. attribute:: Layer.json
 
@@ -133,8 +133,8 @@ Methods
     
     .. code-block:: javascript
     
-        js> var GEOM = require("geoscript/geom");
-        js> layer.add({geom: new GEOM.Point([0, 1])});
+        >> var GEOM = require("geoscript/geom");
+        >> layer.add({geom: new GEOM.Point([0, 1])});
     
 
 .. function:: Layer.clone(name)
@@ -183,9 +183,9 @@ Methods
     
     .. code-block:: javascript
     
-        js> layer.query("name = 'foo'").forEach(function(feature) {
-          >     print(feature.toString());
-          > });
+        >> layer.query("name = 'foo'").forEach(function(feature) {
+        ..     print(feature.toString());
+        .. });
 
 .. function:: Layer.remove(filter)
 
@@ -200,9 +200,9 @@ Methods
     
     .. code-block:: javascript
     
-        js> var GEOM = require("geoscript/geom");
-        js> layer.add({geom: new GEOM.Point([1, 2])});
-        js> layer.remove("INTERSECTS(geom, POINT(1 2))");
+        >> var GEOM = require("geoscript/geom");
+        >> layer.add({geom: new GEOM.Point([1, 2])});
+        >> layer.remove("INTERSECTS(geom, POINT(1 2))");
     
 
 .. function:: Layer.update

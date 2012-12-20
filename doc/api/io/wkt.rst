@@ -3,7 +3,7 @@ The io/wkt module
 
 .. code-block:: javascript
 
-    js> var WKT = require("geoscript/io/wkt");
+    >> var WKT = require("geoscript/io/wkt");
 
 Methods
 -------
@@ -21,10 +21,10 @@ Methods
     
     .. code-block:: javascript
     
-        js> var WKT = require("geoscript/io/wkt");
-        js> var GEOM = require("geoscript/geom");
-        js> var point = WKT.read("POINT(1 2)");
-        js> point instanceof GEOM.Point
+        >> var WKT = require("geoscript/io/wkt");
+        >> var GEOM = require("geoscript/geom");
+        >> var point = WKT.read("POINT(1 2)");
+        >> point instanceof GEOM.Point
         true
 
 .. function:: write
@@ -38,9 +38,9 @@ Methods
     
     .. code-block:: javascript
     
-        js> var WKT = require("geoscript/io/wkt");
-        js> var GEOM = require("geoscript/geom");
-        js> var str = WKT.write(new GEOM.Point([1, 2]));
-        js> str
+        >> var WKT = require("geoscript/io/wkt");
+        >> var GEOM = require("geoscript/geom");
+        >> var str = WKT.write(new GEOM.Point([1, 2]));
+        >> str
         POINT (1 2)
 

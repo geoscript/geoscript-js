@@ -66,9 +66,16 @@ enum ParserState {
             int indentation = parser.getIndentation();
             int lineIndentation = getIndentationLevel(line);
             if (lineIndentation == indentation && (
-                    line.substring(indentation).startsWith(statementPrefix) ||
-                    line.substring(indentation).startsWith(continuationPrefix))) {
+                    line.substring(indentation).startsWith(inputStatementPrefix) ||
+                    line.substring(indentation).startsWith(inputContinuationPrefix))) {
                 output = line.substring(indentation);
+                if (output.startsWith(inputStatementPrefix)) {
+                    output = outputStatementPrefix + 
+                            output.substring(inputStatementPrefix.length());
+                } else if (output.startsWith(inputContinuationPrefix)) {
+                    output = outputContinuationPrefix + 
+                            output.substring(inputContinuationPrefix.length());
+                }
             } else {
                 if (lineIndentation < indentation) {
                     // less indentation implies doc
@@ -97,7 +104,7 @@ enum ParserState {
             } else {
                 String sub = line.substring(indentation);
                 if (line.length() > indentation && 
-                        line.substring(indentation).startsWith(statementPrefix)) {
+                        line.substring(indentation).startsWith(inputStatementPrefix)) {
                     ParserState state = STATEMENT;
                     parser.setState(state);
                     output = state.handle(parser, line);
@@ -111,10 +118,12 @@ enum ParserState {
     
     abstract String handle(DocParser parser, String line);
 
-    String statementPrefix = "js> ";
-    String continuationPrefix = "  > ";
-    Pattern statementPattern = Pattern.compile("^(\\s*)(" + statementPrefix + ".*)$");
+    String inputStatementPrefix = ">> ";
+    String inputContinuationPrefix = ".. ";
+    Pattern statementPattern = Pattern.compile("^(\\s*)(" + inputStatementPrefix + ".*)$");
     Pattern whitespacePattern = Pattern.compile("^(\\s+)");
+    String outputStatementPrefix = "js> ";
+    String outputContinuationPrefix = "  > ";
     
     int getIndentationLevel(String line) {
         int level = 0;

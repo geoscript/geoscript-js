@@ -15,11 +15,11 @@ Sample code to create a new projection object:
 
 .. code-block:: javascript
 
-    js> var PROJ = require("geoscript/proj");
-    js> var wgs84 = new PROJ.Projection("EPSG:4326")
-    js> wgs84
+    >> var PROJ = require("geoscript/proj");
+    >> var wgs84 = new PROJ.Projection("EPSG:4326")
+    >> wgs84
     <Projection EPSG:4326>
-    js> wgs84.wkt
+    >> wgs84.wkt
     GEOGCS["WGS 84", 
       DATUM["World Geodetic System 1984", 
         SPHEROID["WGS 84", 6378137.0, 298.257223563, AUTHORITY["EPSG","7030"]], 

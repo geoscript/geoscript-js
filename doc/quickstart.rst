@@ -26,15 +26,15 @@ After getting the package source and installing dependencies, you can open the J
 
     ~/geoscript-js$ ./geoscript
 
-    js> var geom = require("geoscript/geom");
-    js> var p1 = new geom.Point([0, 0]);        
-    js> var p2 = new geom.Point([10, 20]);
-    js> p1.distance(p2);
+    >> var geom = require("geoscript/geom");
+    >> var p1 = new geom.Point([0, 0]);        
+    >> var p2 = new geom.Point([10, 20]);
+    >> p1.distance(p2);
     22.360679774997898
-    js> var poly = p2.buffer(23);
-    js> poly.contains(p1);
+    >> var poly = p2.buffer(23);
+    >> poly.contains(p1);
     true
-    js> quit()
+    >> quit()
 
 
 .. _CommonJS: http://commonjs.org/

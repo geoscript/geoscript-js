@@ -10,41 +10,41 @@ The following constructs a process that performs some simple arithmetic.
 
 .. code-block:: javascript
 
-    js> var Process = require("geoscript/process").Process;
-    js> var add = new Process({
-      >     title: "Add",
-      >     description: "Adds two numbers",
-      >     inputs: {
-      >         a: {
-      >             type: "Number",
-      >             title: "First",
-      >             description: "The first number"
-      >         },
-      >         b: {
-      >             type: "Number",
-      >             title: "Second",
-      >             description: "The second number"
-      >         }
-      >     }, 
-      >     outputs: {
-      >         result: {
-      >             type: "Number",
-      >             title: "Sum",
-      >             description: "The sum of the two input numbers"
-      >         }
-      >     },
-      >     run: function(inputs) {
-      >         return {result: inputs.a + inputs.b};
-      >     }
-      > });
+    >> var Process = require("geoscript/process").Process;
+    >> var add = new Process({
+    ..     title: "Add",
+    ..     description: "Adds two numbers",
+    ..     inputs: {
+    ..         a: {
+    ..             type: "Number",
+    ..             title: "First",
+    ..             description: "The first number"
+    ..         },
+    ..         b: {
+    ..             type: "Number",
+    ..             title: "Second",
+    ..             description: "The second number"
+    ..         }
+    ..     }, 
+    ..     outputs: {
+    ..         result: {
+    ..             type: "Number",
+    ..             title: "Sum",
+    ..             description: "The sum of the two input numbers"
+    ..         }
+    ..     },
+    ..     run: function(inputs) {
+    ..         return {result: inputs.a + inputs.b};
+    ..     }
+    .. });
 
 Now that this process is created and well described, it can be run with the
 following:
 
 .. code-block:: javascript
 
-    js> var outputs = add.run({a: 2, b: 3});
-    js> outputs.result
+    >> var outputs = add.run({a: 2, b: 3});
+    >> outputs.result
     5
 
 
@@ -189,18 +189,18 @@ Static Methods
 
     .. code-block:: javascript
 
-        js> var Process = require("geoscript/process").Process
-        js> var Point = require("geoscript/geom").Point;
+        >> var Process = require("geoscript/process").Process
+        >> var Point = require("geoscript/geom").Point;
 
-        js> var buffer = Process.get("JTS:buffer");
-        js> Object.keys(buffer.inputs)
+        >> var buffer = Process.get("JTS:buffer");
+        >> Object.keys(buffer.inputs)
         geom,distance,quadrantSegments,capStyle
-        js> Object.keys(buffer.outputs)
+        >> Object.keys(buffer.outputs)
         result
 
-        js> var point = new Point([-110, 45]);
-        js> var outputs = buffer.run({geom: point, distance: 10})
-        js> outputs.result
+        >> var point = new Point([-110, 45]);
+        >> var outputs = buffer.run({geom: point, distance: 10})
+        >> outputs.result
         <Polygon [[[-100, 45], [-100.19214719596769, 43.04909677983872], [-10...>
 
 

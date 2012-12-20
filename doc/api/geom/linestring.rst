@@ -15,11 +15,11 @@ Sample code to new linestring:
 
 .. code-block:: javascript
 
-    js> var LineString = require("geoscript/geom").LineString;
-    js> var line = new LineString([[-180, -90], [0, 0], [180, 90]]);
-    js> line.coordinates.length
+    >> var LineString = require("geoscript/geom").LineString;
+    >> var line = new LineString([[-180, -90], [0, 0], [180, 90]]);
+    >> line.coordinates.length
     3
-    js> line.length
+    >> line.length
     402.49223594996215
 
 
