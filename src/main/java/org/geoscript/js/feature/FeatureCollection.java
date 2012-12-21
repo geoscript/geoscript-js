@@ -301,7 +301,6 @@ public class FeatureCollection extends GeoObject implements Wrapper {
                 } else {
                     throw new NoSuchElementException("Expected a feature instance at index " + current);
                 }
-                feature = (SimpleFeature) obj;
             } else {
                 throw new NoSuchElementException("hasNext() returned false!");
             }

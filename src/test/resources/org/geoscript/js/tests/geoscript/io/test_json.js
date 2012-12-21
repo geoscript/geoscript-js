@@ -104,7 +104,7 @@ exports["test: read feature collection"] = function() {
             '},' +
             '"properties": {' +
                 '"prop0": "value0",' +
-                '"prop1": {"this": "that"}' +
+                '"prop1": "value1"' +
             '}' +
         '}]' +
     '}';
