@@ -1,5 +1,6 @@
 package org.geoscript.js.geom;
 
+import org.geoscript.js.io.JSON;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.NativeArray;
@@ -49,22 +50,8 @@ public class GeometryCollection extends Geometry implements Wrapper {
             if (obj instanceof com.vividsolutions.jts.geom.Geometry) {
                 geometries[i] = (com.vividsolutions.jts.geom.Geometry) obj;
             } else if (obj instanceof NativeObject) {
-                String type = (String) getRequiredMember((Scriptable) obj, "type", String.class);
-                if (type.equals("Point")) {
-                    geometries[i] = new Point(scope, prepConfig(context, (Scriptable) obj)).unwrap();
-                } else if (type.equals("LineString")) {
-                    geometries[i] = new LineString(scope, prepConfig(context, (Scriptable) obj)).unwrap();
-                } else if (type.equals("Polygon")) {
-                    geometries[i] = new Polygon(scope, prepConfig(context, (Scriptable) obj)).unwrap();
-                } else if (type.equals("MultiPoint")) {
-                    geometries[i] = new MultiPoint(scope, prepConfig(context, (Scriptable) obj)).unwrap();
-                } else if (type.equals("MultiLineString")) {
-                    geometries[i] = new MultiLineString(scope, prepConfig(context, (Scriptable) obj)).unwrap();
-                } else if (type.equals("MultiPolygon")) {
-                    geometries[i] = new MultiPolygon(scope, prepConfig(context, (Scriptable) obj)).unwrap();
-                } else {
-                    throw ScriptRuntime.constructError("Error", "Bad 'type' memeber: " + type);
-                }
+                Geometry geomObj = (Geometry) JSON.readObj((NativeObject) obj);
+                geometries[i] = (com.vividsolutions.jts.geom.Geometry) geomObj.unwrap();
             } else if (obj instanceof NativeArray) {
                 int dim = getArrayDimension((NativeArray) obj);
                 if (dim < 0 || dim > 2) {
