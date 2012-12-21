@@ -17,6 +17,7 @@ import org.mozilla.javascript.JavaScriptException;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeGenerator;
 import org.mozilla.javascript.NativeIterator;
+import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
@@ -53,8 +54,21 @@ public class FeatureCollection extends GeoObject implements Wrapper {
      * Constructor from config object.
      * @param config
      */
-    private FeatureCollection(Scriptable config) {
-        collection = new JSFeatureCollection(this, config);
+    private FeatureCollection(NativeObject config) {
+        Object obj = config.get("features", config);
+        if (obj instanceof Function) {
+            collection = new JSFeatureCollection(this, config);
+        } else if (obj instanceof NativeArray) {
+            collection = new JSFeatureArray((NativeArray) obj);
+        }
+    }
+    
+    /**
+     * Constructor from array.
+     * @param array
+     */
+    private FeatureCollection(NativeArray array) {
+        collection = new JSFeatureArray(array);
     }
     
     /**
@@ -62,8 +76,19 @@ public class FeatureCollection extends GeoObject implements Wrapper {
      * @param scope
      * @param config
      */
-    private FeatureCollection(Scriptable scope, Scriptable config) {
+    public FeatureCollection(Scriptable scope, NativeObject config) {
         this(config);
+        setParentScope(scope);
+        this.setPrototype(Module.getClassPrototype(FeatureCollection.class));
+    }
+
+    /**
+     * Constructor from feature array (without new keyword).
+     * @param scope
+     * @param array
+     */
+    public FeatureCollection(Scriptable scope, NativeArray array) {
+        this(array);
         setParentScope(scope);
         this.setPrototype(Module.getClassPrototype(FeatureCollection.class));
     }
@@ -94,12 +119,19 @@ public class FeatureCollection extends GeoObject implements Wrapper {
         }
         FeatureCollection collection = null;
         Object arg = args[0];
-        if (arg instanceof Scriptable) {
-            Scriptable config = (Scriptable) arg;
+        if (arg instanceof NativeObject) {
+            NativeObject config = (NativeObject) arg;
             if (inNewExpr) {
                 collection = new FeatureCollection(config);
             } else {
                 collection = new FeatureCollection(config.getParentScope(), config);
+            }
+        } else if (arg instanceof NativeArray) {
+            NativeArray array = (NativeArray) arg;
+            if (inNewExpr) {
+                collection = new FeatureCollection(array);
+            } else {
+                collection = new FeatureCollection(array.getParentScope(), array);
             }
         } else {
             throw ScriptRuntime.constructError("Error", "Could not create collection from argument: " + Context.toString(arg));
@@ -205,6 +237,80 @@ public class FeatureCollection extends GeoObject implements Wrapper {
 
     public Object unwrap() {
         return collection;
+    }
+    
+    static class JSFeatureArray extends SimpleProcessingCollection {
+    
+        NativeArray array;
+    
+        public JSFeatureArray(NativeArray array) {
+            this.array = array;
+        }
+
+        @Override
+        public SimpleFeatureIterator features() {
+            return new JSFeatureArrayIterator(array);
+        }
+
+        @Override
+        public ReferencedEnvelope getBounds() {
+            return getFeatureBounds();
+        }
+
+        @Override
+        protected SimpleFeatureType buildTargetFeatureType() {
+            SimpleFeatureType featureType = null;
+            SimpleFeatureIterator iterator = features();
+            if (iterator.hasNext()) {
+                SimpleFeature feature = iterator.next();
+                featureType = feature.getFeatureType();
+            }
+            return featureType;
+        }
+
+        @Override
+        public int size() {
+            return array.size();
+        }
+    
+    }
+    
+    static class JSFeatureArrayIterator implements SimpleFeatureIterator {
+    
+        int current = -1;
+        NativeArray array;
+
+        public JSFeatureArrayIterator(NativeArray array) {
+            this.array = array;
+        }
+
+        public boolean hasNext() {
+            return array.size() > current + 1;
+        }
+
+        public SimpleFeature next() throws NoSuchElementException {
+            SimpleFeature feature = null;
+            if (hasNext()) {
+                ++current;
+                Object obj = array.get(current, array);
+                if (obj instanceof SimpleFeature) {
+                    feature = (SimpleFeature) obj;
+                } else if (obj instanceof NativeObject) {
+                    NativeObject config = (NativeObject) obj;
+                    feature = (SimpleFeature) new Feature(config.getParentScope(), config).unwrap();
+                } else {
+                    throw new NoSuchElementException("Expected a feature instance at index " + current);
+                }
+                feature = (SimpleFeature) obj;
+            } else {
+                throw new NoSuchElementException("hasNext() returned false!");
+            }
+            return feature;
+        }
+
+        public void close() {
+            current = -1;
+        }
     }
     
     static class JSFeatureCollection extends SimpleProcessingCollection {
