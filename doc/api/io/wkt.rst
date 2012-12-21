@@ -3,7 +3,7 @@ The io/wkt module
 
 .. code-block:: javascript
 
-    >> var WKT = require("geoscript/io/wkt");
+    >> var parser = require("geoscript/io/wkt");
 
 Methods
 -------
@@ -39,7 +39,7 @@ Methods
     .. code-block:: javascript
     
         >> var parser = require("geoscript/io/wkt");
-        >> var Point = require("geoscript/geom").Poin;
+        >> var Point = require("geoscript/geom").Point;
         >> var str = parser.write(new Point([1, 2]));
         >> str
         POINT (1 2)
