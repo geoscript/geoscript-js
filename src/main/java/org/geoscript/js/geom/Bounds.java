@@ -334,7 +334,7 @@ public class Bounds extends GeoObject implements Wrapper {
     @JSConstructor
     public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
         if (args.length != 1) {
-            throw ScriptRuntime.constructError("Error", "Constructor takes a single argument");
+            throw ScriptRuntime.constructError("Error", "Bounds constructor takes a single argument");
         }
         Bounds bounds = null;
         Object arg = args[0];
@@ -353,7 +353,7 @@ public class Bounds extends GeoObject implements Wrapper {
                 bounds = new Bounds(array.getParentScope(), array);
             }
         } else {
-            throw ScriptRuntime.constructError("Error", "Requires a object or array.");
+            throw ScriptRuntime.constructError("Error", "Bounds constructor takes an object or array.");
         }
         return bounds;
     }

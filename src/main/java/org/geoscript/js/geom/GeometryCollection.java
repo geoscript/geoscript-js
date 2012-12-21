@@ -146,7 +146,7 @@ public class GeometryCollection extends Geometry implements Wrapper {
     @JSConstructor
     public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
         if (args.length != 1) {
-            throw ScriptRuntime.constructError("Error", "Constructor takes a single argument");
+            throw ScriptRuntime.constructError("Error", "GeometryCollection constructor takes a single argument");
         }
         NativeArray array = getCoordinatesArray(args[0]);
         GeometryCollection collection = null;

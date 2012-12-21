@@ -94,7 +94,7 @@ public class MultiLineString extends GeometryCollection implements Wrapper {
     @JSConstructor
     public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
         if (args.length != 1) {
-            throw ScriptRuntime.constructError("Error", "Constructor takes a single argument");
+            throw ScriptRuntime.constructError("Error", "MultiLineString constructor takes a single argument");
         }
         MultiLineString collection = null;
         NativeArray array = getCoordinatesArray(args[0]);
