@@ -323,8 +323,8 @@ public class FeatureCollection extends GeoObject implements Wrapper {
             if (hasNext()) {
                 ++current;
                 Object obj = array.get(current, array);
-                if (obj instanceof SimpleFeature) {
-                    feature = (SimpleFeature) obj;
+                if (obj instanceof Feature) {
+                    feature = (SimpleFeature) ((Feature) obj).unwrap();
                 } else if (obj instanceof NativeObject) {
                     NativeObject config = (NativeObject) obj;
                     feature = (SimpleFeature) new Feature(config.getParentScope(), config).unwrap();

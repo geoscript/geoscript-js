@@ -199,6 +199,26 @@ exports["test: close (custom)"] = function() {
     
 }
 
+exports["test: constructor (array)"] = function() {
+    var Point = GEOM.Point;
+
+    var features = [
+        new Feature({properties: {loc: new Point([1, 2])}}),
+        new Feature({properties: {loc: new Point([3, 4])}})
+    ];
+    var collection = new FeatureCollection({features: features});
+    ASSERT.strictEqual(collection.size, 2);
+    
+    var got = [];
+    for (var feature in collection) {
+        got.push(feature);
+    }
+    ASSERT.strictEqual(got.length, 2);
+    ASSERT.ok(got[0].geometry.equals(new Point([1, 2])));
+    ASSERT.deepEqual(got[1].get("loc").coordinates, [3, 4]);
+    
+};
+
 
 if (require.main == module.id) {
     system.exit(require("test").run(exports));
