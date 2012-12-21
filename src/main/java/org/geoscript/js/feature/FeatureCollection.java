@@ -235,6 +235,36 @@ public class FeatureCollection extends GeoObject implements Wrapper {
         return new FeatureCollection(getTopLevelScope(collectionObj), collection);
     }
 
+    /**
+     * Provides a config object with GeoJSON structure.  Note that this will
+     * iterate through and serialize all features.
+     */
+    @JSGetter
+    public Scriptable getConfig() {
+        Scriptable config = super.getConfig();
+
+        // add features
+        Context cx = getCurrentContext();
+        Scriptable scope = getParentScope();
+        Scriptable features = cx.newArray(scope, 0);
+        SimpleFeatureIterator iterator = collection.features();
+        int i = -1;
+        while (iterator.hasNext()) {
+            ++i;
+            Feature feature = new Feature(scope, iterator.next());
+            Scriptable featureConfig = feature.getConfig();
+            featureConfig.delete("schema"); // to be added at top level
+            features.put(i, features, featureConfig);
+        }
+        config.put("features", config, features);
+
+        // add schema
+        Schema schema = new Schema(scope, collection.getSchema());
+        config.put("schema", config, schema.getConfig());
+
+        return config;
+    }
+
     public Object unwrap() {
         return collection;
     }

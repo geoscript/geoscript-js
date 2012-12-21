@@ -163,6 +163,46 @@ exports["test: write geometry collection"] = function() {
     ASSERT.deepEqual(line.coordinates, [[101, 0], [102, 1]]);
 };
 
+exports["test: write feature collection"] = function() {
+    var collection = new FeatureCollection({
+        features: function() {
+            for (var i=0; i<10; ++i) {
+                yield new Feature({
+                    properties: {
+                        foo: "bar_" + i,
+                        loc: new GEOM.Point([i, -i])
+                    }
+                });
+            }
+        }
+    });
+    
+    var json = parser.write(collection);
+    ASSERT.strictEqual(typeof json, "string");
+    
+    var obj = JSON.parse(json);
+    ASSERT.strictEqual(obj.type, "FeatureCollection");
+    var features = obj.features;
+    ASSERT.strictEqual(features.length, 10);
+    
+    ASSERT.strictEqual(features[0].properties.foo, "bar_0");
+    ASSERT.deepEqual(features[1].geometry.coordinates, [1, -1]);
+    
+    var exp = {
+        type: "Schema",
+        name: "feature",
+        fields: [{
+            type: "Field",
+            def: {name: "foo", type: "String"}
+        }, {
+            type: "Field",
+            def: {name: "loc", type: "Point"}
+        }]
+    };
+    ASSERT.deepEqual(obj.schema, exp)
+
+};
+
 if (require.main == module.id) {
     system.exit(require("test").run(exports));
 }
