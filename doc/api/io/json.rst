@@ -1,5 +1,5 @@
 The io/json module
-=================
+==================
 
 .. code-block:: javascript
 
@@ -12,9 +12,11 @@ Methods
 .. function:: read
 
     :arg wkt: ``String`` The GeoJSON representation of a geometry or feature.
-    :returns: :class:`geom.Geometry` || :class:`feature.Feature`
+    :returns: :class:`Object` The deserialized version of the input string (one 
+        of :class:`geom.Geometry`, :class:`geom.GeometryCollection`, 
+        :class:`feature.Feature`, or :class:`feature.FeatureCollection`).
     
-    Create a geometry or feature from a JSON string.
+    Create a geometry, a feature, or a collection of either from a JSON string.
 
     Example of deserializing a geometry:
     
@@ -42,11 +44,13 @@ Methods
 
 .. function:: write
 
-    :arg geometry: :class:`geom.Geometry` || :class:`feature.Feature` A geometry
-        or feature.
-    :returns: ``String`` The GeoJSON representation of a geometry or feature.
+    :arg obj: :class:`Object` Input object (one of :class:`geom.Geometry`, 
+        :class:`geom.GeometryCollection`, :class:`feature.Feature`, 
+        or :class:`feature.FeatureCollection`).
+    :returns: ``String`` The GeoJSON representation of the input object.
     
-    Generate a GeoJSON string from a geometry or feature.
+    Generate a GeoJSON string from a geometry, a feature, or a collection of
+    either.
 
     Example of serializing a geometry:
     
