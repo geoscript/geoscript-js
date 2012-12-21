@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.NativeArray;
+import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.Wrapper;
@@ -43,6 +44,25 @@ public class MultiPolygon extends GeometryCollection implements Wrapper {
         this(array);
         this.setParentScope(scope);
         this.setPrototype(Module.getClassPrototype(MultiPolygon.class));
+    }
+
+    /**
+     * Constructor for config object.
+     * @param config
+     */
+    public MultiPolygon(NativeObject config) {
+        super(getCoordinatesArray(config));
+    }
+    
+    /**
+     * Constructor for config object (without new keyword);
+     * @param scope
+     * @param config
+     */
+    public MultiPolygon(Scriptable scope, NativeObject config) {
+        this(config);
+        this.setParentScope(scope);
+        this.setPrototype(Module.getClassPrototype(MultiPoint.class));
     }
 
     /**

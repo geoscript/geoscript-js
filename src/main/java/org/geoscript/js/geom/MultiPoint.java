@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.NativeArray;
+import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.Wrapper;
@@ -41,6 +42,25 @@ public class MultiPoint extends GeometryCollection implements Wrapper {
      */
     public MultiPoint(Scriptable scope, NativeArray array) {
         this(array);
+        this.setParentScope(scope);
+        this.setPrototype(Module.getClassPrototype(MultiPoint.class));
+    }
+
+    /**
+     * Constructor for config object.
+     * @param config
+     */
+    public MultiPoint(NativeObject config) {
+        super(getCoordinatesArray(config));
+    }
+    
+    /**
+     * Constructor for config object (without new keyword);
+     * @param scope
+     * @param config
+     */
+    public MultiPoint(Scriptable scope, NativeObject config) {
+        this(config);
         this.setParentScope(scope);
         this.setPrototype(Module.getClassPrototype(MultiPoint.class));
     }

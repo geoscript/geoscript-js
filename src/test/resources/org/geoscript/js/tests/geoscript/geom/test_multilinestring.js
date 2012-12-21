@@ -25,7 +25,10 @@ exports["test: json"] = function() {
     }
     if (obj) {
         ASSERT.strictEqual(obj.type, "MultiLineString", "correct type");
-        ASSERT.deepEqual(obj.coordinates, g.coordinates, "correct coordinates");
+        var geometries = obj.geometries;
+        ASSERT.strictEqual(geometries.length, 2);
+        ASSERT.deepEqual(geometries[0].coordinates, [[-180, -90], [0, 0], [180, 90]]);
+        ASSERT.deepEqual(geometries[1].coordinates, [[-10, -10], [0, 0], [10, 10]]);
     } else {
         ASSERT.ok(false, "invalid json: " + msg);
     }

@@ -34,6 +34,25 @@ exports["test: read linestring"] = function() {
     ])));
 };
 
+exports["test: read geometry collection"] = function() {
+    var json = '{' +
+        '"type": "GeometryCollection",' +
+        '"geometries": [{' +
+            '"type": "Point",' +
+            '"coordinates": [100.0, 0.0]' +
+        '},{' +
+            '"type": "LineString",' +
+            '"coordinates": [ [101.0, 0.0], [102.0, 1.0] ]' +
+        '}]' +
+    '}';
+    var geoms = parser.read(json);
+    ASSERT.ok(geoms instanceof GEOM.GeometryCollection);
+    ASSERT.ok(geoms.equalsExact(new GEOM.GeometryCollection([
+        new GEOM.Point([100, 0]),
+        new GEOM.LineString([[101, 0], [102, 1]])
+    ])));
+}
+
 exports["test: read feature"] = function() {
     var json, feature;
     
@@ -74,6 +93,29 @@ exports["test: write polygon"] = function() {
     ASSERT.deepEqual(coordinates[1], [[2, 2], [8, 2], [8, 8], [2, 8], [2, 2]]);
     
 }
+
+exports["test: write geometry collection"] = function() {
+    var geom = new GEOM.GeometryCollection([
+        new GEOM.Point([100, 0]),
+        new GEOM.LineString([[101, 0], [102, 1]])
+    ]);
+    var json = parser.write(geom);
+    ASSERT.strictEqual(typeof json, "string");
+    
+    var obj = JSON.parse(json);
+    
+    ASSERT.strictEqual(obj.type, "GeometryCollection");
+    var geometries = obj.geometries;
+    ASSERT.strictEqual(geometries.length, 2);
+    
+    var point = geometries[0];
+    ASSERT.strictEqual(point.type, "Point");
+    ASSERT.deepEqual(point.coordinates, [100, 0]);
+    
+    var line = geometries[1];
+    ASSERT.strictEqual(line.type, "LineString");
+    ASSERT.deepEqual(line.coordinates, [[101, 0], [102, 1]]);
+};
 
 if (require.main == module.id) {
     system.exit(require("test").run(exports));
