@@ -54,3 +54,5 @@ Update version numbers in the main pom.xml file.  Generate an archive with all d
 For applications that already have the GeoTools dependency, an archive is published in repo.opengeo.org that contains only the JavaScript modules:
 
     mvn deploy
+
+[![Current Status](https://secure.travis-ci.org/tschaub/geoscript-js.png?branch=master)](https://travis-ci.org/tschaub/geoscript-js)
