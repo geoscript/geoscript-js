@@ -3,7 +3,7 @@ The io/json module
 
 .. code-block:: javascript
 
-    >> var GeoJSON = require("geoscript/io/json");
+    >> var parser = require("geoscript/io/json");
 
 Methods
 -------
@@ -22,9 +22,9 @@ Methods
     
     .. code-block:: javascript
     
-        >> var GEOM = require("geoscript/geom");
-        >> var line = GeoJSON.read('{"type": "LineString", "coordinates": [[1,2], [3,4]]}');
-        >> line instanceof GEOM.LineString
+        >> var LineString = require("geoscript/geom").LineString;
+        >> var line = parser.read('{"type": "LineString", "coordinates": [[1,2], [3,4]]}');
+        >> line instanceof LineString
         true
         >> line
         <LineString [[1, 2], [3, 4]]>
@@ -35,7 +35,7 @@ Methods
 
         >> var Feature = require("geoscript/feature").Feature;
         >> var str = '{"type": "Feature", "properties": {"foo": "bar"}, "geometry": {"type": "Point", "coordinates": [1, 2]}}'
-        >> var feature = GeoJSON.read(str)
+        >> var feature = parser.read(str)
         >> feature instanceof Feature
         true
         >> feature
@@ -56,8 +56,8 @@ Methods
     
     .. code-block:: javascript
     
-        >> var GEOM = require("geoscript/geom");
-        >> var str = GeoJSON.write(new GEOM.Point([1, 2]));
+        >> var Point = require("geoscript/geom").Point;
+        >> var str = parser.write(new Point([1, 2]));
         >> str
         {"type":"Point","coordinates":[1,2]}
 

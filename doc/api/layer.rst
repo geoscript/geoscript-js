@@ -5,7 +5,7 @@ The :doc:`layer <layer>` module provides a constructor for Layer objects.
 
 .. code-block:: javascript
 
-    >> var LAYER = require("geoscript/layer");
+    >> var Layer = require("geoscript/layer").Layer;
 
 :class:`layer.Layer`
 ====================
@@ -24,19 +24,19 @@ Sample code to create a temporary layer:
 
 .. code-block:: javascript
 
-    >> var layer = new LAYER.Layer({name: "temp"});
+    >> var layer = new Layer({name: "temp"});
 
-    >> var layer = new LAYER.Layer({
+    >> var layer = new Layer({
     ..     name: "temp2",
     ..     fields: [{name: "geom", type: "Geometry"}]
     .. });
 
-    >> var FEATURE = require("geoscript/feature");
-    >> var schema = new FEATURE.Schema({
+    >> var Schema = require("geoscript/feature").Schema;
+    >> var schema = new Schema({
     ..     name: "temp3",
     ..     fields: [{name: "geom", type: "Geometry"}]
     .. });
-    >> var layer = new LAYER.Layer({schema: schema});
+    >> var layer = new Layer({schema: schema});
 
 Config Properties
 -----------------
@@ -133,8 +133,8 @@ Methods
     
     .. code-block:: javascript
     
-        >> var GEOM = require("geoscript/geom");
-        >> layer.add({geom: new GEOM.Point([0, 1])});
+        >> var Point = require("geoscript/geom").Point;
+        >> layer.add({geom: new Point([0, 1])});
     
 
 .. function:: Layer.clone(name)
@@ -200,8 +200,8 @@ Methods
     
     .. code-block:: javascript
     
-        >> var GEOM = require("geoscript/geom");
-        >> layer.add({geom: new GEOM.Point([1, 2])});
+        >> var Point = require("geoscript/geom").Point;
+        >> layer.add({geom: new Point([1, 2])});
         >> layer.remove("INTERSECTS(geom, POINT(1 2))");
     
 

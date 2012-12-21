@@ -6,7 +6,7 @@ features, feature collections, and feature schema.
 
 .. code-block:: javascript
 
-    >> var FEATURE = require("geoscript/feature");
+    >> var feature = require("geoscript/feature");
 
 
 Constructors

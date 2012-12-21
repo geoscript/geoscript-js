@@ -15,8 +15,8 @@ Sample code to create a new projection object:
 
 .. code-block:: javascript
 
-    >> var PROJ = require("geoscript/proj");
-    >> var wgs84 = new PROJ.Projection("EPSG:4326")
+    >> var Projection = require("geoscript/proj").Projection;
+    >> var wgs84 = new Projection("EPSG:4326")
     >> wgs84
     <Projection EPSG:4326>
     >> wgs84.wkt

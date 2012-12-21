@@ -6,7 +6,7 @@ transforming geometries between coordinate reference systems.
 
 .. code-block:: javascript
 
-    >> var PROJ = require("geoscript/proj");
+    >> var proj = require("geoscript/proj");
 
 
 Constructors

@@ -5,7 +5,7 @@ The :doc:`filter <filter>` module provides a constructor for Filter objects.
 
 .. code-block:: javascript
 
-    >> var FILTER = require("geoscript/filter");
+    >> var filter = require("geoscript/filter");
 
 
 Constructors

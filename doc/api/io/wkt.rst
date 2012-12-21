@@ -21,10 +21,10 @@ Methods
     
     .. code-block:: javascript
     
-        >> var WKT = require("geoscript/io/wkt");
-        >> var GEOM = require("geoscript/geom");
-        >> var point = WKT.read("POINT(1 2)");
-        >> point instanceof GEOM.Point
+        >> var parser = require("geoscript/io/wkt");
+        >> var Point = require("geoscript/geom").Point;
+        >> var point = parser.read("POINT(1 2)");
+        >> point instanceof Point
         true
 
 .. function:: write
@@ -38,9 +38,9 @@ Methods
     
     .. code-block:: javascript
     
-        >> var WKT = require("geoscript/io/wkt");
-        >> var GEOM = require("geoscript/geom");
-        >> var str = WKT.write(new GEOM.Point([1, 2]));
+        >> var parser = require("geoscript/io/wkt");
+        >> var Point = require("geoscript/geom").Poin;
+        >> var str = parser.write(new Point([1, 2]));
         >> str
         POINT (1 2)
 

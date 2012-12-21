@@ -12,8 +12,8 @@ Sample code to create a fill:
 
 .. code-block:: javascript
 
-    >> var STYLE = require("geoscript/style");
-    >> var fill = new STYLE.Fill({
+    >> var Fill = require("geoscript/style").Fill;
+    >> var fill = new Fill({
     ..     brush: "red",
     ..     opacity: 0.5
     .. });

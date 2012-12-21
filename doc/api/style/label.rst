@@ -12,8 +12,8 @@ Sample code to create a fill:
 
 .. code-block:: javascript
 
-    >> var STYLE = require("geoscript/style");
-    >> var label = new STYLE.Label({
+    >> var Label = require("geoscript/style").Label;
+    >> var label = new Label({
     ..     expression: "property"
     .. });
 
