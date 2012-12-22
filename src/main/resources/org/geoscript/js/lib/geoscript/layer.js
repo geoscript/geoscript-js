@@ -1,17 +1,3 @@
-/** api: module = layer */
-
-/** api: synopsis
- *  Layer related functionality.
- */
-
-/** api: summary
- *  The :mod:`layer` module provides a constructor for Layer objects.
- *
- *  .. code-block:: javascript
- *
- *      js> var LAYER = require("geoscript/layer");
- */
-
 var UTIL = require("./util");
 var GeoObject = require("./object").GeoObject;
 var Registry = require("./registry").Registry;
@@ -64,8 +50,7 @@ var Layer = UTIL.extend(GeoObject, {
      *  .. class:: Layer
      *
      *      Create a new layer.  If a workspace is not provided, a temporary
-     *      layer will be created.  If a layer is created without a schema, a
-     *      default schema will be applied.
+     *      layer will be created.
      */
     constructor: function Layer(config) {
         this.cache = {};
@@ -75,13 +60,16 @@ var Layer = UTIL.extend(GeoObject, {
         }
         if (config) {
             var schema = config.schema;
-            name = config.name || (schema && schema.name) || getTempName();
             if (!schema) {
+                if (!config.fields) {
+                    throw new Error("Layer constructor requires either a schema or fields array."); 
+                }
                 schema = new Schema({
-                    name: name,
-                    fields: config.fields || [{name: "geom", type: "Geometry"}]
+                    name: config.name || getTempName(),
+                    fields: config.fields
                 });
             }
+            name = schema.name;
             if (config.workspace) {
                 if (config.workspace instanceof WORKSPACE.Workspace) {
                     this.workspace = config.workspace;
@@ -90,11 +78,12 @@ var Layer = UTIL.extend(GeoObject, {
                 }
             } else {
                 this.workspace = WORKSPACE.memory;
-                if (WORKSPACE.memory.names.indexOf(name) > -1) {
-                    throw new Error("Temporary layer named '" + name + "' already exists.");
-                }
-                this.workspace._store.createSchema(schema);
             }
+            // check that name is unique for workspace
+            if (this.workspace.names.indexOf(name) > -1) {
+                throw new Error("Layer named '" + name + "' already exists in " + this.workspace);
+            }
+            this.workspace._store.createSchema(schema);
             this._source = this.workspace._store.getFeatureSource(name);
             var projection = config.projection;
             if (projection) {

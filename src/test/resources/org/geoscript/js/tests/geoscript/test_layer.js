@@ -2,6 +2,7 @@ var ASSERT = require("assert");
 var LAYER = require("geoscript/layer");
 var GEOM = require("geoscript/geom");
 var ADMIN = require("../admin");
+var Directory = require("geoscript/workspace").Directory;
 
 var shpDir = ADMIN.shp.dest;
 exports.setUp = ADMIN.shp.setUp;
@@ -17,7 +18,10 @@ exports["test: Layer.constructor"] = function() {
 exports["test: Layer.clone"] = function() {
 
     var clone;
-    var temp = new LAYER.Layer({name: "foo"});
+    var temp = new LAYER.Layer({
+        name: "foo", 
+        fields: [{name: "bar", type: "String"}]
+    });
 
     // create a clone without providing a name
     clone = temp.clone();
@@ -29,11 +33,8 @@ exports["test: Layer.clone"] = function() {
     clone = temp.clone("bar");
     ASSERT.strictEqual(clone.name, "bar", "clone can be given a new name");
     
-    // clone an existing layer with features    
-    var shp = new LAYER.Layer({
-        workspace: shpDir,
-        name: "states"
-    });
+    // clone an existing layer with features
+    var shp = Directory(shpDir).get("states");
     
     clone = shp.clone();
     ASSERT.ok(clone.temporary, "clone is a temporary layer");
@@ -41,21 +42,9 @@ exports["test: Layer.clone"] = function() {
 
 };
 
-exports["test: create(shapefile)"] = function() {
-    
-    var shp = LAYER.create({
-        workspace: shpDir,
-        name: "states"
-    });
-    
-    ASSERT.ok(shp instanceof LAYER.Layer, "instanceof LAYER.Layer");
-    ASSERT.strictEqual(shp.count, 49, "49 features");
-    
-};
-
 exports["test: create(memory)"] = function() {
     
-    var mem = LAYER.create({});
+    var mem = LAYER.create({fields: [{name: "foo", type: "String"}]});
     
     ASSERT.ok(mem instanceof LAYER.Layer, "instanceof LAYER.Layer");
     ASSERT.ok(mem.temporary, "temporary layer");

@@ -1,26 +1,24 @@
 var ASSERT = require("assert");
 var LAYER = require("geoscript/layer");
-var GEOM = require("geoscript/geom");
 
 
 exports["test: Layer.temporary"] = function() {
-    
-    var temp = new LAYER.Layer({});
+
+    var temp = new LAYER.Layer({fields: [{name: "foo", type: "String"}]});
     ASSERT.ok(temp.temporary);
     
 };
 
 exports["test: add"] = function() {
     
-    var p = new GEOM.Point([1, 2]);
-    var mem = new LAYER.Layer({});
-    mem.add({geom: p});
+    var mem = new LAYER.Layer({fields: [{name: "foo", type: "String"}]});
+    mem.add({foo: "bar"});
     
     ASSERT.strictEqual(mem.count, 1, "one item added");
     
     var f = mem.features.get(1)[0];
     
-    ASSERT.ok(p.equalsExact(f.geometry), "first feature has correct geometry");
+    ASSERT.strictEqual(f.get("foo"), "bar");
     
 };
 

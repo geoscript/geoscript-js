@@ -20,6 +20,7 @@ var STYLE_UTIL = require("./style/util");
 var Layer = require("./layer").Layer;
 var Bounds = require("./geom").Bounds;
 var Projection = require("./proj").Projection;
+var ws = require("./workspace");
 
 var geotools = Packages.org.geotools;
 var DefaultMapContext = geotools.map.DefaultMapContext;
@@ -140,7 +141,7 @@ var Map = UTIL.extend(GeoObject, {
      */
     add: function(layer) {
         if (!(layer instanceof Layer)) {
-            layer = new Layer(layer);
+            throw new Error("Must provide a layer instance");
         }
         this.cache.layers.push(layer);
     },

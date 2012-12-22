@@ -5,6 +5,7 @@ var Fill = require("geoscript/style").Fill;
 var Stroke = require("geoscript/style").Stroke;
 var ADMIN = require("../admin");
 var Map = require("geoscript/map").Map;
+var Directory = require("geoscript/workspace").Directory;
 
 var shpDir = ADMIN.shp.dest;
 exports.setUp = ADMIN.shp.setUp;
@@ -12,12 +13,11 @@ exports.tearDown = ADMIN.shp.tearDown;
 
 exports["test: render"] = function() {
     
+    var layer = Directory(shpDir).get("states");
+    layer.style = Stroke("#ffcc66").and(Fill("#cc3300"));
+
     var map = Map({
-        layers: [{
-            workspace: shpDir,
-            name: "states",
-            style: Stroke("#ffcc66").and(Fill("#cc3300"))
-        }]
+        layers: [layer]
     });
 
     var out = "out.png";

@@ -13,8 +13,7 @@ The :doc:`layer <layer>` module provides a constructor for Layer objects.
 .. class:: layer.Layer(config)
 
     Create a new layer.  If a workspace is not provided, a temporary
-    layer will be created.  If a layer is created without a schema, a
-    default schema will be applied.
+    layer will be created.
 
 
 Example Use
@@ -24,12 +23,15 @@ Sample code to create a temporary layer:
 
 .. code-block:: javascript
 
-    >> var layer = new Layer({name: "temp"});
-
     >> var layer = new Layer({
     ..     name: "temp2",
     ..     fields: [{name: "geom", type: "Geometry"}]
     .. });
+
+The code above is shorthand for more explicitly creating a schema and passing
+that to the layer.
+
+.. code-block:: javascript
 
     >> var Schema = require("geoscript/feature").Schema;
     >> var schema = new Schema({
@@ -46,11 +48,6 @@ Config Properties
     :class:`style.Style`
     Optional style to be used when rendering this layer as part of a map.
     In addition to a style instance, a style config object can be provided.
-
-.. describe:: title
-
-    ``String``
-    Optional title for the layer.
 
 
 Properties
