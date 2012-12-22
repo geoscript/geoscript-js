@@ -21,12 +21,12 @@ function for creating new features (note the ``yield`` keyword below):
     >> var {Feature, FeatureCollection} = require("geoscript/feature");
     >> var Point = require("geoscript/geom").Point;
 
-    >> var collection = new FeatureCollection({
+    >> var collection = FeatureCollection({
     ..   features: function() {
     ..     for (var i=0; i<5; ++i) {
-    ..       yield new Feature({
+    ..       yield Feature({
     ..         properties: {
-    ..           loc: new Point([i, -i]),
+    ..           loc: Point([i, -i]),
     ..           name: "My Feature " + i
     ..         }
     ..       });
@@ -59,12 +59,12 @@ Config Properties
     .. code-block:: javascript
 
         >> // generate a million features
-        >> var collection = new FeatureCollection({
+        >> var collection = FeatureCollection({
         ..   features: function() {
         ..     for (var i=0; i<1e6; ++i) {
-        ..       yield new Feature({
+        ..       yield Feature({
         ..         properties: {
-        ..           loc: new Point([Math.random(), Math.random()])
+        ..           loc: Point([Math.random(), Math.random()])
         ..         }
         ..       });
         ..     }
@@ -76,10 +76,10 @@ Config Properties
     .. code-block:: javascript
 
         >> // provide a collection of two features
-        >> var collection = new FeatureCollection({
+        >> var collection = FeatureCollection({
         ..   features: [
-        ..     new Feature({properties: {loc: new Point([1, 2])}}),
-        ..     new Feature({properties: {loc: new Point([1, 2])}})
+        ..     Feature({properties: {loc: Point([1, 2])}}),
+        ..     Feature({properties: {loc: Point([1, 2])}})
         ..   ]
         .. });
 
@@ -97,10 +97,10 @@ Config Properties
     .. code-block:: javascript
 
         >> var knownSize = 10;
-        >> var collection = new FeatureCollection({
+        >> var collection = FeatureCollection({
         ..   features: function() {
         ..     for (var i=0; i<knownSize; ++i) {
-        ..       yield new Feature({properties: {foo: "bar"}});
+        ..       yield Feature({properties: {foo: "bar"}});
         ..     }
         ..   },
         ..   size: function() {
@@ -124,14 +124,14 @@ Config Properties
 
         >> var Bounds = require("geoscript/geom").Bounds;
 
-        >> var collection = new FeatureCollection({
+        >> var collection = FeatureCollection({
         ..   features: function() {
-        ..     yield new Feature({properties: {geom: new Point([-150, -45])}});
-        ..     yield new Feature({properties: {geom: new Point([150, 45])}});
+        ..     yield Feature({properties: {geom: Point([-150, -45])}});
+        ..     yield Feature({properties: {geom: Point([150, 45])}});
         ..   },
         ..   bounds: function() {
         ..     // making the bounds a bit bigger than feature bounds for demonstration
-        ..     return new Bounds([-155, -50, 155, 55]);
+        ..     return Bounds([-155, -50, 155, 55]);
         ..   }
         .. });
 
@@ -149,10 +149,10 @@ Config Properties
 
         >> var called = false;
 
-        >> var collection = new FeatureCollection({
+        >> var collection = FeatureCollection({
         ..   features: function() {
         ..     for (var i=0; i<5; ++i) {
-        ..       yield new Feature({properties: {index: i}});
+        ..       yield Feature({properties: {index: i}});
         ..     }
         ..   },
         ..   close: function() {
@@ -210,10 +210,10 @@ Methods
 
     .. code-block:: javascript
 
-        >> var collection = new FeatureCollection({
+        >> var collection = FeatureCollection({
         ..   features: function() {
         ..     for (var i=0; i<3; ++i) {
-        ..       yield new Feature({properties: {name: "feature_" + i}});
+        ..       yield Feature({properties: {name: "feature_" + i}});
         ..     }
         ..   }
         .. });

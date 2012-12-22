@@ -18,15 +18,15 @@ Sample code to new multi-point:
 .. code-block:: javascript
 
     >> var {Point, MultiPoint} = require("geoscript/geom");
-    >> var p1 = new Point([-180, 90]);
-    >> var p2 = new Point([-45, 45]);
-    >> var mp = new MultiPoint([p1, p2]);
+    >> var p1 = Point([-180, 90]);
+    >> var p2 = Point([-45, 45]);
+    >> var mp = MultiPoint([p1, p2]);
 
 Alternate method to create the same geometry as above:
 
 .. code-block:: javascript
 
-    >> var mp = new MultiPoint([
+    >> var mp = MultiPoint([
     ..   [-180, 90], [-45, 45]
     .. ]);
 

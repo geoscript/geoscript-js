@@ -15,7 +15,7 @@ Sample code to create a new bounds:
 .. code-block:: javascript
 
     >> var Bounds = require("geoscript/geom").Bounds;
-    >> var bounds = new Bounds({
+    >> var bounds = Bounds({
     ..   minX: -180, maxX: 180, minY: -90, maxY: 90
     .. });
     >> bounds.width
@@ -27,7 +27,7 @@ Sample code to create a new bounds with a projection:
 
 .. code-block:: javascript
 
-    >> var bounds = new Bounds({
+    >> var bounds = Bounds({
     ..   minX: -180, maxX: 180, minY: -90, maxY: 90, projection: "epsg:4326"
     .. });
     >> bounds.projection
@@ -37,7 +37,7 @@ Sample code to create a new bounds from an array of [minX, minY, maxX, maxY] val
 
 .. code-block:: javascript
 
-    >> var bounds = new Bounds([-180, -90, 180, 90]);
+    >> var bounds = Bounds([-180, -90, 180, 90]);
 
 
 

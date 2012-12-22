@@ -17,20 +17,20 @@ Sample code to new multi-polygon:
 .. code-block:: javascript
 
     >> var {Polygon, MultiPolygon} = require("geoscript/geom");
-    >> var p1 = new Polygon([
+    >> var p1 = Polygon([
     ..   [[-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90]],
     ..   [[-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45]]
     .. ]);
-    >> var p2 = new Polygon([
+    >> var p2 = Polygon([
     ..   [[-60, -30], [-60, 30], [60, 30], [60, -30], [-60, -30]]
     .. ]);
-    >> var mp = new MultiPolygon([p1, p2]);
+    >> var mp = MultiPolygon([p1, p2]);
 
 Alternate method to create the same geometry as above:
 
 .. code-block:: javascript
 
-    >> var mp = new MultiPolygon([
+    >> var mp = MultiPolygon([
     ..   [
     ..     [[-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90]],
     ..     [[-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45]]

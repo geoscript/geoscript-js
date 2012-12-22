@@ -25,20 +25,20 @@ Various simple constraints:
 
 .. code-block:: javascript
 
-    >> var namedFoo = new Filter("name = 'foo'");
-    >> var oneThing = new Filter("thing = 1");
-    >> var few = new Filter("count < 4");
-    >> var many = new Filter("count > 36");
-    >> var teens = new Filter("age BETWEEN 13 AND 19");
+    >> var namedFoo = Filter("name = 'foo'");
+    >> var oneThing = Filter("thing = 1");
+    >> var few = Filter("count < 4");
+    >> var many = Filter("count > 36");
+    >> var teens = Filter("age BETWEEN 13 AND 19");
 
 Spatial constraints:
 
 .. code-block:: javascript
 
-    >> var box = new Filter("BBOX(the_geom, -10, -10, 10, 10)");
-    >> var close = new Filter("DWITHIN(the_geom, POINT(1 0), 3, kilometers)");
-    >> var has = new Filter("CONTAINS(the_geom, POINT(1 0))");
-    >> var hit = new Filter("INTERSECTS(the_geom, LINESTRING(0 0, 1 1))");
+    >> var box = Filter("BBOX(the_geom, -10, -10, 10, 10)");
+    >> var close = Filter("DWITHIN(the_geom, POINT(1 0), 3, kilometers)");
+    >> var has = Filter("CONTAINS(the_geom, POINT(1 0))");
+    >> var hit = Filter("INTERSECTS(the_geom, LINESTRING(0 0, 1 1))");
 
 
 Properties
@@ -72,7 +72,7 @@ Methods
 
     :arg feature: :class:`feature.Feature` A feature.
     :returns: ``Boolean``  The feature matches the filter.
-    
+
     Determine whether a feature matches the constraints of the filter.
 
 .. function:: Filter.or

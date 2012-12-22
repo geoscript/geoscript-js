@@ -23,7 +23,7 @@ Sample code to create a temporary layer:
 
 .. code-block:: javascript
 
-    >> var layer = new Layer({
+    >> var layer = Layer({
     ..   name: "temp2",
     ..   fields: [{name: "geom", type: "Geometry"}]
     .. });
@@ -34,11 +34,11 @@ that to the layer.
 .. code-block:: javascript
 
     >> var Schema = require("geoscript/feature").Schema;
-    >> var schema = new Schema({
+    >> var schema = Schema({
     ..   name: "temp3",
     ..   fields: [{name: "geom", type: "Geometry"}]
     .. });
-    >> var layer = new Layer({schema: schema});
+    >> var layer = Layer({schema: schema});
 
 Config Properties
 -----------------
@@ -131,7 +131,7 @@ Methods
     .. code-block:: javascript
 
         >> var Point = require("geoscript/geom").Point;
-        >> layer.add({geom: new Point([0, 1])});
+        >> layer.add({geom: Point([0, 1])});
 
 
 .. function:: Layer.clone(name)
@@ -198,7 +198,7 @@ Methods
     .. code-block:: javascript
 
         >> var Point = require("geoscript/geom").Point;
-        >> layer.add({geom: new Point([1, 2])});
+        >> layer.add({geom: Point([1, 2])});
         >> layer.remove("INTERSECTS(geom, POINT(1 2))");
 
 

@@ -11,7 +11,7 @@ The following constructs a process that performs some simple arithmetic.
 .. code-block:: javascript
 
     >> var Process = require("geoscript/process").Process;
-    >> var add = new Process({
+    >> var add = Process({
     ..   title: "Add",
     ..   description: "Adds two numbers",
     ..   inputs: {
@@ -198,7 +198,7 @@ Static Methods
         >> Object.keys(buffer.outputs)
         result
 
-        >> var point = new Point([-110, 45]);
+        >> var point = Point([-110, 45]);
         >> var outputs = buffer.run({geom: point, distance: 10})
         >> outputs.result
         <Polygon [[[-100, 45], [-100.19214719596769, 43.04909677983872], [-10...>

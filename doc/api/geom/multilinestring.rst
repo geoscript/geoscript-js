@@ -17,15 +17,15 @@ Sample code to new multi-linestring:
 .. code-block:: javascript
 
     >> var {MultiLineString, LineString} = require("geoscript/geom");
-    >> var l1 = new LineString([[-180, -90], [0, 0], [180, 90]]);
-    >> var l2 = new LineString([[180, -90], [0, 0], [-180, 90]]);
-    >> var ml = new MultiLineString([l1, l2]);
+    >> var l1 = LineString([[-180, -90], [0, 0], [180, 90]]);
+    >> var l2 = LineString([[180, -90], [0, 0], [-180, 90]]);
+    >> var ml = MultiLineString([l1, l2]);
 
 Alternate method to create the same geometry as above:
 
 .. code-block:: javascript
 
-    >> var ml = new MultiLineString([
+    >> var ml = MultiLineString([
     ..   [[-180, -90], [0, 0], [180, 90]],
     ..   [[180, -90], [0, 0], [-180, 90]]
     .. ]);

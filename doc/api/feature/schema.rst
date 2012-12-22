@@ -16,7 +16,7 @@ Sample code to create a new schema:
 .. code-block:: javascript
 
     >> var Schema = require("geoscript/feature").Schema;
-    >> var cities = new Schema({
+    >> var cities = Schema({
     ..   name: "cities",
     ..   fields: [{
     ..     name: "the_geom",

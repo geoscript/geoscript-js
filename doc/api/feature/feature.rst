@@ -17,9 +17,9 @@ Sample code to create a new feature:
 
     >> var Feature = require("geoscript/feature").Feature;
     >> var Point = require("geoscript/geom").Point;
-    >> var city = new Feature({
+    >> var city = Feature({
     ..   properties: {
-    ..     location: new Point([-110, 45]),
+    ..     location: Point([-110, 45]),
     ..     name: "Metropolis"
     ..   }
     .. });

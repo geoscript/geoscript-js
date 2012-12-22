@@ -13,7 +13,7 @@ Sample code to create a fill:
 .. code-block:: javascript
 
     >> var Label = require("geoscript/style").Label;
-    >> var label = new Label({
+    >> var label = Label({
     ..   expression: "property"
     .. });
 

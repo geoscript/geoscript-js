@@ -15,12 +15,12 @@ Sample code to create a new field:
 .. code-block:: javascript
 
     >> var Field = require("geoscript/feature").Field;
-    >> var field = new Field({
+    >> var field = Field({
     ..   name: "age",
     ..   type: "Double"
     .. });
 
-    >> var field = new Field({
+    >> var field = Field({
     ..   name: "location",
     ..   type: "Point",
     ..   projection: "EPSG:4326"

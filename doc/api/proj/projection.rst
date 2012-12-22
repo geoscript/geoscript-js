@@ -16,9 +16,10 @@ Sample code to create a new projection object:
 .. code-block:: javascript
 
     >> var Projection = require("geoscript/proj").Projection;
-    >> var wgs84 = new Projection("EPSG:4326")
+    >> var wgs84 = Projection("EPSG:4326")
     >> wgs84
     <Projection EPSG:4326>
+
     >> wgs84.wkt
     GEOGCS["WGS 84", 
       DATUM["World Geodetic System 1984", 
@@ -29,6 +30,7 @@ Sample code to create a new projection object:
       AXIS["Geodetic longitude", EAST], 
       AXIS["Geodetic latitude", NORTH], 
       AUTHORITY["EPSG","4326"]]
+
 
 Properties
 ----------
@@ -51,12 +53,5 @@ Methods
 
     :arg projection: :class:`proj.Projection`
     :returns: ``Boolean`` The two projections are equivalent.
-    
+
     Determine if this projection is equivalent to the given projection.
-
-
-
-
-
-
-

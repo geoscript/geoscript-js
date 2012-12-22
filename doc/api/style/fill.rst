@@ -13,7 +13,7 @@ Sample code to create a fill:
 .. code-block:: javascript
 
     >> var Fill = require("geoscript/style").Fill;
-    >> var fill = new Fill({
+    >> var fill = Fill({
     ..   brush: "red",
     ..   opacity: 0.5
     .. });
