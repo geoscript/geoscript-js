@@ -9,8 +9,8 @@
  *  polygon and multi-part geometries.
  *
  *  .. code-block:: javascript
- *  
- *      js> var GEOM = require("geoscript/geom");
+ *
+ *    js> var GEOM = require("geoscript/geom");
  */
 
 require("./proj"); // needs to be initialized first
@@ -25,12 +25,12 @@ var registry = new Registry();
 var jts = Packages.com.vividsolutions.jts;
 
 function prepConfig(config) {
-    if (!config) {
-        config = {};
-    } else if (UTIL.isArray(config)) {
-        config = {coordinates: config};
-    }
-    return config;
+  if (!config) {
+    config = {};
+  } else if (UTIL.isArray(config)) {
+    config = {coordinates: config};
+  }
+  return config;
 };
 
 /** private: classes[] = geometry */
@@ -41,20 +41,20 @@ exports.Point = this["org.geoscript.js.geom.Point"];
 
 //register a point factory for the module
 registry.register(new Factory(exports.Point, {
-    handles: function(config) {
-        config = prepConfig(config);
-        var capable = false;
-        if (config.coordinates && UTIL.isArray(config.coordinates)) {
-            var len = config.coordinates.length;
-            if (len == 2 || len == 3) {
-                capable = true;
-                for (var i=0; i<len; ++i) {
-                    capable = capable && (typeof config.coordinates[i] === "number");
-                }
-            }
+  handles: function(config) {
+    config = prepConfig(config);
+    var capable = false;
+    if (config.coordinates && UTIL.isArray(config.coordinates)) {
+      var len = config.coordinates.length;
+      if (len == 2 || len == 3) {
+        capable = true;
+        for (var i=0; i<len; ++i) {
+          capable = capable && (typeof config.coordinates[i] === "number");
         }
-        return capable;
+      }
     }
+    return capable;
+  }
 }));
 
 /** api: classes[] = linestring */
@@ -62,25 +62,25 @@ exports.LineString = this["org.geoscript.js.geom.LineString"];
 
 //register a linestring factory for the module
 registry.register(new Factory(exports.LineString, {
-    handles: function(config) {
-        config = prepConfig(config);
-        var capable = false;
-        if (config.coordinates && UTIL.isArray(config.coordinates)) {
-            for (var i=0, ii=config.coordinates.length; i<ii; ++i) {
-                var p = config.coordinates[i];
-                if (UTIL.isArray(p)) {
-                    var len = p.length;
-                    if (len === 2 || len === 3) {
-                        capable = true;
-                        for (var j=0; j<len; ++j) {
-                            capable = capable && (typeof p[j] === "number");
-                        }
-                    }
-                }
+  handles: function(config) {
+    config = prepConfig(config);
+    var capable = false;
+    if (config.coordinates && UTIL.isArray(config.coordinates)) {
+      for (var i=0, ii=config.coordinates.length; i<ii; ++i) {
+        var p = config.coordinates[i];
+        if (UTIL.isArray(p)) {
+          var len = p.length;
+          if (len === 2 || len === 3) {
+            capable = true;
+            for (var j=0; j<len; ++j) {
+              capable = capable && (typeof p[j] === "number");
             }
+          }
         }
-        return capable;
+      }
     }
+    return capable;
+  }
 }));
 
 /** api: classes[] = polygon */
@@ -88,28 +88,28 @@ exports.Polygon = this["org.geoscript.js.geom.Polygon"];
 
 //register a polygon factory for the module
 registry.register(new Factory(exports.Polygon, {
-    handles: function(config) {
-        config = prepConfig(config);
-        var capable = false;
-        if (config.coordinates && UTIL.isArray(config.coordinates)) {
-            for (var i=0, ii=config.coordinates.length; i<ii; ++i) {
-                var r = config.coordinates[i];
-                if (UTIL.isArray(r)) {
-                    for (var j=0, jj=r.length; j<jj; ++j) {
-                        var p = r[j];
-                        var len = p.length;
-                        if (len === 2 || len === 3) {
-                            capable = true;
-                            for (var k=0; k<len; ++k) {
-                                capable = capable && (typeof p[k] === "number");
-                            }
-                        }
-                    }
-                }
+  handles: function(config) {
+    config = prepConfig(config);
+    var capable = false;
+    if (config.coordinates && UTIL.isArray(config.coordinates)) {
+      for (var i=0, ii=config.coordinates.length; i<ii; ++i) {
+        var r = config.coordinates[i];
+        if (UTIL.isArray(r)) {
+          for (var j=0, jj=r.length; j<jj; ++j) {
+            var p = r[j];
+            var len = p.length;
+            if (len === 2 || len === 3) {
+              capable = true;
+              for (var k=0; k<len; ++k) {
+                capable = capable && (typeof p[k] === "number");
+              }
             }
+          }
         }
-        return capable;
+      }
     }
+    return capable;
+  }
 }));
 
 
@@ -136,33 +136,33 @@ exports.MultiPolygon = this["org.geoscript.js.geom.MultiPolygon"];
 
 //register a polygon factory for the module
 registry.register(new Factory(exports.MultiPolygon, {
-    handles: function(config) {
-        config = prepConfig(config);
-        var capable = false;
-        if (config.coordinates && UTIL.isArray(config.coordinates)) {
-            for (var i=0, ii=config.coordinates.length; i<ii; ++i) {
-                var c = config.coordinates[i];
-                if (UTIL.isArray(c)) {
-                    for (var j=0, jj=c.length; j<jj; ++j) {
-                        var r = c[j];
-                        if (UTIL.isArray(r)) {
-                            for (var k=0, kk=r.length; k<kk; ++k) {
-                                var p = r[k];
-                                var len = p.length;
-                                if (len === 2 || len === 3) {
-                                    capable = true;
-                                    for (var l=0; l<len; ++l) {
-                                        capable = capable && (typeof p[l] === "number");
-                                    }
-                                }
-                            }
-                        }
-                    }
+  handles: function(config) {
+    config = prepConfig(config);
+    var capable = false;
+    if (config.coordinates && UTIL.isArray(config.coordinates)) {
+      for (var i=0, ii=config.coordinates.length; i<ii; ++i) {
+        var c = config.coordinates[i];
+        if (UTIL.isArray(c)) {
+          for (var j=0, jj=c.length; j<jj; ++j) {
+            var r = c[j];
+            if (UTIL.isArray(r)) {
+              for (var k=0, kk=r.length; k<kk; ++k) {
+                var p = r[k];
+                var len = p.length;
+                if (len === 2 || len === 3) {
+                  capable = true;
+                  for (var l=0; l<len; ++l) {
+                    capable = capable && (typeof p[l] === "number");
+                  }
                 }
+              }
             }
+          }
         }
-        return capable;
+      }
     }
+    return capable;
+  }
 }));
 
 
@@ -171,18 +171,18 @@ exports.Bounds = this["org.geoscript.js.geom.Bounds"];
 
 //register a bounds factory for the module
 registry.register(new Factory(exports.Bounds, {
-    handles: function(config) {
-        var capable = (
-            typeof config.minX === "number"
-        ) && (
-            typeof config.maxX === "number"
-        ) && (
-            typeof config.minY === "number"
-        ) && (
-            typeof config.maxY === "number"
-        );
-        return capable;
-    }
+  handles: function(config) {
+    var capable = (
+      typeof config.minX === "number"
+    ) && (
+      typeof config.maxX === "number"
+    ) && (
+      typeof config.minY === "number"
+    ) && (
+      typeof config.maxY === "number"
+    );
+    return capable;
+  }
 }));
 
 /** api: data[BUFFER_CAP_ROUND]
@@ -195,7 +195,7 @@ exports.BUFFER_CAP_ROUND = jts.operation.buffer.BufferOp.CAP_ROUND;
  */
 exports.BUFFER_CAP_SQUARE = jts.operation.buffer.BufferOp.CAP_SQUARE;
 
-/** api: data[BUFFER_CAP_BUTT] 
+/** api: data[BUFFER_CAP_BUTT]
  *  Used to calculate butt caps for buffer operations.
  */
 exports.BUFFER_CAP_BUTT = jts.operation.buffer.BufferOp.CAP_BUTT;

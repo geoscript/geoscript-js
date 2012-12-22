@@ -26,8 +26,8 @@ Alternate method to create the same geometry as above:
 .. code-block:: javascript
 
     >> var ml = new MultiLineString([
-    ..     [[-180, -90], [0, 0], [180, 90]],
-    ..     [[180, -90], [0, 0], [-180, 90]]
+    ..   [[-180, -90], [0, 0], [180, 90]],
+    ..   [[180, -90], [0, 0], [-180, 90]]
     .. ]);
 
 
@@ -35,13 +35,13 @@ Properties
 ----------
 
 Multi-polygon geometries have the properties common to all
-:class:`geom.GeometryCollection` subclasses. 
+:class:`geom.GeometryCollection` subclasses.
 
 
 Methods
 -------
 
-Multi-polygon geometries have the methods common to all 
-:class:`geom.GeometryCollection` subclasses. 
+Multi-polygon geometries have the methods common to all
+:class:`geom.GeometryCollection` subclasses.
 
 

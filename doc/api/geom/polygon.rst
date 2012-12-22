@@ -17,15 +17,15 @@ Sample code to new polygon:
 
     >> var Polygon = require("geoscript/geom").Polygon;
     >> var poly = new Polygon([
-    ..     [ [-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90] ],
-    ..     [ [-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45] ]
+    ..   [[-180, -90], [-180, 90], [180, 90], [180, -90], [-180, -90]],
+    ..   [[-90, -45], [-90, 45], [90, 45], [90, -45], [-90, -45]]
     .. ]);
 
 
 Properties
 ----------
 
-In addition to the properties common to all :class:`geom.Geometry` subclasses, 
+In addition to the properties common to all :class:`geom.Geometry` subclasses,
 polygon geometries have the properties documented below.
 
 .. attribute:: Polygon.rectangle
@@ -38,5 +38,5 @@ polygon geometries have the properties documented below.
 Methods
 -------
 
-Polygon geometries have the methods common to all :class:`geom.Geometry` 
-subclasses. 
+Polygon geometries have the methods common to all :class:`geom.Geometry`
+subclasses.

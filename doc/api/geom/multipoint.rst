@@ -27,7 +27,7 @@ Alternate method to create the same geometry as above:
 .. code-block:: javascript
 
     >> var mp = new MultiPoint([
-    ..     [-180, 90], [-45, 45]
+    ..   [-180, 90], [-45, 45]
     .. ]);
 
 
@@ -36,12 +36,12 @@ Properties
 ----------
 
 Multi-polygon geometries have the properties common to all
-:class:`geom.GeometryCollection` subclasses. 
+:class:`geom.GeometryCollection` subclasses.
 
 
 Methods
 -------
 
-Multi-polygon geometries have the methods common to all 
-:class:`geom.GeometryCollection` subclasses. 
+Multi-polygon geometries have the methods common to all
+:class:`geom.GeometryCollection` subclasses.
 

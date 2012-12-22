@@ -2,8 +2,8 @@ The process module
 ~~~~~~~~~~~~~~~~~~
 
 The :doc:`process <process>` module provides a constructor for Process objects.
-A process is essentially a runnable function with additional metadata about 
-the functions' arguments (referred to as process inputs), return value (or 
+A process is essentially a runnable function with additional metadata about
+the functions' arguments (referred to as process inputs), return value (or
 process outputs), title, and description.
 
 The following constructs a process that performs some simple arithmetic.
@@ -12,30 +12,30 @@ The following constructs a process that performs some simple arithmetic.
 
     >> var Process = require("geoscript/process").Process;
     >> var add = new Process({
-    ..     title: "Add",
-    ..     description: "Adds two numbers",
-    ..     inputs: {
-    ..         a: {
-    ..             type: "Number",
-    ..             title: "First",
-    ..             description: "The first number"
-    ..         },
-    ..         b: {
-    ..             type: "Number",
-    ..             title: "Second",
-    ..             description: "The second number"
-    ..         }
-    ..     }, 
-    ..     outputs: {
-    ..         result: {
-    ..             type: "Number",
-    ..             title: "Sum",
-    ..             description: "The sum of the two input numbers"
-    ..         }
+    ..   title: "Add",
+    ..   description: "Adds two numbers",
+    ..   inputs: {
+    ..     a: {
+    ..       type: "Number",
+    ..       title: "First",
+    ..       description: "The first number"
     ..     },
-    ..     run: function(inputs) {
-    ..         return {result: inputs.a + inputs.b};
+    ..     b: {
+    ..       type: "Number",
+    ..       title: "Second",
+    ..       description: "The second number"
     ..     }
+    ..   },
+    ..   outputs: {
+    ..     result: {
+    ..       type: "Number",
+    ..       title: "Sum",
+    ..       description: "The sum of the two input numbers"
+    ..     }
+    ..   },
+    ..   run: function(inputs) {
+    ..     return {result: inputs.a + inputs.b};
+    ..   }
     .. });
 
 Now that this process is created and well described, it can be run with the
@@ -67,7 +67,7 @@ Config Properties
 
     ``Object``
     Proces inputs.  Property names correspond to named inputs.  Property values
-    are objects with ``type`` (required), ``title``, ``description``, 
+    are objects with ``type`` (required), ``title``, ``description``,
     ``minOccurs``, and ``maxOccurs`` properties (optional unless noted).
 
     Below is an example ``inputs`` object with three named inputs:
@@ -75,31 +75,31 @@ Config Properties
     .. code-block:: javascript
 
         {
-            start: {
-                type: "Date",
-                title: "Start Time"
-            },
-            end: {
-                type: "Date",
-                title: "End Time",
-                description: "Optional end time",
-                minOccurs: 0
-            },
-            geom: {
-                type: "Polygon",
-                title: "Area of Interest"
-            }
+          start: {
+            type: "Date",
+            title: "Start Time"
+          },
+          end: {
+            type: "Date",
+            title: "End Time",
+            description: "Optional end time",
+            minOccurs: 0
+          },
+          geom: {
+            type: "Polygon",
+            title: "Area of Interest"
+          }
         }
 
-    For a description and list of supported ``type`` values, see the 
-    :ref:`type_mapping` section.  If you need to reference a type for which 
-    there is not a mapping, you can supply the class directly instead of 
+    For a description and list of supported ``type`` values, see the
+    :ref:`type_mapping` section.  If you need to reference a type for which
+    there is not a mapping, you can supply the class directly instead of
     providing a string (e.g. ``Packages.com.example.SomeClass``).
 
 .. describe:: outputs
 
     ``Object``
-    Proces outputs.  Property names correspond to named outputs.  Property 
+    Proces outputs.  Property names correspond to named outputs.  Property
     values are objects with ``type`` (required), ``title``, ``description``,
     ``minOccurs``, and ``maxOccurs`` properties (optional unless noted).
 
@@ -108,15 +108,15 @@ Config Properties
     .. code-block:: javascript
 
         {
-            result: {
-                type: "FeatureCollection",
-                title: "Resulting features"
-            }
+          result: {
+            type: "FeatureCollection",
+            title: "Resulting features"
+          }
         }
 
-    For a description and list of supported ``type`` values, see the 
-    :ref:`type_mapping` section.  If you need to reference a type for which 
-    there is not a mapping, you can supply the class directly instead of 
+    For a description and list of supported ``type`` values, see the
+    :ref:`type_mapping` section.  If you need to reference a type for which
+    there is not a mapping, you can supply the class directly instead of
     providing a string (e.g. ``Packages.com.example.SomeClass``).
 
 
@@ -182,9 +182,9 @@ Static Methods
     Get a registered process.  Returns ``null`` if no process was found from
     the provided identifier.
 
-    The example below uses the static :func:`Process.get` method to access and 
-    run the ``JTS:buffer`` process.  (Note this is a contrived example as all 
-    geometries already have a :func:`Geometry.buffer` method that accomplishes 
+    The example below uses the static :func:`Process.get` method to access and
+    run the ``JTS:buffer`` process.  (Note this is a contrived example as all
+    geometries already have a :func:`Geometry.buffer` method that accomplishes
     the same.)
 
     .. code-block:: javascript
@@ -208,7 +208,7 @@ Static Methods
 
     :returns: ``Array`` A list of identifiers for all registered processes.
 
-    Get a list of all processes that are registered as part of the underlying 
+    Get a list of all processes that are registered as part of the underlying
     libraries (does not include dynamically generated processes).
 
 

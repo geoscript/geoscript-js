@@ -14,7 +14,7 @@ Sample code to create a fill:
 
     >> var Label = require("geoscript/style").Label;
     >> var label = new Label({
-    ..     expression: "property"
+    ..   expression: "property"
     .. });
 
 Config Properties
@@ -86,7 +86,7 @@ Methods
 
     :arg symbolizer: :class:`style.Symbolizer`
     :returns: :class:`style.Style`
-    
+
     Generate a composite style from this symbolizer and the provided
     symbolizer.
 

@@ -16,17 +16,17 @@ Sample code to create a new field:
 
     >> var Field = require("geoscript/feature").Field;
     >> var field = new Field({
-    ..     name: "age",
-    ..     type: "Double"
+    ..   name: "age",
+    ..   type: "Double"
     .. });
 
     >> var field = new Field({
-    ..     name: "location",
-    ..     type: "Point",
-    ..     projection: "EPSG:4326"
+    ..   name: "location",
+    ..   type: "Point",
+    ..   projection: "EPSG:4326"
     .. });
 
-For detail on the supported ``type`` values, see the section on 
+For detail on the supported ``type`` values, see the section on
 :ref:`type_mapping`.
 
 Config Properties
@@ -65,7 +65,7 @@ Config Properties
 .. describe:: type
 
     ``String``
-    The field type (required).  For detail on the supported ``type`` values, see 
+    The field type (required).  For detail on the supported ``type`` values, see
     the section on :ref:`type_mapping`.
 
 
@@ -111,7 +111,7 @@ Properties
 .. attribute:: Field.type
 
     ``String``
-    The field type (read-only).  For detail on the supported ``type`` values, 
+    The field type (read-only).  For detail on the supported ``type`` values,
     see the section on :ref:`type_mapping`.
 
 
@@ -123,6 +123,6 @@ Methods
 
     :arg field: :class:`feature.Field`
     :returns: ``Boolean`` The two fields are equivalent.
-    
+
     Determine if another field is equivalent to this one.
 

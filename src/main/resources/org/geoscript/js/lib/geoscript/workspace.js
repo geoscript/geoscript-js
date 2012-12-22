@@ -9,8 +9,8 @@
  *  workspace types.
  *
  *  .. code-block:: javascript
- *  
- *      js> var WORKSPACE = require("geoscript/workspace");
+ *
+ *    js> var WORKSPACE = require("geoscript/workspace");
  */
 
 /** private: method[create]

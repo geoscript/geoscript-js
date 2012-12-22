@@ -24,8 +24,8 @@ Sample code to create a temporary layer:
 .. code-block:: javascript
 
     >> var layer = new Layer({
-    ..     name: "temp2",
-    ..     fields: [{name: "geom", type: "Geometry"}]
+    ..   name: "temp2",
+    ..   fields: [{name: "geom", type: "Geometry"}]
     .. });
 
 The code above is shorthand for more explicitly creating a schema and passing
@@ -35,8 +35,8 @@ that to the layer.
 
     >> var Schema = require("geoscript/feature").Schema;
     >> var schema = new Schema({
-    ..     name: "temp3",
-    ..     fields: [{name: "geom", type: "Geometry"}]
+    ..   name: "temp3",
+    ..   fields: [{name: "geom", type: "Geometry"}]
     .. });
     >> var layer = new Layer({schema: schema});
 
@@ -67,13 +67,13 @@ Properties
 
     :class:`feature.Collection`
     An iterator for accessing all features on the layer.
-    
+
     Example use:
-    
+
     .. code-block:: javascript
-    
+
         >> layer.features.forEach(function(feature) {
-        ..     print(feature.toString());
+        ..   print(feature.toString());
         .. });
 
 .. attribute:: Layer.json
@@ -122,40 +122,40 @@ Methods
 
     :arg feature: ``Object`` A :class:`feature.Feature` or a feature attribute
         values object.
-    
+
     Add a feature to a layer.  Optionally, an object with feature attribute
     values may be provided.
-    
+
     Example use:
-    
+
     .. code-block:: javascript
-    
+
         >> var Point = require("geoscript/geom").Point;
         >> layer.add({geom: new Point([0, 1])});
-    
+
 
 .. function:: Layer.clone(name)
 
     :arg name: ``String`` New layer name.  If not provided, one will be
         generated.
     :returns: :class:`layer.Layer` The layer clone.
-    
+
     Create a temporary copy of this layer.
 
 .. function:: Layer.get(id)
 
-    :arg id: ``String`` or :class:`feature:Filter` Feature identifier.  
-        Alternatively you can provide an arbitrary filter.  In the case of a 
+    :arg id: ``String`` or :class:`feature:Filter` Feature identifier.
+        Alternatively you can provide an arbitrary filter.  In the case of a
         filter, only the first feature in the resulting query will be returned.
     :returns: :class:`feature.Feature`
-    
+
     Get a single feature using the feature id.
 
 .. function:: Layer.getBounds(filter)
 
     :arg filter: :class:`filter.Filter` Optional filter or CQL string.
     :returns: :class:`geom.Bounds`
-    
+
     Get the bounds for all features on the layer.  Optionally, the bounds
     can be generated for all features that match the given filter.
 
@@ -163,7 +163,7 @@ Methods
 
     :arg filter: :class:`filter.Filter` Optional filter or CQL string.
     :returns: ``Number``
-    
+
     Get the number of features on the layer matching the given filter.
 
 .. function:: Layer.query(filter)
@@ -171,36 +171,36 @@ Methods
     :arg filter: ``filter.Filter or String`` A filter or a CQL string.
     :returns: :class:`feature.Collection` An iterator for accessing queried
             features.
-    
+
     Query for features from the layer.  The return will be an object with
     ``forEach``, ``hasNext``, and ``next`` methods.  If no filter is
     provided, all features will be included in the results.
-    
+
     Example use:
-    
+
     .. code-block:: javascript
-    
+
         >> layer.query("name = 'foo'").forEach(function(feature) {
-        ..     print(feature.toString());
+        ..   print(feature.toString());
         .. });
 
 .. function:: Layer.remove(filter)
 
     :arg filter: :class:`filter.Filter` or ``String`` or
         :class:`feature.Feature`
-    
+
     Remove features from a layer that match the given filter or CQL string.
     Alternatively, a feature can be provided to remove a single feature from
     the layer.
-    
+
     Example use:
-    
+
     .. code-block:: javascript
-    
+
         >> var Point = require("geoscript/geom").Point;
         >> layer.add({geom: new Point([1, 2])});
         >> layer.remove("INTERSECTS(geom, POINT(1 2))");
-    
+
 
 .. function:: Layer.update
 

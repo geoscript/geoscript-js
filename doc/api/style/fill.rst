@@ -14,8 +14,8 @@ Sample code to create a fill:
 
     >> var Fill = require("geoscript/style").Fill;
     >> var fill = new Fill({
-    ..     brush: "red",
-    ..     opacity: 0.5
+    ..   brush: "red",
+    ..   opacity: 0.5
     .. });
 
 
@@ -69,7 +69,7 @@ Methods
 
     :arg symbolizer: :class:`style.Symbolizer`
     :returns: :class:`style.Style`
-    
+
     Generate a composite style from this symbolizer and the provided
     symbolizer.
 
