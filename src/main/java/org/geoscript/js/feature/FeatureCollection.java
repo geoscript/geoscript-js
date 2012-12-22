@@ -192,6 +192,75 @@ public class FeatureCollection extends GeoObject implements Wrapper {
         }
     }
 
+    @JSFunction
+    public FeatureCollection map(final Function function) {
+        final Scriptable scope = getParentScope();
+        final Context context = getCurrentContext();
+        final SimpleFeatureIterator mappedIterator = new SimpleFeatureIterator() {
+
+            SimpleFeatureIterator iterator = collection.features();
+
+            public SimpleFeature next() throws NoSuchElementException {
+                Object[] args = {iterator.next()};
+                Object newFeature = function.call(context, scope, scope, args);
+                if (!(newFeature instanceof Feature)) {
+                    throw ScriptRuntime.constructError("Error", 
+                            "Map function must return a feature");
+                }
+                return (SimpleFeature) ((Feature) newFeature).unwrap();
+            }
+            
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+            
+            public void close() {
+                iterator.close();
+            }
+        };
+        SimpleProcessingCollection mappedCollection = new SimpleProcessingCollection() {
+            
+            @Override
+            public int size() {
+                return collection.size();
+            }
+            
+            @Override
+            public ReferencedEnvelope getBounds() {
+                return collection.getBounds();
+            }
+            
+            @Override
+            public SimpleFeatureIterator features() {
+                return mappedIterator;
+            }
+            
+            @Override
+            protected SimpleFeatureType buildTargetFeatureType() {
+                SimpleFeatureIterator iterator = collection.features();
+                SimpleFeatureType featureType = null;
+                if (iterator.hasNext()) {
+                    SimpleFeature feature = iterator.next();
+                    Object[] args = new Object[] {feature};
+                    try {
+                        Object newFeature = function.call(context, scope, scope, 
+                                args);
+                        if (!(newFeature instanceof Feature)) {
+                            throw ScriptRuntime.constructError("Error", 
+                                    "Map function must return a feature");
+                        }
+                        featureType = (SimpleFeatureType) ((Feature) newFeature)
+                               .getSchema().unwrap();
+                    } finally {
+                        iterator.close();
+                    }
+                }
+                return featureType;
+            }
+        };
+        return new FeatureCollection(scope, mappedCollection);
+    }
+
     @JSFunction 
     public NativeArray get(Scriptable lengthObj) {
         int length = 1;
