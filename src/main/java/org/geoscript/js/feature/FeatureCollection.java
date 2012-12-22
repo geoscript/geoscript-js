@@ -201,7 +201,8 @@ public class FeatureCollection extends GeoObject implements Wrapper {
             SimpleFeatureIterator iterator = collection.features();
 
             public SimpleFeature next() throws NoSuchElementException {
-                Object[] args = {iterator.next()};
+                Feature feature = new Feature(scope, iterator.next());
+                Object[] args = {feature};
                 Object newFeature = function.call(context, scope, scope, args);
                 if (!(newFeature instanceof Feature)) {
                     throw ScriptRuntime.constructError("Error", 
@@ -240,8 +241,8 @@ public class FeatureCollection extends GeoObject implements Wrapper {
                 SimpleFeatureIterator iterator = collection.features();
                 SimpleFeatureType featureType = null;
                 if (iterator.hasNext()) {
-                    SimpleFeature feature = iterator.next();
-                    Object[] args = new Object[] {feature};
+                    Feature feature = new Feature(scope, iterator.next());
+                    Object[] args = {feature};
                     try {
                         Object newFeature = function.call(context, scope, scope, 
                                 args);

@@ -219,6 +219,41 @@ exports["test: constructor (array)"] = function() {
     
 };
 
+exports["test: map"] = function() {
+    var collection = new FeatureCollection({
+        features: function() {
+            for (var i=0; i<3; ++i) {
+                yield new Feature({properties: {
+                    name: "feature",
+                    index: i
+                }});
+            }
+        }
+    });
+    
+    function transform(feature) {
+        return new Feature({properties: {
+            name: feature.get("name") + "_" + feature.get("index")
+        }});
+    }
+    
+    var mapped = collection.map(transform);
+    
+    ASSERT.ok(mapped instanceof FeatureCollection);
+    ASSERT.strictEqual(mapped.size, 3);
+    
+    var features = [];
+    for (var feature in mapped) {
+        features.push(feature);
+    }
+    ASSERT.strictEqual(features.length, 3);
+    ASSERT.strictEqual(features[1].get("name"), "feature_1");
+    
+    var schema = mapped.schema;
+    ASSERT.deepEqual(schema.fieldNames, ["name"]);
+    ASSERT.strictEqual(schema.get("name").type, "String");
+};
+
 
 if (require.main == module.id) {
     system.exit(require("test").run(exports));
