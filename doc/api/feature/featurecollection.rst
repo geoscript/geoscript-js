@@ -192,7 +192,7 @@ Properties
     :class:`feature.Schema`
     The common schema for all features in the collection.
 
-.. attribute:: Feature.json
+.. attribute:: FeatureCollection.json
 
     :class:`String`
     The JSON representation of the feature collection (see http://geojson.org).
@@ -204,9 +204,12 @@ Methods
 
 .. function:: FeatureCollection.forEach
 
-    :arg callback: ``Function`` A function to be called with each feature.  The
-        callback will receive two arguments: the :class:`feature.Feature` and
-        the current index.
+    Call a function with each feature in this collection.
+
+    :arg callback: :class:`Function` A function to be called with each feature.
+        The callback will receive two arguments: the :class:`feature.Feature`
+        and the current index.  If the function returns ``false``, iteration
+        will stop.
 
     .. code-block:: javascript
 
@@ -223,3 +226,39 @@ Methods
         <Feature name: "feature_1"> 1
         <Feature name: "feature_2"> 2
 
+.. function:: FeatureCollection.map
+
+    Create a new feature collection with the results of calling the provided
+    function on each feature in this collection.
+
+    :arg callback: :class:`Function` A function to be called with each feature.  The
+        function must return a new :class:`feature.Feature` instance.
+
+    :return: :class:`feature.FeatureCollection` A new feature collection.
+
+    .. code-block:: javascript
+
+        >> var collection = FeatureCollection({
+        ..   features: function() {
+        ..     for (var i=0; i<3; ++i) {
+        ..       yield Feature({properties: {
+        ..         index: i
+        ..       }});
+        ..     }
+        ..   }
+        .. });
+
+        >> function transform(feature) {
+        ..   return Feature({properties: {
+        ..     name: "feature_" + feature.get("index")
+        ..   }});
+        .. }
+
+        >> var mapped = collection.map(transform);
+        >> mapped instanceof FeatureCollection
+        true
+
+        >> mapped.forEach(print)
+        <Feature name: "feature_0"> 0
+        <Feature name: "feature_1"> 1
+        <Feature name: "feature_2"> 2
