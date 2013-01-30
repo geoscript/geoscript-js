@@ -61,7 +61,7 @@ if [ $# -eq 1 ]; then
         && pwd -P
     ) && MAIN_PATH=$MAIN_PATH/$(basename -- "$1")
 
-    java -cp $CP $ARGS $CLASS -main $MAIN_PATH
+    java -cp $CP $ARGS $CLASS $MAIN_PATH
 else
     java -cp $CP $ARGS $CLASS
 fi
