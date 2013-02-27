@@ -11,7 +11,7 @@ To install GeoScript JS, `download the latest <download>`__ release and extract 
 Running GeoScript JS
 --------------------
 
-After extracting the release archive, you can open the GeoScript shell console and import any of the GeoScript modules by running `bin/geoscript`.
+After extracting the release archive, you can open the GeoScript shell and import any of the GeoScript modules by running `bin/geoscript`.
 
 .. code-block:: javascript
 
