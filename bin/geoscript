@@ -50,7 +50,7 @@ else
 fi
 
 ARGS=
-if [ -x $MODULES ]; then
+if [ "$MODULES" ]; then
     ARGS="-Dgeoscript.modules=$MODULES"
 fi
 
@@ -65,4 +65,3 @@ if [ $# -eq 1 ]; then
 else
     java -cp $CP $ARGS $CLASS
 fi
-
