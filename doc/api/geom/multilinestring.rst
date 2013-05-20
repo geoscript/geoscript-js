@@ -16,32 +16,32 @@ Sample code to new multi-linestring:
 
 .. code-block:: javascript
 
-    js> var {MultiLineString, LineString} = require("geoscript/geom");
-    js> var l1 = new LineString([[-180, -90], [0, 0], [180, 90]]);
-    js> var l2 = new LineString([[180, -90], [0, 0], [-180, 90]]);
-    js> var ml = new MultiLineString([l1, l2]);
+    >> var {MultiLineString, LineString} = require("geoscript/geom");
+    >> var l1 = LineString([[-180, -90], [0, 0], [180, 90]]);
+    >> var l2 = LineString([[180, -90], [0, 0], [-180, 90]]);
+    >> var ml = MultiLineString([l1, l2]);
 
 Alternate method to create the same geometry as above:
 
 .. code-block:: javascript
 
-    js> var ml = new MultiLineString([
-      >     [[-180, -90], [0, 0], [180, 90]],
-      >     [[180, -90], [0, 0], [-180, 90]]
-      > ]);
+    >> var ml = MultiLineString([
+    ..   [[-180, -90], [0, 0], [180, 90]],
+    ..   [[180, -90], [0, 0], [-180, 90]]
+    .. ]);
 
 
 Properties
 ----------
 
 Multi-polygon geometries have the properties common to all
-:class:`geom.GeometryCollection` subclasses. 
+:class:`geom.GeometryCollection` subclasses.
 
 
 Methods
 -------
 
-Multi-polygon geometries have the methods common to all 
-:class:`geom.GeometryCollection` subclasses. 
+Multi-polygon geometries have the methods common to all
+:class:`geom.GeometryCollection` subclasses.
 
 

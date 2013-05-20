@@ -296,6 +296,8 @@ public class GeoObject extends ScriptableObject implements Wrapper {
             } else if (((Scriptable) value).getClassName().equals("Date")) {
                 value = Context.jsToJava(value, java.util.Date.class);
             }
+        } else if (value instanceof org.mozilla.javascript.ConsString) {
+            value = value.toString();
         }
         return value;
     }

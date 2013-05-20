@@ -1,11 +1,16 @@
 package org.geoscript.js;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -67,14 +72,37 @@ public class GeoScriptShell extends Global {
      * @throws IOException 
      */
     public static void main(String args[]) throws IOException {
+        String main = null;
+        if (args.length == 1) {
+            main = args[0];
+            File mainFile = new File(main);
+            if (!mainFile.exists() || mainFile.isDirectory()) {
+                error("fileNotFound", main);
+            }
+        }
         // Associate a new Context with this thread
         Context cx = Context.enter();
         try {
             GeoScriptShell shell = GeoScriptShell.initShell(cx);
-            shell.processInput(cx);
+            if (main != null) {
+                try {
+                    cx.evaluateReader(shell, new FileReader(main), main, 1, null);
+                } catch (FileNotFoundException e) {
+                    error("troubleReadingFile", main);
+                }
+            } else {
+                shell.processInput(cx);
+            }
         } finally {
             Context.exit();
         }
+    }
+
+    private static void error(String key, Object... args) {
+        ResourceBundle messages = ResourceBundle.getBundle("Messages", Locale.getDefault());
+        String message = messages.getString(key);
+        System.err.println(MessageFormat.format(message, args));
+        System.exit(1);
     }
 
     public void processInput(Context cx) throws IOException {

@@ -48,7 +48,7 @@ public class DoctestsTest {
         return new String(buf);
     }
 
-    @Parameters
+    @Parameters(name="{0} {2}")
     public static Collection<Object[]> doctestValues() throws IOException {
         File[] doctests = getDoctestFiles();
         List<Object[]> result = new ArrayList<Object[]>();
@@ -71,8 +71,13 @@ public class DoctestsTest {
             cx.setOptimizationLevel(optimizationLevel);
             // shell.runDoctest throws an exception on any failure
             int testsPassed = shell.runDoctest(cx, shell, source, name, 1);
-            System.out.println(name + "(" + optimizationLevel + "): " +
-                    testsPassed + " passed.");
+            String msg;
+            if (testsPassed > 0) {
+                msg = testsPassed + " passed";
+            } else {
+                msg = "no tests to run";
+            }
+            System.out.println(name + "(" + optimizationLevel + "): " + msg);
         } catch (Exception ex) {
             System.out.println(name + "(" + optimizationLevel + "): FAILED due to "+ ex);
             throw ex;

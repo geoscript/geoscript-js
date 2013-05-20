@@ -14,11 +14,11 @@ Sample code to create a new point:
 
 .. code-block:: javascript
 
-    js> var Point = require("geoscript/geom").Point;
-    js> var point = new Point([-180, 90]);
-    js> point.x;
+    >> var Point = require("geoscript/geom").Point;
+    >> var point = Point([-180, 90]);
+    >> point.x;
     -180
-    js> point.y;
+    >> point.y;
     90
 
 
@@ -49,5 +49,5 @@ geometries have the properties documented below.
 Methods
 -------
 
-Point geometries have the methods common to all :class:`geom.Geometry` subclasses. 
+Point geometries have the methods common to all :class:`geom.Geometry` subclasses.
 

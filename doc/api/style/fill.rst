@@ -12,11 +12,11 @@ Sample code to create a fill:
 
 .. code-block:: javascript
 
-    js> var STYLE = require("geoscript/style");
-    js> var fill = new STYLE.Fill({
-     >     brush: "red",
-     >     opacity: 0.5
-     > });
+    >> var Fill = require("geoscript/style").Fill;
+    >> var fill = Fill({
+    ..   brush: "red",
+    ..   opacity: 0.5
+    .. });
 
 
 Config Properties
@@ -69,7 +69,7 @@ Methods
 
     :arg symbolizer: :class:`style.Symbolizer`
     :returns: :class:`style.Style`
-    
+
     Generate a composite style from this symbolizer and the provided
     symbolizer.
 

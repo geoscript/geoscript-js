@@ -17,6 +17,7 @@ import org.mozilla.javascript.JavaScriptException;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeGenerator;
 import org.mozilla.javascript.NativeIterator;
+import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
@@ -53,8 +54,21 @@ public class FeatureCollection extends GeoObject implements Wrapper {
      * Constructor from config object.
      * @param config
      */
-    private FeatureCollection(Scriptable config) {
-        collection = new JSFeatureCollection(this, config);
+    private FeatureCollection(NativeObject config) {
+        Object obj = config.get("features", config);
+        if (obj instanceof Function) {
+            collection = new JSFeatureCollection(this, config);
+        } else if (obj instanceof NativeArray) {
+            collection = new JSFeatureArray((NativeArray) obj);
+        }
+    }
+    
+    /**
+     * Constructor from array.
+     * @param array
+     */
+    private FeatureCollection(NativeArray array) {
+        collection = new JSFeatureArray(array);
     }
     
     /**
@@ -62,8 +76,19 @@ public class FeatureCollection extends GeoObject implements Wrapper {
      * @param scope
      * @param config
      */
-    private FeatureCollection(Scriptable scope, Scriptable config) {
+    public FeatureCollection(Scriptable scope, NativeObject config) {
         this(config);
+        setParentScope(scope);
+        this.setPrototype(Module.getClassPrototype(FeatureCollection.class));
+    }
+
+    /**
+     * Constructor from feature array (without new keyword).
+     * @param scope
+     * @param array
+     */
+    public FeatureCollection(Scriptable scope, NativeArray array) {
+        this(array);
         setParentScope(scope);
         this.setPrototype(Module.getClassPrototype(FeatureCollection.class));
     }
@@ -94,12 +119,19 @@ public class FeatureCollection extends GeoObject implements Wrapper {
         }
         FeatureCollection collection = null;
         Object arg = args[0];
-        if (arg instanceof Scriptable) {
-            Scriptable config = (Scriptable) arg;
+        if (arg instanceof NativeObject) {
+            NativeObject config = (NativeObject) arg;
             if (inNewExpr) {
                 collection = new FeatureCollection(config);
             } else {
                 collection = new FeatureCollection(config.getParentScope(), config);
+            }
+        } else if (arg instanceof NativeArray) {
+            NativeArray array = (NativeArray) arg;
+            if (inNewExpr) {
+                collection = new FeatureCollection(array);
+            } else {
+                collection = new FeatureCollection(array.getParentScope(), array);
             }
         } else {
             throw ScriptRuntime.constructError("Error", "Could not create collection from argument: " + Context.toString(arg));
@@ -160,6 +192,76 @@ public class FeatureCollection extends GeoObject implements Wrapper {
         }
     }
 
+    @JSFunction
+    public FeatureCollection map(final Function function) {
+        final Scriptable scope = getParentScope();
+        final Context context = getCurrentContext();
+        final SimpleFeatureIterator mappedIterator = new SimpleFeatureIterator() {
+
+            SimpleFeatureIterator iterator = collection.features();
+
+            public SimpleFeature next() throws NoSuchElementException {
+                Feature feature = new Feature(scope, iterator.next());
+                Object[] args = {feature};
+                Object newFeature = function.call(context, scope, scope, args);
+                if (!(newFeature instanceof Feature)) {
+                    throw ScriptRuntime.constructError("Error", 
+                            "Map function must return a feature");
+                }
+                return (SimpleFeature) ((Feature) newFeature).unwrap();
+            }
+            
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+            
+            public void close() {
+                iterator.close();
+            }
+        };
+        SimpleProcessingCollection mappedCollection = new SimpleProcessingCollection() {
+            
+            @Override
+            public int size() {
+                return collection.size();
+            }
+            
+            @Override
+            public ReferencedEnvelope getBounds() {
+                return collection.getBounds();
+            }
+            
+            @Override
+            public SimpleFeatureIterator features() {
+                return mappedIterator;
+            }
+            
+            @Override
+            protected SimpleFeatureType buildTargetFeatureType() {
+                SimpleFeatureIterator iterator = collection.features();
+                SimpleFeatureType featureType = null;
+                if (iterator.hasNext()) {
+                    Feature feature = new Feature(scope, iterator.next());
+                    Object[] args = {feature};
+                    try {
+                        Object newFeature = function.call(context, scope, scope, 
+                                args);
+                        if (!(newFeature instanceof Feature)) {
+                            throw ScriptRuntime.constructError("Error", 
+                                    "Map function must return a feature");
+                        }
+                        featureType = (SimpleFeatureType) ((Feature) newFeature)
+                               .getSchema().unwrap();
+                    } finally {
+                        iterator.close();
+                    }
+                }
+                return featureType;
+            }
+        };
+        return new FeatureCollection(scope, mappedCollection);
+    }
+
     @JSFunction 
     public NativeArray get(Scriptable lengthObj) {
         int length = 1;
@@ -203,8 +305,111 @@ public class FeatureCollection extends GeoObject implements Wrapper {
         return new FeatureCollection(getTopLevelScope(collectionObj), collection);
     }
 
+    /**
+     * Provides a config object with GeoJSON structure.  Note that this will
+     * iterate through and serialize all features.
+     */
+    @JSGetter
+    public Scriptable getConfig() {
+        Scriptable config = super.getConfig();
+
+        // add features
+        Context cx = getCurrentContext();
+        Scriptable scope = getParentScope();
+        Scriptable features = cx.newArray(scope, 0);
+        SimpleFeatureIterator iterator = collection.features();
+        int i = -1;
+        while (iterator.hasNext()) {
+            ++i;
+            Feature feature = new Feature(scope, iterator.next());
+            Scriptable featureConfig = feature.getConfig();
+            featureConfig.delete("schema"); // to be added at top level
+            features.put(i, features, featureConfig);
+        }
+        config.put("features", config, features);
+
+        // add schema
+        Schema schema = new Schema(scope, collection.getSchema());
+        config.put("schema", config, schema.getConfig());
+
+        return config;
+    }
+
     public Object unwrap() {
         return collection;
+    }
+    
+    static class JSFeatureArray extends SimpleProcessingCollection {
+    
+        NativeArray array;
+    
+        public JSFeatureArray(NativeArray array) {
+            this.array = array;
+        }
+
+        @Override
+        public SimpleFeatureIterator features() {
+            return new JSFeatureArrayIterator(array);
+        }
+
+        @Override
+        public ReferencedEnvelope getBounds() {
+            return getFeatureBounds();
+        }
+
+        @Override
+        protected SimpleFeatureType buildTargetFeatureType() {
+            SimpleFeatureType featureType = null;
+            SimpleFeatureIterator iterator = features();
+            if (iterator.hasNext()) {
+                SimpleFeature feature = iterator.next();
+                featureType = feature.getFeatureType();
+            }
+            return featureType;
+        }
+
+        @Override
+        public int size() {
+            return array.size();
+        }
+    
+    }
+    
+    static class JSFeatureArrayIterator implements SimpleFeatureIterator {
+    
+        int current = -1;
+        NativeArray array;
+
+        public JSFeatureArrayIterator(NativeArray array) {
+            this.array = array;
+        }
+
+        public boolean hasNext() {
+            return array.size() > current + 1;
+        }
+
+        public SimpleFeature next() throws NoSuchElementException {
+            SimpleFeature feature = null;
+            if (hasNext()) {
+                ++current;
+                Object obj = array.get(current, array);
+                if (obj instanceof Feature) {
+                    feature = (SimpleFeature) ((Feature) obj).unwrap();
+                } else if (obj instanceof NativeObject) {
+                    NativeObject config = (NativeObject) obj;
+                    feature = (SimpleFeature) new Feature(config.getParentScope(), config).unwrap();
+                } else {
+                    throw new NoSuchElementException("Expected a feature instance at index " + current);
+                }
+            } else {
+                throw new NoSuchElementException("hasNext() returned false!");
+            }
+            return feature;
+        }
+
+        public void close() {
+            current = -1;
+        }
     }
     
     static class JSFeatureCollection extends SimpleProcessingCollection {

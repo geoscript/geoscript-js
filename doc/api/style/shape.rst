@@ -14,13 +14,13 @@ Config Properties
     :class:`style.Fill`
     The fill used for this shape.  May be provided as a fill instance or
     any valid fill configuration.
-    
+
     Example use:
-    
+
     .. code-block:: javascript
 
-        js> var Shape = require("geoscript/style").Shape;    
-        js> var shape = new Shape({name: "circle", fill: "blue"});
+        >> var Shape = require("geoscript/style").Shape;
+        >> var shape = Shape({name: "circle", fill: "blue"});
 
 .. describe:: name
 
@@ -44,12 +44,12 @@ Config Properties
     :class:`style.Stroke`
     The stroke used for this shape.  May be provided as a stroke instance or
     any valid stroke configuration.
-    
+
     Example use:
-    
+
     .. code-block:: javascript
-    
-        js> var shape = new Shape({name: "circle", stroke: "red"});
+
+        >> var shape = Shape({name: "circle", stroke: "red"});
 
 .. describe:: zIndex
 
@@ -108,7 +108,7 @@ Methods
 
     :arg symbolizer: :class:`style.Symbolizer`
     :returns: :class:`style.Style`
-    
+
     Generate a composite style from this symbolizer and the provided
     symbolizer.
 

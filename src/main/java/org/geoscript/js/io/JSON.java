@@ -11,6 +11,7 @@ import org.geoscript.js.geom.MultiPoint;
 import org.geoscript.js.geom.MultiLineString;
 import org.geoscript.js.geom.MultiPolygon;
 import org.geoscript.js.feature.Feature;
+import org.geoscript.js.feature.FeatureCollection;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
@@ -31,7 +32,8 @@ public class JSON {
         MultiPoint(MultiPoint.class),
         MultiLineString(MultiLineString.class),
         MultiPolygon(MultiPolygon.class),
-        Feature(Feature.class);
+        Feature(Feature.class),
+        FeatureCollection(FeatureCollection.class);
         
         private Class<?> cls;
 
@@ -44,13 +46,19 @@ public class JSON {
             try {
                 ctor = cls.getDeclaredConstructor(Scriptable.class, NativeObject.class);
             } catch (Exception e) {
-                throw new RuntimeException("Failed to get constructor for object: " + Context.toString(object), e);
+                String msg = "Trouble parsing " + name() + 
+                        ". Failed to get constructor for object: " + 
+                        Context.toString(object);
+                throw ScriptRuntime.constructError("Error", msg);
             }
             Object result;
             try {
                 result = ctor.newInstance(scope, object);
             } catch (Exception e) {
-                throw new RuntimeException("Failed to parse object: " + Context.toString(object), e);
+                String msg = "Trouble parsing " + name() + 
+                        ". Failed to parse object: " + 
+                        Context.toString(object);
+                throw ScriptRuntime.constructError("Error", msg);
             }
             return result;
         }

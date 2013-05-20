@@ -15,26 +15,26 @@ Sample code to create a new schema:
 
 .. code-block:: javascript
 
-    js> var Schema = require("geoscript/feature").Schema;
-    js> var cities = new Schema({
-      >     name: "cities",
-      >     fields: [{
-      >         name: "the_geom",
-      >         type: "Point",
-      >         projection: "EPSG:4326"
-      >     }, {
-      >         name: "name",
-      >         type: "String"
-      >     }]
-      > });
+    >> var Schema = require("geoscript/feature").Schema;
+    >> var cities = Schema({
+    ..   name: "cities",
+    ..   fields: [{
+    ..     name: "the_geom",
+    ..     type: "Point",
+    ..     projection: "EPSG:4326"
+    ..   }, {
+    ..     name: "name",
+    ..     type: "String"
+    ..   }]
+    .. });
 
-    js> cities.fields.length
+    >> cities.fields.length
     2
-    js> cities.geometry.name
+    >> cities.geometry.name
     the_geom
-    js> cities.get("the_geom").type
+    >> cities.get("the_geom").type
     Point
-    js> cities.get("the_geom").projection
+    >> cities.get("the_geom").projection
     <Projection EPSG:4326>
 
 Config Properties
@@ -89,14 +89,14 @@ Methods
 
     :arg config: ``Object``
     :returns: :class:`feature.Schema`
-    
+
     Create a complete copy of this schema.
 
 .. function:: Schema.get
 
     :arg name: ``String`` A field name.
     :returns: :class:`feature.Field` A field definition.
-    
+
     Get the definition for a named field.  Field definitions have at least
     ``name`` and ``type`` properties.  Geometry field definitions may have
     a ``projection`` property.  Returns ``undefined`` if no field is found

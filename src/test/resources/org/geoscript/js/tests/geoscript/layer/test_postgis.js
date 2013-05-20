@@ -1,12 +1,10 @@
 var ASSERT = require("assert");
 var Feature = require("geoscript/feature").Feature;
 var Layer = require("geoscript/layer").Layer;
+var PostGIS = require("geoscript/workspace").PostGIS;
 
 var getLayer = function() {
-    return new Layer({
-        workspace: {type: "postgis", database: "geoscript"},
-        name: "states"
-    });
+    return PostGIS({database: "geoscript"}).get("states");
 };
 
 exports["test: features"] = function() {

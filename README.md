@@ -2,7 +2,7 @@
 
 ## GeoScript in JavaScript
 
-Copyright (c) 2009-2012 Tim Schaub
+Copyright (c) 2009-2013 Tim Schaub
 
 Released under the MIT license.  Please see the license.txt for full detail.
 
@@ -51,6 +51,8 @@ Update version numbers in the main pom.xml file.  Generate an archive with all d
 
     mvn assembly:single
 
-For applications that already have the GeoTools dependency, an archive is published in repo.opengeo.org that contains only the JavaScript modules:
+Deploy both the stand-alone archive and a jar with just the GeoScript JS modules (that depends on GeoTools):
 
     mvn deploy
+
+[![Current Status](https://secure.travis-ci.org/tschaub/geoscript-js.png?branch=master)](https://travis-ci.org/tschaub/geoscript-js)

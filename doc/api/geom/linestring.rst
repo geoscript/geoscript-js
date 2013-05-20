@@ -15,18 +15,18 @@ Sample code to new linestring:
 
 .. code-block:: javascript
 
-    js> var LineString = require("geoscript/geom").LineString;
-    js> var line = new LineString([[-180, -90], [0, 0], [180, 90]]);
-    js> line.coordinates.length
+    >> var LineString = require("geoscript/geom").LineString;
+    >> var line = LineString([[-180, -90], [0, 0], [180, 90]]);
+    >> line.coordinates.length
     3
-    js> line.length
+    >> line.length
     402.49223594996215
 
 
 Properties
 ----------
 
-In addition to the properties common to all :class:`geom.Geometry` subclasses, 
+In addition to the properties common to all :class:`geom.Geometry` subclasses,
 linestring geometries have the properties documented below.
 
 
@@ -51,5 +51,5 @@ linestring geometries have the properties documented below.
 Methods
 -------
 
-Linestring geometries have the methods common to all :class:`geom.Geometry` 
-subclasses. 
+Linestring geometries have the methods common to all :class:`geom.Geometry`
+subclasses.

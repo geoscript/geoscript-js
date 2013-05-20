@@ -34,6 +34,25 @@ exports["test: read linestring"] = function() {
     ])));
 };
 
+exports["test: read geometry collection"] = function() {
+    var json = '{' +
+        '"type": "GeometryCollection",' +
+        '"geometries": [{' +
+            '"type": "Point",' +
+            '"coordinates": [100.0, 0.0]' +
+        '},{' +
+            '"type": "LineString",' +
+            '"coordinates": [ [101.0, 0.0], [102.0, 1.0] ]' +
+        '}]' +
+    '}';
+    var geoms = parser.read(json);
+    ASSERT.ok(geoms instanceof GEOM.GeometryCollection);
+    ASSERT.ok(geoms.equalsExact(new GEOM.GeometryCollection([
+        new GEOM.Point([100, 0]),
+        new GEOM.LineString([[101, 0], [102, 1]])
+    ])));
+}
+
 exports["test: read feature"] = function() {
     var json, feature;
     
@@ -55,6 +74,52 @@ exports["test: read feature"] = function() {
     ASSERT.strictEqual(feature.get("num"), 10);
 }
 
+exports["test: read feature collection"] = function() {
+    var json = '{' +
+        '"type": "FeatureCollection",' +
+        '"features": [{' +
+            '"type": "Feature",' +
+            '"geometry": {"type": "Point", "coordinates": [102.0, 0.5]},' +
+            '"properties": {"prop0": "value0"}' +
+        '}, {' +
+            '"type": "Feature",' +
+            '"geometry": {' +
+                '"type": "LineString",' +
+                '"coordinates": [' +
+                    '[102.0, 0.0], [103.0, 1.0], [104.0, 0.0], [105.0, 1.0]' +
+                ']' +
+            '},' +
+            '"properties": {' +
+                '"prop0": "value0",' +
+                '"prop1": 0.0' +
+            '}' +
+        '}, {' +
+            '"type": "Feature",' +
+            '"geometry": {' +
+                '"type": "Polygon",' +
+                '"coordinates": [[' +
+                    '[100.0, 0.0], [101.0, 0.0], [101.0, 1.0],' +
+                    '[100.0, 1.0], [100.0, 0.0]' +
+                ']]' +
+            '},' +
+            '"properties": {' +
+                '"prop0": "value0",' +
+                '"prop1": "value1"' +
+            '}' +
+        '}]' +
+    '}';
+    
+    var collection = parser.read(json);
+    ASSERT.ok(collection instanceof FeatureCollection);
+    ASSERT.strictEqual(collection.size, 3);
+    var features = [];
+    for (var feature in collection) {
+        features.push(feature);
+    }
+    ASSERT.ok(features[0] instanceof Feature);
+    ASSERT.strictEqual(features[0].properties.prop0, "value0");
+}
+
 exports["test: write polygon"] = function() {
     
     var poly = new GEOM.Polygon([
@@ -74,6 +139,69 @@ exports["test: write polygon"] = function() {
     ASSERT.deepEqual(coordinates[1], [[2, 2], [8, 2], [8, 8], [2, 8], [2, 2]]);
     
 }
+
+exports["test: write geometry collection"] = function() {
+    var geom = new GEOM.GeometryCollection([
+        new GEOM.Point([100, 0]),
+        new GEOM.LineString([[101, 0], [102, 1]])
+    ]);
+    var json = parser.write(geom);
+    ASSERT.strictEqual(typeof json, "string");
+    
+    var obj = JSON.parse(json);
+    
+    ASSERT.strictEqual(obj.type, "GeometryCollection");
+    var geometries = obj.geometries;
+    ASSERT.strictEqual(geometries.length, 2);
+    
+    var point = geometries[0];
+    ASSERT.strictEqual(point.type, "Point");
+    ASSERT.deepEqual(point.coordinates, [100, 0]);
+    
+    var line = geometries[1];
+    ASSERT.strictEqual(line.type, "LineString");
+    ASSERT.deepEqual(line.coordinates, [[101, 0], [102, 1]]);
+};
+
+exports["test: write feature collection"] = function() {
+    var collection = new FeatureCollection({
+        features: function() {
+            for (var i=0; i<10; ++i) {
+                yield new Feature({
+                    properties: {
+                        foo: "bar_" + i,
+                        loc: new GEOM.Point([i, -i])
+                    }
+                });
+            }
+        }
+    });
+    
+    var json = parser.write(collection);
+    ASSERT.strictEqual(typeof json, "string");
+    
+    var obj = JSON.parse(json);
+    ASSERT.strictEqual(obj.type, "FeatureCollection");
+    var features = obj.features;
+    ASSERT.strictEqual(features.length, 10);
+    
+    ASSERT.strictEqual(features[0].properties.foo, "bar_0");
+    ASSERT.deepEqual(features[1].geometry.coordinates, [1, -1]);
+    
+    var exp = {
+        type: "Schema",
+        name: "feature",
+        fields: [{
+            type: "Field",
+            def: {name: "foo", type: "String"}
+        }, {
+            type: "Field",
+            def: {name: "loc", type: "Point"}
+        }]
+    };
+    ASSERT.deepEqual(obj.schema, exp)
+
+};
 
 if (require.main == module.id) {
     system.exit(require("test").run(exports));

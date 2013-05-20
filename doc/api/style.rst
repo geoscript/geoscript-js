@@ -6,7 +6,7 @@ rule based styles for rendering layers in a map.
 
 .. code-block:: javascript
 
-    js> var STYLE = require("geoscript/style");
+    >> var style = require("geoscript/style");
 
 
 Constructors

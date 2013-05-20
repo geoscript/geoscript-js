@@ -15,18 +15,18 @@ Sample code to create a new feature:
 
 .. code-block:: javascript
 
-    js> var Feature = require("geoscript/feature").Feature;
-    js> var Point = require("geoscript/geom").Point;
-    js> var city = new Feature({
-      >     properties: {
-      >         location: new Point([-110, 45]),
-      >         name: "Metropolis"
-      >     }
-      > });
+    >> var Feature = require("geoscript/feature").Feature;
+    >> var Point = require("geoscript/geom").Point;
+    >> var city = Feature({
+    ..   properties: {
+    ..     location: Point([-110, 45]),
+    ..     name: "Metropolis"
+    ..   }
+    .. });
 
-    js> city.get("name");
+    >> city.get("name");
     Metropolis
-    js> city.get("location");
+    >> city.get("location");
     <Point [-110, 45]>
 
 
@@ -105,20 +105,20 @@ Methods
 .. function:: Feature.clone
 
     :returns: :class:`feature.Feature`
-    
+
     Create a clone of this feature.
 
 .. function:: Feature.get
 
     :arg name: ``String`` Attribute name.
-    
+
     Get an attribute value.
 
 .. function:: Feature.set
 
     :arg name: ``String`` Attribute name.
     :arg value: ``String`` Attribute value.
-    
+
     Set a feature attribute.
 
 

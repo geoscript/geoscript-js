@@ -4,7 +4,7 @@
     <groupId>org.geoscript</groupId>
     <artifactId>geoscript-js</artifactId>
     <packaging>jar</packaging>
-    <version>0.16-SNAPSHOT</version>
+    <version>0.9.0</version>
     <properties>
         <gt.version>9-SNAPSHOT</gt.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,7 +30,7 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.0</version>
+                <version>4.11</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
@@ -148,6 +148,7 @@
                 <inherited>true</inherited>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+                <version>2.2</version>
                 <configuration>
                     <attach>true</attach>
                 </configuration>
@@ -202,32 +203,42 @@
                 <version>2.2-beta-2</version>
                 <configuration>
                     <descriptor>src/main/assembly/all.xml</descriptor>
+                    <finalName>geoscript-js-shell-${project.version}</finalName>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>dist-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>build-helper-maven-plugin</artifactId>
-                    <version>1.7</version>
-                    <executions>
-                        <execution>
-                            <id>add-test-resource</id>
-                            <phase>generate-test-sources</phase>
-                            <goals>
-                                <goal>add-test-resource</goal>
-                            </goals>
-                            <configuration>
-                                <resources>
-                                    <resource>
-                                        <directory>doc</directory>
-                                        <includes>
-                                            <include>**/*.rst</include>
-                                        </includes>
-                                    </resource>
-                                </resources>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>add-test-resource</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>add-test-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>doc</directory>
+                                    <includes>
+                                        <include>**/*.rst</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
         <extensions>
             <extension>
