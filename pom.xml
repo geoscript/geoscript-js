@@ -4,9 +4,9 @@
     <groupId>org.geoscript</groupId>
     <artifactId>geoscript-js</artifactId>
     <packaging>jar</packaging>
-    <version>0.9.1</version>
+    <version>0.9-SNAPSHOT</version>
     <properties>
-        <gt.version>9-SNAPSHOT</gt.version>
+        <gt.version>9.0</gt.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>

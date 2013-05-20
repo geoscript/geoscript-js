@@ -192,15 +192,15 @@ Static Methods
         >> var Process = require("geoscript/process").Process
         >> var Point = require("geoscript/geom").Point;
 
-        js> var buffer = Process.get("geo:buffer");
-        js> Object.keys(buffer.inputs)
+        >> var buffer = Process.get("geo:buffer");
+        >> Object.keys(buffer.inputs);
         geom,distance,quadrantSegments,capStyle
-        >> Object.keys(buffer.outputs)
+        >> Object.keys(buffer.outputs);
         result
 
         >> var point = Point([-110, 45]);
-        >> var outputs = buffer.run({geom: point, distance: 10})
-        >> outputs.result
+        >> var outputs = buffer.run({geom: point, distance: 10});
+        >> outputs.result;
         <Polygon [[[-100, 45], [-100.19214719596769, 43.04909677983872], [-10...>
 
 
