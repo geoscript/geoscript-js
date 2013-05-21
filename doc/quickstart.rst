@@ -6,7 +6,7 @@ Quick Start
 Getting GeoScript JS
 --------------------
 
-To install GeoScript JS, `download the latest <download>`__ release and extract the zip archive.
+To install GeoScript JS, :ref:`download the latest <download>` release and extract the zip archive.
 
 Running GeoScript JS
 --------------------

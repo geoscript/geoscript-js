@@ -73,7 +73,7 @@ mapping between JavaScript types and the corresponding Java types.
       - :class:`geom.Bounds`
       - org.geotools.geometry.jts.ReferencedEnvelope
     * - ``"FeatureCollection"``
-      - :class:`feature.Collection`
+      - :class:`feature.FeatureCollection`
       - org.geotools.feature.FeatureCollection
     * - ``"Filter"``
       - :class:`filter.Filter`

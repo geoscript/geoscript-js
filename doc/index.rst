@@ -1,8 +1,7 @@
 GeoScript JS
 ============
 
-GeoScript JS is a JavaScript implementation of GeoScript packaged for the
-RingoJS_ platform (or any other CommonJS_ module loader based on Rhino).
+GeoScript JS is a JavaScript implementation of GeoScript packaged as a set of CommonJS_ modules for Rhino.
 
   :ref:`Quickstart <quickstart>` 
     Get up and running with GeoScript 
@@ -25,5 +24,4 @@ RingoJS_ platform (or any other CommonJS_ module loader based on Rhino).
     download
 
 
-.. _RingoJS: http://ringojs.org/
 .. _CommonJS: http://commonjs.org/
