@@ -44,7 +44,7 @@ var Expression = exports.Expression = UTIL.extend(GeoObject, {
     var text;
     if (this._expression) {
       if (this.literal) {
-        text = this._expression.getLiteral();
+        text = this._expression.getValue();
         if ((text instanceof java.lang.String) || typeof text === "string") {
           text = "'" + String(text) + "'";
         } else {
@@ -62,7 +62,7 @@ var Expression = exports.Expression = UTIL.extend(GeoObject, {
    *  This expression is just a literal value.
    */
   get literal() {
-    return Boolean(this._expression instanceof Packages.org.geotools.filter.LiteralExpressionImpl);
+    return Boolean(this._expression instanceof Packages.org.opengis.filter.expression.Literal);
   },
 
   get config() {

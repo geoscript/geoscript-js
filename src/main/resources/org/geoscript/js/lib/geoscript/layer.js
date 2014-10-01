@@ -486,10 +486,11 @@ var Layer = UTIL.extend(GeoObject, {
   update: function() {
     var modified = this.cache.modifiedFeatures;
     if (modified) {
-      var _filter = FilterFactory2.createFidFilter();
+      var idFilters = [];
       for (var id in modified) {
-        _filter.addFid(id);
+        idFilters.push(FilterFactory2.featureId(id));
       }
+      var _filter = FilterFactory2.id(idFilters);
       var results = this._source.dataStore.getFeatureWriter(this.name, _filter, Transaction.AUTO_COMMIT);
       try {
         while (results.hasNext()) {

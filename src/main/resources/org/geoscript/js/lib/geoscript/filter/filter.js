@@ -198,10 +198,11 @@ Filter.not = function(filter) {
 };
 
 Filter.fids = function(fids) {
-  var _filter = FilterFactory2.createFidFilter();
+  var idFilters = []
   for (var i=0, len=fids.length; i<len; ++i) {
-    _filter.addFid(fids[i]);
+    idFilters.push(FilterFactory2.featureId(fids[i]));
   }
+  var _filter = FilterFactory2.id(idFilters);
   return Filter.from_(_filter);
 };
 
