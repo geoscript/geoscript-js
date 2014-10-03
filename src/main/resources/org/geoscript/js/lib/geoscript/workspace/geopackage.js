@@ -36,7 +36,7 @@ var GeoPackage = UTIL.extend(Workspace, {
    */
 
   /** private: constructor
-   *  .. class:: SpatiaLite
+   *  .. class:: GeoPackage
    *
    *    :arg config: ``Object`` Configuration object.
    *
