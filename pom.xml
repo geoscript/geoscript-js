@@ -134,6 +134,11 @@
             <artifactId>gt-swing</artifactId>
             <version>${gt.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-geopkg</artifactId>
+            <version>${gt.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

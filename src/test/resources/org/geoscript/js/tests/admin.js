@@ -54,6 +54,19 @@ var meta = {
             }
         }
     },
+    geopkg: {
+            source: path("data/geopkg.zip"),
+            dest: path("tmp"),
+            setUp: function() {
+                meta.geopkg.tearDown();
+                unzip(meta.geopkg.source, meta.geopkg.dest);
+            },
+            tearDown: function() {
+                if (FS.exists(meta.geopkg.dest)) {
+                    FS.removeTree(meta.geopkg.dest);
+                }
+            }
+        },
     pg: {
         driver: new Packages.org.postgresql.Driver,
         setUp: function() {
