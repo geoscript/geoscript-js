@@ -184,7 +184,7 @@ exports["test: _style (multiple featureTypeStyle)"] = function() {
     ASSERT.equal(rule.getMinScaleDenominator(), 100000, "first rule has correct min scale denominator");
     ASSERT.equal(rule.getMaxScaleDenominator(), 200000, "first rule has correct max scale denominator");
     ASSERT.ok(rule.getFilter() instanceof geotools.filter.IsEqualsToImpl, "first rule has filter");
-    ASSERT.equal(String(rule.getFilter().getRightValue()), "foo", "first rule filter is good");
+    ASSERT.equal(String(rule.getFilter().getExpression2().getValue()), "foo", "first rule filter is good");
     
     var symbolizers = rule.getSymbolizers();
     ASSERT.equal(symbolizers.length, 1, "one symbolizer in first feature type style");

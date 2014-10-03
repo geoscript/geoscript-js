@@ -5,14 +5,14 @@ var FILTER = require("geoscript/filter");
 exports["test and"] = function() {
     
     var f = FILTER.and(["name = 'foo'", "type = 'bar'"]);
-    ASSERT.strictEqual(f.cql, "(name = 'foo' AND type = 'bar')", "correct cql");
+    ASSERT.strictEqual(f.cql, "name = 'foo' AND type = 'bar'", "correct cql");
     
 };
 
 exports["test or"] = function() {
     
     var f = FILTER.or(["name = 'foo'", "type = 'bar'"]);
-    ASSERT.strictEqual(f.cql, "(name = 'foo' OR type = 'bar')", "correct cql");
+    ASSERT.strictEqual(f.cql, "name = 'foo' OR type = 'bar'", "correct cql");
     
 };
 
