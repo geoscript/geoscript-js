@@ -39,6 +39,9 @@ exports.H2 = require("./workspace/h2").H2;
 /** api: classes[] = mysql */
 exports.MySQL = require("./workspace/mysql").MySQL;
 
+/** api: classes[] = geopackage */
+exports.GeoPackage = require("./workspace/geopackage").GeoPackage;
+
 /** private: classes[] = spatialite */
 exports.SpatiaLite = require("./workspace/spatialite").SpatiaLite;
 

@@ -34,6 +34,7 @@ exports["test: Workspace.from_"] = function() {
 
 exports["test: Directory"] = require("./workspace/test_directory");
 exports["test: H2"] = require("./workspace/test_h2");
+exports["test: GeoPackage"] = require("./workspace/test_geopackage");
 exports["test: Memory"] = require("./workspace/test_memory");
 // exports["test: PostGIS"] = require("./workspace/test_postgis");
 
