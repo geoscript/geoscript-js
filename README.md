@@ -55,4 +55,4 @@ Deploy both the stand-alone archive and a jar with just the GeoScript JS modules
 
     mvn deploy
 
-[![Current Status](https://secure.travis-ci.org/tschaub/geoscript-js.png?branch=master)](https://travis-ci.org/tschaub/geoscript-js)
+[![Current Status](https://secure.travis-ci.org/geoscript/geoscript-js.png?branch=master)](https://travis-ci.org/geoscript/geoscript-js)
