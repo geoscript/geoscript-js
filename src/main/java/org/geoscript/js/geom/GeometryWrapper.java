@@ -10,6 +10,10 @@ public class GeometryWrapper {
         try {
             if (geometry instanceof com.vividsolutions.jts.geom.Point) {
                 wrapped = new Point(scope, (com.vividsolutions.jts.geom.Point) geometry);
+            } else if (geometry instanceof org.geotools.geometry.jts.CompoundCurve) {
+                wrapped = new CompoundCurve(scope, (org.geotools.geometry.jts.CompoundCurve) geometry);
+            } else if (geometry instanceof org.geotools.geometry.jts.CircularString) {
+                wrapped = new CircularString(scope, (org.geotools.geometry.jts.CircularString) geometry);
             } else if (geometry instanceof com.vividsolutions.jts.geom.LineString) {
                 wrapped = new LineString(scope, (com.vividsolutions.jts.geom.LineString) geometry);
             } else if (geometry instanceof com.vividsolutions.jts.geom.Polygon) {

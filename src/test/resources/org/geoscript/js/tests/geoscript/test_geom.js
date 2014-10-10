@@ -163,6 +163,8 @@ exports["test: Polygon"] = require("./geom/test_polygon");
 exports["test: Collection"] = require("./geom/test_collection");
 exports["test: MultiLineString"] = require("./geom/test_multilinestring");
 exports["test: Bounds"] = require("./geom/test_bounds");
+exports["test: CircularString"] = require("./geom/test_circularstring");
+exports["test: CompoundCurve"] = require("./geom/test_compoundcurve");
 
 if (require.main == module.id) {
     system.exit(require("test").run(exports));

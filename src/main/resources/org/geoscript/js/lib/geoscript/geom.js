@@ -165,6 +165,37 @@ registry.register(new Factory(exports.MultiPolygon, {
   }
 }));
 
+/** api: classes[] = circularstring */
+exports.CircularString = this["org.geoscript.js.geom.CircularString"];
+
+//register a circularstring factory for the module
+registry.register(new Factory(exports.CircularString, {
+  handles: function(config) {
+    config = prepConfig(config);
+    var capable = false;
+    if (config.coordinates && UTIL.isArray(config.coordinates)) {
+      for (var i=0, ii=config.coordinates.length; i<ii; ++i) {
+        var p = config.coordinates[i];
+        if (UTIL.isArray(p)) {
+          var len = p.length;
+          if (len === 2 || len === 3) {
+            capable = true;
+            for (var j=0; j<len; ++j) {
+              capable = capable && (typeof p[j] === "number");
+            }
+          }
+        }
+      }
+    }
+    return capable;
+  }
+}));
+
+/** api: classes[] = compoundcurve */
+exports.CompoundCurve = this["org.geoscript.js.geom.CompoundCurve"];
+
+//register a compoundcurve factory for the module
+registry.register(new Factory(exports.CompoundCurve));
 
 /** api: classes[] = bounds */
 exports.Bounds = this["org.geoscript.js.geom.Bounds"];
