@@ -104,14 +104,14 @@ exports["test: rotation"] = function() {
     shape = new STYLE.Shape({rotation: 30});
     ASSERT.ok(shape.rotation instanceof Expression, "rotation is expression");
     ASSERT.ok(shape.rotation.literal, "rotation is literal expression");
-    ASSERT.strictEqual(shape.rotation.text, "30", "correct rotation");
+    ASSERT.strictEqual(shape.rotation.text, "30.0", "correct rotation");
 
     // literal for rotation
     shape = new STYLE.Shape();
     shape.rotation = 90;
     ASSERT.ok(shape.rotation instanceof Expression, "rotation is expression");
     ASSERT.ok(shape.rotation.literal, "rotation is literal expression");
-    ASSERT.strictEqual(shape.rotation.text, "90", "rotation from expression");
+    ASSERT.strictEqual(shape.rotation.text, "90.0", "rotation from expression");
     
     // expression for rotation
     shape = new STYLE.Shape();
