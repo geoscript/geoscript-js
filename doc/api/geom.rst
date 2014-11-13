@@ -24,6 +24,8 @@ Constructors
     geom/multilinestring
     geom/multipolygon
     geom/bounds
+    geom/circularstring
+    geom/compoundcurve
 
 
 Module Data

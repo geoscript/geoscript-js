@@ -30,7 +30,8 @@ public class Module {
         List<Class<? extends GeoObject>> classes = Arrays.asList(
                 Geometry.class, Point.class, LineString.class,
                 Polygon.class, GeometryCollection.class, MultiPoint.class,
-                MultiLineString.class, MultiPolygon.class, Bounds.class);
+                MultiLineString.class, MultiPolygon.class, Bounds.class,
+                CircularString.class, CompoundCurve.class);
         
         prototypes = new HashMap<String, Scriptable>();
         for (Class<? extends GeoObject> cls : classes) {

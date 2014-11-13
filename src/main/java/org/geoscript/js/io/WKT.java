@@ -11,11 +11,12 @@ import org.mozilla.javascript.ScriptableObject;
 
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
+import org.geotools.geometry.jts.WKTReader2;
 import com.vividsolutions.jts.io.WKTWriter;
 
 public class WKT {
 
-    static WKTReader wktReader = new WKTReader();
+    static WKTReader wktReader = new WKTReader2();
     static WKTWriter wktWriter = new WKTWriter();
 
     /**
