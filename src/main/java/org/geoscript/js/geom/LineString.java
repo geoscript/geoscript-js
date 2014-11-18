@@ -12,6 +12,7 @@ import org.mozilla.javascript.annotations.JSFunction;
 import org.mozilla.javascript.annotations.JSGetter;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.linearref.LengthIndexedLine;
 
 public class LineString extends Geometry implements Wrapper {
 
@@ -110,6 +111,37 @@ public class LineString extends Geometry implements Wrapper {
     @JSFunction
     public LineString reverse() {
         return (LineString) GeometryWrapper.wrap(getParentScope(), getGeometry().reverse());
+    }
+
+    @JSFunction
+    public Point interpolatePoint(double position) {
+        LengthIndexedLine indexedLine = new LengthIndexedLine(this.getGeometry());
+        Coordinate c = indexedLine.extractPoint(position * getLength());
+        return new Point(getParentScope(), factory.createPoint(c));
+    }
+
+    @JSFunction
+    public double locatePoint(Point point) {
+        LengthIndexedLine indexedLine = new LengthIndexedLine(this.getGeometry());
+        double position = indexedLine.indexOf(point.getGeometry().getCoordinate());
+        double percentAlong = position / getLength();
+        return percentAlong;
+    }
+
+    @JSFunction
+    public Point placePoint(Point point) {
+        LengthIndexedLine indexedLine = new LengthIndexedLine(this.getGeometry());
+        double position = indexedLine.indexOf(point.getGeometry().getCoordinate());
+        Coordinate c = indexedLine.extractPoint(position);
+        return new Point(getParentScope(), factory.createPoint(c));
+    }
+
+    @JSFunction
+    public LineString subLine(double start, double end) {
+        LengthIndexedLine indexedLine = new LengthIndexedLine(this.getGeometry());
+        double length = getLength();
+        return new LineString(getParentScope(),
+                (com.vividsolutions.jts.geom.LineString) indexedLine.extractLine(start * length, end * length));
     }
 
     /**

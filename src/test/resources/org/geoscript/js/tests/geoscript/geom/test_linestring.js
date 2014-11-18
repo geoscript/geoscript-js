@@ -114,6 +114,62 @@ exports["test: centroid"] = function() {
 
 };
 
+exports["test: interpolatePoint"] = function() {
+    var line = new GEOM.LineString([
+        [1137466.548141059, 650434.9943107369],
+        [1175272.4129268457, 648011.541439853],
+        [1185935.6055587344, 632986.1336403737]
+    ]);
+
+    // Interpolate Point Start
+    var pt1 = line.interpolatePoint(0);
+    ASSERT.ok(pt1.equals(line.startPoint), "interpolate 0 should return start point");
+
+    // Interpolate Point Middle
+    var pt2 = line.interpolatePoint(0.5);
+    ASSERT.ok(pt2.equals(new GEOM.Point([1165562.9204493894, 648633.9448037925])), "interpolate 0.5 should return mid point");
+
+    // Interpolate Point End
+    var pt3 = line.interpolatePoint(1.0);
+    ASSERT.ok(pt3.equals(line.endPoint), "interpolate 1 should return end point");
+};
+
+exports["test: locatePoint"] = function() {
+    var line = new GEOM.LineString([
+        [1137466.548141059, 650434.9943107369],
+        [1175272.4129268457, 648011.541439853],
+        [1185935.6055587344, 632986.1336403737]
+    ]);
+    var point = new GEOM.Point([1153461.34, 649950.30]);
+    var position = line.locatePoint(point);
+    ASSERT.deepEqual(0.284, position.toFixed(3), "locate point position should be 0.284");
+};
+
+exports["test: placePoint"] = function() {
+    var line = new GEOM.LineString([
+        [1137466.548141059, 650434.9943107369],
+        [1175272.4129268457, 648011.541439853],
+        [1185935.6055587344, 632986.1336403737]
+    ]);
+    var point = new GEOM.Point([1153461.34, 649950.30]);
+    var placedPoint = line.placePoint(point) ;
+    ASSERT.ok(placedPoint.equals(new GEOM.Point([1153426.8271476042, 649411.899502625])),
+        "placed point should be POINT (1153426.8271476042 649411.899502625)");
+};
+
+exports["test: subLine"] = function() {
+    var line = new GEOM.LineString([
+        [1137466.548141059, 650434.9943107369],
+        [1175272.4129268457, 648011.541439853],
+        [1185935.6055587344, 632986.1336403737]
+    ]);
+    var subLine = line.subLine(0.33, 0.67);
+    ASSERT.ok(
+        new GEOM.LineString([[1156010.153864557, 649246.3016361536], [1175115.6870342216, 648021.5879714314]]).equals(subLine),
+        "subline should be LINESTRING (1156010.153864557 649246.3016361536, 1175115.6870342216 648021.5879714314)"
+    )
+};
+
 
 if (require.main == module.id) {
     system.exit(require("test").run(exports));
