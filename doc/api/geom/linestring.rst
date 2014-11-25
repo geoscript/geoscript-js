@@ -53,3 +53,33 @@ Methods
 
 Linestring geometries have the methods common to all :class:`geom.Geometry`
 subclasses.
+
+.. function:: LineString.interpolatePoint
+
+    :arg position: ``Number`` The position between 0 and 1.
+    :returns: :class:`geom.Point`
+
+    Returns a Point placed on the LineString at the given percentage along
+    the LineString.
+
+.. function:: LineString.locatePoint
+
+    :arg point: :class:`geom.Point` The Point
+    :returns: ``Number`` The position (0-1) or percentage of the Point along the LineString.
+
+    Returns a position or percentage between 0 and 1 of the Point along the LineString.
+
+.. function:: LineString.placePoint
+
+    :arg point: :class:`geom.Point` The Point.
+    :returns: :class:`geom.Point` The Point on the LineString.
+
+    Places or snaps the Point to the LineString.
+
+.. function:: LineString.subLine
+
+    :arg start: ``Number`` The start position between 0 and 1.
+    :arg end: ``Number`` The end position between 0 and 1.
+    :returns: :class:`geom.LineString` The sub LineString
+
+    Returns a position or percentage between 0 and 1 of the Point along the LineString.
