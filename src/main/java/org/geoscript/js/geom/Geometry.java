@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
+import com.vividsolutions.jts.densify.Densifier;
 import org.geoscript.js.GeoObject;
 import org.geoscript.js.proj.Projection;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
@@ -291,7 +292,15 @@ public class Geometry extends GeoObject implements Wrapper {
         ((Geometry) simplified).projection = projection;
         return simplified;
     }
-    
+
+    @JSFunction
+    public ScriptableObject densify(double tolerance) {
+        com.vividsolutions.jts.geom.Geometry geom = Densifier.densify(geometry, tolerance);
+        ScriptableObject densified = GeometryWrapper.wrap(getParentScope(), geom);
+        ((Geometry) densified).projection = projection;
+        return densified;
+    }
+
     @JSFunction
     public String getGeometryType() {
         return geometry.getGeometryType();

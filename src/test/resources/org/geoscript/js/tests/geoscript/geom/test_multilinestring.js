@@ -47,6 +47,17 @@ exports["test: simplify"] = function() {
 
 };
 
+exports["test: densify"] = function() {
+
+    var g = new GEOM.MultiLineString([[[1, 1], [2, 2], [3, 1], [4, 2]], [[-1, -1], [-2, -2], [-3, -1], [-4, -2]]]);
+    g.projection = "epsg:4326";
+    var g2 = g.densify(0.5);
+
+    ASSERT.ok(g2 instanceof GEOM.MultiLineString, "correct type");
+    ASSERT.ok(g2.coordinates[0].length > g.coordinates[0].length, "densified line has more coordinates");
+    ASSERT.ok(g.projection.equals(g.projection), "same projection");
+};
+
 
 exports["test: bounds"] = function() {
 
