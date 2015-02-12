@@ -141,6 +141,16 @@ Common Geometry Methods
     
     Tests if this geometry crosses the other geometry.
 
+.. function:: Geometry.densify
+
+    :arg tolerance: ``Number`` The distance tolerance for the densification.
+        All line segments in the densified geometry will be no longer than the distance tolereance.
+        The tolerance value must be non-negative.
+    :returns: :class:`geom.Geometry`
+
+     Densifies a geometry object adding vertices along the line segments of the
+     geometry.
+
 .. function:: Geometry.difference
 
     :arg other: :class:`geom.Geometry`
