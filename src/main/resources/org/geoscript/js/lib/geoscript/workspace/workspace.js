@@ -6,7 +6,7 @@ var Filter = require("../filter").Filter;
 var Projection = require("../proj").Projection;
 
 var geotools = Packages.org.geotools;
-var DefaultQuery = geotools.data.DefaultQuery;
+var Query = geotools.data.Query;
 var Transaction = geotools.data.Transaction;
 var DefaultTransaction = geotools.data.DefaultTransaction;
 
@@ -149,7 +149,7 @@ var Workspace = UTIL.extend(GeoObject, {
 
     var _source = this._createSource(schema);
 
-    var query = new DefaultQuery(layer.name, filter._filter);
+    var query = new Query(layer.name, filter._filter);
     if (projection) {
       if (layer.projection) {
         query.setCoordinateSystem(layer.projection);

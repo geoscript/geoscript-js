@@ -13,7 +13,6 @@ var GEOM = require("./geom");
 var STYLE = require("./style");
 
 var geotools = Packages.org.geotools;
-var DefaultQuery = geotools.data.DefaultQuery;
 var Query = geotools.data.Query;
 var Transaction = geotools.data.Transaction;
 var FeatureCollections = geotools.feature.FeatureCollections;
@@ -271,7 +270,7 @@ var Layer = UTIL.extend(GeoObject, {
     } else {
       filter = FILTER.Filter.PASS;
     }
-    var count = this._source.getCount(new DefaultQuery(this.name, filter._filter));
+    var count = this._source.getCount(new Query(this.name, filter._filter));
     if (count === -1) {
       // count manually for layers that don't support this query
       var collection = this.query(filter);
@@ -307,7 +306,7 @@ var Layer = UTIL.extend(GeoObject, {
       filter = FILTER.Filter.PASS;
     }
     var bounds = null;
-    var _bounds = this._source.getBounds(new DefaultQuery(this.name, filter._filter));
+    var _bounds = this._source.getBounds(new Query(this.name, filter._filter));
     if (_bounds) {
       bounds = GEOM.Bounds.from_(_bounds);
     } else {
@@ -360,7 +359,7 @@ var Layer = UTIL.extend(GeoObject, {
         filter = new FILTER.Filter(filter);
       }
     }
-    var query = new DefaultQuery(this.name, filter._filter);
+    var query = new Query(this.name, filter._filter);
     var _collection = this._source.getFeatures(query);
     var collection = Collection.from_(_collection);
     collection.layer = this;
