@@ -143,7 +143,7 @@ public class Bounds extends GeoObject implements Wrapper {
     /**
      * Constructor from ReferencedEnvelope.
      * @param scope
-     * @param crs
+     * @param refEnv
      */
     public Bounds(Scriptable scope, ReferencedEnvelope refEnv) {
         this.setParentScope(scope);
@@ -291,9 +291,9 @@ public class Bounds extends GeoObject implements Wrapper {
         Scriptable scope = getParentScope();
         return (NativeArray) cx.newArray(scope, new Object[] {getMinX(), getMinY(), getMaxX(), getMaxY()});
     }
-    
-    @JSFunction
-    public Bounds clone() {
+
+    @JSFunction("clone")
+    public Bounds cloner() {
         ReferencedEnvelope clone = new ReferencedEnvelope(refEnv);
         return new Bounds(getParentScope(), clone);
     }
