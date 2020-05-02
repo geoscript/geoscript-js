@@ -11,8 +11,8 @@ import org.mozilla.javascript.annotations.JSConstructor;
 import org.mozilla.javascript.annotations.JSFunction;
 import org.mozilla.javascript.annotations.JSGetter;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.linearref.LengthIndexedLine;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.linearref.LengthIndexedLine;
 
 public class LineString extends Geometry implements Wrapper {
 
@@ -52,7 +52,7 @@ public class LineString extends Geometry implements Wrapper {
      * Constructor from JTS geometry.
      * @param geometry
      */
-    public LineString(Scriptable scope, com.vividsolutions.jts.geom.LineString geometry) {
+    public LineString(Scriptable scope, org.locationtech.jts.geom.LineString geometry) {
         this.setParentScope(scope);
         this.setPrototype(Module.getClassPrototype(LineString.class));
         setGeometry(geometry);
@@ -92,13 +92,13 @@ public class LineString extends Geometry implements Wrapper {
     
     @JSGetter
     public Point getEndPoint() {
-        com.vividsolutions.jts.geom.Point end = ((com.vividsolutions.jts.geom.LineString) getGeometry()).getEndPoint();
+        org.locationtech.jts.geom.Point end = ((org.locationtech.jts.geom.LineString) getGeometry()).getEndPoint();
         return new Point(getParentScope(), end);
     }
 
     @JSGetter
     public Point getStartPoint() {
-        com.vividsolutions.jts.geom.Point start = ((com.vividsolutions.jts.geom.LineString) getGeometry()).getStartPoint();
+        org.locationtech.jts.geom.Point start = ((org.locationtech.jts.geom.LineString) getGeometry()).getStartPoint();
         return new Point(getParentScope(), start);
     }
 
@@ -141,14 +141,14 @@ public class LineString extends Geometry implements Wrapper {
         LengthIndexedLine indexedLine = new LengthIndexedLine(this.getGeometry());
         double length = getLength();
         return new LineString(getParentScope(),
-                (com.vividsolutions.jts.geom.LineString) indexedLine.extractLine(start * length, end * length));
+                (org.locationtech.jts.geom.LineString) indexedLine.extractLine(start * length, end * length));
     }
 
     /**
      * Returns underlying JTS geometry.
      */
-    public com.vividsolutions.jts.geom.LineString unwrap() {
-        return (com.vividsolutions.jts.geom.LineString) getGeometry();
+    public org.locationtech.jts.geom.LineString unwrap() {
+        return (org.locationtech.jts.geom.LineString) getGeometry();
     }
 
 }

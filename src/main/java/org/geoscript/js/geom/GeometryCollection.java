@@ -40,18 +40,18 @@ public class GeometryCollection extends Geometry implements Wrapper {
      * @param array
      * @return
      */
-    private com.vividsolutions.jts.geom.GeometryCollection collectionFromArray(NativeArray array) {
+    private org.locationtech.jts.geom.GeometryCollection collectionFromArray(NativeArray array) {
         Scriptable scope = array.getParentScope();
         Context context = getCurrentContext();
         int numComponents = array.size();
-        com.vividsolutions.jts.geom.Geometry[] geometries = new com.vividsolutions.jts.geom.Geometry[numComponents];
+        org.locationtech.jts.geom.Geometry[] geometries = new org.locationtech.jts.geom.Geometry[numComponents];
         for (int i=0; i<numComponents; ++i) {
             Object obj = array.get(i);
-            if (obj instanceof com.vividsolutions.jts.geom.Geometry) {
-                geometries[i] = (com.vividsolutions.jts.geom.Geometry) obj;
+            if (obj instanceof org.locationtech.jts.geom.Geometry) {
+                geometries[i] = (org.locationtech.jts.geom.Geometry) obj;
             } else if (obj instanceof NativeObject) {
                 Geometry geomObj = (Geometry) JSON.readObj((NativeObject) obj);
-                geometries[i] = (com.vividsolutions.jts.geom.Geometry) geomObj.unwrap();
+                geometries[i] = (org.locationtech.jts.geom.Geometry) geomObj.unwrap();
             } else if (obj instanceof NativeArray) {
                 int dim = getArrayDimension((NativeArray) obj);
                 if (dim < 0 || dim > 2) {
@@ -115,14 +115,14 @@ public class GeometryCollection extends Geometry implements Wrapper {
      * Constructor from JTS geometry.
      * @param geometry
      */
-    public GeometryCollection(Scriptable scope, com.vividsolutions.jts.geom.GeometryCollection geometry) {
+    public GeometryCollection(Scriptable scope, org.locationtech.jts.geom.GeometryCollection geometry) {
         this.setParentScope(scope);
         this.setPrototype(Module.getClassPrototype(GeometryCollection.class));
         setGeometry(geometry);
     }
 
-    public com.vividsolutions.jts.geom.GeometryCollection createCollection(com.vividsolutions.jts.geom.Geometry[] geometries) {
-        return new com.vividsolutions.jts.geom.GeometryCollection(geometries, factory);
+    public org.locationtech.jts.geom.GeometryCollection createCollection(org.locationtech.jts.geom.Geometry[] geometries) {
+        return new org.locationtech.jts.geom.GeometryCollection(geometries, factory);
     }
     
     protected int getArrayDimension(NativeArray array) {
@@ -178,7 +178,7 @@ public class GeometryCollection extends Geometry implements Wrapper {
     public NativeArray getCoordinates() {
         Context cx = getCurrentContext();
         Scriptable scope = getParentScope();
-        com.vividsolutions.jts.geom.GeometryCollection geometry = (com.vividsolutions.jts.geom.GeometryCollection) getGeometry();
+        org.locationtech.jts.geom.GeometryCollection geometry = (org.locationtech.jts.geom.GeometryCollection) getGeometry();
         int length = geometry.getNumGeometries();
         NativeArray array = (NativeArray) cx.newArray(scope, length);
         for (int i=0; i<length; ++i) {
@@ -192,7 +192,7 @@ public class GeometryCollection extends Geometry implements Wrapper {
     public NativeArray getComponents() {
         Context cx = getCurrentContext();
         Scriptable scope = getParentScope();
-        com.vividsolutions.jts.geom.GeometryCollection geometry = (com.vividsolutions.jts.geom.GeometryCollection) getGeometry();
+        org.locationtech.jts.geom.GeometryCollection geometry = (org.locationtech.jts.geom.GeometryCollection) getGeometry();
         int length = geometry.getNumGeometries();
         NativeArray array = (NativeArray) cx.newArray(scope, length);
         for (int i=0; i<length; ++i) {
@@ -225,8 +225,8 @@ public class GeometryCollection extends Geometry implements Wrapper {
     /**
      * Returns underlying JTS geometry.
      */
-    public com.vividsolutions.jts.geom.GeometryCollection unwrap() {
-        return (com.vividsolutions.jts.geom.GeometryCollection) getGeometry();
+    public org.locationtech.jts.geom.GeometryCollection unwrap() {
+        return (org.locationtech.jts.geom.GeometryCollection) getGeometry();
     }
 
 

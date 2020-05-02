@@ -7,7 +7,7 @@ var geotools = Packages.org.geotools;
 var CRS = geotools.referencing.CRS;
 var SimpleFeatureTypeBuilder = geotools.feature.simple.SimpleFeatureTypeBuilder;
 var NameImpl = geotools.feature.NameImpl;
-var jts = Packages.com.vividsolutions.jts;
+var jts = Packages.org.locationtech.jts;
 
 exports["test: constructor"] = function() {
     

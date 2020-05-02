@@ -6,7 +6,7 @@ var Map = require("./map").Map;
 var UTIL = require("./util");
 
 var JMapPane = Packages.org.geotools.swing.JMapPane;
-var jts = Packages.com.vividsolutions.jts;
+var jts = Packages.org.locationtech.jts;
 var bound = false;
 var cache = {};
 

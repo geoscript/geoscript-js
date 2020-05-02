@@ -82,16 +82,16 @@ public class CompoundCurve extends LineString implements Wrapper {
         Scriptable scope = array.getParentScope();
         Context context = getCurrentContext();
         int numComponents = array.size();
-        List<com.vividsolutions.jts.geom.LineString> lines =  new ArrayList<com.vividsolutions.jts.geom.LineString>();
+        List<org.locationtech.jts.geom.LineString> lines =  new ArrayList<org.locationtech.jts.geom.LineString>();
         for (int i=0; i<numComponents; ++i) {
             Object obj = array.get(i);
-            if (obj instanceof com.vividsolutions.jts.geom.LineString) {
-                lines.add((com.vividsolutions.jts.geom.LineString) obj);
+            if (obj instanceof org.locationtech.jts.geom.LineString) {
+                lines.add((org.locationtech.jts.geom.LineString) obj);
             } else if (obj instanceof NativeObject) {
                 Geometry geomObj = (Geometry) JSON.readObj((NativeObject) obj);
-                lines.add((com.vividsolutions.jts.geom.LineString) geomObj.unwrap());
+                lines.add((org.locationtech.jts.geom.LineString) geomObj.unwrap());
             } else if (obj instanceof LineString) {
-                lines.add((com.vividsolutions.jts.geom.LineString) ((Geometry)obj).unwrap());
+                lines.add((org.locationtech.jts.geom.LineString) ((Geometry)obj).unwrap());
             }
         }
         CurvedGeometryFactory factory = new CurvedGeometryFactory(tolerance);
@@ -162,8 +162,8 @@ public class CompoundCurve extends LineString implements Wrapper {
         Context cx = getCurrentContext();
         org.geotools.geometry.jts.CompoundCurve cs = (org.geotools.geometry.jts.CompoundCurve)getGeometry();
         List<LineString> lineStrings = new ArrayList<LineString>();
-        List<com.vividsolutions.jts.geom.LineString> lines = cs.getComponents();
-        for (com.vividsolutions.jts.geom.LineString line : lines) {
+        List<org.locationtech.jts.geom.LineString> lines = cs.getComponents();
+        for (org.locationtech.jts.geom.LineString line : lines) {
             lineStrings.add((LineString)GeometryWrapper.wrap(getParentScope(), line));
         }
         return (NativeArray) cx.newArray(getParentScope(), lineStrings.toArray());

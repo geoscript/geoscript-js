@@ -115,10 +115,10 @@ exports["test: _style (simple)"] = function() {
     var featureTypeStyles = _style.featureTypeStyles();
     ASSERT.equal(featureTypeStyles.size(), 1, "one feature type style");
     
-    var rules = featureTypeStyles.get(0).getRules();
-    ASSERT.equal(rules.length, 2, "two rules");
+    var rules = featureTypeStyles.get(0).rules();
+    ASSERT.equal(rules.size(), 2, "two rules " + rules);
 
-    var rule = rules[0];
+    var rule = rules.get(0);
     ASSERT.ok(rule instanceof geotools.styling.Rule, "rule is correct type");
     
     var symbolizers = rule.getSymbolizers();
@@ -129,11 +129,11 @@ exports["test: _style (simple)"] = function() {
     
     var graphic = symbolizer.getGraphic();
     ASSERT.ok(graphic instanceof geotools.styling.GraphicImpl, "correct graphic type for first symbolizer");
-    ASSERT.equal(graphic.getSymbols()[0].getWellKnownName(), "circle", "correct graphic name for first symbolizer");
+    ASSERT.equal(graphic.graphicalSymbols().get(0).getWellKnownName(), "circle", "correct graphic name for first symbolizer");
     ASSERT.equal(graphic.getSize(), 12, "correct graphic size for first symbolizer")
-    ASSERT.equal(graphic.getSymbols()[0].getFill().getColor(), "#ff0000", "correct fill color for first symbolizer")
+    ASSERT.equal(graphic.graphicalSymbols().get(0).getFill().getColor(), "#ff0000", "correct fill color for first symbolizer")
 
-    var rule = rules[1];
+    var rule = rules.get(1);
     ASSERT.ok(rule instanceof geotools.styling.Rule, "rule is correct type");
     
     var symbolizers = rule.getSymbolizers();
@@ -144,9 +144,9 @@ exports["test: _style (simple)"] = function() {
     
     var graphic = symbolizer.getGraphic();
     ASSERT.ok(graphic instanceof geotools.styling.GraphicImpl, "correct graphic type for second symbolizer");
-    ASSERT.equal(graphic.getSymbols()[0].getWellKnownName(), "star", "correct graphic name for second symbolizer");
+    ASSERT.equal(graphic.graphicalSymbols().get(0).getWellKnownName(), "star", "correct graphic name for second symbolizer");
     ASSERT.equal(graphic.getSize(), 11, "correct graphic size for second symbolizer")
-    ASSERT.equal(graphic.getSymbols()[0].getFill().getColor(), "#ffffff", "correct fill color for second symbolizer")
+    ASSERT.equal(graphic.graphicalSymbols().get(0).getFill().getColor(), "#ffffff", "correct fill color for second symbolizer")
     
 };
 
@@ -176,10 +176,10 @@ exports["test: _style (multiple featureTypeStyle)"] = function() {
     var featureTypeStyles = _style.featureTypeStyles();
     ASSERT.equal(featureTypeStyles.size(), 2, "two feature type styles");
     
-    var rules = featureTypeStyles.get(0).getRules();
-    ASSERT.equal(rules.length, 1, "one rule in first feature type style");
+    var rules = featureTypeStyles.get(0).rules();
+    ASSERT.equal(rules.size(), 1, "one rule in first feature type style");
 
-    var rule = rules[0];
+    var rule = rules.get(0);
     ASSERT.ok(rule instanceof geotools.styling.Rule, "rule is correct type in first feature type style");
     ASSERT.equal(rule.getMinScaleDenominator(), 100000, "first rule has correct min scale denominator");
     ASSERT.equal(rule.getMaxScaleDenominator(), 200000, "first rule has correct max scale denominator");
@@ -197,10 +197,10 @@ exports["test: _style (multiple featureTypeStyle)"] = function() {
     ASSERT.equal(stroke.getWidth(), 5, "correct stroke width for first symbolizer in first feature type style");
     ASSERT.equal(stroke.getColor(), "#ffff00", "correct stroke color for first symbolizer in first feature type style")
     
-    var rules = featureTypeStyles.get(1).getRules();
-    ASSERT.equal(rules.length, 1, "one rule in second feature type style");
+    var rules = featureTypeStyles.get(1).rules();
+    ASSERT.equal(rules.size(), 1, "one rule in second feature type style");
 
-    var rule = rules[0];
+    var rule = rules.get(0);
     ASSERT.ok(rule instanceof geotools.styling.Rule, "rule is correct type in second feature type style");
     ASSERT.equal(rule.getMinScaleDenominator(), 0, "second rule has correct min scale denominator");
     ASSERT.equal(rule.getMaxScaleDenominator(), Infinity, "second rule has correct max scale denominator");

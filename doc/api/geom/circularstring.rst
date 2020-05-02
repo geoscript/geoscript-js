@@ -22,7 +22,8 @@ Sample code to new circularstring:
     >> cs.linear.getGeometryType()
     LineString
     >> cs.curvedWkt
-    CIRCULARSTRING(6.12 10.0, 7.07 7.07, 10.0 0.0)
+    CIRCULARSTRING (6.12 10.0, 7.07 7.07, 10.0 0.0)
+
 
 
 Properties

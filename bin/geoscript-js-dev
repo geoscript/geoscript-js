@@ -19,4 +19,4 @@ else
     GEOSCRIPT_HOME=$(dirname -- "$(dirname -- "$SELF_PATH")")
 fi
 
-$GEOSCRIPT_HOME/bin/geoscript -j $GEOSCRIPT_HOME/target/jars -m $GEOSCRIPT_HOME/src/main/resources/org/geoscript/js/lib "$@"
+$GEOSCRIPT_HOME/bin/geoscript-js -j $GEOSCRIPT_HOME/target/jars -m $GEOSCRIPT_HOME/src/main/resources/org/geoscript/js/lib "$@"

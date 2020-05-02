@@ -45,14 +45,14 @@ public class GeoObject extends ScriptableObject implements Wrapper {
         Number(Double.class),
         Double(Double.class),
         Boolean(Boolean.class),
-        Geometry(com.vividsolutions.jts.geom.Geometry.class),
-        Point(com.vividsolutions.jts.geom.Point.class),
-        LineString(com.vividsolutions.jts.geom.LineString.class),
-        Polygon(com.vividsolutions.jts.geom.Polygon.class),
-        GeometryCollection(com.vividsolutions.jts.geom.GeometryCollection.class),
-        MultiPoint(com.vividsolutions.jts.geom.MultiPoint.class),
-        MultiLineString(com.vividsolutions.jts.geom.MultiLineString.class),
-        MultiPolygon(com.vividsolutions.jts.geom.MultiPolygon.class),
+        Geometry(org.locationtech.jts.geom.Geometry.class),
+        Point(org.locationtech.jts.geom.Point.class),
+        LineString(org.locationtech.jts.geom.LineString.class),
+        Polygon(org.locationtech.jts.geom.Polygon.class),
+        GeometryCollection(org.locationtech.jts.geom.GeometryCollection.class),
+        MultiPoint(org.locationtech.jts.geom.MultiPoint.class),
+        MultiLineString(org.locationtech.jts.geom.MultiLineString.class),
+        MultiPolygon(org.locationtech.jts.geom.MultiPolygon.class),
         Bounds(ReferencedEnvelope.class),
         FeatureCollection(org.geotools.feature.FeatureCollection.class),
         Filter(org.opengis.filter.Filter.class),
@@ -333,8 +333,8 @@ public class GeoObject extends ScriptableObject implements Wrapper {
             Object[] args = { new Long(date.getTime()) };
             Context cx = getCurrentContext();
             value = cx.newObject(scope, "Date", args);
-        } else if (value instanceof com.vividsolutions.jts.geom.Geometry) {
-            value = GeometryWrapper.wrap(scope, (com.vividsolutions.jts.geom.Geometry) value);
+        } else if (value instanceof org.locationtech.jts.geom.Geometry) {
+            value = GeometryWrapper.wrap(scope, (org.locationtech.jts.geom.Geometry) value);
         } else if (value instanceof ReferencedEnvelope) {
             value = new Bounds(scope, (ReferencedEnvelope) value);
         } else if (value instanceof SimpleFeature) {

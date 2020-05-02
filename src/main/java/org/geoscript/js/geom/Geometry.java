@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
-import com.vividsolutions.jts.densify.Densifier;
+import org.locationtech.jts.densify.Densifier;
 import org.geoscript.js.GeoObject;
 import org.geoscript.js.proj.Projection;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
@@ -28,19 +28,19 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.operation.buffer.BufferOp;
-import com.vividsolutions.jts.operation.buffer.BufferParameters;
-import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.operation.buffer.BufferOp;
+import org.locationtech.jts.operation.buffer.BufferParameters;
+import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 
 public class Geometry extends GeoObject implements Wrapper {
 
     /** serialVersionUID */
     private static final long serialVersionUID = 8771743870215086281L;
 
-    private com.vividsolutions.jts.geom.Geometry geometry;
+    private org.locationtech.jts.geom.Geometry geometry;
     
     protected static GeometryFactory factory = new GeometryFactory();
     
@@ -52,11 +52,11 @@ public class Geometry extends GeoObject implements Wrapper {
     public Geometry() {
     }
     
-    com.vividsolutions.jts.geom.Geometry getGeometry() {
+    org.locationtech.jts.geom.Geometry getGeometry() {
         return geometry;
     }
     
-    void setGeometry(com.vividsolutions.jts.geom.Geometry geometry) {
+    void setGeometry(org.locationtech.jts.geom.Geometry geometry) {
         this.geometry = geometry;
     }
     
@@ -125,7 +125,7 @@ public class Geometry extends GeoObject implements Wrapper {
         
         if (binary.contains(name)) {
             try {
-                method = geometry.getClass().getMethod(name, com.vividsolutions.jts.geom.Geometry.class);
+                method = geometry.getClass().getMethod(name, org.locationtech.jts.geom.Geometry.class);
             } catch (Exception e) {
                 throw new RuntimeException("Unable to find method: " + name, e);
             }
@@ -157,7 +157,7 @@ public class Geometry extends GeoObject implements Wrapper {
 
         if (constructive1.contains(name)) {
             try {
-                method = geometry.getClass().getMethod(name, com.vividsolutions.jts.geom.Geometry.class);
+                method = geometry.getClass().getMethod(name, org.locationtech.jts.geom.Geometry.class);
             } catch (Exception e) {
                 throw new RuntimeException("Unable to find method: " + name, e);
             }
@@ -211,9 +211,9 @@ public class Geometry extends GeoObject implements Wrapper {
         } catch (FactoryException e) {
             throw new RuntimeException("Failed to find transform.", e);
         }
-        com.vividsolutions.jts.geom.Geometry transGeom;
+        org.locationtech.jts.geom.Geometry transGeom;
         try {
-            transGeom = gt.transform((com.vividsolutions.jts.geom.Geometry) this.unwrap());
+            transGeom = gt.transform((org.locationtech.jts.geom.Geometry) this.unwrap());
         } catch (TransformException e) {
             throw new RuntimeException("Failed to transform.", e);
         }
@@ -225,7 +225,7 @@ public class Geometry extends GeoObject implements Wrapper {
     @JSFunction 
     public double distance(Geometry other) {
         other = sameProjection(this, other);
-        return geometry.distance((com.vividsolutions.jts.geom.Geometry) other.unwrap());
+        return geometry.distance((org.locationtech.jts.geom.Geometry) other.unwrap());
     }
     
     @JSFunction
@@ -245,7 +245,7 @@ public class Geometry extends GeoObject implements Wrapper {
                 params.setEndCapStyle((Integer) capsObj);
             }
         }
-        com.vividsolutions.jts.geom.Geometry buffered = BufferOp.bufferOp(getGeometry(), distance, params);
+        org.locationtech.jts.geom.Geometry buffered = BufferOp.bufferOp(getGeometry(), distance, params);
         Geometry wrapped = (Geometry) GeometryWrapper.wrap(getParentScope(), buffered);
         if (projection != null) {
             wrapped.projection = projection;
@@ -287,7 +287,7 @@ public class Geometry extends GeoObject implements Wrapper {
     
     @JSFunction
     public ScriptableObject simplify(double tolerance) {
-        com.vividsolutions.jts.geom.Geometry geom = DouglasPeuckerSimplifier.simplify(geometry, tolerance);
+        org.locationtech.jts.geom.Geometry geom = DouglasPeuckerSimplifier.simplify(geometry, tolerance);
         ScriptableObject simplified = GeometryWrapper.wrap(getParentScope(), geom);
         ((Geometry) simplified).projection = projection;
         return simplified;
@@ -295,7 +295,7 @@ public class Geometry extends GeoObject implements Wrapper {
 
     @JSFunction
     public ScriptableObject densify(double tolerance) {
-        com.vividsolutions.jts.geom.Geometry geom = Densifier.densify(geometry, tolerance);
+        org.locationtech.jts.geom.Geometry geom = Densifier.densify(geometry, tolerance);
         ScriptableObject densified = GeometryWrapper.wrap(getParentScope(), geom);
         ((Geometry) densified).projection = projection;
         return densified;
@@ -355,8 +355,8 @@ public class Geometry extends GeoObject implements Wrapper {
             Object item = array.get(i);
             if (item instanceof NativeArray) {
                 coords[i] = arrayToCoord((NativeArray) item);
-            } else if (item instanceof com.vividsolutions.jts.geom.Point) {
-                coords[i] = ((com.vividsolutions.jts.geom.Point) item).getCoordinate();
+            } else if (item instanceof org.locationtech.jts.geom.Point) {
+                coords[i] = ((org.locationtech.jts.geom.Point) item).getCoordinate();
             } else {
                 throw new RuntimeException("Must provide array of numbers or array of points");
             }
@@ -491,7 +491,7 @@ public class Geometry extends GeoObject implements Wrapper {
         }
         
         @SuppressWarnings("unused")
-        public com.vividsolutions.jts.geom.Geometry nop() {
+        public org.locationtech.jts.geom.Geometry nop() {
             return null;
         }
     
@@ -505,9 +505,9 @@ public class Geometry extends GeoObject implements Wrapper {
         public Object call(Context cx, Scriptable scope, Scriptable thisObj,
                 Object[] args) {
             
-            com.vividsolutions.jts.geom.Geometry result;
+            org.locationtech.jts.geom.Geometry result;
             try {
-                result = (com.vividsolutions.jts.geom.Geometry) trueMethod.invoke(geometry.unwrap());
+                result = (org.locationtech.jts.geom.Geometry) trueMethod.invoke(geometry.unwrap());
             } catch (Exception e) {
                 throw new RuntimeException("Failed to invoke method", e);
             }
@@ -533,7 +533,7 @@ public class Geometry extends GeoObject implements Wrapper {
         }
         
         @SuppressWarnings("unused")
-        public com.vividsolutions.jts.geom.Geometry nop(Geometry geometry) {
+        public org.locationtech.jts.geom.Geometry nop(Geometry geometry) {
             return null;
         }
     
@@ -555,9 +555,9 @@ public class Geometry extends GeoObject implements Wrapper {
                 throw new RuntimeException("Must provide a geometry");
             }
             other = sameProjection(geometry, other);
-            com.vividsolutions.jts.geom.Geometry result;
+            org.locationtech.jts.geom.Geometry result;
             try {
-                result = (com.vividsolutions.jts.geom.Geometry) trueMethod.invoke(geometry.unwrap(), other.unwrap());
+                result = (org.locationtech.jts.geom.Geometry) trueMethod.invoke(geometry.unwrap(), other.unwrap());
             } catch (Exception e) {
                 throw new RuntimeException("Failed to invoke method", e);
             }
@@ -584,11 +584,11 @@ public class Geometry extends GeoObject implements Wrapper {
     
     @JSStaticFunction
     public static Geometry from_(Scriptable geometryObj) {
-        com.vividsolutions.jts.geom.Geometry geometry = null;
+        org.locationtech.jts.geom.Geometry geometry = null;
         if (geometryObj instanceof Wrapper) {
             Object obj = ((Wrapper) geometryObj).unwrap();
-            if (obj instanceof com.vividsolutions.jts.geom.Geometry) {
-                geometry = (com.vividsolutions.jts.geom.Geometry) obj;
+            if (obj instanceof org.locationtech.jts.geom.Geometry) {
+                geometry = (org.locationtech.jts.geom.Geometry) obj;
             }
         }
         if (geometry == null) {

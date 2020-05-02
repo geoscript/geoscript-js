@@ -22,7 +22,7 @@ var Registry = require("./registry").Registry;
 var UTIL = require("./util");
 
 var registry = new Registry();
-var jts = Packages.com.vividsolutions.jts;
+var jts = Packages.org.locationtech.jts;
 
 function prepConfig(config) {
   if (!config) {

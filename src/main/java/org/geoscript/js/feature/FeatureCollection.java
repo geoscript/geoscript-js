@@ -6,11 +6,13 @@ import java.util.logging.Logger;
 
 import org.geoscript.js.GeoObject;
 import org.geoscript.js.geom.Bounds;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.vector.SimpleProcessingCollection;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Envelope;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.JavaScriptException;
@@ -354,7 +356,7 @@ public class FeatureCollection extends GeoObject implements Wrapper {
 
         @Override
         public ReferencedEnvelope getBounds() {
-            return getFeatureBounds();
+            return DataUtilities.bounds(features());
         }
 
         @Override
@@ -465,7 +467,7 @@ public class FeatureCollection extends GeoObject implements Wrapper {
                     throw ScriptRuntime.constructError("Error", "The bounds function must return a bounds.  Got: " + Context.toString(retObj));
                 }
             } else {
-                refEnv = getFeatureBounds();
+                refEnv = DataUtilities.bounds(features());
             }
             return refEnv;
         }
@@ -496,7 +498,7 @@ public class FeatureCollection extends GeoObject implements Wrapper {
                 }
                 size = (int) Context.toNumber(retObj);
             } else {
-                size = getFeatureCount();
+                size = DataUtilities.count(features());
             }
             return size;
         }

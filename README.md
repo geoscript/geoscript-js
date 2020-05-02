@@ -1,3 +1,5 @@
+[![Current Status](https://secure.travis-ci.org/geoscript/geoscript-js.png?branch=master)](https://travis-ci.org/geoscript/geoscript-js)
+
 # geoscript.js
 
 ## GeoScript in JavaScript
@@ -8,13 +10,13 @@ Released under the MIT license.  Please see the license.txt for full detail.
 
 ### Download and Installation
 
-The latest release of GeoScript JS can be found on the [downloads page](http://geoscript.org/js/download.html).  To install, extract the zip archive somewhere onto your filesystem.  In the `bin` folder you'll find a `geoscript` executable.  Adding this `bin` folder to your path makes for easy launching of GeoScript from anywhere.
+The latest release of GeoScript JS can be found on the [downloads page](http://geoscript.net/js/download.html).  To install, extract the zip archive somewhere onto your filesystem.  In the `bin` folder you'll find a `geoscript` executable.  Adding this `bin` folder to your path makes for easy launching of GeoScript from anywhere.
 
 ### Running GeoScript JS
 
 Change into the directory where you extracted the GeoScript JS download.  From there, you can launch the GeoScript JS shell.
 
-    ./bin/geoscript
+    ./bin/geoscript-js
 
 Once running the shell, you can pull in GeoScript modules with `require`.
 
@@ -29,11 +31,11 @@ When you're done in the shell, exit with `quit()`.
 
 To run a script that uses the GeoScript JS modules, include the path to your script.
 
-    ./bin/geoscript yourscript.js
+    ./bin/geoscript-js yourscript.js
 
 ### Learning GeoScript JS
 
-See the [GeoScript JS website](http://geoscript.org/js/) for details on getting started using GeoScript JS.
+See the [GeoScript JS website](http://geoscript.net/js/) for details on getting started using GeoScript JS.
 
 ### Getting set up for development
 
@@ -55,4 +57,3 @@ Deploy both the stand-alone archive and a jar with just the GeoScript JS modules
 
     mvn deploy
 
-[![Current Status](https://secure.travis-ci.org/geoscript/geoscript-js.png?branch=master)](https://travis-ci.org/geoscript/geoscript-js)

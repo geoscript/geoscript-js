@@ -23,8 +23,8 @@ var Projection = require("./proj").Projection;
 var ws = require("./workspace");
 
 var geotools = Packages.org.geotools;
-var DefaultMapContext = geotools.map.DefaultMapContext;
-var DefaultMapLayer = geotools.map.DefaultMapLayer;
+var MapContent = geotools.map.MapContent;
+var MapLayer = geotools.map.Layer;
 var GTRenderer = geotools.renderer.GTRenderer;
 var StreamingRenderer = geotools.renderer.lite.StreamingRenderer;
 var LabelCacheImpl = geotools.renderer.label.LabelCacheImpl;
@@ -160,14 +160,14 @@ var Map = UTIL.extend(GeoObject, {
     // TODO: more hints
 
     // set up underlying map context
-    var _context = new DefaultMapContext();
+    var _context = new MapContent();
     this.layers.forEach(function(layer) {
       _context.addLayer(
-        new DefaultMapLayer(layer._source, layer.style._style)
+        new MapLayer(layer._source, layer.style._style)
       );
     });
     if (this.projection) {
-      _context.setCoordinateReferenceSystem(this.projection);
+      _context.getViewport().setCoordinateReferenceSystem(this.projection);
     }
     return [_renderer, _context];
   },
@@ -187,7 +187,7 @@ var Map = UTIL.extend(GeoObject, {
     var _renderer = parts[0];
     var _context = parts[1];
 
-    _renderer.setContext(_context);
+    _renderer.setMapContent(_context);
 
     if (!options.imageType && options.path) {
       options.imageType = UTIL.getImageType(options.path);
