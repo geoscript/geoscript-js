@@ -24,7 +24,7 @@ var ws = require("./workspace");
 
 var geotools = Packages.org.geotools;
 var MapContent = geotools.map.MapContent;
-var MapLayer = geotools.map.Layer;
+var FeatureLayer = geotools.map.FeatureLayer;
 var GTRenderer = geotools.renderer.GTRenderer;
 var StreamingRenderer = geotools.renderer.lite.StreamingRenderer;
 var LabelCacheImpl = geotools.renderer.label.LabelCacheImpl;
@@ -163,7 +163,7 @@ var Map = UTIL.extend(GeoObject, {
     var _context = new MapContent();
     this.layers.forEach(function(layer) {
       _context.addLayer(
-        new MapLayer(layer._source, layer.style._style)
+        new FeatureLayer(layer._source, layer.style._style)
       );
     });
     if (this.projection) {
