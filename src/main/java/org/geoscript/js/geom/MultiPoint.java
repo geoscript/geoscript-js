@@ -69,16 +69,16 @@ public class MultiPoint extends GeometryCollection implements Wrapper {
      * Constructor from JTS geometry.
      * @param geometry
      */
-    public MultiPoint(Scriptable scope, com.vividsolutions.jts.geom.MultiPoint geometry) {
+    public MultiPoint(Scriptable scope, org.locationtech.jts.geom.MultiPoint geometry) {
         this.setParentScope(scope);
         this.setPrototype(Module.getClassPrototype(MultiPoint.class));
         setGeometry(geometry);
     }
 
 
-    public com.vividsolutions.jts.geom.MultiPoint createCollection(com.vividsolutions.jts.geom.Geometry[] geometries) {
-        com.vividsolutions.jts.geom.Point[] points = Arrays.copyOf(geometries, geometries.length, com.vividsolutions.jts.geom.Point[].class);
-        return new com.vividsolutions.jts.geom.MultiPoint(points, factory);
+    public org.locationtech.jts.geom.MultiPoint createCollection(org.locationtech.jts.geom.Geometry[] geometries) {
+        org.locationtech.jts.geom.Point[] points = Arrays.copyOf(geometries, geometries.length, org.locationtech.jts.geom.Point[].class);
+        return new org.locationtech.jts.geom.MultiPoint(points, factory);
     }
 
     /**
@@ -107,8 +107,8 @@ public class MultiPoint extends GeometryCollection implements Wrapper {
     /**
      * Returns underlying JTS geometry.
      */
-    public com.vividsolutions.jts.geom.MultiPoint unwrap() {
-        return (com.vividsolutions.jts.geom.MultiPoint) getGeometry();
+    public org.locationtech.jts.geom.MultiPoint unwrap() {
+        return (org.locationtech.jts.geom.MultiPoint) getGeometry();
     }
 
     

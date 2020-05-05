@@ -3,7 +3,7 @@ package org.geoscript.js.proj;
 import java.util.logging.Logger;
 
 import org.geoscript.js.GeoObject;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
 import org.mozilla.javascript.Context;

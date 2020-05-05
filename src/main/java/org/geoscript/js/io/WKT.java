@@ -9,10 +9,10 @@ import org.mozilla.javascript.ScriptRuntime;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 import org.geotools.geometry.jts.WKTReader2;
-import com.vividsolutions.jts.io.WKTWriter;
+import org.locationtech.jts.io.WKTWriter;
 
 public class WKT {
 
@@ -40,7 +40,7 @@ public class WKT {
             throw ScriptRuntime.constructError("Error", 
                     "The read function expects a single string argument");
         }
-        com.vividsolutions.jts.geom.Geometry jtsGeom = null;
+        org.locationtech.jts.geom.Geometry jtsGeom = null;
         try {
             jtsGeom = wktReader.read(wkt);
         } catch (ParseException e) {
@@ -73,7 +73,7 @@ public class WKT {
             throw ScriptRuntime.constructError("Error", 
             "The write function expects a single geometry argument");
         }
-        return wktWriter.write((com.vividsolutions.jts.geom.Geometry) geometry.unwrap());
+        return wktWriter.write((org.locationtech.jts.geom.Geometry) geometry.unwrap());
     }
 
     /**

@@ -10,7 +10,7 @@ import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSConstructor;
 import org.mozilla.javascript.annotations.JSGetter;
 
-import com.vividsolutions.jts.geom.LinearRing;
+import org.locationtech.jts.geom.LinearRing;
 
 public class Polygon extends Geometry implements Wrapper {
 
@@ -56,7 +56,7 @@ public class Polygon extends Geometry implements Wrapper {
      * Constructor from JTS geometry.
      * @param geometry
      */
-    public Polygon(Scriptable scope, com.vividsolutions.jts.geom.Polygon geometry) {
+    public Polygon(Scriptable scope, org.locationtech.jts.geom.Polygon geometry) {
         this.setParentScope(scope);
         this.setPrototype(Module.getClassPrototype(Polygon.class));
         setGeometry(geometry);
@@ -93,7 +93,7 @@ public class Polygon extends Geometry implements Wrapper {
     public NativeArray getCoordinates() {
         Context cx = getCurrentContext();
         Scriptable scope = getParentScope();
-        com.vividsolutions.jts.geom.Polygon poly = (com.vividsolutions.jts.geom.Polygon) getGeometry();
+        org.locationtech.jts.geom.Polygon poly = (org.locationtech.jts.geom.Polygon) getGeometry();
         int length = 1 + poly.getNumInteriorRing();
         NativeArray array = (NativeArray) cx.newArray(scope, length);
         array.put(0, array, coordsToArray(poly.getExteriorRing().getCoordinates()));
@@ -106,8 +106,8 @@ public class Polygon extends Geometry implements Wrapper {
     /**
      * Returns underlying JTS geometry.
      */
-    public com.vividsolutions.jts.geom.Polygon unwrap() {
-        return (com.vividsolutions.jts.geom.Polygon) getGeometry();
+    public org.locationtech.jts.geom.Polygon unwrap() {
+        return (org.locationtech.jts.geom.Polygon) getGeometry();
     }
 
 }

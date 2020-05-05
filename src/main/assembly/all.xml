@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <assembly>
+    <id>dist</id>
     <formats>
+        <format>dir</format>
         <format>zip</format>
     </formats>
     <fileSets>
@@ -14,7 +16,7 @@
             <directory>bin</directory>
             <fileMode>0755</fileMode>
             <excludes>
-                <exclude>geoscript-dev</exclude>
+                <exclude>geoscript-js-dev</exclude>
             </excludes>
         </fileSet>
         <fileSet>

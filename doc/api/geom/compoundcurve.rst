@@ -24,7 +24,7 @@ Sample code to new compoundcurve:
     >> cc.linear.getGeometryType()
     LineString
     >> cc.curvedWkt
-    COMPOUNDCURVE(CIRCULARSTRING(10.0 10.0, 0.0 20.0, -10.0 10.0), (-10.0 10.0, -10.0 0.0, 10.0 0.0, 5.0 5.0))
+    COMPOUNDCURVE (CIRCULARSTRING (10.0 10.0, 0.0 20.0, -10.0 10.0), (-10.0 10.0, -10.0 0.0, 10.0 0.0, 5.0 5.0))
 
 
 Properties

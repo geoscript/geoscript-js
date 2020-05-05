@@ -1,6 +1,6 @@
 package org.geoscript.js.geom;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
 import org.mozilla.javascript.*;
 import org.mozilla.javascript.annotations.JSConstructor;
@@ -82,7 +82,7 @@ public class CircularString extends LineString implements Wrapper {
      * @param tolerance The tolerance used to linearize the curve
      * @return A CircularString
      */
-    private com.vividsolutions.jts.geom.Geometry createCircularString(Coordinate[] coords, double tolerance) {
+    private org.locationtech.jts.geom.Geometry createCircularString(Coordinate[] coords, double tolerance) {
         CurvedGeometryFactory factory = new CurvedGeometryFactory(tolerance);
         double[] values = new double[coords.length * 2];
         for(int i = 0; i < coords.length; i++) {

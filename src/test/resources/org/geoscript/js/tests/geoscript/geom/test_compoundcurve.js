@@ -29,8 +29,8 @@ exports["test: constructor"] = function() {
     ASSERT.strictEqual(ls.coordinates.length, 4, "line has four coordinates");
     ASSERT.deepEqual([[-10.0, 10.0], [-10.0, 0.0], [10.0, 0.0], [5.0, 5.0]], ls.coordinates, "line coordinates match");
     ASSERT.ok(cc.linear instanceof GEOM.LineString,"cc linear is a linestring");
-    ASSERT.strictEqual("COMPOUNDCURVE(CIRCULARSTRING(10.0 10.0, 0.0 20.0, -10.0 10.0), (-10.0 10.0, -10.0 0.0, 10.0 0.0, 5.0 5.0))", cc.curvedWkt, "cs curved wkt");
-    var ccFromWkt = WKT.read("COMPOUNDCURVE(CIRCULARSTRING(10.0 10.0, 0.0 20.0, -10.0 10.0), (-10.0 10.0, -10.0 0.0, 10.0 0.0, 5.0 5.0))");
+    ASSERT.strictEqual("COMPOUNDCURVE (CIRCULARSTRING (10.0 10.0, 0.0 20.0, -10.0 10.0), (-10.0 10.0, -10.0 0.0, 10.0 0.0, 5.0 5.0))", cc.curvedWkt, "cs curved wkt");
+    var ccFromWkt = WKT.read("COMPOUNDCURVE (CIRCULARSTRING (10.0 10.0, 0.0 20.0, -10.0 10.0), (-10.0 10.0, -10.0 0.0, 10.0 0.0, 5.0 5.0))");
     ASSERT.deepEqual(cc, ccFromWkt);
 
     cc = new GEOM.CompoundCurve({
@@ -54,6 +54,6 @@ exports["test: constructor"] = function() {
     ASSERT.strictEqual(ls.coordinates.length, 4, "line has four coordinates");
     ASSERT.deepEqual([[-10.0, 10.0], [-10.0, 0.0], [10.0, 0.0], [5.0, 5.0]], ls.coordinates, "line coordinates match");
     ASSERT.ok(cc.linear instanceof GEOM.LineString,"cc linear is a linestring");
-    ASSERT.strictEqual("COMPOUNDCURVE(CIRCULARSTRING(10.0 10.0, 0.0 20.0, -10.0 10.0), (-10.0 10.0, -10.0 0.0, 10.0 0.0, 5.0 5.0))", cc.curvedWkt, "cs curved wkt");
+    ASSERT.strictEqual("COMPOUNDCURVE (CIRCULARSTRING (10.0 10.0, 0.0 20.0, -10.0 10.0), (-10.0 10.0, -10.0 0.0, 10.0 0.0, 5.0 5.0))", cc.curvedWkt, "cs curved wkt");
 
 };

@@ -15,9 +15,9 @@ var STYLE = require("./style");
 var geotools = Packages.org.geotools;
 var Query = geotools.data.Query;
 var Transaction = geotools.data.Transaction;
-var FeatureCollections = geotools.feature.FeatureCollections;
+var DefaultFeatureCollection = geotools.feature.DefaultFeatureCollection;
 var CQL = geotools.filter.text.cql2.CQL;
-var FilterFactory2 = geotools.factory.CommonFactoryFinder.getFilterFactory2(geotools.factory.GeoTools.getDefaultHints());
+var FilterFactory2 = geotools.factory.CommonFactoryFinder.getFilterFactory2(geotools.util.factory.GeoTools.getDefaultHints());
 
 
 // TODO: remove when changed in GeoTools
@@ -425,8 +425,7 @@ var Layer = UTIL.extend(GeoObject, {
           feature.projection = this.projection;
         }
       }
-      collection = FeatureCollections.newCollection();
-      collection.add(feature);
+      collection = [feature];
       feature.layer = this;
     }
     this._source.addFeatures(collection);

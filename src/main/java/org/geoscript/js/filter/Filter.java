@@ -3,11 +3,11 @@ package org.geoscript.js.filter;
 import org.geoscript.js.GeoObject;
 import org.geoscript.js.feature.Feature;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
+import org.geotools.util.factory.GeoTools;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.Encoder;
 import org.mozilla.javascript.*;
 import org.mozilla.javascript.annotations.JSConstructor;
 import org.mozilla.javascript.annotations.JSFunction;
@@ -158,7 +158,7 @@ public class Filter extends GeoObject implements Wrapper {
 
     @JSFunction
     public String toXML(String version, boolean pretty) throws IOException {
-        org.geotools.xml.Encoder encoder;
+        org.geotools.xsd.Encoder encoder;
         QName qname;
         if (version.equalsIgnoreCase("1.1")) {
             qname = org.geotools.filter.v1_1.OGC.getInstance().Filter;

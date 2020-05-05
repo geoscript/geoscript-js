@@ -72,15 +72,15 @@ public class MultiLineString extends GeometryCollection implements Wrapper {
      * Constructor from JTS geometry.
      * @param geometry
      */
-    public MultiLineString(Scriptable scope, com.vividsolutions.jts.geom.MultiLineString geometry) {
+    public MultiLineString(Scriptable scope, org.locationtech.jts.geom.MultiLineString geometry) {
         this.setParentScope(scope);
         this.setPrototype(Module.getClassPrototype(MultiLineString.class));
         setGeometry(geometry);
     }
 
-    public com.vividsolutions.jts.geom.MultiLineString createCollection(com.vividsolutions.jts.geom.Geometry[] geometries) {
-        com.vividsolutions.jts.geom.LineString[] lines = Arrays.copyOf(geometries, geometries.length, com.vividsolutions.jts.geom.LineString[].class);
-        return new com.vividsolutions.jts.geom.MultiLineString(lines, factory);
+    public org.locationtech.jts.geom.MultiLineString createCollection(org.locationtech.jts.geom.Geometry[] geometries) {
+        org.locationtech.jts.geom.LineString[] lines = Arrays.copyOf(geometries, geometries.length, org.locationtech.jts.geom.LineString[].class);
+        return new org.locationtech.jts.geom.MultiLineString(lines, factory);
     }
 
     /**
@@ -114,7 +114,7 @@ public class MultiLineString extends GeometryCollection implements Wrapper {
         Scriptable scope = getParentScope();
         NativeArray array = (NativeArray) cx.newArray(scope, 2*size);
         for (int i=0; i<size; ++i) {
-            com.vividsolutions.jts.geom.LineString geom = (com.vividsolutions.jts.geom.LineString) components.get(i);
+            org.locationtech.jts.geom.LineString geom = (org.locationtech.jts.geom.LineString) components.get(i);
             LineString line = (LineString) GeometryWrapper.wrap(scope, geom);
             array.put(2*i, array, line.getStartPoint());
             array.put((2*i)+1, array, line.getEndPoint());
@@ -125,8 +125,8 @@ public class MultiLineString extends GeometryCollection implements Wrapper {
     /**
      * Returns underlying JTS geometry.
      */
-    public com.vividsolutions.jts.geom.MultiLineString unwrap() {
-        return (com.vividsolutions.jts.geom.MultiLineString) getGeometry();
+    public org.locationtech.jts.geom.MultiLineString unwrap() {
+        return (org.locationtech.jts.geom.MultiLineString) getGeometry();
     }
 
 }

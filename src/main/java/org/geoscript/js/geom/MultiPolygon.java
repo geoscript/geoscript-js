@@ -69,15 +69,15 @@ public class MultiPolygon extends GeometryCollection implements Wrapper {
      * Constructor from JTS geometry.
      * @param geometry
      */
-    public MultiPolygon(Scriptable scope, com.vividsolutions.jts.geom.MultiPolygon geometry) {
+    public MultiPolygon(Scriptable scope, org.locationtech.jts.geom.MultiPolygon geometry) {
         this.setParentScope(scope);
         this.setPrototype(Module.getClassPrototype(MultiPolygon.class));
         setGeometry(geometry);
     }
 
-    public com.vividsolutions.jts.geom.MultiPolygon createCollection(com.vividsolutions.jts.geom.Geometry[] geometries) {
-        com.vividsolutions.jts.geom.Polygon[] polys = Arrays.copyOf(geometries, geometries.length, com.vividsolutions.jts.geom.Polygon[].class);
-        return new com.vividsolutions.jts.geom.MultiPolygon(polys, factory);
+    public org.locationtech.jts.geom.MultiPolygon createCollection(org.locationtech.jts.geom.Geometry[] geometries) {
+        org.locationtech.jts.geom.Polygon[] polys = Arrays.copyOf(geometries, geometries.length, org.locationtech.jts.geom.Polygon[].class);
+        return new org.locationtech.jts.geom.MultiPolygon(polys, factory);
     }
 
     /**
@@ -106,8 +106,8 @@ public class MultiPolygon extends GeometryCollection implements Wrapper {
     /**
      * Returns underlying JTS geometry.
      */
-    public com.vividsolutions.jts.geom.MultiPolygon unwrap() {
-        return (com.vividsolutions.jts.geom.MultiPolygon) getGeometry();
+    public org.locationtech.jts.geom.MultiPolygon unwrap() {
+        return (org.locationtech.jts.geom.MultiPolygon) getGeometry();
     }
 
 }

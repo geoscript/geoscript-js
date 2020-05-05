@@ -10,7 +10,7 @@ import org.mozilla.javascript.Wrapper;
 import org.mozilla.javascript.annotations.JSConstructor;
 import org.mozilla.javascript.annotations.JSGetter;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 
 public class Point extends Geometry implements Wrapper {
 
@@ -49,7 +49,7 @@ public class Point extends Geometry implements Wrapper {
      * Constructor from JTS geometry.
      * @param geometry
      */
-    public Point(Scriptable scope, com.vividsolutions.jts.geom.Point geometry) {
+    public Point(Scriptable scope, org.locationtech.jts.geom.Point geometry) {
         this.setParentScope(scope);
         this.setPrototype(Module.getClassPrototype(Point.class));
         setGeometry(geometry);
@@ -84,7 +84,7 @@ public class Point extends Geometry implements Wrapper {
      */
     @JSGetter
     public Object getX() {
-        return ((com.vividsolutions.jts.geom.Point) getGeometry()).getX();
+        return ((org.locationtech.jts.geom.Point) getGeometry()).getX();
     }
 
     /**
@@ -93,7 +93,7 @@ public class Point extends Geometry implements Wrapper {
      */
     @JSGetter
     public Object getY() {
-        return ((com.vividsolutions.jts.geom.Point) getGeometry()).getY();
+        return ((org.locationtech.jts.geom.Point) getGeometry()).getY();
     }
 
     /**
@@ -136,8 +136,8 @@ public class Point extends Geometry implements Wrapper {
     /**
      * Returns underlying JTS geometry.
      */
-    public com.vividsolutions.jts.geom.Point unwrap() {
-        return (com.vividsolutions.jts.geom.Point) getGeometry();
+    public org.locationtech.jts.geom.Point unwrap() {
+        return (org.locationtech.jts.geom.Point) getGeometry();
     }
 
 }
