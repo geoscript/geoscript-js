@@ -15,7 +15,7 @@ After extracting the release archive, you can open the GeoScript shell and impor
 
 .. code-block:: javascript
 
-    ~/geoscript-js$ ./bin/geoscript
+    ~/geoscript-js$ ./bin/geoscript-js
 
     >> var geom = require("geoscript/geom");
     >> var p1 = new geom.Point([0, 0]);        
@@ -27,3 +27,6 @@ After extracting the release archive, you can open the GeoScript shell and impor
     true
     >> quit()
 
+You can also use the uber jar that contains all dependencies and is runnable::
+
+    java -jar geoscript-js-1.1.0-app.jar
