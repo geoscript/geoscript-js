@@ -30,9 +30,9 @@ var prepConfig = function(config) {
  */
 var Geobuf = UTIL.extend(Workspace, {
 
-  /** private: config[database]
+  /** private: config[file]
    *  ``String``
-   *  Path to the database (required).
+   *  Path to the directory (required).
    */
 
   /** private: constructor
@@ -40,7 +40,7 @@ var Geobuf = UTIL.extend(Workspace, {
    *
    *    :arg config: ``Object`` Configuration object.
    *
-   *    Create a workspace from a Geobuf enabled database.
+   *    Create a workspace from a Geobuf directory.
    */
   constructor: function Geobuf(config) {
     Workspace.prototype.constructor.apply(this, [prepConfig(config)]);
@@ -48,7 +48,7 @@ var Geobuf = UTIL.extend(Workspace, {
 
   /** private: method[_create]
    *  :arg config: ``Object``
-   *  :returns: ``org.geotools.jdbc.JDBCDataStore``
+   *  :returns: ``org.geotools.data.geobuf.GeobufDataStore``
    *
    *  Create the underlying store for the workspace.
    */
@@ -62,7 +62,7 @@ var Geobuf = UTIL.extend(Workspace, {
   get config() {
     return {
       type: this.constructor.name,
-      database: this.database
+      file: this.file
     };
   }
 
