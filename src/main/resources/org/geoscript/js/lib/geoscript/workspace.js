@@ -45,6 +45,9 @@ exports.GeoPackage = require("./workspace/geopackage").GeoPackage;
 /** api: classes[] = geobuf */
 exports.Geobuf = require("./workspace/geobuf").Geobuf;
 
+/** api: classes[] = flatgeobuf */
+exports.Flatgeobuf = require("./workspace/flatgeobuf").Flatgeobuf;
+
 /** private: classes[] = spatialite */
 exports.SpatiaLite = require("./workspace/spatialite").SpatiaLite;
 
