@@ -157,6 +157,15 @@ exports["test: create(bounds)"] = function() {
     
 };
 
+exports["test: create random points"] = function() {
+
+    var geom = GEOM.Point([1,1]).buffer(10)
+    var points = geom.randomPoints(10)
+    ASSERT.ok(points instanceof GEOM.MultiPoint)
+    ASSERT.strictEqual(points.components.length, 10, "geometry has 10 components");
+}
+
+
 exports["test: Point"] = require("./geom/test_point");
 exports["test: LineString"] = require("./geom/test_linestring");
 exports["test: Polygon"] = require("./geom/test_polygon");

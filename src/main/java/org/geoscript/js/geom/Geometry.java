@@ -302,6 +302,17 @@ public class Geometry extends GeoObject implements Wrapper {
     }
 
     @JSFunction
+    public ScriptableObject randomPoints(int number) {
+        org.locationtech.jts.shape.random.RandomPointsBuilder builder = new org.locationtech.jts.shape.random.RandomPointsBuilder(factory);
+        builder.setExtent(geometry);
+        builder.setNumPoints(number);
+        org.locationtech.jts.geom.Geometry geom = builder.getGeometry();
+        ScriptableObject points = GeometryWrapper.wrap(getParentScope(), geom);
+        ((Geometry) points).projection = projection;
+        return points;
+    }
+
+    @JSFunction
     public String getGeometryType() {
         return geometry.getGeometryType();
     }
