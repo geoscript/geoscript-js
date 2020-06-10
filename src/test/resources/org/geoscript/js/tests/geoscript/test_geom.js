@@ -157,6 +157,16 @@ exports["test: create(bounds)"] = function() {
     
 };
 
+exports["test: create voronoi diagram"] = function() {
+
+    var geom = GEOM.Point([1,1]).buffer(50)
+    var points = geom.randomPoints(20)
+    var diagram = points.createVoronoiDiagram()
+    ASSERT.ok(diagram instanceof GEOM.GeometryCollection)
+    ASSERT.ok(diagram.components.length > 0, "there should be more than 0 polygons");
+
+}
+
 exports["test: create random points"] = function() {
 
     var geom = GEOM.Point([1,1]).buffer(10)
