@@ -163,6 +163,27 @@ exports["test: create random points"] = function() {
     var points = geom.randomPoints(10)
     ASSERT.ok(points instanceof GEOM.MultiPoint)
     ASSERT.strictEqual(points.components.length, 10, "geometry has 10 components");
+
+}
+
+exports["test: create conforming delaunay triangles"] = function() {
+
+    var geom = GEOM.Point([1,1]).buffer(50)
+    var points = geom.randomPoints(20)
+    var triangles = points.createDelaunayTriangles(true)
+    ASSERT.ok(triangles instanceof GEOM.GeometryCollection)
+    ASSERT.ok(triangles.components.length > 0, "there should be more than 0 triangles");
+
+}
+
+exports["test: create non-conforming delaunay triangles"] = function() {
+
+    var geom = GEOM.Point([1,1]).buffer(50)
+    var points = geom.randomPoints(20)
+    var triangles = points.createDelaunayTriangles(false)
+    ASSERT.ok(triangles instanceof GEOM.GeometryCollection)
+    ASSERT.ok(triangles.components.length > 0, "there should be more than 0 triangles");
+
 }
 
 

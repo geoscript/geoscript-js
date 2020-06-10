@@ -11,6 +11,8 @@ import org.geoscript.js.proj.Projection;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.triangulate.ConformingDelaunayTriangulationBuilder;
+import org.locationtech.jts.triangulate.DelaunayTriangulationBuilder;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.FunctionObject;
 import org.mozilla.javascript.NativeArray;
@@ -310,6 +312,24 @@ public class Geometry extends GeoObject implements Wrapper {
         ScriptableObject points = GeometryWrapper.wrap(getParentScope(), geom);
         ((Geometry) points).projection = projection;
         return points;
+    }
+
+    @JSFunction
+    public ScriptableObject createDelaunayTriangles(boolean isConforming) {
+        org.locationtech.jts.geom.Geometry geom;
+        if (isConforming) {
+            ConformingDelaunayTriangulationBuilder builder = new ConformingDelaunayTriangulationBuilder();
+            builder.setSites(geometry);
+            geom = builder.getTriangles(factory);
+        }
+        else {
+            DelaunayTriangulationBuilder builder = new DelaunayTriangulationBuilder();
+            builder.setSites(geometry);
+            geom = builder.getTriangles(factory);
+        }
+        ScriptableObject triangles = GeometryWrapper.wrap(getParentScope(), geom);
+        ((Geometry) triangles).projection = projection;
+        return triangles;
     }
 
     @JSFunction
