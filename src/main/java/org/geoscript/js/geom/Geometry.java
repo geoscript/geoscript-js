@@ -35,6 +35,7 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.operation.buffer.BufferOp;
 import org.locationtech.jts.operation.buffer.BufferParameters;
+import org.locationtech.jts.triangulate.VoronoiDiagramBuilder;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 
 public class Geometry extends GeoObject implements Wrapper {
@@ -301,6 +302,15 @@ public class Geometry extends GeoObject implements Wrapper {
         ScriptableObject densified = GeometryWrapper.wrap(getParentScope(), geom);
         ((Geometry) densified).projection = projection;
         return densified;
+    }
+
+    @JSFunction
+    public ScriptableObject createVoronoiDiagram() {
+        VoronoiDiagramBuilder builder = new VoronoiDiagramBuilder();
+        builder.setSites(geometry);
+        ScriptableObject voronoiDiagram = GeometryWrapper.wrap(getParentScope(), builder.getDiagram(Geometry.factory));
+        ((Geometry) voronoiDiagram).projection = projection;
+        return voronoiDiagram;
     }
 
     @JSFunction
