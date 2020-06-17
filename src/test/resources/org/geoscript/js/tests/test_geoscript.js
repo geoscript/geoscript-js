@@ -8,6 +8,7 @@ exports["test: workspace"] = require("./geoscript/test_workspace");
 exports["test: style"] = require("./geoscript/test_style");
 exports["test: map"] = require("./geoscript/test_map");
 exports["test: util"] = require("./geoscript/test_util");
+exports["test: index"] = require("./geoscript/test_index");
 
 if (require.main == module.id) {
     system.exit(require("test").run(exports));

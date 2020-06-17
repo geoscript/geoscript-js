@@ -16,6 +16,7 @@ Modules
     feature
     filter
     proj
+    index/*
     layer
     workspace
     style

@@ -4,6 +4,7 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import org.locationtech.jts.densify.Densifier;
 import org.geoscript.js.GeoObject;
@@ -646,4 +647,17 @@ public class Geometry extends GeoObject implements Wrapper {
         return arrayRepr(getCoordinates());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Geometry geometry1 = (Geometry) o;
+        return Objects.equals(geometry, geometry1.geometry) &&
+                Objects.equals(projection, geometry1.projection);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(geometry, projection);
+    }
 }
