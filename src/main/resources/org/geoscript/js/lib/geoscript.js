@@ -7,3 +7,4 @@ exports.workspace = require("./geoscript/workspace");
 exports.viewer = require("./geoscript/viewer");
 exports.style = require("./geoscript/style");
 exports.map = require("./geoscript/map");
+exports.index = require("./geoscript/index");

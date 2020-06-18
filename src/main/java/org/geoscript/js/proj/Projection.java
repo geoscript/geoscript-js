@@ -1,5 +1,6 @@
 package org.geoscript.js.proj;
 
+import java.util.Objects;
 import java.util.logging.Logger;
 
 import org.geoscript.js.GeoObject;
