@@ -8,3 +8,4 @@ exports.viewer = require("./geoscript/viewer");
 exports.style = require("./geoscript/style");
 exports.map = require("./geoscript/map");
 exports.index = require("./geoscript/index");
+exports.raster = require("./geoscript/raster");
