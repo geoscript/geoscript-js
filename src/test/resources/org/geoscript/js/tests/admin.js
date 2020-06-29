@@ -76,6 +76,10 @@ var meta = {
             params.setProperty("password", "postgres");
             var connection = meta.pg.driver.getConnection(uri, params);
         }
+    },
+    raster: {
+        source: path("data/raster.tif"),
+        writePng: path("raster.png")
     }
 };
 

@@ -19,6 +19,7 @@ Modules
     index/*
     layer
     workspace
+    raster
     style
     map
     process
