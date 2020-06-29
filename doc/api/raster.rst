@@ -97,6 +97,12 @@ Properties
 Methods
 -------
 
+.. function:: Raster.getPixel(point)
+
+    :arg point: :class:`geom.Point` The geographic Point
+
+    Get a pixel ``Object`` with x and y properies.
+
 .. function:: Raster.getPoint(x,y)
 
     :arg x: ``Number`` The pixel's x position
@@ -113,6 +119,11 @@ Methods
 
     Get a value for each band from the Raster.
 
+.. function:: Raster.crop(bounds)
+
+    :arg bounds: :class:`geom.Bound` The Bounds of the new Raster
+
+    Crop the current Raster to only include data in the given Bounds.
 
 :class:`raster.Band`
 ====================

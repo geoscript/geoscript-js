@@ -75,7 +75,25 @@ exports["test: get raster point from pixel"] = function() {
 exports["test: get raster point from pixel"] = function() {
     var format = new raster.Format({source: admin.raster.source});
     var tif = format.read({});
-    print(tif.getValue(new geom.Point([-175.8, 81.8])));
-    //assert.strictEqual(-69, tif.getValue(new geom.Point([-175.8, 81.8]), "double")[0], "Value should be -69");
-    //assert.strictEqual(-69, tif.getValue({x: 10, y: 20}, "double")[0], "Value should be -69");
+    assert.strictEqual(-69, tif.getValue(new geom.Point([-175.8, 81.8]), "double")[0], "Value should be -69");
+    assert.strictEqual(-69, tif.getValue({x: 10, y: 20}, "double")[0], "Value should be -69");
+};
+
+exports["test: get raster pixel from point"] = function() {
+    var format = new raster.Format({source: admin.raster.source});
+    var tif = format.read({});
+    var pixel = tif.getPixel(new geom.Point([-175.8, 81.8]));
+    assert.strictEqual(10, pixel.x, "Value should be 10");
+    assert.strictEqual(20, pixel.y, "Value should be 20");
+};
+
+exports["test: crop a raster"] = function() {
+    var format = new raster.Format({source: admin.raster.source});
+    var tif = format.read({});
+    var smallTif = tif.crop(new geom.Bounds([-180,-90, 0, 0]))
+    var bounds = smallTif.bounds;
+    assert.strictEqual(-180, Math.round(bounds.minX), "Min X should be -180");
+    assert.strictEqual(-90,  Math.round(bounds.minY), "Min Y should be -90");
+    assert.strictEqual(0,    Math.round(bounds.maxX), "Max X should be 0");
+    assert.strictEqual(0,    Math.round(bounds.maxY), "Max Y should be 0");
 };

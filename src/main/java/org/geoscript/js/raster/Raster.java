@@ -8,15 +8,18 @@ import org.geotools.coverage.grid.GridCoordinates2D;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.mozilla.javascript.*;
 import org.mozilla.javascript.annotations.JSConstructor;
 import org.mozilla.javascript.annotations.JSFunction;
 import org.mozilla.javascript.annotations.JSGetter;
+import org.opengis.coverage.Coverage;
 import org.opengis.coverage.SampleDimension;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
+import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
@@ -107,6 +110,20 @@ public class Raster extends GeoObject implements Wrapper {
     }
 
     @JSFunction
+    public NativeObject getPixel(Point point) {
+        GridGeometry2D gg = coverage.getGridGeometry();
+        try {
+            GridCoordinates2D gridCoordinates2D = gg.worldToGrid(new DirectPosition2D((double) point.getX(), (double) point.getY()));
+            Map<String, Double> pixel = new HashMap<>();
+            pixel.put("x", gridCoordinates2D.getX());
+            pixel.put("y", gridCoordinates2D.getY());
+            return (NativeObject) javaToJS(pixel, this.getParentScope());
+        } catch (TransformException e) {
+            throw ScriptRuntime.constructError("Error", "Error getting Pixel coordinate from Point for Raster.");
+        }
+    }
+
+    @JSFunction
     public Object getValue(Object pointOrPixel) {
         Point point;
         if (pointOrPixel instanceof Point) {
@@ -120,6 +137,16 @@ public class Raster extends GeoObject implements Wrapper {
         DirectPosition dp = new DirectPosition2D(coverage.getCoordinateReferenceSystem2D(), (double) point.getX(), (double) point.getY());
         Object result =  coverage.evaluate(dp);
         return javaToJS(result, getParentScope());
+    }
+
+    @JSFunction
+    public Raster crop(Bounds bounds) {
+        CoverageProcessor processor = new CoverageProcessor();
+        ParameterValueGroup params = processor.getOperation("CoverageCrop").getParameters();
+        params.parameter("Source").setValue(coverage);
+        params.parameter("Envelope").setValue(new org.geotools.geometry.GeneralEnvelope(bounds.unwrap()));
+        GridCoverage2D newCoverage = (GridCoverage2D) processor.doOperation(params);
+        return new Raster(this.getParentScope(), newCoverage);
     }
 
     @Override
