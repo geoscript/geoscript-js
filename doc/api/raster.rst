@@ -125,6 +125,13 @@ Methods
 
     Crop the current Raster to only include data in the given Bounds.
 
+.. function:: Raster.crop(geometry)
+
+    :arg geometry: :class:`geom.Geometry` The Geometry to use when cropping the Raster
+
+    Crop the current Raster to only include data in the given Geometry.
+
+
 :class:`raster.Band`
 ====================
 

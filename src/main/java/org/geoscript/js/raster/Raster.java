@@ -2,6 +2,7 @@ package org.geoscript.js.raster;
 
 import org.geoscript.js.GeoObject;
 import org.geoscript.js.geom.Bounds;
+import org.geoscript.js.geom.Geometry;
 import org.geoscript.js.geom.Point;
 import org.geoscript.js.proj.Projection;
 import org.geotools.coverage.grid.GridCoordinates2D;
@@ -140,11 +141,17 @@ public class Raster extends GeoObject implements Wrapper {
     }
 
     @JSFunction
-    public Raster crop(Bounds bounds) {
+    public Raster crop(Object boundsOrGeometry) {
         CoverageProcessor processor = new CoverageProcessor();
         ParameterValueGroup params = processor.getOperation("CoverageCrop").getParameters();
         params.parameter("Source").setValue(coverage);
-        params.parameter("Envelope").setValue(new org.geotools.geometry.GeneralEnvelope(bounds.unwrap()));
+        if (boundsOrGeometry instanceof Bounds) {
+            Bounds bounds = (Bounds) boundsOrGeometry;
+            params.parameter("Envelope").setValue(new org.geotools.geometry.GeneralEnvelope(bounds.unwrap()));
+        } else {
+            Geometry geometry = (Geometry) boundsOrGeometry;
+            params.parameter("ROI").setValue(geometry.unwrap());
+        }
         GridCoverage2D newCoverage = (GridCoverage2D) processor.doOperation(params);
         return new Raster(this.getParentScope(), newCoverage);
     }
