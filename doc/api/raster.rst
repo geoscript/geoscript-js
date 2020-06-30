@@ -131,6 +131,11 @@ Methods
 
     Crop the current Raster to only include data in the given Geometry.
 
+.. function:: Raster.reproject(projection)
+
+    :arg projection: :class:`proj.Projection` The target Projection
+
+    Reproject a Raster from one Projection to anothet Projection.
 
 :class:`raster.Band`
 ====================

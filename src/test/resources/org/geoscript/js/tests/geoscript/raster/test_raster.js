@@ -71,7 +71,6 @@ exports["test: get raster point from pixel"] = function() {
     assert.strictEqual("81.8", pt.y.toFixed(1), "Point y should be 81.8");
 };
 
-
 exports["test: get raster point from pixel"] = function() {
     var format = new raster.Format({source: admin.raster.source});
     var tif = format.read({});
@@ -107,4 +106,12 @@ exports["test: crop a raster with a geometry"] = function() {
     assert.strictEqual(-4, Math.round(bounds.minY), "Min Y should be -4");
     assert.strictEqual(4,  Math.round(bounds.maxX), "Max X should be 4");
     assert.strictEqual(4,  Math.round(bounds.maxY), "Max Y should be 4");
+};
+
+exports["test: reproject a raster"] = function() {
+    var format = new raster.Format({source: admin.raster.source});
+    var tif = format.read({}).crop(new geom.Point([0, 0]).buffer(4));
+    var reprojectedTif = tif.reproject(new proj.Projection("EPSG:3857"));
+    assert.strictEqual("EPSG:4326", tif.proj.id, "Original raster should be EPSG:4326");
+    assert.strictEqual("EPSG:3857", reprojectedTif.proj.id, "Original raster should be EPSG:3857");
 };

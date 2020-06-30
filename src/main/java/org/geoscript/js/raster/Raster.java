@@ -156,6 +156,16 @@ public class Raster extends GeoObject implements Wrapper {
         return new Raster(this.getParentScope(), newCoverage);
     }
 
+    @JSFunction
+    public Raster reproject(Projection projection) {
+        CoverageProcessor processor = new CoverageProcessor();
+        ParameterValueGroup params = processor.getOperation("Resample").getParameters();
+        params.parameter("Source").setValue(coverage);
+        params.parameter("CoordinateReferenceSystem").setValue(projection.unwrap());
+        GridCoverage2D newCoverage = (GridCoverage2D) processor.doOperation(params);
+        return new Raster(this.getParentScope(), newCoverage);
+    }
+
     @Override
     public String toString() {
         return this.getName();
