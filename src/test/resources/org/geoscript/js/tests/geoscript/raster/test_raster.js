@@ -115,3 +115,31 @@ exports["test: reproject a raster"] = function() {
     assert.strictEqual("EPSG:4326", tif.proj.id, "Original raster should be EPSG:4326");
     assert.strictEqual("EPSG:3857", reprojectedTif.proj.id, "Original raster should be EPSG:3857");
 };
+
+exports["test: reclassify a raster"] = function() {
+    var format = new raster.Format({source: admin.raster.source});
+    var tif = format.read({});
+    var reclassifiedTif = tif.reclassify([
+        {min: -1000, max: 0, value: -1},
+        {min: 0, max: 50, value: 1},
+        {min: 50, max: 100, value: 2},
+        {min: 100, max: 2000, value: 3}
+    ], {noData: 0});
+    assert.strictEqual(-1, reclassifiedTif.getValue(new geom.Point([-175.8, 81.8]), "double")[0], "Value should be -1");
+    assert.strictEqual(-1, reclassifiedTif.getValue({x: 10, y: 20}, "double")[0], "Value should be -1");
+};
+
+exports["test: get min and max values for a raster band"] = function() {
+    var format = new raster.Format({source: admin.raster.source});
+    var tif = format.read({});
+    assert.strictEqual(49, tif.getMinValue(0));
+    assert.strictEqual(255, tif.getMaxValue(0));
+};
+
+exports["test: get extrema for all raster bands"] = function() {
+    var format = new raster.Format({source: admin.raster.source});
+    var tif = format.read({});
+    var extrema = tif.extrema
+    assert.strictEqual(49, extrema.min[0]);
+    assert.strictEqual(255, extrema.max[0]);
+};

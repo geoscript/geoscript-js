@@ -94,6 +94,11 @@ Properties
     `Array` of :class:`raster.Bands`
     Get an array of Bands
 
+.. attribute:: Raster.extrema
+
+    `Object` with min and max arrays with min and max values for each band
+    Get the minimum and maximum values for each band.
+
 Methods
 -------
 
@@ -119,6 +124,18 @@ Methods
 
     Get a value for each band from the Raster.
 
+.. function:: Raster.getMinimumValue(band)
+
+    :arg namd: `Number` The band
+
+    Get the minimum value for the given  band
+
+.. function:: Raster.getMaximumValue(band)
+
+    :arg namd: `Number` The band
+
+    Get the maximum value for the given  band
+
 .. function:: Raster.crop(bounds)
 
     :arg bounds: :class:`geom.Bound` The Bounds of the new Raster
@@ -135,7 +152,15 @@ Methods
 
     :arg projection: :class:`proj.Projection` The target Projection
 
-    Reproject a Raster from one Projection to anothet Projection.
+    Reproject a Raster from one Projection to another Projection.
+
+.. function:: Raster.reclassify(ranges, options)
+
+    :arg ranges: `Array` An array of object literals with required min, max, and value properties. minIncluded and maxIncluded are optional.
+
+    :arg options: `Object` An object literal with optional band and noData values.
+
+    Reclassify the values of the Raster.
 
 :class:`raster.Band`
 ====================

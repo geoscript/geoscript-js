@@ -12,11 +12,12 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.process.raster.RangeLookupProcess;
+import org.jaitools.numeric.Range;
 import org.mozilla.javascript.*;
 import org.mozilla.javascript.annotations.JSConstructor;
 import org.mozilla.javascript.annotations.JSFunction;
 import org.mozilla.javascript.annotations.JSGetter;
-import org.opengis.coverage.Coverage;
 import org.opengis.coverage.SampleDimension;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
@@ -164,6 +165,65 @@ public class Raster extends GeoObject implements Wrapper {
         params.parameter("CoordinateReferenceSystem").setValue(projection.unwrap());
         GridCoverage2D newCoverage = (GridCoverage2D) processor.doOperation(params);
         return new Raster(this.getParentScope(), newCoverage);
+    }
+
+    @JSFunction
+    public Raster reclassify(NativeArray ranges, NativeObject options) {
+        int band = (int) options.getOrDefault("band", 0);
+        double noData  = (double) options.getOrDefault("noData",0);
+        List<Range> rangeList = new ArrayList<>();
+        int[] pixelValues = new int[ranges.size()];
+        for(int i = 0; i<ranges.size(); i++) {
+            NativeObject rangeObj = (NativeObject) ranges.get(i);
+            pixelValues[i] = getInt(rangeObj.get("value"));
+            rangeList.add(Range.create(
+                Double.parseDouble(rangeObj.get("min").toString()),
+                (boolean) rangeObj.getOrDefault("minIncluded", true),
+                Double.parseDouble(rangeObj.get("max").toString()),
+                (boolean) rangeObj.getOrDefault("maxIncluded", true)
+            ));
+        }
+        RangeLookupProcess process = new RangeLookupProcess();
+        GridCoverage2D newCoverage = process.execute(this.coverage, band, rangeList, pixelValues, noData, null);
+        return new Raster(this.getParentScope(), newCoverage);
+    }
+
+    @JSGetter
+    public NativeObject getExtrema() {
+        CoverageProcessor processor = new CoverageProcessor();
+        ParameterValueGroup params = processor.getOperation("Extrema").getParameters();
+        params.parameter("Source").setValue(coverage);
+        GridCoverage2D coverage = (GridCoverage2D) processor.doOperation(params);
+        Map<String, Object> values = new HashMap<>();
+        values.put("min", coverage.getProperty("minimum"));
+        values.put("max",coverage.getProperty("maximum"));
+        return (NativeObject) javaToJS(values, this.getParentScope());
+    }
+
+    @JSFunction
+    public Object getMinValue(int band) {
+        double minValue = this.coverage.getSampleDimension(band).getMinimumValue();
+        if (Double.isInfinite(minValue)) {
+            minValue = ((double[])this.getExtrema().get("min"))[band];
+        }
+        return minValue;
+    }
+
+    @JSFunction
+    public Object getMaxValue(int band) {
+        double maxValue = this.coverage.getSampleDimension(band).getMaximumValue();
+        if (Double.isInfinite(maxValue)) {
+            maxValue = ((double[])this.getExtrema().get("max"))[band];
+        }
+        return maxValue;
+    }
+
+    private int getInt(Object obj) {
+        if (obj instanceof Number) {
+            return ((Number)obj).intValue();
+        } else {
+            return getInt(Double.parseDouble(obj.toString()));
+        }
     }
 
     @Override
