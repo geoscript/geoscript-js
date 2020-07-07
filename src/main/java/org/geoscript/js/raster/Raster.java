@@ -5,14 +5,14 @@ import org.geoscript.js.geom.Bounds;
 import org.geoscript.js.geom.Geometry;
 import org.geoscript.js.geom.Point;
 import org.geoscript.js.proj.Projection;
-import org.geotools.coverage.grid.GridCoordinates2D;
-import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.grid.GridEnvelope2D;
-import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.Category;
+import org.geotools.coverage.GridSampleDimension;
+import org.geotools.coverage.grid.*;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.raster.RangeLookupProcess;
+import org.geotools.util.NumberRange;
 import org.jaitools.numeric.Range;
 import org.mozilla.javascript.*;
 import org.mozilla.javascript.annotations.JSConstructor;
@@ -25,7 +25,12 @@ import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
+import javax.media.jai.RasterFactory;
+import java.awt.*;
+import java.awt.image.DataBuffer;
+import java.awt.image.WritableRaster;
 import java.util.*;
+import java.util.List;
 
 public class Raster extends GeoObject implements Wrapper {
 
@@ -218,6 +223,25 @@ public class Raster extends GeoObject implements Wrapper {
         return maxValue;
     }
 
+    @JSGetter
+    public NativeArray getBlockSize() {
+        int[] size = this.coverage.getOptimalDataBlockSizes();
+        return (NativeArray) javaToJS(Arrays.asList(
+                size[0],
+                size[1]
+        ), this.getParentScope());
+    }
+
+    @JSGetter
+    public NativeArray getPixelSize() {
+        Bounds bounds = this.getBounds();
+        NativeArray size = this.getSize();
+        return (NativeArray) javaToJS(Arrays.asList(
+                ((double) bounds.getWidth()) / ((int)size.get(0)),
+                ((double) bounds.getHeight()) / ((int)size.get(1))
+        ), this.getParentScope());
+    }
+
     private int getInt(Object obj) {
         if (obj instanceof Number) {
             return ((Number)obj).intValue();
@@ -238,10 +262,44 @@ public class Raster extends GeoObject implements Wrapper {
 
     @JSConstructor
     public static Object constructor(Context cx, Object[] args, Function ctorObj, boolean inNewExpr) {
+        NativeArray data = (NativeArray) args[0];
+        Bounds bounds = (Bounds) args[1];
+
+        double min = Double.MAX_VALUE;
+        double max = Double.MIN_VALUE;
+        float[][] matrix = new float[(int) data.getLength()][ (int) (data.getLength() > 0 ? ((NativeArray) data.get(0)).getLength() : 0)];
+        for(int i = 0; i<data.getLength(); i++) {
+            NativeArray datum = (NativeArray) data.get(i);
+            for(int j = 0; j<datum.getLength(); j++) {
+                float value = ((Number)datum.get(j)).floatValue();
+                if (!Float.isNaN(value) && value < min) {
+                    min = value;
+                }
+                if (!Float.isNaN(value) && value > max) {
+                    max = value;
+                }
+                matrix[i][j] = value;
+            }
+        }
+
+        int width = matrix[0].length;
+        int height = matrix.length;
+
+        WritableRaster writableRaster = RasterFactory.createBandedRaster(DataBuffer.TYPE_FLOAT, width, height, 1, null);
+        for(int i = 0; i<width; i++) {
+            for(int j = 0; j<height; j++) {
+                writableRaster.setSample(i, j, 0, matrix[j][i]);
+            }
+        }
+
+        GridCoverageFactory gridCoverageFactory = new GridCoverageFactory();
+        Category category = new Category("Raster", Color.BLACK, NumberRange.create(min, max));
+        GridSampleDimension gridSampleDimension = new GridSampleDimension("Raster", new Category[]{category}, null);
+        GridCoverage2D coverage = gridCoverageFactory.create("Raster", writableRaster, bounds.unwrap(), new GridSampleDimension[]{gridSampleDimension});
         if (inNewExpr) {
-            return new Raster(null);
+            return new Raster(coverage);
         } else {
-            return new Raster(ctorObj.getParentScope(), null);
+            return new Raster(ctorObj.getParentScope(), coverage);
         }
     }
 

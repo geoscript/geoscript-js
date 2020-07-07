@@ -5,6 +5,17 @@ var raster = require("geoscript/raster");
 var geom = require('geoscript/geom');
 var proj = require('geoscript/proj');
 
+exports["test: create a raster from data"] = function() {
+    var ras = new raster.Raster([
+     [1,1,1,1,1],
+     [1,2,2,2,1],
+     [1,2,3,2,1]
+    ], new geom.Bounds([0,0,10,10]))
+    assert.ok(ras instanceof raster.Raster, "instance should be Raster");
+    assert.strictEqual(1, ras.getMinValue(), "Min value should be 1");
+    assert.strictEqual(3, ras.getMaxValue(), "Max value should be 3");
+};
+
 exports["test: read a raster"] = function() {
     var format = new raster.Format({source: admin.raster.source});
     var tif = format.read({});
@@ -134,6 +145,22 @@ exports["test: get min and max values for a raster band"] = function() {
     var tif = format.read({});
     assert.strictEqual(49, tif.getMinValue(0));
     assert.strictEqual(255, tif.getMaxValue(0));
+};
+
+exports["test: get block size"] = function() {
+    var format = new raster.Format({source: admin.raster.source});
+    var tif = format.read({});
+    var blockSize = tif.blockSize;
+    assert.strictEqual(900, blockSize[0], "Block Size Width should be 900");
+    assert.strictEqual(9, blockSize[1], "Block Size Height should be 9 ");
+};
+
+exports["test: get pixel size"] = function() {
+    var format = new raster.Format({source: admin.raster.source});
+    var tif = format.read({});
+    var pixelSize = tif.pixelSize;
+    assert.strictEqual(0.4, pixelSize[0], "Pixel Size Width should be 0.4");
+    assert.strictEqual(0.4, pixelSize[1], "Pixel Size Height should be 0.4");
 };
 
 exports["test: get extrema for all raster bands"] = function() {

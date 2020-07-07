@@ -55,6 +55,9 @@ Methods
 
     A Raster is a spatial data set represented by a grid of cells organized in one or more bands.
 
+    Usually, Rasters are read from a Format, but you can create a new Raster from an array or array of numeric values
+    and a geom.Bounds.
+
 Properties
 ----------
 
@@ -98,6 +101,16 @@ Properties
 
     `Object` with min and max arrays with min and max values for each band
     Get the minimum and maximum values for each band.
+
+.. attribute:: Raster.blockSize
+
+    `Array` with width and height of a pixel
+    Get the block size
+
+.. attribute:: Raster.pixelSize
+
+    `Array` with width and height of a pixel
+    Get the pixel size
 
 Methods
 -------
