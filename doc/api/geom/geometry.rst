@@ -99,6 +99,14 @@ Common Geometry Methods
     
     Construct a geometry that buffers this geometry by the given width.
 
+.. function:: Geometry.variableBuffer
+
+    :arg distances: ``Array`` An array of distances.
+
+    :returns: :class:`geom.Geometry`
+
+    Construct a geometry that buffers this geometry with an array of distances.
+
 .. function:: Geometry.clone
 
     :returns: :class:`geom.Geometry`

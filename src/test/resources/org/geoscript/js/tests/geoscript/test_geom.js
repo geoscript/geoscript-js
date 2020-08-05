@@ -22,7 +22,7 @@ exports["test: create(point)"] = function() {
 
 exports["test: create(linestring)"] = function() {
     var type = "LineString";
-    var coordinates = [[0, 1], [1, 2]];    
+    var coordinates = [[0, 1], [1, 2]];
     var o, g;
 
     // create a linestring
@@ -196,6 +196,19 @@ exports["test: create non-conforming delaunay triangles"] = function() {
 
 }
 
+exports["test: variable buffer"] = function() {
+
+    var geom = new GEOM.LineString([[1,2], [10,20], [30,50], [100, 150]]);
+    var buffer = geom.variableBuffer([10,50])
+    ASSERT.ok(buffer instanceof GEOM.Polygon)
+
+    buffer = geom.variableBuffer([10, 20, 50])
+    ASSERT.ok(buffer instanceof GEOM.Polygon)
+
+    buffer = geom.variableBuffer([10, 20, 50, 75])
+    ASSERT.ok(buffer instanceof GEOM.Polygon)
+
+}
 
 exports["test: Point"] = require("./geom/test_point");
 exports["test: LineString"] = require("./geom/test_linestring");

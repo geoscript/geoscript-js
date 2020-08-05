@@ -34,6 +34,7 @@ import org.opengis.referencing.operation.TransformException;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.operation.buffer.VariableBuffer;
 import org.locationtech.jts.operation.buffer.BufferOp;
 import org.locationtech.jts.operation.buffer.BufferParameters;
 import org.locationtech.jts.triangulate.VoronoiDiagramBuilder;
@@ -255,6 +256,21 @@ public class Geometry extends GeoObject implements Wrapper {
             wrapped.projection = projection;
         }
         return wrapped;
+    }
+
+    @JSFunction
+    public Geometry variableBuffer(NativeArray distances) {
+        if (distances.size() == 2) {
+            return (Geometry) GeometryWrapper.wrap(getParentScope(), VariableBuffer.buffer(getGeometry(), getDouble(distances.get(0)), getDouble(distances.get(1))));
+        } else if (distances.size() == 3) {
+            return (Geometry) GeometryWrapper.wrap(getParentScope(), VariableBuffer.buffer(getGeometry(), getDouble(distances.get(0)), getDouble(distances.get(1)), getDouble(distances.get(2))));
+        }  else {
+            return (Geometry) GeometryWrapper.wrap(getParentScope(), VariableBuffer.buffer(getGeometry(), distances.stream().mapToDouble(d -> getDouble(d)).toArray()));
+        }
+    }
+
+    private double getDouble(Object obj) {
+        return ((Number) obj).doubleValue();
     }
 
     @JSGetter
