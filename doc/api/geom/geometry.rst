@@ -266,6 +266,13 @@ Common Geometry Methods
     :attr:`projection` of this geometry must be set before calling this
     method.  Returns a new geometry.
 
+.. function:: Geometry.getMaximumInscribedCircle
+
+    :arg config: :`Object` tolerance property defaults to 1.0
+    :returns: :class:`geom.Geometry`
+
+    Get the maximum inscribed circle for this Geometry.
+
 .. function:: Geometry.within
 
     :arg other: :class:`geom.Geometry`

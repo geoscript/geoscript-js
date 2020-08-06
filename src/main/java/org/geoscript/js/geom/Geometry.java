@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.locationtech.jts.algorithm.construct.LargestEmptyCircle;
+import org.locationtech.jts.algorithm.construct.MaximumInscribedCircle;
 import org.locationtech.jts.densify.Densifier;
 import org.geoscript.js.GeoObject;
 import org.geoscript.js.proj.Projection;
@@ -340,6 +341,16 @@ public class Geometry extends GeoObject implements Wrapper {
         ScriptableObject points = GeometryWrapper.wrap(getParentScope(), geom);
         ((Geometry) points).projection = projection;
         return points;
+    }
+
+    @JSFunction
+    public Geometry getMaximumInscribedCircle(NativeObject config) {
+        double tolerance = getDouble(config.getOrDefault("tolerance", 1.0));
+        MaximumInscribedCircle algorithm = new MaximumInscribedCircle(getGeometry(), tolerance);
+        return (Geometry) GeometryWrapper.wrap(
+                getParentScope(),
+                algorithm.getCenter().buffer(algorithm.getRadiusLine().getLength())
+        );
     }
 
     @JSFunction
