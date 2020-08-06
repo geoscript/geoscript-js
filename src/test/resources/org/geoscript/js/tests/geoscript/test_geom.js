@@ -176,6 +176,20 @@ exports["test: create random points"] = function() {
 
 }
 
+exports["test: largest empty circle"] = function() {
+
+    var geom = new GEOM.Polygon([[
+        [-122.38855361938475, 47.5805786829606], [-122.38636493682861, 47.5783206388176],
+        [-122.38700866699219, 47.5750491969984], [-122.38177299499512, 47.57502024527343],
+        [-122.38481998443604, 47.5780600889959], [-122.38151550292969, 47.5805786829606],
+        [-122.38855361938475, 47.5805786829606]
+    ]]);
+    ASSERT.ok(geom instanceof GEOM.Polygon);
+    var circle = geom.getLargestEmptyCircle({tolerance: 1.0});
+    ASSERT.ok(circle instanceof GEOM.Polygon);
+
+}
+
 exports["test: create conforming delaunay triangles"] = function() {
 
     var geom = GEOM.Point([1,1]).buffer(50)
