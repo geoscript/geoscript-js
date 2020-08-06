@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import org.locationtech.jts.algorithm.construct.LargestEmptyCircle;
 import org.locationtech.jts.densify.Densifier;
 import org.geoscript.js.GeoObject;
 import org.geoscript.js.proj.Projection;
@@ -357,6 +358,16 @@ public class Geometry extends GeoObject implements Wrapper {
         ScriptableObject triangles = GeometryWrapper.wrap(getParentScope(), geom);
         ((Geometry) triangles).projection = projection;
         return triangles;
+    }
+
+    @JSFunction
+    public Geometry getLargestEmptyCircle(NativeObject config) {
+        double tolerance = getDouble(config.getOrDefault("tolerance", 1.0));
+        LargestEmptyCircle algorithm = new LargestEmptyCircle(getGeometry(), tolerance);
+        return (Geometry) GeometryWrapper.wrap(
+            getParentScope(),
+            algorithm.getCenter().buffer(algorithm.getRadiusLine().getLength())
+        );
     }
 
     @JSFunction

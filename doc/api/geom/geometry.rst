@@ -274,9 +274,10 @@ Common Geometry Methods
     Tests if this geometry is within the other geometry.  This is the
     inverse of :func:`contains`.
 
+.. function:: Geometry.getLargestEmptyCircle
 
+    :arg config: :`Object` tolerance property defaults to 1.0
+    :returns: :class:`geom.Geometry`
 
-
-
-
+    Get the largest empty circle in this Geometry.
 
