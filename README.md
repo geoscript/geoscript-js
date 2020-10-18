@@ -1,5 +1,7 @@
 [![Current Status](https://secure.travis-ci.org/geoscript/geoscript-js.png?branch=master)](https://travis-ci.org/geoscript/geoscript-js)
 
+[![Build Status](https://github.com/geoscript/geoscript-js/workflows/Maven%20Build/badge.svg)](https://github.com/geoscript/geoscript-js/actions)
+
 # geoscript.js
 
 ## GeoScript in JavaScript
