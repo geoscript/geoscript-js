@@ -38,7 +38,7 @@ var Memory = UTIL.extend(Workspace, {
    *  Create the underlying store for the workspace.
    */
   _create: function(config) {
-    return new MemoryDataStore();
+    return java.lang.Class.forName("org.geotools.data.memory.MemoryDataStore").newInstance();
   }
 
 });

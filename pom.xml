@@ -4,9 +4,9 @@
     <groupId>org.geoscript</groupId>
     <artifactId>geoscript-js</artifactId>
     <packaging>jar</packaging>
-    <version>1.4-SNAPSHOT</version>
+    <version>1.4.0</version>
     <properties>
-        <gt.version>25-SNAPSHOT</gt.version>
+        <gt.version>25.0</gt.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -62,7 +62,7 @@
         <dependency>
             <groupId>org.mozilla</groupId>
             <artifactId>rhino</artifactId>
-            <version>1.7.12</version>
+            <version>1.7.13</version>
         </dependency>
         <dependency>
             <groupId>jline</groupId>
