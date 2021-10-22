@@ -3,7 +3,8 @@ var Factory = require("../factory").Factory;
 var Workspace = require("./workspace").Workspace;
 var UTIL = require("../util");
 
-var FlatgeobufDataStoreFactory = Packages.org.geotools.data.flatgeobuf.FlatgeobufDataStoreFactory;
+var URLs = Packages.org.geotools.util.URLs;
+var FlatGeobufDataStoreFactory = Packages.org.geotools.data.flatgeobuf.FlatGeobufDataStoreFactory;
 
 /** private: (define)
  *  module = workspace
@@ -13,13 +14,13 @@ var FlatgeobufDataStoreFactory = Packages.org.geotools.data.flatgeobuf.Flatgeobu
 var prepConfig = function(config) {
   if (config) {
     if (typeof config === "string") {
-      config = {'flatgeobuf-file': config};
+      config = {'url': config};
     }
     if (!(typeof config.file === "string")) {
       throw "Flatgeobuf config must include file path.";
     }
     config = {
-      'flatgeobuf-file': String(config.file)
+      'url': String(URLs.fileToUrl(UTIL.toFile(config.file)))
     };
   }
   return config;
@@ -53,7 +54,7 @@ var Flatgeobuf = UTIL.extend(Workspace, {
    *  Create the underlying store for the workspace.
    */
   _create: function(config) {
-    var factory = new FlatgeobufDataStoreFactory();
+    var factory = new FlatGeobufDataStoreFactory();
     return factory.createDataStore(config);
   },
 
