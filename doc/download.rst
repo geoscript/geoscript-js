@@ -3,6 +3,8 @@
 Downloads
 =========
 
+`GeoScript JS 1.7.0 <https://github.com/geoscript/geoscript-js/releases/download/v1.7.0/geoscript-js-1.7.0.zip>`__
+
 `GeoScript JS 1.6.0 <https://github.com/geoscript/geoscript-js/releases/download/v1.6.0/geoscript-js-1.6.0.zip>`__
 
 `GeoScript JS 1.5.0 <https://github.com/geoscript/geoscript-js/releases/download/v1.5.0/geoscript-js-1.5.0.zip>`__

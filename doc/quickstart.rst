@@ -29,4 +29,4 @@ After extracting the release archive, you can open the GeoScript shell and impor
 
 You can also use the uber jar that contains all dependencies and is runnable::
 
-    java -jar geoscript-js-1.6.0-app.jar
+    java -jar geoscript-js-1.7.0-app.jar
